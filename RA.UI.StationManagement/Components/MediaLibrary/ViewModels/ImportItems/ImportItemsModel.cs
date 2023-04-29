@@ -35,11 +35,13 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Models
         }
         #endregion
         #region First View
-        
+
+        [NotifyDataErrorInfo]
         [Required(ErrorMessage = "Folder path is required.")]
         [ObservableProperty]
         private string? folderPath;
 
+        [NotifyDataErrorInfo]
         [Required]
         [ObservableProperty]
         private CategoryHierarchyDto? selectedCategory;

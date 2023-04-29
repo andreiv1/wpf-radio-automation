@@ -55,5 +55,11 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent
                 //}
             }
         }
+
+        private void SfDataPager_OnDemandLoading(object sender, Syncfusion.UI.Xaml.Controls.DataPager.OnDemandLoadingEventArgs e)
+        {
+            AllMediaItemsViewModel? vm = DataContext as AllMediaItemsViewModel;
+            vm?.LoadTracks(e.StartIndex, e.PageSize);
+        }
     }
 }

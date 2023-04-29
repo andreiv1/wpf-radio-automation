@@ -112,16 +112,17 @@
             </Grid.ColumnDefinitions>
 
             <Label Content="Total items:" HorizontalAlignment="Left" VerticalAlignment="Center"
-                   FontWeight="DemiBold"/>
+                    FontSize="14"/>
 
-            <Label Grid.Column="1"
+            <Label Grid.Column="1" FontSize="14"
                    Content="{Binding TotalTracks}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <syncfusion:SfDataPager  Grid.Column="3" HorizontalAlignment="Right"
-                           PageCount="50"
-                           PageSize="20" 
+                           PageCount="{Binding Pages}"
+                           PageSize="{Binding TracksPerPage}" 
                            NumericButtonCount="10"
                            AutoEllipsisMode="Both"
                            UseOnDemandPaging="True"
+                           OnDemandLoading="SfDataPager_OnDemandLoading"
                 />
         </Grid>
     </Grid>

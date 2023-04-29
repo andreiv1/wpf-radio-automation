@@ -22,10 +22,13 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         public ObservableCollection<TrackListDto> Items { get; set; } = new();
 
         [ObservableProperty]
-        private int totalTracks;
+        private int totalTracks = 0;
 
         [ObservableProperty]
         private int tracksPerPage = 100;
+
+        [ObservableProperty]
+        private int pages;
 
         [ObservableProperty]
         private TrackListDto? selectedTrack;
@@ -40,10 +43,11 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 
 
 
-        private async Task LoadTracks(int skip, int take)
+        public async Task LoadTracks(int skip, int take)
         {
             TotalTracks = await Task.Run(() => tracksService.GetTrackCountAsync());
             var tracks = await Task.Run(() => tracksService.GetTrackListAsync(skip, take));
+            Pages = TotalTracks > 0 ? (TotalTracks - 1) / TracksPerPage + 1 : 0;
             Items.Clear();
             foreach (var track in tracks)
             {

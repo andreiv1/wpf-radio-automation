@@ -66,6 +66,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
 
                     processTask.ContinueWith(t =>
                     {
+                        //Use dispatcher service
                         Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                         {
                             GoToPreviousPageCommand.NotifyCanExecuteChanged();
