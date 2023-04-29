@@ -1,0 +1,124 @@
+﻿<UserControl x:Class="RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent.AllMediaItemsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent"
+             xmlns:vm="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent"
+             xmlns:coreconverters="clr-namespace:RA.UI.Core.Converters;assembly=RA.UI.Core"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignData Type=vm:AllMediaItemsViewModel}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <coreconverters:DoubleToTimeSpanConverter x:Key="DoubleToTimeSpanConverter" />
+    </UserControl.Resources>
+    <Grid Margin="0,5,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="45"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel
+                Grid.Row="0"
+                Orientation="Horizontal" 
+                VerticalAlignment="Center">
+
+        
+            <syncfusion:SfTextBoxExt x:Name="searchTextbox" 
+                                    Width="300" Margin="5,0,5,0" Height="25" VerticalAlignment="Center"
+                                     Watermark="Search tracks..."
+                                     Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                                     ShowClearButton="True"
+                                     KeyDown="searchWatermarkTextbox_KeyDown"
+                                     PreviewMouseLeftButtonUp="searchTextbox_PreviewMouseLeftButtonUp"
+                                     />
+
+            <syncfusion:ButtonAdv
+                Margin="0,0,5,0"
+                Command="{Binding AddItemCommand}"
+                SmallIcon="{StaticResource AudioAddFileIcon}"
+                Label="Add"/>
+            
+            <syncfusion:ButtonAdv
+                Margin="0,0,5,0"
+                Command="{Binding OpenItemDetailsCommand}"
+                SmallIcon="{StaticResource EditIcon}"
+                Label="Edit"/>
+
+            <syncfusion:ButtonAdv
+                Margin="0,0,5,0"
+                Command="{Binding DeleteItemCommand}"
+                SmallIcon="{StaticResource RemoveIcon}"
+                Label="Delete"/>
+
+            <syncfusion:ButtonAdv
+                Margin="0,0,5,0"
+                Command="{Binding FilterItemsCommand}"
+                SmallIcon="{StaticResource FilterIcon}"
+                Label="Filter"/>
+
+            <syncfusion:ButtonAdv
+                Margin="0,0,5,0"
+                Command="{Binding ImportItemsCommand}"
+                SmallIcon="{StaticResource ImportItemsIcon}"
+                Label="Import Items"/>
+
+        </StackPanel>
+
+        <syncfusion:SfDataGrid Grid.Row="1"
+                       Margin="5,5,5,0"
+                       ColumnSizer="Auto"
+                       ItemsSource="{Binding Items}"
+                       SelectedItem="{Binding SelectedTrack}"
+                       SelectionUnit="Row"
+                       NavigationMode="Row"
+                       AllowResizingColumns="True"
+                       AutoGenerateColumns="False">
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTextColumn HeaderText="Artists" MappingName="Artists"
+                                           MinimumWidth="200"
+                                           AllowResizing="True"
+                                    ColumnSizer="Star"/>
+                    <syncfusion:GridTextColumn HeaderText="Title" MappingName="Title" MinimumWidth="300"/>
+                    <syncfusion:GridTextColumn HeaderText="Type" MappingName="Type" MinimumWidth="60"/>
+                    <syncfusion:GridTextColumn HeaderText="Duration" MappingName="Duration" MinimumWidth="80"
+                                           DisplayBinding="{Binding Path=Duration, Converter={StaticResource DoubleToTimeSpanConverter}, StringFormat={}{0:hh\\:mm\\:ss} }">
+                    </syncfusion:GridTextColumn>
+
+                    <syncfusion:GridDateTimeColumn HeaderText="Date Added" MappingName="DateAdded"
+                                    MinimumWidth="130"/>
+                    <!--<syncfusion:GridDateTimeColumn HeaderText="Date Modified" MappingName="DateModified"
+                                   MinimumWidth="130"/>-->
+                </syncfusion:SfDataGrid.Columns>
+                <syncfusion:SfDataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Edit" Command="{Binding OpenItemDetailsCommand}" />
+                    </ContextMenu>
+                </syncfusion:SfDataGrid.ContextMenu>
+            </syncfusion:SfDataGrid>
+
+ 
+        <Grid Grid.Row="2" Margin="5,0,5,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="Total items:" HorizontalAlignment="Left" VerticalAlignment="Center"
+                   FontWeight="DemiBold"/>
+
+            <Label Grid.Column="1"
+                   Content="{Binding TotalTracks}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <syncfusion:SfDataPager  Grid.Column="3" HorizontalAlignment="Right"
+                           PageCount="50"
+                           PageSize="20" 
+                           NumericButtonCount="10"
+                           AutoEllipsisMode="Both"
+                           UseOnDemandPaging="True"
+                />
+        </Grid>
+    </Grid>
+</UserControl>

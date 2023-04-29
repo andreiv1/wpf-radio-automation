@@ -1,0 +1,148 @@
+﻿<UserControl x:Class="RA.UI.StationManagement.Components.MediaLibrary.Views.ImportItems.ImportItemsFirstView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.Views.ImportItems"
+             xmlns:localvm="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems"
+             xmlns:converters="clr-namespace:RA.UI.Core.Converters;assembly=RA.UI.Core"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:syncfusionskin ="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+             syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=Windows11Light}"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=localvm:ImportItemsFirstViewModel}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:BooleanToCollapsedVisibilityConverter x:Key="BooleanToCollapsedVisibilityConverter"/>
+        <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
+    </UserControl.Resources>
+    <GroupBox Margin="0,0,0,15">
+        <GroupBox.Header>
+            <TextBlock Text="Import items"
+                           FontSize="25"
+                       FontWeight="DemiBold"/>
+        </GroupBox.Header>
+        <StackPanel Orientation="Vertical">
+            <!-- Select folder !-->
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" FontSize="14"
+                   VerticalAlignment="Center"
+                   FontWeight="DemiBold"
+                   Content="Select folder"/>
+                <TextBox Height="24"
+                    VerticalAlignment="Center"
+                    Grid.Column="1"
+                    IsReadOnly="True"
+                    Text="{Binding Model.FolderPath}"/>
+                <syncfusion:ButtonAdv
+                    Margin="2,0,0,0"
+                    Height="24"
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Label="Pick folder"
+                    SmallIcon="{StaticResource AddFolderIcon}"
+                    Command="{Binding PickFolderCommand}"/>
+            </Grid>
+
+            <GroupBox Margin="5">
+                <GroupBox.Header>
+                    <TextBlock Text="Details"
+                   FontWeight="Bold"
+                   FontSize="16"/>
+                </GroupBox.Header>
+
+                <Grid Margin="-4,3,0,3" Width="650" HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="FontWeight" Value="DemiBold"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="0,0,10,7"/>
+                        </Style>
+                    </Grid.Resources>
+
+                    <Label Grid.Row="0" Grid.Column="0" Content="Category"/>
+                    <syncfusion:SfTextBoxExt Grid.Column="1" Height="24" VerticalAlignment="Center"
+                                             
+                                             IsReadOnly="True"
+                                             Text="{Binding Model.SelectedCategory.PathName,Mode=TwoWay, 
+                                                ValidatesOnNotifyDataErrors=True,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                             />
+
+                    <syncfusion:ButtonAdv Grid.Column="2" VerticalAlignment="Center" Width="75" HorizontalAlignment="Left"
+                                          Margin="3,0,0,0" Label="Pick" SmallIcon="{StaticResource FolderTreeIcon}"
+                                          Command="{Binding PickCategoryCommand}"/>
+
+                    <Label Grid.Row="1" Grid.Column="0" Content="Track Type"/>
+                    <syncfusion:ComboBoxAdv Grid.Row="1" Grid.Column="1"
+                              x:Name="TrackTypeComboBox"
+                              VerticalAlignment="Center" Height="24"
+                              ItemsSource="{Binding Model.TrackTypes}"
+                              SelectedItem="{Binding Model.SelectedTrackType, Converter={StaticResource EnumToStringConverter}}"/>
+
+                    <Label Grid.Row="2" Grid.Column="0" Content="Status"/>
+                    <syncfusion:ComboBoxAdv Grid.Row="2" Grid.Column="1"
+                              x:Name="StatusComboBox" Height="24"
+                              VerticalAlignment="Center"
+                              ItemsSource="{Binding Model.TrackStatuses}"
+                              SelectedItem="{Binding Model.SelectedTrackStatus, Converter={StaticResource EnumToStringConverter}}"/>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Margin="5">
+                <GroupBox.Header>
+                    <TextBlock Text="Settings"
+                   FontWeight="Bold"
+                   FontSize="15"/>
+                </GroupBox.Header>
+
+                <StackPanel Orientation="Vertical">
+                    <CheckBox Content="Scan in all folders, including subfolders (complete scan)" 
+                              Margin="6" 
+                              IsChecked="{Binding Model.IsCompleteScan}"
+                              d:IsChecked="True"/>
+
+                    <StackPanel Orientation="Vertical" Margin="15,0,0,0"
+                            Visibility="{Binding Model.IsCompleteScan, Mode=OneWay, 
+                            Converter={StaticResource BooleanToCollapsedVisibilityConverter}}"
+                            d:Visibility="Visible">
+                        <RadioButton Content="Put all items in the same category" 
+                                     Margin="5"
+                              IsChecked="{Binding Model.ScanOptions, 
+                                Converter={StaticResource EnumToBooleanConverter}, 
+                                ConverterParameter=PutItemsInTheSameCategory}"/>
+                        <RadioButton Content="Create a new children category for each existing subfolder"
+                                     Margin="5"
+                              IsChecked="{Binding Model.ScanOptions, 
+                                Converter={StaticResource EnumToBooleanConverter}, 
+                                ConverterParameter=CreateNewCategoriesAndAsignItems}"/>
+                    </StackPanel>
+                    <CheckBox Content="Get track images from 3rd providers if it doesn't have any inside file (this might slow down the process)" 
+                              Margin="6" 
+                              IsChecked="{Binding Model.FetchImagesFromProviders}"/>
+                    <CheckBox Content="Read items metadata" 
+                              Margin="6" 
+                              IsChecked="{Binding Model.ReadItemsMetadata}"
+                              d:IsChecked="True"/>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </GroupBox>
+</UserControl>

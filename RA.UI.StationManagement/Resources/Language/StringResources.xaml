@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+   
+    <system:String x:Key="Artists">Artists</system:String>
+    <system:String x:Key="Title">Title</system:String>
+    <system:String x:Key="TrackType">Type</system:String>
+    <system:String x:Key="TrackDuration">Duration</system:String>
+    <system:String x:Key="Categories">Categories</system:String>
+    <system:String x:Key="Year">Year</system:String>
+    <system:String x:Key="DateAdded">Date Added</system:String>
+    <system:String x:Key="DateModified">Date Modified</system:String>
+
+    <system:String x:Key="MediaLibraryTitle">Media Library</system:String>
+    <system:String x:Key="MediaLibraryDescription">Manage your station's media files</system:String>
+
+    <system:String x:Key="AddBtn">Add</system:String>
+    <system:String x:Key="EditBtn">Edit</system:String>
+    <system:String x:Key="DeleteBtn">Delete</system:String>
+    <system:String x:Key="FilterBtn">Filter</system:String>
+    <system:String x:Key="ImportItemsBtn">Import Items</system:String>
+
+    <system:String x:Key="SearchLabel">Search</system:String>
+
+    <system:String x:Key="Artist">Artist</system:String>
+</ResourceDictionary>

@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Soundwave\html\index.html" />
+    <None Remove="Soundwave\html\script.js" />
+    <None Remove="Soundwave\html\style.css" />
+    <None Remove="Soundwave\html\wavesurfer\wavesurfer.js" />
+    <None Remove="Soundwave\html\wavesurfer\wavesurfer.timeline.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Soundwave\html\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Soundwave\html\script.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Soundwave\html\style.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Soundwave\html\wavesurfer\wavesurfer.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Soundwave\html\wavesurfer\wavesurfer.timeline.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1722.45" />
+  </ItemGroup>
+
+</Project>

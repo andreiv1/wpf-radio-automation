@@ -1,0 +1,148 @@
+﻿<UserControl x:Class="RA.UI.StationManagement.Components.Planner.View.MainContent.PlannerDayTemplatesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RA.UI.StationManagement.Components.Planner.View.MainContent"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:syncfusionskin ="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Column 1: Templates-->
+        <Grid Grid.Column="0" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <!-- Clocks options-->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <syncfusion:ButtonAdv Grid.Column="0"
+                                      SmallIcon="{StaticResource PlusIcon}"
+                                      Label="Add new template"
+                                      Command="{Binding AddTemplateCommand}"/>
+                <syncfusion:ButtonAdv Grid.Column="2"
+                                      SmallIcon="{StaticResource RefreshIcon}"
+                                      Label="Refresh templates"
+                                      Command="{Binding RefreshTemplatesCommand}"/>
+            </Grid>
+
+            <!-- Search box-->
+            <syncfusion:SfTextBoxExt Grid.Row="1" Margin="0,2,0,0" VerticalAlignment="Center" Height="23"
+                                     Watermark="Search templates..."/>
+
+
+            <!-- Clocks list -->
+            <syncfusion:SfDataGrid x:Name="clocksListDataGrid" Grid.Row="2"
+                       Margin="0,3,0,0"
+                       ItemsSource="{Binding Templates}"
+                       SelectedItem="{Binding SelectedTemplate}"
+                       SelectionUnit="Row"
+                       NavigationMode="Row"
+                       AutoGenerateColumns="False"
+                       ColumnSizer="AutoWithLastColumnFill"
+                       SortClickAction="DoubleClick">
+                <syncfusion:SfDataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Edit template" Command="{Binding OpenEditClockDialogCommand}"/>
+                        <MenuItem Header="Duplicate template" Command="{Binding DuplicateSelectedClockCommand}"/>
+                        <MenuItem Header="Remove template" Command="{Binding RemoveSelectedClockCommand}"/>
+                    </ContextMenu>
+                </syncfusion:SfDataGrid.ContextMenu>
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTextColumn HeaderText="Template Name" MappingName="Name"/>
+                </syncfusion:SfDataGrid.Columns>
+
+            </syncfusion:SfDataGrid>
+
+            <Grid x:Name="NoTemplatesFoundPanel" Grid.Row="2"
+                  Visibility="{Binding Templates.Count,Converter={StaticResource CountToVisibilityConverter}}"
+                  VerticalAlignment="Top" 
+                  HorizontalAlignment="Center" 
+                  Panel.ZIndex="1">
+                <TextBlock Text="Templates not found."
+                           TextWrapping="Wrap" TextAlignment="Center" 
+                           Margin="5,50,5,0" Foreground="Gray"/>
+            </Grid>
+        </Grid>
+        <!-- Column 2: Manage selected template -->
+        <Grid Grid.Column="1"
+              Margin="5,5,5,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition/>
+
+            </Grid.RowDefinitions>
+
+            <!-- Buttons -->
+            <StackPanel Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal">
+                <syncfusion:ButtonAdv Label="Insert clock" Height="25" Margin="0,0,3,0"
+                                      SmallIcon="{StaticResource ClockIcon}"/>
+                <syncfusion:ButtonAdv Label="Delete clock" Height="25" Margin="0,0,3,0"
+                                      
+                                      SmallIcon="{StaticResource RemoveIcon}"/>
+            </StackPanel>
+
+            <!-- Template -->
+            <syncfusion:SfScheduler Grid.Row="2"
+                                x:Name="selectedTemplateScheduler" 
+                                BorderThickness="0"
+                                AllowViewNavigation="False"
+                                ViewType="Day" ShowDatePickerButton="True"
+                                ItemsSource="{Binding ClocksForSelectedTemplate}"
+                                >
+                <syncfusion:SfScheduler.AppointmentMapping>
+                    <syncfusion:AppointmentMapping
+                        Subject="ClockName"
+                        StartTime="StartTime"
+                        EndTime="EndTime"
+                        Foreground="ForegroundColor"
+                        AppointmentBackground="BackgroundColor"
+                        />
+                </syncfusion:SfScheduler.AppointmentMapping>
+                <syncfusion:SfScheduler.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Margin="12,0,0,0" FontSize="15">
+                            <!--<Run Text="Template: " FontWeight="DemiBold" />
+                            <Run Text="{Binding Path=DataContext.SelectedTemplate.Name,ElementName=clocksListDataGrid}">
+                                <Run.Style>
+                                    <Style TargetType="{x:Type Run}">
+                                        <Setter Property="Text" Value="{Binding Path=DataContext.SelectedTemplate.Name, ElementName=clocksListDataGrid}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=DataContext.SelectedTemplate, ElementName=clocksListDataGrid}" Value="{x:Null}">
+                                                <Setter Property="Text" Value="No template selected" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Run.Style>
+                            </Run>-->
+                        </TextBlock>
+                    </DataTemplate>
+                </syncfusion:SfScheduler.HeaderTemplate>
+                <syncfusion:SfScheduler.DaysViewSettings>
+                    <syncfusion:DaysViewSettings TimeRulerFormat="HH:mm" ViewHeaderHeight="0"
+                                                 MinimumAppointmentDuration="1:0:0" TimeInterval="1:0:0">
+
+                    </syncfusion:DaysViewSettings>
+                </syncfusion:SfScheduler.DaysViewSettings>
+                <syncfusion:SfScheduler.TimelineViewSettings>
+                    <syncfusion:TimelineViewSettings TimeRulerFormat="HH:mm"/>
+                </syncfusion:SfScheduler.TimelineViewSettings>
+            </syncfusion:SfScheduler>
+        </Grid>
+    </Grid>
+</UserControl>

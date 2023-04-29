@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!-- ####################################################################
+
+This file was generates automatically via the 
+IconPacks.Browser (MIT-License). 
+
+Visit https://github.com/MahApps/MahApps.Metro.IconPacks and 
+https://github.com/MahApps/MahApps.Metro.IconPacks/blob/develop/LICENSE 
+for more information.
+ 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+Icon-Name: 			Search
+Iconpack:			ForkAwesome
+Iconpack-Homepage: 	https://forkaweso.me/
+Iconpack-License:	https://github.com/ForkAwesome/Fork-Awesome/blob/master/LICENSES
+
+#####################################################################-->
+
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="48"
+     height="48">
+    <path d="M1152 704c0 247 -201 448 -448 448s-448 -201 -448 -448s201 -448 448 -448s448 201 448 448zM1664 -128c0 -70 -58 -128 -128 -128c-34 0 -67 14 -90 38l-343 342c-117 -81 -257 -124 -399 -124c-389 0 -704 315 -704 704s315 704 704 704s704 -315 704 -704 c0 -142 -43 -282 -124 -399l343 -343c23 -23 37 -56 37 -90z"
+          style="fill:#000000;
+                 stroke:none
+                 stroke-width:0;
+                 stroke-linecap:flat;
+                 stroke-linejoin:miter;"
+          transform="matrix(0.028846153846153848,0,0,-0.028846153846153848,0,40.61538461538462)" />
+</svg>

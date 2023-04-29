@@ -1,0 +1,73 @@
+﻿<uicore:RAWindow x:Class="RA.UI.StationManagement.Components.Planner.Views.PlannerMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:uicore="clr-namespace:RA.UI.Core.ViewAbstract;assembly=RA.UI.Core"
+        xmlns:local="clr-namespace:RA.UI.StationManagement.Components.Planner.Views"
+        xmlns:localuc="clr-namespace:RA.UI.StationManagement.UserControls"
+        xmlns:localvm="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels"
+        xmlns:contentvm="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.MainContent"
+        xmlns:contentviews="clr-namespace:RA.UI.StationManagement.Components.Planner.View.MainContent"
+                            
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        mc:Ignorable="d"
+        Title="PlannerMainWindow" Height="850" MinWidth="850" Width="850">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <localuc:ComponentHeaderUserControl Grid.Row="0" Grid.ColumnSpan="2"
+                                                 HeaderText="Planner" 
+                                                 Description="Manage your station's schedule."
+                                                 BackgroundColor="#FF37A55B" />
+        <syncfusion:TabControlExt Grid.Row="1" Margin="0,5,0,0" 
+                                  ItemsSource="{Binding TabViewModels}" 
+                                  IsLazyLoaded="True"
+                                  EnableLabelEdit="False" KeepTabInFront="False" ShowTabItemContextMenu="False" 
+                                  CloseButtonType="Hide">
+            <syncfusion:TabControlExt.ItemTemplate>
+                <!-- This is the header template -->
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Padding="2,2,2,3" Margin="0 0 4 0">
+                            <Image Source="{Binding TabIcon}" VerticalAlignment="Center"
+                               Width="32" Height="32" />
+                        </Border>
+
+                        <TextBlock Text="{Binding TabHeaderName}" Grid.Column="1" 
+                                   FontWeight="DemiBold"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                </DataTemplate>
+            </syncfusion:TabControlExt.ItemTemplate>
+            
+            <syncfusion:TabControlExt.Resources>
+                <DataTemplate DataType="{x:Type TypeName=contentvm:PlannerClocksViewModel}">
+                    <contentviews:PlannerClocksView DataContext="{Binding}"/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type TypeName=contentvm:PlannerDayTemplatesViewModel}">
+                    <contentviews:PlannerDayTemplatesView DataContext="{Binding}"/>
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type TypeName=contentvm:PlannerScheduleViewModel}">
+                    <contentviews:PlannerScheduleView DataContext="{Binding}"/>
+                </DataTemplate>
+            </syncfusion:TabControlExt.Resources>
+
+            <syncfusion:TabControlExt.ContentTemplate>
+                <!-- This is the content template -->
+                <DataTemplate>
+                    <ContentControl Content="{Binding ViewModel}"/>
+                </DataTemplate>
+            </syncfusion:TabControlExt.ContentTemplate>
+        </syncfusion:TabControlExt>
+
+    </Grid>
+</uicore:RAWindow>

@@ -1,0 +1,63 @@
+﻿<uicore:RAWindow x:Class="RA.UI.StationManagement.Components.MediaLibrary.Views.MediaLibraryImportItemsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.Views"
+        xmlns:uicore="clr-namespace:RA.UI.Core.ViewAbstract;assembly=RA.UI.Core"
+        xmlns:localvm="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.ViewModels"
+        xmlns:vm="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems"
+        xmlns:views="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.Views.ImportItems"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=localvm:MediaLibraryImportItemsViewModel}"
+        Title="MediaLibraryImportItemsWindow"
+        Height="600" Width="700"
+        MinHeight="600" MinWidth="700" ResizeBorderThickness="0"
+        CornerRadius="0">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <ContentControl 
+            Grid.Row="0"
+            Content="{Binding NavigationService.CurrentView}"
+            d:Content="{d:DesignInstance Type=vm:ImportItemsFirstViewModel, IsDesignTimeCreatable=True}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type TypeName=vm:ImportItemsFirstViewModel}">
+                    <views:ImportItemsFirstView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type TypeName=vm:ImportItemsSecondViewModel}">
+                    <views:ImportItemsSecondView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type TypeName=vm:ImportItemsThirdViewModel}">
+                    <views:ImportItemsThirdView/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <syncfusion:ButtonAdv VerticalAlignment="Center" Margin="0,0,4,0"
+                SmallIcon="{StaticResource BackIcon}"
+                Label="Back"
+                Command="{Binding GoToPreviousPageCommand}"
+               />
+            <syncfusion:ButtonAdv VerticalAlignment="Center" Margin="0,0,4,0"
+               SmallIcon="{StaticResource ForwardIcon}"
+                Label="Next"
+                FlowDirection="RightToLeft"
+                Command="{Binding GoToNextPageCommand}"
+                />
+            <syncfusion:ButtonAdv VerticalAlignment="Center" Margin="0,0,4,0"
+                SmallIcon="{StaticResource DoneIcon}"
+                Label="Done"
+                Command="{Binding ExecuteImportCommand}"
+                />
+        </StackPanel>
+
+    </Grid>
+</uicore:RAWindow>

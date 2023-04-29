@@ -1,0 +1,173 @@
+﻿<UserControl x:Class="RA.UI.StationManagement.Components.Planner.View.Schedule.PlannerDefaultScheduleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RA.UI.StationManagement.Components.Planner.View.Schedule"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <!-- Temporary card -->
+        <ControlTemplate x:Key="NoToggleButtonExpanderTemplate" TargetType="{x:Type Expander}">
+            <Border Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="2"
+            SnapsToDevicePixels="True">
+                <DockPanel>
+                    <ContentPresenter DockPanel.Dock="Top"
+                              ContentSource="Header"
+                              Margin="4"
+                              RecognizesAccessKey="True"
+                              TextBlock.FontWeight="Bold" />
+                    <ContentPresenter x:Name="ExpandSite"
+                              DockPanel.Dock="Bottom"
+                              Margin="4"
+                              Visibility="Visible"
+                              TextBlock.FontWeight="Normal"/>
+                    <ContentPresenter Margin="4"
+                              Visibility="Collapsed"
+                              TextBlock.FontWeight="Normal"/>
+                </DockPanel>
+            </Border>
+        </ControlTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Column 1 -->
+        <Grid Grid.Column="0" Width="300">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Expander Grid.Row="1"  Header="Add new interval" IsExpanded="True">
+                <!-- Add new interval grid -->
+                <Grid Height="auto" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0" Content="Start Date:" FontWeight="DemiBold"
+                       VerticalAlignment="Center" Grid.ColumnSpan="2"/>
+
+                    <syncfusion:DateTimeEdit Grid.Column="1" 
+                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)" 
+                        />
+
+                    <Label Grid.Row="2" Grid.Column="0" Content="End Date:" FontWeight="DemiBold"
+                       VerticalAlignment="Center" Grid.ColumnSpan="2"/>
+
+                    <syncfusion:DateTimeEdit Grid.Row="2" Grid.Column="1"
+                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)" 
+                        />
+
+                    <syncfusion:ButtonAdv Grid.Row="4" Grid.Column="2" Label="Add" SmallIcon="{StaticResource PlusIcon}"
+                                    Width="60" HorizontalAlignment="Right"
+                                    Command="{Binding AddNewDefaultScheduleCommand}"/>
+                </Grid>
+            </Expander>
+            <syncfusion:SfTextBoxExt Grid.Row="2" Height="24" Margin="0,5,0,0" VerticalAlignment="Center"
+                                     Watermark="Search existing intervals..."/>
+
+            <syncfusion:SfDataGrid Grid.Row="3"
+                                   AutoGenerateColumns="False" SelectionUnit="Row" NavigationMode="Row" SelectionMode="Single"
+                                   syncfusion:ScrollableContentViewer.HorizontalScrollBarVisibility="Hidden"
+                                   ItemsSource="{Binding Intervals}"
+                                   SelectedItem="{Binding SelectedInterval}" 
+                                   >
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridDateTimeColumn HeaderText="Start date"
+                                                   MappingName="Start"/>
+                    <syncfusion:GridDateTimeColumn HeaderText="End date"
+                                                   MappingName="End"/>
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
+        </Grid>
+
+        <!-- Column 2 -->
+        <Grid Grid.Column="1" Margin="5,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+
+
+            <!-- Info about default schedules -->
+            <Expander Margin="0,0,0,5"
+                       Template="{StaticResource NoToggleButtonExpanderTemplate}">
+
+                <Grid Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Image Source="{StaticResource InfoIcon}" VerticalAlignment="Center" HorizontalAlignment="Left"
+                               Height="32" Width="32" Margin="15,0,15,0"/>
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Width="auto" 
+                            Text="If nothing is planned when generating playlists, the default schedules will be used. Also, if you add in the calendar a new schedule, it will override the default schedule." 
+                                   TextWrapping="WrapWithOverflow"/>
+                </Grid>
+
+
+            </Expander>
+            <!-- Selected default schedule -->
+            <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Left">
+                <syncfusion:SfDataGrid Grid.Row="1" Height="230"
+                AutoGenerateColumns="False" ColumnSizer="AutoWithLastColumnFill" SelectionUnit="Row"
+                       NavigationMode="Row" SelectionMode="Single" RowHoverHighlightingBrush="Transparent"
+                                   ItemsSource="{Binding DefaultScheduleItems}">
+                    <syncfusion:SfDataGrid.Columns>
+                        <syncfusion:GridTextColumn HeaderText="Day of week" MinimumWidth="100"
+                                               MappingName="Day"/>
+                        <syncfusion:GridTextColumn HeaderText="Template" MinimumWidth="100"
+                                               MappingName="TemplateDto.Name"/>
+                    </syncfusion:SfDataGrid.Columns>
+                </syncfusion:SfDataGrid>
+
+                <syncfusion:ButtonAdv Grid.Row="2" Height="24" Margin="0,5,0,0" Width="120" HorizontalAlignment="Right" 
+                                  Label="Save schedule" SmallIcon="{StaticResource SaveIcon}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,10,0,0">
+                <!--<syncfusion:SfScheduler x:Name="Schedule" Height="100"
+                                BorderThickness="0" 
+                                AllowViewNavigation="True"
+                                ItemsSource="{Binding Events}"
+                                MinimumDate="{Binding MinDate}"
+                                MaximumDate="{Binding MaxDate}"
+                                DisplayDate="{Binding DisplayDate}"
+                                ViewType="TimelineMonth">
+                    <syncfusion:SfScheduler.MonthViewSettings>
+                        <syncfusion:MonthViewSettings AppointmentDisplayMode="Appointment"
+                                              AppointmentDisplayCount="1"/>
+                    </syncfusion:SfScheduler.MonthViewSettings>
+                    <syncfusion:SfScheduler.DaysViewSettings>
+                        <syncfusion:DaysViewSettings MinimumAppointmentDuration="0:30:0" />
+                    </syncfusion:SfScheduler.DaysViewSettings>
+                </syncfusion:SfScheduler>-->
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+</UserControl>

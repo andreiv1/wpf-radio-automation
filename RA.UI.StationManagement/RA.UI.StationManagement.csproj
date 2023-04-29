@@ -1,0 +1,65 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+    <Title>RA | Station Management</Title>
+    <Product>$(AssemblyName)</Product>
+    <AssemblyName>RA - Station Management</AssemblyName>
+	<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="SplashScreenWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ComponentHeaderUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\LauncherComponentControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+        <PackageReference Include="Syncfusion.SfGrid.WPF" Version="21.1.41" />
+        <PackageReference Include="Syncfusion.Shared.WPF" Version="21.1.41" />
+    <PackageReference Include="Syncfusion.Tools.WPF" Version="21.1.41" />
+    <PackageReference Include="Syncfusion.SfChromelessWindow.WPF" Version="21.1.41" />
+    <PackageReference Include="Syncfusion.Themes.Windows11Light.Wpf" Version="21.1.41" />
+    <PackageReference Include="Syncfusion.SfSkinManager.Wpf" Version="21.1.41" />
+    <PackageReference Include="Syncfusion.SfTreeView.WPF" Version="21.1.35" />
+    <PackageReference Include="Syncfusion.SfScheduler.WPF" Version="21.1.35" />
+    <PackageReference Include="Syncfusion.SfInput.WPF" Version="21.1.35" />
+    <PackageReference Include="Syncfusion.SfChart.WPF" Version="21.1.35" />
+</ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RA.DAL\RA.DAL.csproj" />
+      <ProjectReference Include="..\RA.Database\RA.Database.csproj" />
+      <ProjectReference Include="..\RA.Dto\RA.DTO.csproj" />
+      <ProjectReference Include="..\RA.UI.Core\RA.UI.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Components\Planner\ViewModels\DayTemplates\" />
+      <Folder Include="Dialogs\ArtistSelectDialog\" />
+      <Folder Include="Services\Data\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\.editorconfig" Link=".editorconfig" />
+    </ItemGroup>
+</Project>

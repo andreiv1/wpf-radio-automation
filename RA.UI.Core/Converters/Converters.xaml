@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:RA.UI.Core.Converters">
+    <converters:BooleanToCollapsedVisibilityConverter x:Key="BooleanToCollapsedVisibilityConverter"/>
+    <converters:BooleanToVisibileVisibilityConverter x:Key="BooleanToVisibileVisibilityConverter"/>
+    <converters:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverter"/>
+    <converters:CollectionToGridLengthConverter x:Key="CollectionToGridLengthConverter"/>
+    <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
+    <converters:DoubleToTimeSpanConverter x:Key="DoubleToTimeSpanConverter"/>
+    <converters:DoubleToFormattedTimeSpanConverter x:Key=" DoubleToFormattedTimeSpanConverter"/>
+    <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
+    <converters:EnumToStringConverter x:Key="EnumToStringConverter"/>
+    <converters:GridHeightConverter x:Key="GridHeightConverter"/>
+    <converters:StringToBrushConverter x:Key="StringToBrushConverter"/>
+    <converters:TimeSpanToFormattedStringConverter x:Key="TimeSpanToFormattedStringConverter"/>
+    <converters:TimeSpanToIntConverter x:Key="TimeSpanToIntConverter"/>
+    <converters:TimeSpanToIntSecondsConverter x:Key="TimeSpanToIntSecondsConverter"/>
+    <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+    
+   
+
+</ResourceDictionary>

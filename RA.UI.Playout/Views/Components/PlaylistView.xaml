@@ -1,0 +1,190 @@
+﻿<UserControl x:Class="RA.UI.Playout.Views.Components.PlaylistView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RA.UI.Playout.Views.Components"
+             xmlns:vm="clr-namespace:RA.UI.Playout.ViewModels.Controls"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:syncfusionskin ="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+             syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=Windows11Dark}"
+             d:DataContext="{d:DesignInstance Type=vm:PlaylistViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="ListBox">
+            <Setter Property="Background" Value="#222"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style TargetType="Image">
+            <Setter Property="Opacity" Value="0.8"/>
+        </Style>
+        <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="IsTabStop" Value="false"/>
+            <Setter Property="Focusable" Value="false"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Border CornerRadius="2" Background="{TemplateBinding Background}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ScrollBar">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="0.00001*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0" Background="{TemplateBinding Background}" CornerRadius="1"/>
+                            <Track x:Name="PART_Track" Grid.Row="1" IsDirectionReversed="true" Focusable="false">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="{x:Static ScrollBar.PageUpCommand}" Focusable="false" Opacity="0"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="{x:Static ScrollBar.PageDownCommand}" Focusable="false" Opacity="0"/>
+                                </Track.IncreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb Background="Gray" Style="{StaticResource ScrollBarThumb}" />
+                                </Track.Thumb>
+                            </Track>
+                            <Border Grid.Row="2" Background="{TemplateBinding Background}" CornerRadius="2"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="TransparentButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}">
+                            <ContentPresenter Content="{TemplateBinding Content}" 
+                                      ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="DarkRed"/>
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="1.02" ScaleY="1.02"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.Resources>
+            <DataTemplate x:Key="SongItemTemplate">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="{Binding ETA, StringFormat={}{0:HH:mm:ss}}" 
+                                  FontWeight="Bold"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,10,0"/>
+
+                    <Image Grid.Column="1" 
+                       VerticalAlignment="Center" Height="30" Width="30" Margin="0,0,10,0"
+                       Source="pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png" />
+
+                    <DockPanel Grid.Column="2">
+                        <TextBlock DockPanel.Dock="Top" Text="{Binding Artists}" VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Artists}" Value="">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Title}" VerticalAlignment="Center"/>
+                    </DockPanel>
+
+
+                    <TextBlock Grid.Column="3"
+                            HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="13"
+                            Text="{Binding Duration, Converter={StaticResource TimeSpanToFormattedStringConverter}}" Margin="10,0,10,0"
+                             />
+
+                    <Button Grid.Column="4" Style="{StaticResource TransparentButtonStyle}" VerticalAlignment="Center"
+                            Command="{Binding DataContext.RemovePlaylistItemCommand,RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                            CommandParameter="{Binding .}">
+                        <Label Content="✕" FontSize="15" Foreground="Red" Style="{StaticResource LabelStyle}" VerticalAlignment="Center"/>
+                    </Button>
+
+                </Grid>
+            </DataTemplate>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <ListBox x:Name="playlistListBox"
+            Grid.Row="0" 
+                         ItemsSource="{Binding PlayerItems}"
+                         SelectedItem="{Binding SelectedPlaylistItem}"
+                         ItemTemplate="{StaticResource SongItemTemplate}"
+                         HorizontalContentAlignment="Stretch">
+        </ListBox>
+        <Grid Grid.Row="1" Height="30" Margin="0,3,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <syncfusion:ButtonAdv x:Name="btnBottomOfPlaylist" Grid.Column="0" Label="Scroll to the bottom"
+                                  Margin="0,0,3,0" SmallIcon="{StaticResource DoubleDownIcon}"
+                    Click="btnBottomOfPlaylist_Click"/>
+            
+            <syncfusion:ButtonAdv Grid.Column="1" Label="Move selected down" SmallIcon="{StaticResource ScrollDownIcon}"
+                    Command="{Binding MoveSelectedItemDownCommand}"/>
+
+            
+            <syncfusion:ButtonAdv Grid.Column="2" Label="Move selected up" SmallIcon="{StaticResource ScrollUpIcon}"
+                                  Margin="0,0,3,0"
+                    Command="{Binding MoveSelectedItemUpCommand}"/>
+            <syncfusion:ButtonAdv x:Name="btnTopOfPlaylist" Grid.Column="3" Label="Scroll to the top"
+                                  Margin="0,0,3,0" SmallIcon="{StaticResource DoubleUpIcon}"
+                                  Click="btnTopOfPlaylist_Click"/>
+        </Grid>
+    </Grid>
+</UserControl>

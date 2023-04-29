@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!-- ####################################################################
+
+This file was generates automatically via the 
+IconPacks.Browser (MIT-License). 
+
+Visit https://github.com/MahApps/MahApps.Metro.IconPacks and 
+https://github.com/MahApps/MahApps.Metro.IconPacks/blob/develop/LICENSE 
+for more information.
+ 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+Icon-Name: 			PlusCircle
+Iconpack:			FeatherIcons
+Iconpack-Homepage: 	https://feathericons.com/
+Iconpack-License:	https://github.com/feathericons/feather/blob/master/LICENSE
+
+#####################################################################-->
+
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="48"
+     height="48">
+    <path d="m 8,12 h 8 M 12,8 v 8 M 22,12 A 10,10 0 0 1 12,22 10,10 0 0 1 2,12 10,10 0 0 1 12,2 10,10 0 0 1 22,12 Z"
+          style="fill:none;
+                 stroke:#000000
+                 stroke-width:4.8;
+                 stroke-linecap:round;
+                 stroke-linejoin:round;"
+          transform="matrix(2.4,0,0,2.4,-4.8,-4.8)" />
+</svg>

@@ -1,0 +1,87 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+
+    <system:Uri x:Key="CategoryIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/PicolIcons-Category.svg</system:Uri>
+    <system:Uri x:Key="ClockIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/Unicons-ClockThree.svg</system:Uri>
+    <system:Uri x:Key="RefreshIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/ForkAwesome-Refresh.svg</system:Uri>
+    <system:Uri x:Key="EditItemIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/Unicons-Edit.svg</system:Uri>
+    <system:Uri x:Key="CopyItemsIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/ForkAwesome-Clone.svg</system:Uri>
+    <system:Uri x:Key="PasteItemsIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/ForkAwesome-Clipboard.svg</system:Uri>
+    <system:Uri x:Key="DeleteItemsIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/ForkAwesome-TrashOutline.svg</system:Uri>
+    <system:Uri x:Key="AudioFileIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/ForkAwesome-FileAudioOutline.svg</system:Uri>
+    <system:Uri x:Key="FolderMoveIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/Material-FolderMoveOutline.svg</system:Uri>
+    <system:Uri x:Key="FolderMusicIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/Material-FolderMusicOutline.svg</system:Uri>
+    <system:Uri x:Key="FolderRemoveIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/Material-FolderRemoveOutline.svg</system:Uri>
+    <system:Uri x:Key="SearchIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/ForkAwesome-Search.svg</system:Uri>
+    <system:Uri x:Key="ArrowCircleOutlineUpIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/ForkAwesome-ArrowCircleOutlineDown.svg</system:Uri>
+    <system:Uri x:Key="ArrowCircleOutlineDownIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/ForkAwesome-ArrowCircleOutlineUp.svg</system:Uri>
+    <system:Uri x:Key="PlusCircleIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/FeatherIcons-PlusCircle.svg</system:Uri>
+    <system:Uri x:Key="MinusCircleIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/FeatherIcons-MinusCircle.svg</system:Uri>
+
+    <BitmapImage x:Key="PlusIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-plus-48.png" />
+    <BitmapImage x:Key="EditFileIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-edit-file-48.png" />
+    <BitmapImage x:Key="FilterIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-conversion-48.png" />
+    <BitmapImage x:Key="RemoveIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-cancel-48.png" />
+    <BitmapImage x:Key="ImportItemsIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-add-list-48.png" />
+    <BitmapImage x:Key="BackIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-back-48.png" />
+    <BitmapImage x:Key="ForwardIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-forward-48.png" />
+    <BitmapImage x:Key="ScrollUpIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-scroll-up-48.png" />
+    <BitmapImage x:Key="ScrollDownIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-scroll-down-48.png" />
+    <BitmapImage x:Key="FolderIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-scroll-down-48.png" />
+    <BitmapImage x:Key="AudioAddFileIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-audio-add-file-48.png" />
+    <BitmapImage x:Key="AudioRemoveFileIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-audio-remove-file-48.png" />
+    <BitmapImage x:Key="MoveFileIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-send-file-48.png" />
+    <BitmapImage x:Key="PlayIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-play-48.png" />
+    <BitmapImage x:Key="PauseIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-pause-48.png" />
+    <BitmapImage x:Key="StopIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-stop-48.png" />
+    <BitmapImage x:Key="VoiceRecordIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-voice-recorder-48.png" />
+
+
+    <BitmapImage x:Key="CloseIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-close-48.png"/>
+    <BitmapImage x:Key="SaveIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-save-48.png"/>
+    <BitmapImage x:Key="RefreshIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-synchronize-48.png"/>
+    
+    <BitmapImage x:Key="ClockIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-clock-48.png"/>
+    <BitmapImage x:Key="PlaylistIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-playlist-48.png"/>
+    <BitmapImage x:Key="TemplateIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-template-48.png"/>
+    <BitmapImage x:Key="ScheduleIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-timetable-48.png"/>
+    
+    <BitmapImage x:Key="CopyIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-copy-48.png"/>
+    <BitmapImage x:Key="PasteIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-paste-48.png"/>
+    
+    <BitmapImage x:Key="ErrorIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-error-48.png"/>
+    <BitmapImage x:Key="AddFolderIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-add-folder-48.png"/>
+    
+    <BitmapImage x:Key="EditIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-edit-48.png"/>
+    
+    <BitmapImage x:Key="FolderTreeIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-folder-tree-48.png"/>
+    <BitmapImage x:Key="OpenedFolderIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-opened-folder-48.png"/>
+    <BitmapImage x:Key="MusicFolderIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-music-folder-48.png"/>
+    
+    <BitmapImage x:Key="MusicalNotesIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-musical-notes-48.png"/>
+    <BitmapImage x:Key="MusicBandIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-music-band-48.png"/>
+    
+    <BitmapImage x:Key="TagsIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-tags-48.png"/>
+    <BitmapImage x:Key="PlaylistGenerateIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-smart-playlist-48.png"/>
+
+    <BitmapImage x:Key="PlaylistsPlannedIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-tear-off-calendar-48.png"/>
+    <BitmapImage x:Key="PlaylistsDayPlanningIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-date-span-48.png"/>
+    
+    <BitmapImage x:Key="DoneIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-done-48.png"/>
+    <BitmapImage x:Key="LoopIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-refresh-48.png"/>
+    
+    <BitmapImage x:Key="ResumeIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-resume-button-48.png"/>
+    <BitmapImage x:Key="DoubleUpIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-double-up-48.png"/>
+    <BitmapImage x:Key="DoubleDownIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-double-down-48.png"/>
+
+    <BitmapImage x:Key="DefaultScheduleIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-week-view-48.png"/>
+    <BitmapImage x:Key="CalendarIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-calendar-48.png"/>
+    
+    <BitmapImage x:Key="InfoIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-info-48.png"/>
+    <BitmapImage x:Key="CalendarPlusIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-calendar-plus-48.png"/>
+
+
+
+
+</ResourceDictionary>

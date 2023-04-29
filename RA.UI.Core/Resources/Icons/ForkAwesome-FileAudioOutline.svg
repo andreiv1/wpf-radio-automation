@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!-- ####################################################################
+
+This file was generates automatically via the 
+IconPacks.Browser (MIT-License). 
+
+Visit https://github.com/MahApps/MahApps.Metro.IconPacks and 
+https://github.com/MahApps/MahApps.Metro.IconPacks/blob/develop/LICENSE 
+for more information.
+ 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+Icon-Name: 			FileAudioOutline
+Iconpack:			ForkAwesome
+Iconpack-Homepage: 	https://forkaweso.me/
+Iconpack-License:	https://github.com/ForkAwesome/Fork-Awesome/blob/master/LICENSES
+
+#####################################################################-->
+
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="48"
+     height="48">
+    <path d="M1468 1156c37 -37 68 -111 68 -164v-1152c0 -53 -43 -96 -96 -96h-1344c-53 0 -96 43 -96 96v1600c0 53 43 96 96 96h896c53 0 127 -31 164 -68zM1024 1400v-376h376c-6 17 -15 34 -22 41l-313 313c-7 7 -24 16 -41 22zM1408 -128v1024h-416c-53 0 -96 43 -96 96v416 h-768v-1536h1280zM620 686c12 -5 20 -17 20 -30v-544c0 -13 -8 -25 -20 -30c-4 -1 -8 -2 -12 -2c-8 0 -16 3 -23 9l-166 167h-131c-18 0 -32 14 -32 32v192c0 18 14 32 32 32h131l166 167c10 9 23 12 35 7zM1037 -3c-14 0 -28 5 -40 15c-28 22 -32 62 -9 90 c65 80 100 178 100 282s-35 202 -100 282c-23 28 -19 68 9 91c27 22 68 18 90 -10c83 -102 129 -231 129 -363s-46 -261 -129 -363c-13 -16 -31 -24 -50 -24zM826 145c-15 0 -31 6 -44 17c-25 24 -27 65 -2 91c33 36 52 82 52 131s-19 95 -52 131c-25 26 -23 67 2 91 c26 24 67 23 91 -3c56 -60 87 -137 87 -219s-31 -159 -87 -219c-13 -13 -30 -20 -47 -20z"
+          style="fill:#000000;
+                 stroke:none
+                 stroke-width:0;
+                 stroke-linecap:flat;
+                 stroke-linejoin:miter;"
+          transform="matrix(0.026785714285714284,0,0,-0.026785714285714284,3.4285714285714284,41.14285714285714)" />
+</svg>
