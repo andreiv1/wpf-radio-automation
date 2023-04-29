@@ -91,8 +91,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             trackFilesProcessor.TrackProcessed += TrackFilesProcessor_TrackProcessed;
             if (Model.FolderPath is not null && Model.SelectedCategory is not null)
             {
-                //processingTracks = trackFilesProcessor.ProcessItemsFromDirectory(Model.FolderPath, Model.SelectedCategory.Id,
-                //    Model.SelectedTrackType, Model.SelectedTrackStatus, Model.ReadItemsMetadata);
+                //processingTracks = trackFilesProcessor.ProcessItemsFromDirectory(TrackModel.FolderPath, TrackModel.SelectedCategory.Id,
+                //    TrackModel.SelectedTrackType, TrackModel.SelectedTrackStatus, TrackModel.ReadItemsMetadata);
             }
 
             //Processed finished

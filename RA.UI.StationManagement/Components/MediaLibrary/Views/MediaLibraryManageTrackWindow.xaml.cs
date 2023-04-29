@@ -1,5 +1,4 @@
 ﻿using RA.UI.Core;
-using Syncfusion.Windows.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +16,11 @@ using System.Windows.Shapes;
 namespace RA.UI.StationManagement.Components.MediaLibrary.Views
 {
     /// <summary>
-    /// Interaction logic for MediaLibraryImportItemsWindow.xaml
+    /// Interaction logic for MediaLibraryManageTrackWindow.xaml
     /// </summary>
-    public partial class MediaLibraryImportItemsWindow : RAWindow
+    public partial class MediaLibraryManageTrackWindow : RAWindow
     {
-        public MediaLibraryImportItemsWindow()
+        public MediaLibraryManageTrackWindow()
         {
             InitializeComponent();
         }

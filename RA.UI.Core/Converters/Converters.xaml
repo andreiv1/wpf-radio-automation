@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:converters="clr-namespace:RA.UI.Core.Converters">
+                    xmlns:converters="clr-namespace:RA.UI.Core">
     <converters:BooleanToCollapsedVisibilityConverter x:Key="BooleanToCollapsedVisibilityConverter"/>
     <converters:BooleanToVisibileVisibilityConverter x:Key="BooleanToVisibileVisibilityConverter"/>
     <converters:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverter"/>

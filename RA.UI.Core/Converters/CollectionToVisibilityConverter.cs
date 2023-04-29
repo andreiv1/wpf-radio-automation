@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows;
 
-namespace RA.UI.Core.Converters
+namespace RA.UI.Core
 {
     /// <summary>
     /// Convertor used to return Visibility.Collapsed when collection is empty; otherwise, it is visibile

@@ -11,5 +11,6 @@ namespace RA.DAL.Interfaces
     {
         Task<IEnumerable<TrackListDto>> GetTrackListAsync(int skip, int take);
         Task<int> GetTrackCountAsync();
+        Task<TrackDto> GetTrack(int id);
     }
 }

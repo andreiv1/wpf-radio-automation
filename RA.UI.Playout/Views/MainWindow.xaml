@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:RA.UI.Playout"
         xmlns:localcontrols="clr-namespace:RA.UI.Playout.Views.Components"
         xmlns:controls="clr-namespace:RA.UI.Core.UserControls;assembly=RA.UI.Core"
-        xmlns:converters="clr-namespace:RA.UI.Core.Converters;assembly=RA.UI.Core"
+        xmlns:converters="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         xmlns:vm="clr-namespace:RA.UI.Playout.ViewModels"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         xmlns:syncfusionskin ="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"

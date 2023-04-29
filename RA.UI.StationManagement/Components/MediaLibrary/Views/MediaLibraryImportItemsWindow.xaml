@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.Views"
-        xmlns:uicore="clr-namespace:RA.UI.Core.ViewAbstract;assembly=RA.UI.Core"
+        xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         xmlns:localvm="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.ViewModels"
         xmlns:vm="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems"
         xmlns:views="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.Views.ImportItems"

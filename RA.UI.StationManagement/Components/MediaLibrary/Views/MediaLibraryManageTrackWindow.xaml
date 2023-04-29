@@ -1,0 +1,481 @@
+﻿<uicore:RAWindow x:Class="RA.UI.StationManagement.Components.MediaLibrary.Views.MediaLibraryManageTrackWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+        xmlns:vm="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.ViewModels"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:MediaLibraryManageTrackViewModel}"
+        Title="Manage track"
+        MinHeight="700"
+        MinWidth="950"
+        Width="950">
+    <Window.Resources>
+        <uicore:GridHeightConverter x:Key="GridHeightConverter"/>
+        <uicore:EnumToStringConverter x:Key="EnumToStringConverter"/>
+    </Window.Resources>
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <!-- Item overview details -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <!-- Track image -->
+            <Image Grid.Column="0" 
+                   VerticalAlignment="Center"
+                   Source="pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png" />
+
+            <!-- Item essential info -->
+            <Grid Grid.Column="1" Margin="10,5,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{Binding TrackModel.ArtistsText, Converter={StaticResource GridHeightConverter}}"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="{Binding TrackModel.ArtistsText}" d:Text="ARTISTS" FontWeight="Bold" FontSize="16">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TrackModel.ArtistsText}" Value="">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Grid.Row="1" Text="{Binding TrackModel.Title}" d:Text="Title" FontWeight="DemiBold" FontSize="15">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TrackModel.Title}" Value="">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+        </Grid>
+
+        <!-- TABS -->
+        <TabControl Grid.Row="1"
+                    Margin="0,10,0,0">
+            <!-- Details TAB -->
+            <TabItem Header="Details">
+                <StackPanel Orientation="Vertical" 
+                            Margin="5,5,5,5">
+                    <!-- Essential options -->
+                    <Border
+                        VerticalAlignment="Top"
+                        Margin="1,0,10,0"
+                        CornerRadius="5"
+                        Padding="10"
+                        BorderBrush="#d5dfe5" BorderThickness="0.5">
+                        <StackPanel Orientation="Vertical" Grid.Row="0" VerticalAlignment="Center">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="13"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+
+                                <!-- Title -->
+                                <Label Content="Title" Margin="0,0,40,0" FontWeight="Bold"
+                                   Grid.Column="0"/>
+                                <syncfusion:SfTextBoxExt Text="{Binding TrackModel.Title}" VerticalAlignment="Center" Height="25" FontSize="13"
+                                         VerticalContentAlignment="Center"
+                                     Grid.Column="1"/>
+
+                                <!-- File Path -->
+                                <Label Content="File Path" Margin="0,0,40,0" FontWeight="Bold"
+                                   Grid.Row="2"/>
+                                <Grid
+                                    Grid.Row="2" 
+                                    Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+
+
+
+                                    <!-- File Path Textbox -->
+                                    <syncfusion:SfTextBoxExt Grid.Column="0" Margin="0,0,2,0"
+                                     Text="{Binding TrackModel.FilePath}" VerticalContentAlignment="Center"
+                                     VerticalAlignment="Center" IsReadOnly="True" Height="25" FontSize="13"/>
+
+                                    <!-- File Path Button Options -->
+                                    <syncfusion:ButtonAdv Grid.Column="1" Margin="0,0,2,0"
+                                        SmallIcon="{StaticResource AudioAddFileIcon}"
+                                        Command="{Binding }"
+                                        Label="Pick file"/>
+
+                                    <syncfusion:ButtonAdv Grid.Column="2" Margin="0,0,2,0"
+                                        SmallIcon="{StaticResource MoveFileIcon}"
+                                        Command="{Binding }"
+                                        Label="Move"/>
+
+                                    <syncfusion:ButtonAdv Grid.Column="3"
+                                       SmallIcon="{StaticResource AudioRemoveFileIcon}"
+                                        Command="{Binding }"
+                                        Label="Remove"/>
+                                </Grid>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Columns for fields -->
+                    <Grid Margin="0,10,0,0">
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type GroupBox}">
+                                <Setter Property="Margin" Value="0,0,10,0"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="300"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- General - grid with labels & properties -->
+                        <GroupBox Grid.Column="0">
+                            <GroupBox.Header>
+                                <Label Content="General" FontSize="15" FontWeight="bold"/>
+                            </GroupBox.Header>
+                            <Grid Grid.Row="1"
+                                HorizontalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40" />
+                                    <RowDefinition Height="40" />
+                                    <RowDefinition Height="40" />
+                                    <RowDefinition Height="40" />
+                                    <RowDefinition Height="40" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="160" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Track Type -->
+                                <Label Grid.Row="0" 
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Content="Type" 
+                                    FontWeight="Bold"/>
+
+
+                                <syncfusion:ComboBoxAdv Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+                                                        Height="24" Margin="5"
+                                                        ItemsSource="{Binding TrackTypes}"
+                                      SelectedValue="{Binding TrackModel.Type, Converter={StaticResource EnumToStringConverter}}"/>
+
+
+                                <!-- Status -->
+                                <Label Grid.Row="1" 
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Content="Status" 
+                                    FontWeight="Bold"/>
+
+                                <syncfusion:ComboBoxAdv
+                                      Grid.Row="1" Grid.Column="1" 
+                                      Height="24" Margin="5"
+                                      VerticalAlignment="Center"
+                                      ItemsSource="{Binding TrackStatuses}"
+                                      SelectedValue="{Binding TrackModel.Status, Converter={StaticResource EnumToStringConverter}}"/>
+
+
+                                <!-- Release Date -->
+                                <Label Grid.Row="2" 
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Content="Release Date" 
+                                    FontWeight="Bold"/>
+
+                                <syncfusion:SfDatePicker Grid.Row="2" Grid.Column="1" 
+                                     Height="24" Margin="5"
+                                     VerticalAlignment="Center"
+                                     Value="{Binding TrackModel.ReleaseDate}"/>
+
+                                <!-- Album -->
+                                <Label Grid.Row="3" 
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Content="Album" 
+                                    FontWeight="Bold"/>
+
+                                <syncfusion:SfTextBoxExt Grid.Row="3" Grid.Column="1" Padding="0"
+                                      VerticalAlignment="Center" Height="24" Margin="5"
+                                     Text="{Binding TrackModel.Album}"/>
+
+                                <!-- ISRC -->
+                                <Label Grid.Row="4" 
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Content="ISRC" 
+                                    FontWeight="Bold"/>
+
+                                <syncfusion:SfMaskedEdit
+                                    Grid.Row="4" Grid.Column="1" 
+                                    VerticalAlignment="Center"
+                                    Height="24" Margin="5"
+                                    Mask="[A-Z]{2}-[A-Z\d]{3}-\d{2}-\d{5}"
+                                    MaskType="Regex"
+                                    Watermark="e.g. US-ABC12-34-00001"
+                                    Value="{Binding TrackModel.ISRC}"
+                                    CharacterCasing="Upper"/>
+
+
+                            </Grid>
+                        </GroupBox>
+
+
+                        <!-- Artists -->
+                        <GroupBox Grid.Column="1">
+                            <GroupBox.Header>
+                                <Label Content="Artists" FontSize="15" FontWeight="bold"/>
+                            </GroupBox.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="3"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="3"/>
+                                    <RowDefinition Height="25"/>
+                                </Grid.RowDefinitions>
+                                <!-- Search box artist -->
+                                <!--AutoCompleteMode="{Binding ElementName=AutoCompleteModeCombo, Path=SelectedValue, Mode=TwoWay}"
+                                    AutoCompleteSource="{Binding Employee}"
+                                 SuggestionMode="{Binding ElementName=SuggestionModeCombo, Path=SelectedValue, Mode=TwoWay}"-->
+                                <syncfusion:SfTextBoxExt
+                                    Height="25" Margin="0,0,0,5"
+                                    VerticalAlignment="Center"
+                                    MaximumSuggestionsCount="5"
+                                    SearchItemPath="Name"
+                                    ShowClearButton="True"
+                                     Watermark="Search an artist...">
+                                    <!--<syncfusion:SfTextBoxExt.AutoCompleteItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image
+                                    Width="30"
+                                    Height="30"
+                                    Source="{Binding Image}" />
+                                                <StackPanel Margin="2" Orientation="Vertical">
+                                                    <TextBlock
+                                        Margin="4,2,4,0"
+                                        FontSize="12"
+                                        Text="{Binding Name}" />
+                                                    <TextBlock
+                                        Margin="4,1,2,2"
+                                        FontSize="10"
+                                        Text="{Binding Designation}" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </syncfusion:SfTextBoxExt.AutoCompleteItemTemplate>-->
+                                </syncfusion:SfTextBoxExt>
+
+                                <syncfusion:SfDataGrid Grid.Row="2" Margin="0,0,0,5"
+                                                       ItemsSource="{Binding TrackModel.Artists}"
+                                                       AutoGenerateColumns="False"
+                                                       AllowSorting="False"
+                                                       ColumnSizer="AutoLastColumnFill">
+                                    <syncfusion:SfDataGrid.Columns>
+                                        <syncfusion:GridTextColumn HeaderText="Artist" MappingName="ArtistName"/>
+                                    </syncfusion:SfDataGrid.Columns>
+
+                                </syncfusion:SfDataGrid>
+
+                                <Grid Grid.Row="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <syncfusion:ButtonAdv Margin="0,0,2,0" Grid.Column="0"
+                                                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Command="{Binding OpenAddArtistCommand}"
+                                        SmallIcon="{StaticResource PlusIcon}"
+                                        Label="Add"/>
+                                    <syncfusion:ButtonAdv Margin="0,0,2,0" Grid.Column="1"
+                                                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Command="{Binding }"
+                                        SmallIcon="{StaticResource RemoveIcon}"
+                                        Label="Remove"/>
+
+                                    <syncfusion:ButtonAdv Margin="0,0,2,0" Grid.Column="2"
+                                                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Command="{Binding }"
+                                        SizeMode="Normal"
+                                        Label="Move"
+                                        SmallIcon="{StaticResource ScrollUpIcon}"/>
+
+                                    <syncfusion:ButtonAdv Margin="0,0,2,0" Grid.Column="3"
+                                                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Command="{Binding }"
+                                        SizeMode="Normal"
+                                        Label="Move"
+                                        SmallIcon="{StaticResource ScrollDownIcon}"/>
+                                </Grid>
+
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Grid.Column="2">
+                            <GroupBox.Header>
+                                <Label Content="Categories" FontSize="15" FontWeight="bold"/>
+                            </GroupBox.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="3"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="3"/>
+                                    <RowDefinition Height="25"/>
+                                </Grid.RowDefinitions>
+                                <!-- Search box-->
+                                <syncfusion:SfTextBoxExt
+                                    Height="25"
+                                    VerticalAlignment="Center"
+                                    MaximumSuggestionsCount="5"
+                                    SearchItemPath="Name"
+                                    ShowClearButton="True"
+                                    Watermark="Search a category...">
+                                    <!--<syncfusion:SfTextBoxExt.AutoCompleteItemTemplate>
+                                        <DataTemplate>
+                                            
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </syncfusion:SfTextBoxExt.AutoCompleteItemTemplate>-->
+                                </syncfusion:SfTextBoxExt>
+                                <syncfusion:SfDataGrid Grid.Row="2"
+                                                       ItemsSource="{Binding TrackModel.Categories}"
+                                                       AutoGenerateColumns="False"
+                                                       AllowSorting="False"
+                                                       ColumnSizer="AutoLastColumnFill">
+                                    <syncfusion:SfDataGrid.Columns>
+                                        <syncfusion:GridTextColumn HeaderText="Category" MappingName="CategoryName"/>
+                                    </syncfusion:SfDataGrid.Columns>
+                                </syncfusion:SfDataGrid>
+                                <StackPanel Grid.Row="4" Orientation="Horizontal">
+
+                                    <syncfusion:ButtonAdv Margin="0,0,2,0"
+                                        Command="{Binding OpenAddCategoryCommand}"
+                                        SmallIcon="{StaticResource PlusIcon}"
+                                        Label="Add"/>
+                                    <syncfusion:ButtonAdv Margin="0,0,2,0"
+                                        Command="{Binding }"
+                                        SmallIcon="{StaticResource RemoveIcon}"
+                                        Label="Remove"/>
+
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+                        <!-- Categories -->
+
+                    </Grid>
+
+
+                    <!-- Sound Wave -->
+
+                    <Label Content="Soundwave"/>
+                    
+                    <!-- Player Buttons -->
+                    <StackPanel 
+                        Margin="0,15,0,0"
+                        Orientation="Horizontal">
+                        <!--<syncfusion:ButtonAdv Grid.Column="0" SizeMode="Large" Margin="0,0,5,0" Height="68" Width="78"
+                                              >
+                            <syncfusion:ButtonAdv.Style>
+                                <Style TargetType="syncfusion:ButtonAdv" BasedOn="{StaticResource {x:Type syncfusion:ButtonAdv}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsPlaying}" Value="False">
+                                            <Setter Property="Label" Value="Play"/>
+                                            <Setter Property="LargeIcon" Value="{StaticResource PlayIcon}"/>
+                                            <Setter Property="Command" Value="{Binding PlayCommand}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsPlaying}" Value="True">
+                                            <Setter Property="Label" Value="Pause"/>
+                                            <Setter Property="LargeIcon" Value="{StaticResource PauseIcon}"/>
+                                            <Setter Property="Command" Value="{Binding PauseCommand}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsPaused}" Value="True">
+                                            <Setter Property="Label" Value="Resume"/>
+                                            <Setter Property="LargeIcon" Value="{StaticResource ResumeIcon}"/>
+                                            <Setter Property="Command" Value="{Binding ResumeCommand}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </syncfusion:ButtonAdv.Style>
+                        </syncfusion:ButtonAdv>
+
+                        <syncfusion:ButtonAdv SizeMode="Large" Label="Stop" Margin="0,0,5,0"   
+                            Command="{Binding StopCommand}" 
+                            LargeIcon="{StaticResource StopIcon}"
+                            Grid.Column="1"
+                            Height="68" Width="78"/>
+                        <syncfusion:ButtonAdv SizeMode="Large" Label="Record" Margin="0,0,5,0" 
+                            Command="{Binding RecordCommand}" 
+                            LargeIcon="{StaticResource VoiceRecordIcon}"
+                            Visibility="Collapsed"
+                            Grid.Column="1"
+                            Height="68" Width="78">
+                            <syncfusion:ButtonAdv.Style>
+                                <Style TargetType="syncfusion:ButtonAdv" BasedOn="{StaticResource {x:Type syncfusion:ButtonAdv}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TrackModel.Type}" Value="Voiceover">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </syncfusion:ButtonAdv.Style>
+                        </syncfusion:ButtonAdv>-->
+
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Content="ID"/>
+                        <Label
+                            Content="{Binding TrackModel.Id}"/>
+
+                    </StackPanel>
+
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal">
+            <syncfusion:ButtonAdv
+                Margin="0,0,5,0" Height="30"
+                  Command="{Binding CloseWindowCommand}"
+                 SmallIcon="{StaticResource CloseIcon}"
+                  Label="Cancel"/>
+
+            <syncfusion:ButtonAdv Height="30"
+                  SmallIcon="{StaticResource SaveIcon}"
+                  Command="{Binding SaveTrackCommand}"
+                  Label="Save"/>
+        </StackPanel>
+    </Grid>
+</uicore:RAWindow>

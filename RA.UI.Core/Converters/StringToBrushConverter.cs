@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace RA.UI.Core.Converters
+namespace RA.UI.Core
 {
     public class StringToBrushConverter : IValueConverter
     {

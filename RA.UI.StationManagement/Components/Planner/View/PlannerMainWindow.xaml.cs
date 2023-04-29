@@ -1,4 +1,4 @@
-﻿using RA.UI.Core.ViewAbstract;
+﻿using RA.UI.Core;
 
 namespace RA.UI.StationManagement.Components.Planner.Views
 {

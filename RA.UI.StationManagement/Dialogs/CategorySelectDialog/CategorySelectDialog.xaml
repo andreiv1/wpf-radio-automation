@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RA.UI.StationManagement.Dialogs.CategorySelectDialog"
-        xmlns:uicore="clr-namespace:RA.UI.Core.ViewAbstract;assembly=RA.UI.Core"
+        xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
         Title="{Binding DialogName}" Height="450" Width="400" ResizeMode="NoResize">

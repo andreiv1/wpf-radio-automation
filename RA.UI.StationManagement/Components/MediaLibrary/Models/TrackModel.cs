@@ -1,0 +1,100 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using RA.Database.Models.Enums;
+using RA.Dto;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace RA.UI.StationManagement.Components.MediaLibrary.Models
+{
+    public partial class TrackModel : ObservableObject
+    {
+        public int Id { get; private set; }
+
+        [ObservableProperty]
+        private TrackType type;
+
+        [ObservableProperty]
+        private TrackStatus status;
+
+        [ObservableProperty]
+        private string title = string.Empty;
+
+        [ObservableProperty]
+        private double duration = 0;
+
+        [ObservableProperty]
+        private DateTime? releaseDate;
+
+        [ObservableProperty]
+        private string album = string.Empty;
+
+        [ObservableProperty]
+        private string comments = string.Empty;
+
+        [ObservableProperty]
+        private string lyrics = string.Empty;
+
+        [ObservableProperty]
+        private string filePath = string.Empty;
+
+        [ObservableProperty]
+        private string imageName = string.Empty;
+
+        [ObservableProperty]
+        private int? bpm;
+
+        [ObservableProperty]
+        private string iSRC = string.Empty;
+
+        [ObservableProperty]
+        private DateTime dateAdded;
+
+        [ObservableProperty]
+        private DateTime? dateModified;
+
+        [ObservableProperty]
+        private DateTime? dateDeleted;
+        public ObservableCollection<TrackArtistDto>? Artists { get; set; }
+        public ObservableCollection<TrackCategoryDto>? Categories { get; set; }
+        public String ArtistsText
+        {
+            get
+            {
+                if (Artists is not null)
+                {
+                    return String.Join(" / ", Artists.Select(a => a.ArtistName));
+                }
+                return "";
+            }
+        }
+        public static TrackModel FromDto(TrackDto dto)
+        {
+            
+            return new TrackModel()
+            {
+                Id = dto.Id,
+                Type = dto.Type,
+                Status = dto.Status,
+                Title = dto.Title ?? "",
+                Duration = dto.Duration,
+                ReleaseDate = dto.ReleaseDate,
+                Album = dto.Album ?? "",
+                Comments = dto.Comments ?? "",
+                Lyrics = dto.Lyrics ?? "",
+                FilePath = dto.FilePath ?? "",
+                ImageName = dto.ImageName ?? "",
+                Bpm = dto.Bpm,
+                ISRC = dto.ISRC,
+                DateAdded = dto.DateAdded,
+                DateModified = dto.DateModified,
+                DateDeleted = dto.DateDeleted,
+                Artists = dto.Artists != null ? new ObservableCollection<TrackArtistDto>(dto.Artists) : null,
+                Categories = dto.Categories != null ? new ObservableCollection<TrackCategoryDto>(dto.Categories) : null,
+            };
+        }
+    }
+}

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RA.UI.Playout.Views.Components"
-             xmlns:coreconverters="clr-namespace:RA.UI.Core.Converters;assembly=RA.UI.Core"
+             xmlns:coreconverters="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
              xmlns:uihelpers="clr-namespace:RA.UI.Core.Helpers.UI;assembly=RA.UI.Core"
              xmlns:vm="clr-namespace:RA.UI.Playout.ViewModels.Controls"
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf"

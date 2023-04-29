@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent"
              xmlns:vm="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent"
-             xmlns:converters="clr-namespace:RA.UI.Core.Converters;assembly=RA.UI.Core"
+             xmlns:converters="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
              xmlns:syncfusionskin ="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
              syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=Windows11Light}"

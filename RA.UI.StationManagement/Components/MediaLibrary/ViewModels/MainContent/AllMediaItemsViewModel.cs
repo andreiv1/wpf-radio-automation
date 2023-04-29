@@ -26,7 +26,10 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 
         [ObservableProperty]
         private int tracksPerPage = 100;
-        public AllMediaItemsViewModel(IWindowService windowService, IDispatcherService dispatcherService, 
+
+        [ObservableProperty]
+        private TrackListDto? selectedTrack;
+        public AllMediaItemsViewModel(IWindowService windowService, IDispatcherService dispatcherService,
             ITracksService tracksService)
         {
             this.windowService = windowService;
@@ -35,11 +38,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             _ = LoadTracks(0, tracksPerPage);
         }
 
-        [RelayCommand]
-        private void ImportItems()
-        {
-            windowService.ShowWindow<MediaLibraryImportItemsViewModel>();
-        }
+
 
         private async Task LoadTracks(int skip, int take)
         {
@@ -54,5 +53,25 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
                 });
             }
         }
+
+        #region Commands
+        [RelayCommand]
+        private void ImportItems()
+        {
+            windowService.ShowWindow<MediaLibraryImportItemsViewModel>();
+        }
+
+        [RelayCommand]
+        private void EditItem()
+        {
+            if(SelectedTrack is null)
+            {
+                return;
+            }
+
+            windowService.ShowWindow<MediaLibraryManageTrackViewModel>(SelectedTrack.Id);
+        }
+        #endregion
+
     }
 }

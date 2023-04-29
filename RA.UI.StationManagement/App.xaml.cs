@@ -8,7 +8,7 @@ using RA.Database;
 using RA.UI.Core.Factories;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
-using RA.UI.Core.ViewAbstract;
+using RA.UI.Core;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent;
@@ -125,6 +125,7 @@ namespace RA.UI.StationManagement
                     viewModelToTransientWindowMap.Add(typeof(ImportItemsSecondViewModel), typeof(ImportItemsSecondView));
                     viewModelToTransientWindowMap.Add(typeof(ImportItemsThirdViewModel), typeof(ImportItemsThirdView));
 
+                    viewModelToTransientWindowMap.Add(typeof(MediaLibraryManageTrackViewModel), typeof(MediaLibraryManageTrackWindow));
 
 
                     #endregion

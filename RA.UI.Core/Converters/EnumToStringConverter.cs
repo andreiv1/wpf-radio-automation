@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace RA.UI.Core.Converters
+namespace RA.UI.Core
 {
     public class EnumToStringConverter : IValueConverter
     {

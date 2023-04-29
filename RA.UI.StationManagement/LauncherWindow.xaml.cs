@@ -1,4 +1,4 @@
-﻿using RA.UI.Core.ViewAbstract;
+﻿using RA.UI.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -38,5 +38,14 @@ namespace RA.DAL
                     .ToListAsync();
             }
         }
+
+        public async Task<TrackDto> GetTrack(int id)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            return await dbContext.GetTrackById(id)
+                .Include(c => c.Categories)
+                .Select(t => TrackDto.FromEntity(t))
+                .FirstAsync();
+        }
     }
 }

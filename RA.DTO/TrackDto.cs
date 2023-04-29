@@ -26,9 +26,9 @@ namespace RA.Dto
         public DateTime DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
         public DateTime? DateDeleted { get; set; }
-        public List<TrackArtistDto> Artists { get; set; }
+        public List<TrackArtistDto>? Artists { get; set; }
 
-        public List<TrackCategoryDto> Categories { get; set; }
+        public List<TrackCategoryDto>? Categories { get; set; }
         public static TrackDto FromEntity(Track track)
         {
             return new TrackDto
@@ -49,8 +49,10 @@ namespace RA.Dto
                 DateAdded = track.DateAdded,
                 DateModified = track.DateModified,
                 DateDeleted = track.DateDeleted,
-                Artists = track.TrackArtists.Select(ta => TrackArtistDto.FromEntity(ta)).ToList(),
-                Categories = track.Categories.Select(c => TrackCategoryDto.FromEntity(c)).ToList()
+                Artists = track.TrackArtists != null ?
+                    track.TrackArtists.Select(ta => TrackArtistDto.FromEntity(ta)).ToList() : null,
+                Categories = track.Categories != null ?
+                    track.Categories.Select(c => TrackCategoryDto.FromEntity(c)).ToList() : null,
             };
         }
 
