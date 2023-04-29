@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using RA.Logic;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
 {
@@ -24,6 +26,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             this.navigationService = navigationService;
             this.treeMenuService = treeMenuService;
             navigationService.NavigateTo<AllMediaItemsViewModel>();
+            this.treeMenuService.SelectedItem = treeMenuService.MenuItems.FirstOrDefault();
         }
     }
 }

@@ -2,17 +2,23 @@
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.Dto;
+using RA.Logic;
 using RA.UI.Core.Services;
+using RA.UI.Core.Services.Interfaces;
+using RA.UI.StationManagement.Components.MediaLibrary.ViewModels;
+using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent;
 using Syncfusion.UI.Xaml.TreeView.Engine;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 
 namespace RA.UI.StationManagement.Services
 {
@@ -60,21 +66,61 @@ namespace RA.UI.StationManagement.Services
         }
         public string? IconKey { get; set; }
         public MenuItemType Type { get; set; } = MenuItemType.Other;
+
+        public ICommand? NavigationCommand { get; set; }
     }
-    public partial class MediaLibraryTreeMenuService
+    public class CategoryNavigationCommand : IRelayCommand
+    {
+        private readonly INavigationService<MediaLibraryMainViewModel> navigationService;
+        private readonly int categoryId;
+
+        public event EventHandler? CanExecuteChanged;
+
+        public CategoryNavigationCommand(INavigationService<MediaLibraryMainViewModel> navigationService, int categoryId)
+        {
+            this.navigationService = navigationService;
+            this.categoryId = categoryId;
+        }
+
+        public bool CanExecute(object? parameter)
+        {
+            return true;
+        }
+
+        public void Execute(object? parameter)
+        {
+            //navigationService.NavigateTo<CategoryItemsViewModel>(categoryId);
+        }
+
+        public void NotifyCanExecuteChanged()
+        {
+
+        }
+    }
+    public partial class MediaLibraryTreeMenuService : ObservableObject
     {
         private readonly IDispatcherService dispatcher;
         private readonly ICategoriesService categoriesService;
         private readonly ITagsService tagsService;
+        private readonly INavigationService<MediaLibraryMainViewModel> navigationService;
 
         public ObservableCollection<MenuItemModel> MenuItems { get; set; } = new();
+        [ObservableProperty]
+        private MenuItemModel? selectedItem;
 
-        public MediaLibraryTreeMenuService(IDispatcherService dispatcher, ICategoriesService categoriesService, 
-            ITagsService tagsService)
+        partial void OnSelectedItemChanged(MenuItemModel? value)
+        {
+            value?.NavigationCommand?.Execute(null);
+        }
+
+        public MediaLibraryTreeMenuService(IDispatcherService dispatcher, ICategoriesService categoriesService,
+            ITagsService tagsService, INavigationService<MediaLibraryMainViewModel> navigationService)
         {
             this.dispatcher = dispatcher;
             this.categoriesService = categoriesService;
             this.tagsService = tagsService;
+            this.navigationService = navigationService;
+
             MenuItems = GetMenuItems();
         }
 
@@ -88,7 +134,7 @@ namespace RA.UI.StationManagement.Services
                 async () =>
                 {
                     await Task.Delay(300);
-                    switch (menuItem.Type)
+                    switch (menuItem?.Type)
                     {
                         case MenuItemType.Other:
                             break;
@@ -102,7 +148,7 @@ namespace RA.UI.StationManagement.Services
                     node!.ShowExpanderAnimation = false;
                     node!.IsExpanded = true;
                 }));
-            
+
         }
 
         private bool CanExecuteOnDemandLoading(object sender)
@@ -115,15 +161,43 @@ namespace RA.UI.StationManagement.Services
         {
             ObservableCollection<MenuItemModel> menuItems = new();
 
-            var allItems = new MenuItemModel { DisplayName = "All Items", HasChildNodes = false, IconKey = "MusicalNotesIcon" };
+            var allItems = new MenuItemModel
+            {
+                DisplayName = "All Items",
+                HasChildNodes = false,
+                IconKey = "MusicalNotesIcon",
+                NavigationCommand = new RelayCommand(() =>
+                {
+                    navigationService.NavigateTo<AllMediaItemsViewModel>();
+                })
+            };
             menuItems.Add(allItems);
-            var artists = new MenuItemModel { DisplayName = "Artists", HasChildNodes = false, IconKey = "MusicBandIcon", };
+            var artists = new MenuItemModel
+            {
+                DisplayName = "Artists",
+                HasChildNodes = false,
+                IconKey = "MusicBandIcon",
+                NavigationCommand = new RelayCommand(() =>
+                {
+                    navigationService.NavigateTo<ArtistsViewModel>();
+                })
+            };
             menuItems.Add(artists);
 
-            var categories = new MenuItemModel { DisplayName = "Categories", HasChildNodes = true, IconKey = "FolderTreeIcon", Type = MenuItemType.Category };
+            var categories = new MenuItemModel
+            {
+                DisplayName = "Categories",
+                HasChildNodes = true,
+                IconKey = "FolderTreeIcon",
+                Type = MenuItemType.Category,
+                NavigationCommand = new RelayCommand(() =>
+                {
+                    navigationService.NavigateTo<CategoriesViewModel>();
+                })
+            };
             menuItems.Add(categories);
 
-            var tags = new MenuItemModel { DisplayName = "Tags", HasChildNodes = true, IconKey = "TagsIcon", Type = MenuItemType.Tag };
+            var tags = new MenuItemModel { DisplayName = "Tags", HasChildNodes = true, IconKey = "TagsIcon", Type = MenuItemType.Tag,  };
             menuItems.Add(tags);
 
             tags.Children?.Add(new MenuItemModel { DisplayName = "Loading...", HasChildNodes = false, Type = MenuItemType.Tag });
@@ -173,7 +247,8 @@ namespace RA.UI.StationManagement.Services
                 }
 
                 var childItems = new ObservableCollection<MenuItemModel>();
-                foreach (var childCategory in childCategories) {
+                foreach (var childCategory in childCategories)
+                {
                     var childItem = new MenuItemModel
                     {
                         DisplayName = childCategory.Name,
@@ -205,7 +280,7 @@ namespace RA.UI.StationManagement.Services
 
             var tags = await tagsService.GetTagCategoriesAsync();
             var childItems = new ObservableCollection<MenuItemModel>();
-            foreach(var tag in tags)
+            foreach (var tag in tags)
             {
                 var childTag = new MenuItemModel
                 {
@@ -222,5 +297,6 @@ namespace RA.UI.StationManagement.Services
                 tagsParentNode.PopulateChildNodes(childItems);
             });
         }
+
     }
 }

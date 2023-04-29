@@ -13,6 +13,7 @@
     <UserControl.Resources>
         <coreconverters:DoubleToTimeSpanConverter x:Key="DoubleToTimeSpanConverter" />
     </UserControl.Resources>
+
     <Grid Margin="0,5,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="25"></RowDefinition>
@@ -88,8 +89,8 @@
 
                 <syncfusion:GridDateTimeColumn HeaderText="Date Added" MappingName="DateAdded"
                                     MinimumWidth="130"/>
-                <!--<syncfusion:GridDateTimeColumn HeaderText="Date Modified" MappingName="DateModified"
-                                   MinimumWidth="130"/>-->
+                <syncfusion:GridDateTimeColumn HeaderText="Date Modified" MappingName="DateModified"
+                                   MinimumWidth="130"/>
             </syncfusion:SfDataGrid.Columns>
             <syncfusion:SfDataGrid.ContextMenu>
                 <ContextMenu>
@@ -118,12 +119,11 @@
                    Content="{Binding TotalTracks}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <syncfusion:SfDataPager  Grid.Column="3" HorizontalAlignment="Right"
                            PageCount="{Binding Pages}"
-                           PageSize="{Binding TracksPerPage}" 
+                           PageSize="100" 
                            NumericButtonCount="10"
                            AutoEllipsisMode="Both"
                            UseOnDemandPaging="True"
-                           OnDemandLoading="SfDataPager_OnDemandLoading"
-                />
+                           OnDemandLoading="SfDataPager_OnDemandLoading"/>
         </Grid>
     </Grid>
 </UserControl>

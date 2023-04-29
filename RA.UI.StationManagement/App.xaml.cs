@@ -67,7 +67,7 @@ namespace RA.UI.StationManagement
                     services.AddSingleton<IDispatcherService, WpfDispatcherService>();
 
                     //Navigation services
-                    services.AddTransient<INavigationService<MediaLibraryMainViewModel>,
+                    services.AddSingleton<INavigationService<MediaLibraryMainViewModel>,
                         NavigationService<MediaLibraryMainViewModel>>();
 
                     services.AddTransient<INavigationService<MediaLibraryImportItemsViewModel>,
@@ -118,10 +118,15 @@ namespace RA.UI.StationManagement
                     #region Transient ViewModel <=> View
 
                     #region Media Library
-                    viewModelToTransientWindowMap.Add(typeof(AllMediaItemsViewModel), typeof(AllMediaItemsView));
                     viewModelToTransientWindowMap.Add(typeof(MediaLibraryMainViewModel), typeof(MediaLibraryMainWindow));
                     viewModelToTransientWindowMap.Add(typeof(MediaLibraryImportItemsViewModel), typeof(MediaLibraryImportItemsWindow));
 
+                    #region Media Library Components
+                    viewModelToTransientWindowMap.Add(typeof(AllMediaItemsViewModel), typeof(AllMediaItemsView));
+                    viewModelToTransientWindowMap.Add(typeof(ArtistsViewModel), typeof(ArtistsView));
+                    viewModelToTransientWindowMap.Add(typeof(CategoriesViewModel), typeof(CategoriesView));
+                    viewModelToTransientWindowMap.Add(typeof(CategoryItemsViewModel), typeof(CategoryItemsView));
+                    #endregion
                     viewModelToTransientWindowMap.Add(typeof(ImportItemsFirstViewModel), typeof(ImportItemsFirstView));
                     viewModelToTransientWindowMap.Add(typeof(ImportItemsSecondViewModel), typeof(ImportItemsSecondView));
                     viewModelToTransientWindowMap.Add(typeof(ImportItemsThirdViewModel), typeof(ImportItemsThirdView));

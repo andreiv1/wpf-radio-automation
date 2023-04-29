@@ -31,13 +31,13 @@
                                                  Description="Description"
                                                  BackgroundColor="#FF5356B3" />
 
-        <syncfusion:SfTreeView x:Name="treeView" Grid.Row="1" Grid.Column="0" 
+        <syncfusion:SfTreeView x:Name="navigationTreeView" Grid.Row="1" Grid.Column="0" 
+                SelectedItem="{Binding TreeMenuService.SelectedItem, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                 ItemsSource="{Binding TreeMenuService.MenuItems}" 
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                 ChildPropertyName="Children"
                 IsAnimationEnabled="True"
                 BorderThickness="1"
-                SelectedItem="{Binding SelectedTreeItem, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                 LoadOnDemandCommand="{Binding TreeMenuService.ExecuteOnDemandLoadingCommand}">
             <syncfusion:SfTreeView.ItemTemplate>
                 <DataTemplate>

@@ -18,7 +18,7 @@ namespace RA.UI.Core.Services
 
         public ViewModelBase CurrentView
         {
-            get => currentView;
+            get => currentView!;
             private set
             {
                 //TODO: dispose old view model to avoid memory leaks

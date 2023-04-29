@@ -5,13 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent"
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-             xmlns:syncfusionskin ="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
-             syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=Windows11Light}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
        
     </UserControl.Resources>
+ 
     <Grid Margin="0,5,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="25"></RowDefinition>
@@ -100,13 +99,13 @@
                       HorizontalAlignment='Center'>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock>
-                                <!-- PageNo -->
+                                 PageNo 
                                 <TextBlock Text="Page " />
                                 <TextBlock Text="{Binding PaginationHelper.PageNo,FallbackValue=1}"/>
                                 <TextBlock Text=" showing " />
-                                <!-- RecordsPerPage-->
+                                 RecordsPerPage
                                 <TextBlock Text="{Binding PaginationHelper.CurrentRecords,FallbackValue=0}"/>
-                                <!-- TotalCount-->
+                                 TotalCount
                                 <TextBlock Text=" of "/>
                                 <TextBlock Text="{Binding PaginationHelper.TotalRecords,FallbackValue=0}"/>
                                 <TextBlock Text=" items"/>

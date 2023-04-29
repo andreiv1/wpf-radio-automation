@@ -27,7 +27,6 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Views
         public MediaLibraryMainWindow()
         {
             InitializeComponent();
-
         }
     }
 }
