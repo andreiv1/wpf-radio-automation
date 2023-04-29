@@ -9,9 +9,8 @@ namespace RA.Dto
 {
     public class TagCategoryDto
     {
-        public int? Id { get; set; }
-        public string Name { get; set; }
-
+        public int? Id { get; private set; }
+        public string Name { get; set; } = "";
         public static TagCategoryDto FromEntity(TagCategory entity)
         {
             return new TagCategoryDto

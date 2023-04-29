@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RA.DAL.Interfaces
+namespace RA.DAL
 {
     public interface ICategoriesService
     {

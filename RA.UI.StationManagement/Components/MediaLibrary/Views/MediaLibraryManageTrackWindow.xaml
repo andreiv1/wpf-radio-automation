@@ -38,27 +38,27 @@
             <!-- Item essential info -->
             <Grid Grid.Column="1" Margin="10,5,0,0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="{Binding TrackModel.ArtistsText, Converter={StaticResource GridHeightConverter}}"/>
+                    <RowDefinition Height="{Binding Track.ArtistsText, Converter={StaticResource GridHeightConverter}}"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{Binding TrackModel.ArtistsText}" d:Text="ARTISTS" FontWeight="Bold" FontSize="16">
+                <TextBlock Grid.Row="0" Text="{Binding Track.ArtistsText}" d:Text="ARTISTS" FontWeight="Bold" FontSize="16">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding TrackModel.ArtistsText}" Value="">
+                                <DataTrigger Binding="{Binding Track.ArtistsText}" Value="">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
-                <TextBlock Grid.Row="1" Text="{Binding TrackModel.Title}" d:Text="Title" FontWeight="DemiBold" FontSize="15">
+                <TextBlock Grid.Row="1" Text="{Binding Track.Title}" d:Text="Title" FontWeight="DemiBold" FontSize="15">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding TrackModel.Title}" Value="">
+                                <DataTrigger Binding="{Binding Track.Title}" Value="">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -98,7 +98,7 @@
                                 <!-- Title -->
                                 <Label Content="Title" Margin="0,0,40,0" FontWeight="Bold"
                                    Grid.Column="0"/>
-                                <syncfusion:SfTextBoxExt Text="{Binding TrackModel.Title}" VerticalAlignment="Center" Height="25" FontSize="13"
+                                <syncfusion:SfTextBoxExt Text="{Binding Track.Title}" VerticalAlignment="Center" Height="25" FontSize="13"
                                          VerticalContentAlignment="Center"
                                      Grid.Column="1"/>
 
@@ -119,23 +119,23 @@
 
                                     <!-- File Path Textbox -->
                                     <syncfusion:SfTextBoxExt Grid.Column="0" Margin="0,0,2,0"
-                                     Text="{Binding TrackModel.FilePath}" VerticalContentAlignment="Center"
+                                     Text="{Binding Track.FilePath}" VerticalContentAlignment="Center"
                                      VerticalAlignment="Center" IsReadOnly="True" Height="25" FontSize="13"/>
 
                                     <!-- File Path Button Options -->
                                     <syncfusion:ButtonAdv Grid.Column="1" Margin="0,0,2,0"
                                         SmallIcon="{StaticResource AudioAddFileIcon}"
-                                        Command="{Binding }"
+                                        Command="{Binding PickFileCommand}"
                                         Label="Pick file"/>
 
                                     <syncfusion:ButtonAdv Grid.Column="2" Margin="0,0,2,0"
                                         SmallIcon="{StaticResource MoveFileIcon}"
-                                        Command="{Binding }"
+                                        Command="{Binding MoveFileCommand}"
                                         Label="Move"/>
 
                                     <syncfusion:ButtonAdv Grid.Column="3"
                                        SmallIcon="{StaticResource AudioRemoveFileIcon}"
-                                        Command="{Binding }"
+                                        Command="{Binding RemoveFileCommand}"
                                         Label="Remove"/>
                                 </Grid>
                             </Grid>
@@ -185,7 +185,7 @@
                                 <syncfusion:ComboBoxAdv Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
                                                         Height="24" Margin="5"
                                                         ItemsSource="{Binding TrackTypes}"
-                                      SelectedValue="{Binding TrackModel.Type, Converter={StaticResource EnumToStringConverter}}"/>
+                                      SelectedValue="{Binding Track.Type, Converter={StaticResource EnumToStringConverter}}"/>
 
 
                                 <!-- Status -->
@@ -200,7 +200,7 @@
                                       Height="24" Margin="5"
                                       VerticalAlignment="Center"
                                       ItemsSource="{Binding TrackStatuses}"
-                                      SelectedValue="{Binding TrackModel.Status, Converter={StaticResource EnumToStringConverter}}"/>
+                                      SelectedValue="{Binding Track.Status, Converter={StaticResource EnumToStringConverter}}"/>
 
 
                                 <!-- Release Date -->
@@ -213,7 +213,7 @@
                                 <syncfusion:SfDatePicker Grid.Row="2" Grid.Column="1" 
                                      Height="24" Margin="5"
                                      VerticalAlignment="Center"
-                                     Value="{Binding TrackModel.ReleaseDate}"/>
+                                     Value="{Binding Track.ReleaseDate}"/>
 
                                 <!-- Album -->
                                 <Label Grid.Row="3" 
@@ -224,7 +224,7 @@
 
                                 <syncfusion:SfTextBoxExt Grid.Row="3" Grid.Column="1" Padding="0"
                                       VerticalAlignment="Center" Height="24" Margin="5"
-                                     Text="{Binding TrackModel.Album}"/>
+                                     Text="{Binding Track.Album}"/>
 
                                 <!-- ISRC -->
                                 <Label Grid.Row="4" 
@@ -240,7 +240,7 @@
                                     Mask="[A-Z]{2}-[A-Z\d]{3}-\d{2}-\d{5}"
                                     MaskType="Regex"
                                     Watermark="e.g. US-ABC12-34-00001"
-                                    Value="{Binding TrackModel.ISRC}"
+                                    Value="{Binding Track.ISRC}"
                                     CharacterCasing="Upper"/>
 
 
@@ -295,7 +295,7 @@
                                 </syncfusion:SfTextBoxExt>
 
                                 <syncfusion:SfDataGrid Grid.Row="2" Margin="0,0,0,5"
-                                                       ItemsSource="{Binding TrackModel.Artists}"
+                                                       ItemsSource="{Binding Track.Artists}"
                                                        AutoGenerateColumns="False"
                                                        AllowSorting="False"
                                                        ColumnSizer="AutoLastColumnFill">
@@ -369,7 +369,7 @@
                                     </syncfusion:SfTextBoxExt.AutoCompleteItemTemplate>-->
                                 </syncfusion:SfTextBoxExt>
                                 <syncfusion:SfDataGrid Grid.Row="2"
-                                                       ItemsSource="{Binding TrackModel.Categories}"
+                                                       ItemsSource="{Binding Track.Categories}"
                                                        AutoGenerateColumns="False"
                                                        AllowSorting="False"
                                                        ColumnSizer="AutoLastColumnFill">
@@ -380,7 +380,7 @@
                                 <StackPanel Grid.Row="4" Orientation="Horizontal">
 
                                     <syncfusion:ButtonAdv Margin="0,0,2,0"
-                                        Command="{Binding OpenAddCategoryCommand}"
+                                        Command="{Binding AddCategoryCommand}"
                                         SmallIcon="{StaticResource PlusIcon}"
                                         Label="Add"/>
                                     <syncfusion:ButtonAdv Margin="0,0,2,0"
@@ -443,7 +443,7 @@
                             <syncfusion:ButtonAdv.Style>
                                 <Style TargetType="syncfusion:ButtonAdv" BasedOn="{StaticResource {x:Type syncfusion:ButtonAdv}}">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TrackModel.Type}" Value="Voiceover">
+                                        <DataTrigger Binding="{Binding Track.Type}" Value="Voiceover">
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -457,7 +457,7 @@
                         <Label
                             Content="ID"/>
                         <Label
-                            Content="{Binding TrackModel.Id}"/>
+                            Content="{Binding Track.Id}"/>
 
                     </StackPanel>
 

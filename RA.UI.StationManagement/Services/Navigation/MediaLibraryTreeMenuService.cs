@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using RA.DAL.Interfaces;
+using RA.DAL;
 using RA.Dto;
 using RA.UI.Core.Services;
 using Syncfusion.UI.Xaml.TreeView.Engine;
@@ -16,6 +16,12 @@ using System.Windows.Media.Imaging;
 
 namespace RA.UI.StationManagement.Services
 {
+    public enum MenuItemType
+    {
+        Other,
+        Category,
+        Tag,
+    }
     public partial class MenuItemModel : ObservableObject
     {
         [ObservableProperty]
@@ -53,19 +59,22 @@ namespace RA.UI.StationManagement.Services
             }
         }
         public string? IconKey { get; set; }
+        public MenuItemType Type { get; set; } = MenuItemType.Other;
     }
     public partial class MediaLibraryTreeMenuService
     {
         private readonly IDispatcherService dispatcher;
         private readonly ICategoriesService categoriesService;
+        private readonly ITagsService tagsService;
 
         public ObservableCollection<MenuItemModel> MenuItems { get; set; } = new();
 
-        public MediaLibraryTreeMenuService(IDispatcherService dispatcher, ICategoriesService categoriesService)
+        public MediaLibraryTreeMenuService(IDispatcherService dispatcher, ICategoriesService categoriesService, 
+            ITagsService tagsService)
         {
             this.dispatcher = dispatcher;
             this.categoriesService = categoriesService;
-
+            this.tagsService = tagsService;
             MenuItems = GetMenuItems();
         }
 
@@ -74,12 +83,22 @@ namespace RA.UI.StationManagement.Services
         {
             var node = obj as TreeViewNode;
             node!.ShowExpanderAnimation = true;
-
+            var menuItem = node.Content as MenuItemModel;
             dispatcher.InvokeOnUIThread(new Action(
                 async () =>
                 {
                     await Task.Delay(300);
-                    await Task.Run(() => LoadChildCategories(node));
+                    switch (menuItem.Type)
+                    {
+                        case MenuItemType.Other:
+                            break;
+                        case MenuItemType.Category:
+                            await Task.Run(() => LoadChildCategories(node));
+                            break;
+                        case MenuItemType.Tag:
+                            await Task.Run(() => LoadTags(node));
+                            break;
+                    }
                     node!.ShowExpanderAnimation = false;
                     node!.IsExpanded = true;
                 }));
@@ -100,10 +119,14 @@ namespace RA.UI.StationManagement.Services
             menuItems.Add(allItems);
             var artists = new MenuItemModel { DisplayName = "Artists", HasChildNodes = false, IconKey = "MusicBandIcon", };
             menuItems.Add(artists);
-            var categories = new MenuItemModel { DisplayName = "Categories", HasChildNodes = true, IconKey = "FolderTreeIcon", };
+
+            var categories = new MenuItemModel { DisplayName = "Categories", HasChildNodes = true, IconKey = "FolderTreeIcon", Type = MenuItemType.Category };
             menuItems.Add(categories);
-            var tags = new MenuItemModel { DisplayName = "Tags", HasChildNodes = true, IconKey = "TagsIcon", };
+
+            var tags = new MenuItemModel { DisplayName = "Tags", HasChildNodes = true, IconKey = "TagsIcon", Type = MenuItemType.Tag };
             menuItems.Add(tags);
+
+            tags.Children?.Add(new MenuItemModel { DisplayName = "Loading...", HasChildNodes = false, Type = MenuItemType.Tag });
 
             Task.Run(() => LoadRootCategories(categories));
             return menuItems;
@@ -122,6 +145,7 @@ namespace RA.UI.StationManagement.Services
                         HasChildNodes = await categoriesService.HasCategoryChildren(category.Id.Value),
                         IconKey = "FolderTreeIcon",
                         Tag = category,
+                        Type = MenuItemType.Category,
                     };
                     dispatcher.InvokeOnUIThread(() =>
                     {
@@ -134,7 +158,7 @@ namespace RA.UI.StationManagement.Services
         private async Task LoadChildCategories(TreeViewNode parentNode)
         {
             var parentCategory = parentNode.Content as MenuItemModel;
-            if (parentCategory == null)
+            if (parentCategory == null && parentCategory!.Type != MenuItemType.Category)
             {
                 return;
             }
@@ -156,6 +180,7 @@ namespace RA.UI.StationManagement.Services
                         HasChildNodes = await categoriesService.HasCategoryChildren(childCategory.Id!.Value),
                         IconKey = "FolderTreeIcon",
                         Tag = childCategory,
+                        Type = MenuItemType.Category,
                     };
 
                     childItem.IconKey = childItem.HasChildNodes ? "FolderTreeIcon" : "MusicFolderIcon";
@@ -168,6 +193,34 @@ namespace RA.UI.StationManagement.Services
                     parentNode.PopulateChildNodes(childItems);
                 });
             }
+        }
+
+        private async Task LoadTags(TreeViewNode tagsParentNode)
+        {
+            var parentCategory = tagsParentNode.Content as MenuItemModel;
+            if (parentCategory == null && parentCategory!.Type != MenuItemType.Tag)
+            {
+                return;
+            }
+
+            var tags = await tagsService.GetTagCategoriesAsync();
+            var childItems = new ObservableCollection<MenuItemModel>();
+            foreach(var tag in tags)
+            {
+                var childTag = new MenuItemModel
+                {
+                    DisplayName = tag.Name,
+                    HasChildNodes = false,
+                    IconKey = "TagsIcon",
+                };
+
+                childItems.Add(childTag);
+            }
+
+            dispatcher.InvokeOnUIThread(() =>
+            {
+                tagsParentNode.PopulateChildNodes(childItems);
+            });
         }
     }
 }

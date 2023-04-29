@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using RA.DAL;
-using RA.DAL.Interfaces;
 using RA.Database;
 
 namespace RA.ConsoleApp

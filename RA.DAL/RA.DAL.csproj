@@ -11,4 +11,8 @@
     <ProjectReference Include="..\RA.Dto\RA.DTO.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
 </Project>

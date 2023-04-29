@@ -5,7 +5,7 @@ namespace RA.UI.Core.ViewModels
 {
     public partial class WindowViewModelBase : ViewModelBase
     {
-        private readonly IWindowService windowService;
+        protected readonly IWindowService windowService;
 
         public WindowViewModelBase(IWindowService windowService)
         {

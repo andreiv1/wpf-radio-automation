@@ -16,7 +16,7 @@ using RA.UI.Core.Services.Interfaces;
 using RA.Logic;
 using RA.UI.Core.Services;
 using RA.UI.StationManagement.Dialogs.CategorySelectDialog;
-using RA.DAL.Interfaces;
+using RA.DAL;
 
 namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems
 {

@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using RA.DAL.Interfaces;
+using RA.DAL;
 using RA.Dto;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;

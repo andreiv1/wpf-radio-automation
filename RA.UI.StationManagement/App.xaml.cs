@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MySqlConnector;
 using RA.DAL;
-using RA.DAL.Interfaces;
 using RA.Database;
 using RA.UI.Core.Factories;
 using RA.UI.Core.Services;
@@ -63,6 +62,7 @@ namespace RA.UI.StationManagement
                     services.AddSingleton<IViewModelFactory, ViewModelFactory>();
 
                     services.AddSingleton<IFolderBrowserDialogService, FolderBrowserDialogService>();
+                    services.AddSingleton<IFileBrowserDialogService, FileBrowserDialogService>();
                     services.AddSingleton<IMessageBoxService, MessageBoxService>();
                     services.AddSingleton<IDispatcherService, WpfDispatcherService>();
 
@@ -81,6 +81,7 @@ namespace RA.UI.StationManagement
                     services.AddTransient<ITracksService, TracksService>();
                     services.AddTransient<ITemplatesService, TemplatesService>();
                     services.AddTransient<ICategoriesService, CategoriesService>();
+                    services.AddTransient<ITagsService, TagsService>();
                     #endregion
 
                     #region Register window factory
@@ -172,15 +173,20 @@ namespace RA.UI.StationManagement
             SplashScreenWindow splashScreen = new SplashScreenWindow();
             splashScreen.Show();
             var testDatabaseTask = Task.Run(() => TestDatabase());
-            testDatabaseTask.ContinueWith(t =>
+
+            var loadComponents = Task.Run(async () =>
             {
-                
+                //Load any components you need 
+                await Task.Delay(10);
+            });
+
+            Task.WhenAll(testDatabaseTask, loadComponents).ContinueWith(t =>
+            {
                 dispatcherService.InvokeOnUIThread(() =>
                 {
                     windowService.ShowWindow<LauncherViewModel>();
                     splashScreen.Close();
                 });
-
             });
 
 

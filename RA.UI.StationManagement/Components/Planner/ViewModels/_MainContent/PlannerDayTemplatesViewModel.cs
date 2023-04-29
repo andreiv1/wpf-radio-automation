@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using RA.DAL.Interfaces;
+using RA.DAL;
 using RA.Dto;
 using RA.UI.Core.Services;
 using RA.UI.Core.ViewModels;
