@@ -138,11 +138,15 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
                 && !Model.IsTrackProcessRunning;
         }
 
-        protected override void Dispose(bool disposing)
+        public override void Dispose()
         {
-            //TODO dispose
-            base.Dispose(disposing);
+            
             PageChanged -= MediaLibraryImportItemsViewModel_PageChanged;
+            foreach(var vm in viewModels)
+            {
+                vm.Dispose();
+            }
+            base.Dispose();
         }
     }
 }

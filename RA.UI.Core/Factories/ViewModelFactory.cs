@@ -29,25 +29,29 @@ namespace RA.UI.Core.Factories
 
         public TViewModel CreateViewModel<TViewModel>() where TViewModel : ViewModelBase
         {
-            var viewModel = serviceProvider.GetService(typeof(TViewModel));
+            using var serviceScope = serviceProvider.CreateScope();
+            var viewModel = serviceScope.ServiceProvider.GetService(typeof(TViewModel));
             return viewModel != null ? (TViewModel)viewModel : throw new ArgumentNullException(nameof(viewModel));
         }
 
         public TViewModel CreateViewModel<TViewModel>(object parameter) where TViewModel : ViewModelBase
         {
-            var viewModel = ActivatorUtilities.CreateInstance(serviceProvider, typeof(TViewModel), new object[] { parameter });
+            using var serviceScope = serviceProvider.CreateScope();
+            var viewModel = ActivatorUtilities.CreateInstance(serviceScope.ServiceProvider, typeof(TViewModel), new object[] { parameter });
             return viewModel != null ? (TViewModel)viewModel : throw new ArgumentNullException(nameof(viewModel));
         }
 
         public ViewModelBase CreateViewModel(Type viewModelType)
         {
-            var viewModel = serviceProvider.GetService(viewModelType);
+            using var serviceScope = serviceProvider.CreateScope();
+            var viewModel = serviceScope.ServiceProvider.GetService(viewModelType);
             return viewModel != null ? (ViewModelBase)viewModel : throw new ArgumentNullException(nameof(viewModel));
         }
 
         public ViewModelBase CreateViewModel(Type viewModelType, object parameter)
         {
-            var viewModel = ActivatorUtilities.CreateInstance(serviceProvider, viewModelType, new object[] {parameter});
+            using var serviceScope = serviceProvider.CreateScope();
+            var viewModel = ActivatorUtilities.CreateInstance(serviceScope.ServiceProvider, viewModelType, new object[] {parameter});
             return viewModel != null ? (ViewModelBase)viewModel : throw new ArgumentNullException(nameof(viewModel));
         }
     }

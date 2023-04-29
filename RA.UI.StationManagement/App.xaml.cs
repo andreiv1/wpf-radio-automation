@@ -107,6 +107,7 @@ namespace RA.UI.StationManagement
                         //Register view
                         services.AddTransient(vmAndView.Value, provider =>
                         {
+                            //TODO: THIS CAUSE MEMORY LEAKS
                             var viewModel = provider.GetRequiredService(vmAndView.Key);
                             var window = (Window)Activator.CreateInstance(vmAndView.Value)!;
                             window.DataContext = viewModel;

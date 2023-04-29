@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,8 @@ namespace RA.UI.Core.ViewModels
         {
             get
             {
-                return (ViewModelBase)serviceProvider.GetService(viewModelType);
+                using var serviceScope = serviceProvider.CreateScope();
+                return (ViewModelBase)(serviceScope.ServiceProvider).GetService(viewModelType);
             }
         }
 

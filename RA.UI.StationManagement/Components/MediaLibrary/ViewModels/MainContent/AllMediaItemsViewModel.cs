@@ -40,8 +40,6 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             _ = LoadTracks(0, tracksPerPage);
         }
 
-
-
         public async Task LoadTracks(int skip, int take)
         {
             TotalTracks = await Task.Run(() => tracksService.GetTrackCountAsync());

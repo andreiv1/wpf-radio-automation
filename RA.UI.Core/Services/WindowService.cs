@@ -42,6 +42,7 @@ namespace RA.UI.Core.Services
             {
                 Window window = (Window)sender;
                 dialogStack.Pop();
+                window.Closed -= Window_Closed;
             }
         }
 

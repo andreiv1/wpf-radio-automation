@@ -37,102 +37,47 @@ namespace RA.UI.Core.Factories
 
         public (Window, ViewModelBase) CreateWindow<T>() where T : ViewModelBase
         {
-            if (viewModelTypeToSingletonWindowTypeMap.ContainsKey(typeof(T)))
-            {
-                Type windowType = viewModelTypeToSingletonWindowTypeMap[typeof(T)];
-                if (!typeof(Window).IsAssignableFrom(windowType))
-                {
-                    throw new ArgumentException("Only Windows can be created!");
-                }
-                Window window = (Window)serviceProvider.GetRequiredService(windowType);
-                T viewModel = serviceProvider.GetRequiredService<T>();
-                window.DataContext = viewModel;
-                return (window, viewModel);
-            }
-            else if (viewModelTypeToTransientWindowTypeMap.ContainsKey(typeof(T)))
-            {
-                Type windowType = viewModelTypeToTransientWindowTypeMap[typeof(T)];
-                if (!typeof(Window).IsAssignableFrom(windowType))
-                {
-                    throw new ArgumentException($"Only Windows can be created!");
-                }
-                Window window = (Window)ActivatorUtilities.CreateInstance(serviceProvider, windowType);
-                T viewModel = serviceProvider.GetRequiredService<T>();
-                window.DataContext = viewModel;
-                return (window, viewModel);
-            }
-            else
-            {
-                throw new KeyNotFoundException($"The specified view model '{typeof(T).Name}' was not found in the view model to window map.");
-            }
+            return CreateWindow(typeof(T));
         }
+
         public (Window, ViewModelBase) CreateWindow<T>(object parameter) where T : ViewModelBase
         {
-            return CreateWindow<T>(new object[1] { parameter });
+            return CreateWindow(typeof(T), new object[] { parameter });
         }
+
         public (Window, ViewModelBase) CreateWindow<T>(params object[] parameters) where T : ViewModelBase
         {
-            if (viewModelTypeToSingletonWindowTypeMap.ContainsKey(typeof(T)))
-            {
-                Type windowType = viewModelTypeToSingletonWindowTypeMap[typeof(T)];
-                if (!typeof(Window).IsAssignableFrom(windowType))
-                {
-                    throw new ArgumentException("Only Windows can be created!");
-                }
-                Window window = (Window)serviceProvider.GetRequiredService(windowType);
-                T viewModel = (T)ActivatorUtilities.CreateInstance(serviceProvider, typeof(T), parameters);
-                window.DataContext = viewModel;
-                return (window, viewModel);
-            }
-            else if (viewModelTypeToTransientWindowTypeMap.ContainsKey(typeof(T)))
-            {
-                Type windowType = viewModelTypeToTransientWindowTypeMap[typeof(T)];
-                if (!typeof(Window).IsAssignableFrom(windowType))
-                {
-                    throw new ArgumentException("Only Windows can be created!");
-                }
-                Window window = (Window)serviceProvider.GetRequiredService(windowType);
-                T viewModel = (T)ActivatorUtilities.CreateInstance(serviceProvider, typeof(T), parameters);
-                window.DataContext = viewModel;
-                return (window, viewModel);
-            }
-            else
-            {
-                throw new KeyNotFoundException($"The specified view model '{typeof(T).Name}' was not found in the view model to window map.");
-            }
+            return CreateWindow(typeof(T), parameters);
         }
 
         public (Window, ViewModelBase) CreateWindow(Type type)
         {
-            if (viewModelTypeToSingletonWindowTypeMap.ContainsKey(type))
-            {
-                Type windowType = viewModelTypeToSingletonWindowTypeMap[type];
-                if (!typeof(Window).IsAssignableFrom(windowType))
-                {
-                    throw new ArgumentException("Only Windows can be created!");
-                }
-                Window window = (Window)serviceProvider.GetRequiredService(windowType);
-                ViewModelBase viewModel = (ViewModelBase)serviceProvider.GetRequiredService(type);
-                window.DataContext = viewModel;
-                return (window, viewModel);
-            }
-            else if (viewModelTypeToTransientWindowTypeMap.ContainsKey(type))
-            {
-                Type windowType = viewModelTypeToTransientWindowTypeMap[type];
-                if (!typeof(Window).IsAssignableFrom(windowType))
-                {
-                    throw new ArgumentException("Only Windows can be created!");
-                }
-                Window window = (Window)serviceProvider.GetRequiredService(windowType);
-                ViewModelBase viewModel = (ViewModelBase)serviceProvider.GetRequiredService(type);
-                window.DataContext = viewModel;
-                window.DataContext = viewModel;
-                return (window, viewModel);
-            }
-            else
+            return CreateWindow(type, new object[0]);
+        }
+
+        private (Window, ViewModelBase) CreateWindow(Type type, object[] parameters)
+        {
+            Dictionary<Type, Type> windowTypeMap = viewModelTypeToSingletonWindowTypeMap.ContainsKey(type)
+                ? viewModelTypeToSingletonWindowTypeMap
+                : viewModelTypeToTransientWindowTypeMap;
+
+            if (!windowTypeMap.ContainsKey(type))
             {
                 throw new KeyNotFoundException($"The specified view model '{type.Name}' was not found in the view model to window map.");
             }
+
+            Type windowType = windowTypeMap[type];
+            if (!typeof(Window).IsAssignableFrom(windowType))
+            {
+                throw new ArgumentException("Only Windows can be created!");
+            }
+
+            using var serviceScope = serviceProvider.CreateScope();
+            Window window = (Window)serviceScope.ServiceProvider.GetRequiredService(windowType);
+            ViewModelBase viewModel = (ViewModelBase)ActivatorUtilities.CreateInstance(serviceScope.ServiceProvider, type, parameters);
+            window.DataContext = viewModel;
+
+            return (window, viewModel);
         }
 
         public Window? GetWindow(ViewModelBase viewModel)
