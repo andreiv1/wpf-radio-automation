@@ -8,7 +8,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:numberformat="clr-namespace:System.Globalization;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="PlannerGeneratePlaylistsWindow" Height="500" Width="400" ResizeMode="NoResize">
+        Title="PlannerGeneratePlaylistsWindow" Height="650" Width="500" ResizeMode="NoResize">
     <Border Padding="15">
         <Grid>
             <Grid.RowDefinitions>
@@ -87,6 +87,11 @@
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="Foreground" Value="Black"/>
                                                     <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding GenerationStatus}" Value="NoScheduleFound">
+                                                            <Setter Property="Text" Value="No schedule found"/>
+                                                            <Setter Property="Foreground" Value="#E51400"/>
+                                                            <Setter Property="FontWeight" Value="Bold"/>
+                                                        </DataTrigger>
                                                         <DataTrigger Binding="{Binding GenerationStatus}" Value="NotGenerated">
                                                             <Setter Property="Text" Value="Not generated"/>
                                                         </DataTrigger>

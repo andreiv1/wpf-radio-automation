@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Playlists.Models;
 using RA.UI.Core.Services;
+using RA.DAL;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
 {
@@ -19,24 +20,56 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
         public delegate void PlaylistGeneratedEventHandler();
 
         private readonly IDispatcherService dispatcherService;
+        private readonly IScheduleService scheduleService;
 
         public event PlaylistGeneratedEventHandler? PlaylistGenerated;
         public ObservableCollection<ScheduleOverviewModel> ScheduleOverview { get; set; } = new();
 
         [ObservableProperty]
+        private DateTime startDate = DateTime.Now.Date;
+
+        partial void OnStartDateChanged(DateTime value)
+        {
+            _ = LoadOverview();
+        }
+
+        [ObservableProperty]
         private int numberOfDaysToSchedule = 1;
 
-        public PlannerGeneratePlaylistsViewModel(IWindowService windowService, IDispatcherService dispatcherService) : base(windowService)
+        partial void OnNumberOfDaysToScheduleChanged(int value)
+        {
+            _ = LoadOverview();
+        }
+
+        public PlannerGeneratePlaylistsViewModel(IWindowService windowService, IDispatcherService dispatcherService,
+            IScheduleService scheduleService) : base(windowService)
         {
             this.dispatcherService = dispatcherService;
-            //this.scheduleManager = scheduleManager;
-            //this.playlistGenerator = playlistGenerator;
-            //_ = LoadOverview();
+            this.scheduleService = scheduleService;
+            _ = LoadOverview();
         }
 
         protected override bool CanFinishDialog()
         {
             return false;
+        }
+
+        private async Task LoadOverview()
+        {
+            ScheduleOverview.Clear();
+            var scheduleOverview = await Task.Run(() => 
+                scheduleService.GetDefaultScheduleOverviewAsync(StartDate, StartDate.AddDays(NumberOfDaysToSchedule - 1)));
+
+            foreach(var schedule in scheduleOverview)
+            {
+                var item = ScheduleOverviewModel.FromDto(schedule.Key, schedule.Value);
+               
+                if(schedule.Value.TemplateDto == null)
+                {
+                    item.GenerationStatus = ScheduleGenerationStatus.NoScheduleFound;
+                } 
+                ScheduleOverview.Add(item);
+            }
         }
 
         //partial void OnNumberOfDaysToScheduleChanged(int value)

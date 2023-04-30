@@ -23,29 +23,21 @@ namespace RA.ConsoleApp
     {
         static void Main(string[] args)
         {
-            var dbFactory = new DbContextFactory();
-            ICategoriesService categoriesService = new CategoriesService(dbFactory);
-
-            Console.WriteLine("Root categories:");
-            var rootCat = categoriesService.GetRootCategoriesAsync();
-            foreach(var category in rootCat.Result)
-            {
-                Console.WriteLine($"{category.Name}, Id={category.Id}");
-                if (categoriesService.HasCategoryChildren(category.Id!.Value).Result)
-                {
-                    ShowCategoriesRecursive(categoriesService, category.Id!.Value, " ");
-                }
-            }
+            TestDefaultScheduleOverview();
         }
 
-        static void ShowCategoriesRecursive(ICategoriesService categoriesService, int? parentId, string prefix)
+        static void TestDefaultScheduleOverview()
         {
-            var categories = categoriesService.GetChildrenCategoriesAsync(parentId!.Value).Result;
-            foreach (var category in categories)
+            var dbFactory = new DbContextFactory();
+            IScheduleService scheduleService = new ScheduleService(dbFactory);
+            var date = new DateTime(2023,3,1);
+            var end = date.AddDays(100);
+            var result = scheduleService.GetDefaultScheduleOverview(date,end);
+            foreach(var item in result)
             {
-                Console.WriteLine($"{prefix} {category.Name}, Id={category.Id}");
-                ShowCategoriesRecursive(categoriesService, category.Id, prefix + "    ");
+                Console.WriteLine($"{item.Key} - {item.Value?.TemplateDto?.Name ?? "No schedule found"}");
             }
         }
+        
     }
 }

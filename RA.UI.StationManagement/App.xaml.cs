@@ -88,6 +88,7 @@ namespace RA.UI.StationManagement
                     services.AddTransient<ITemplatesService, TemplatesService>();
                     services.AddTransient<ICategoriesService, CategoriesService>();
                     services.AddTransient<ITagsService, TagsService>();
+                    services.AddTransient<IScheduleService, ScheduleService>();
                     #endregion
 
                     #region Register window factory

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RA.DAL.Exceptions;
 using RA.Database;
 using RA.DTO;
 using System;
@@ -47,10 +48,16 @@ namespace RA.DAL
         public async Task<CategoryHierarchyDto> GetCategoryHierarchy(int categoryId)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            return await dbContext.CategoriesHierarchy
+            var result = await dbContext.CategoriesHierarchy
                         .Where(ch => ch.Id == categoryId)
                         .Select(ch => CategoryHierarchyDto.FromEntity(ch))
                         .FirstOrDefaultAsync();
+            if(result == null)
+            {
+                throw new NotFoundException($"Category with id {categoryId} not found");
+            }
+
+            return result;
         }
 
     }
