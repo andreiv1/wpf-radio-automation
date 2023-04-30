@@ -131,6 +131,19 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         {
             windowService.ShowDialog<PlannerManageClockCategoryRuleViewModel>(5);
         }
+
+        [RelayCommand]
+        private void OpenAddClockDialog()
+        {
+            windowService.ShowDialog<PlannerManageClockViewModel>();
+        }
+
+        [RelayCommand]
+        private void EditClockDialog()
+        {
+            if(SelectedClock == null) return;
+            windowService.ShowDialog<PlannerManageClockViewModel>(SelectedClock.Id);
+        }
         #endregion
     }
 }

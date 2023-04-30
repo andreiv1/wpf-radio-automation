@@ -4,7 +4,7 @@ using Syncfusion.Windows.Tools.Controls;
 using System.Windows;
 
 
-namespace RA.UI.StationManagement.Components.Planner.View.MainContent
+namespace RA.UI.StationManagement.Components.Planner.Views.MainContent
 {
     public partial class PlannerScheduleView : RAUserControl
     {

@@ -1,9 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DTO;
 using RA.UI.Core.Services;
+using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Models;
+using RA.UI.StationManagement.Components.Planner.ViewModels.Templates;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,8 +18,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 {
     public partial class PlannerDayTemplatesViewModel : ViewModelBase
     {
+        private readonly IWindowService windowService;
         private readonly ITemplatesService templatesService;
-        private readonly IClocksService clocksService;
         private readonly IDispatcherService dispatcherService;
 
         public ObservableCollection<TemplateDto> Templates { get; set; } = new();
@@ -30,11 +33,11 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             _ = LoadClocksForSelectedTemplate();
         }
 
-        public PlannerDayTemplatesViewModel(ITemplatesService templatesService, 
+        public PlannerDayTemplatesViewModel(IWindowService windowService, ITemplatesService templatesService, 
             IDispatcherService dispatcherService)
         {
+            this.windowService = windowService;
             this.templatesService = templatesService;
-            this.clocksService = clocksService;
             this.dispatcherService = dispatcherService;
 
             _ = LoadTemplates();
@@ -65,5 +68,13 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                 });
             }
         }
+
+        #region Commands
+        [RelayCommand]
+        private void AddTemplate()
+        {
+            windowService.ShowDialog<PlannerManageTemplateViewModel>();
+        }
+        #endregion
     }
 }

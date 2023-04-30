@@ -10,42 +10,21 @@ namespace RA.UI.Core
 {
     public class EnumToBooleanConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value == null || parameter == null)
-            {
                 return false;
-            }
 
-            if (!Enum.IsDefined(value.GetType(), value))
-            {
-                return false;
-            }
-
-            string parameterString = parameter.ToString();
-            if (!Enum.IsDefined(value.GetType(), parameterString))
-            {
-                return false;
-            }
-
-            object parameterValue = Enum.Parse(value.GetType(), parameterString);
-
-            return parameterValue.Equals(value);
+            return value.ToString() == parameter.ToString();
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value == null || parameter == null)
-            {
+            if (value == null || parameter == null || !(bool)value)
                 return Binding.DoNothing;
-            }
 
-            if ((bool)value)
-            {
-                return Enum.Parse(targetType, parameter.ToString());
-            }
-
-            return Binding.DoNothing;
+            return Enum.Parse(targetType, parameter.ToString());
         }
+
     }
 }

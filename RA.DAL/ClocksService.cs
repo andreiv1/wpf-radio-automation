@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RA.DAL.Exceptions;
 using RA.Database;
 using RA.DTO;
 using System;
@@ -18,6 +19,18 @@ namespace RA.DAL
             this.dbContextFactory = dbContextFactory;
         }
 
+        public async Task<ClockDto> GetClock(int id)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var result = await dbContext.Clocks.Where(c => c.Id == id)
+                .Select(c => ClockDto.FromEntity(c))
+                .FirstOrDefaultAsync();
+            if(result == null)
+            {
+                throw new NotFoundException($"Clock with id {id} not found");
+            }
+            return result;
+        }
         public IEnumerable<ClockItemDto> GetClockItems(int clockId)
         {
             return GetClockItemsAsync(clockId).Result;

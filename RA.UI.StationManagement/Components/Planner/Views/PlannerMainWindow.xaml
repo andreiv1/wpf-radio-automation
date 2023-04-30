@@ -8,7 +8,7 @@
         xmlns:localuc="clr-namespace:RA.UI.StationManagement.UserControls"
         xmlns:localvm="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels"
         xmlns:contentvm="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.MainContent"
-        xmlns:contentviews="clr-namespace:RA.UI.StationManagement.Components.Planner.View.MainContent"
+        xmlns:contentviews="clr-namespace:RA.UI.StationManagement.Components.Planner.Views.MainContent"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
         Title="PlannerMainWindow" Height="850" MinWidth="850" Width="850">

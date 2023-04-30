@@ -15,7 +15,7 @@ using RA.UI.StationManagement.Components.MediaLibrary.Views;
 using RA.UI.StationManagement.Components.MediaLibrary.Views.ImportItems;
 using RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent;
 using RA.UI.StationManagement.Components.Planner.View.Clocks;
-using RA.UI.StationManagement.Components.Planner.View.MainContent;
+using RA.UI.StationManagement.Components.Planner.Views.MainContent;
 using RA.UI.StationManagement.Components.Planner.View.Schedule;
 using RA.UI.StationManagement.Components.Planner.ViewModels;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Clocks;
@@ -33,6 +33,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using RA.UI.Core.Themes;
+using RA.UI.StationManagement.Components.Planner.View.Templates;
+using RA.UI.StationManagement.Components.Planner.ViewModels.Templates;
+using RA.UI.StationManagement.Components.Planner.Views.Schedule;
 
 namespace RA.UI.StationManagement
 {
@@ -148,6 +151,13 @@ namespace RA.UI.StationManagement
                     viewModelToTransientWindowMap.Add(typeof(PlannerPlaylistsViewModel), typeof(PlannerPlaylistsView));
 
                     viewModelToTransientWindowMap.Add(typeof(PlannerManageClockCategoryRuleViewModel), typeof(PlannerManageClockCategoryRuleDialog));
+                    viewModelToTransientWindowMap.Add(typeof(PlannerManageClockViewModel), typeof(PlannerManageClockDialog));
+
+                    viewModelToTransientWindowMap.Add(typeof(PlannerManageTemplateViewModel), typeof(PlannerManageTemplateDialog));
+                    viewModelToTransientWindowMap.Add(typeof(PlannerManageScheduleItemViewModel), typeof(PlannerManageScheduleItemDialog));
+
+
+                    
                     #endregion
 
                     #region Dialogs
@@ -182,7 +192,11 @@ namespace RA.UI.StationManagement
 
             SplashScreenWindow splashScreen = new SplashScreenWindow();
             splashScreen.Show();
-            var testDatabaseTask = Task.Run(() => TestDatabase());
+            var testDatabaseTask = Task.Run(() =>
+            {
+                if(!CanConnectToDatabase()) 
+                    Application.Current.Shutdown();
+            });
 
             var loadComponents = Task.Run(async () =>
             {
@@ -202,18 +216,13 @@ namespace RA.UI.StationManagement
 
         }
 
-        private bool TestDatabase()
+        private bool CanConnectToDatabase()
         {
             var messageBoxService = AppHost!.Services.GetRequiredService<IMessageBoxService>();
             try
             {
                 IDbContextFactory<AppDbContext> dbContextFactory = AppHost!.Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
                 var dbContext = dbContextFactory.CreateDbContext();
-                if (!dbContext.Database.CanConnect())
-                {
-                    messageBoxService.ShowError("Couldn't connect to the database.");
-                    return false;
-                }
                 return true;
             }
             catch (MySqlException ex)

@@ -4,7 +4,7 @@ using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent;
 using System.Windows;
 
 
-namespace RA.UI.StationManagement.Components.Planner.View.MainContent
+namespace RA.UI.StationManagement.Components.Planner.Views.MainContent
 {
     public partial class PlannerDayTemplatesView : RAUserControl
     {

@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RA.UI.StationManagement.Components.Planner.View.MainContent
+namespace RA.UI.StationManagement.Components.Planner.Views.MainContent
 {
     public partial class PlannerClocksView : RAUserControl
     {
