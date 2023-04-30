@@ -89,14 +89,14 @@
             <syncfusion:SfDataGrid Grid.Row="3"
                                    AutoGenerateColumns="False" SelectionUnit="Row" NavigationMode="Row" SelectionMode="Single"
                                    syncfusion:ScrollableContentViewer.HorizontalScrollBarVisibility="Hidden"
-                                   ItemsSource="{Binding Intervals}"
+                                   ItemsSource="{Binding DefaultIntervals}"
                                    SelectedItem="{Binding SelectedInterval}" 
                                    >
                 <syncfusion:SfDataGrid.Columns>
                     <syncfusion:GridDateTimeColumn HeaderText="Start date"
-                                                   MappingName="Start"/>
+                                                   MappingName="StartDate"/>
                     <syncfusion:GridDateTimeColumn HeaderText="End date"
-                                                   MappingName="End"/>
+                                                   MappingName="EndDate"/>
                 </syncfusion:SfDataGrid.Columns>
             </syncfusion:SfDataGrid>
         </Grid>
