@@ -36,6 +36,8 @@ using RA.UI.Core.Themes;
 using RA.UI.StationManagement.Components.Planner.View.Templates;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Templates;
 using RA.UI.StationManagement.Components.Planner.Views.Schedule;
+using RA.UI.StationManagement.Components.Planner.ViewModels.Playlists;
+using RA.UI.StationManagement.Components.Planner.View.Playlists;
 
 namespace RA.UI.StationManagement
 {
@@ -156,7 +158,7 @@ namespace RA.UI.StationManagement
                     viewModelToTransientWindowMap.Add(typeof(PlannerManageTemplateViewModel), typeof(PlannerManageTemplateDialog));
                     viewModelToTransientWindowMap.Add(typeof(PlannerManageScheduleItemViewModel), typeof(PlannerManageScheduleItemDialog));
 
-
+                    viewModelToTransientWindowMap.Add(typeof(PlannerGeneratePlaylistsViewModel), typeof(PlannerGeneratePlaylistsWindow));
                     
                     #endregion
 

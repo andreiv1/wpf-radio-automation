@@ -26,21 +26,21 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="24"/>
+                        <RowDefinition Height="30"/>
                         <RowDefinition Height="10"/>
-                        <RowDefinition Height="24"/>
+                        <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0" Grid.Column="0"
+                    <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
                        Content="Start date:"/>
                     <DatePicker x:Name="datePicker" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Height="24" FontSize="13"
                                 SelectedDate="{Binding StartDate}"
                                 DisplayDateStart="{x:Static sys:DateTime.Today}">
                     </DatePicker>
 
-                    <Label Grid.Row="2" Grid.Column="0"
+                    <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
                        Content="Number of days to schedule:"/>
-                    <syncfusion:UpDown Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" 
+                    <syncfusion:UpDown Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
                         IsScrollingOnCircle="True"
                         MinValueOnExceedMinDigit="True" MaxValueOnExceedMaxDigit="True"
                         MinValidation="OnKeyPress" MaxValidation="OnKeyPress"
@@ -53,10 +53,6 @@
                             NumberGroupSeparator="," />
                         </syncfusion:UpDown.NumberFormatInfo>
                     </syncfusion:UpDown>
-                    <!--<xctk:IntegerUpDown Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" 
-                                        Value="{Binding NumberOfDaysToSchedule}" 
-                                        Increment="1" Minimum="1" Maximum="31"
-                                        />-->
                 </Grid>
             </GroupBox>
 
@@ -126,11 +122,11 @@
                 <syncfusion:ButtonAdv Margin="0,3,5,0" Padding="2"
                                       SmallIcon="{StaticResource CloseIcon}"
                                       Label="Cancel" 
-                                      Command="{Binding CancelCommand}"/>
+                                      Command="{Binding CancelDialogCommand}"/>
                 <syncfusion:ButtonAdv Margin="0,3,0,0" Padding="2"
                                       SmallIcon="{StaticResource PlaylistGenerateIcon}"
                                       Label="Generate" 
-                                      Command="{Binding GeneratePlaylistsCommand}"/>
+                                      Command="{Binding FinishDialogCommand}"/>
             </StackPanel>
 
         </Grid>

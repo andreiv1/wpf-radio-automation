@@ -12,7 +12,7 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -27,7 +27,7 @@
                                       SmallIcon="{StaticResource PlaylistGenerateIcon}"
                                       IconHeight="24" IconWidth="24" HorizontalContentAlignment="Left" Padding="12,0,0,0"
                                       Label="Generate playlists" FontWeight="DemiBold"
-                                      Command="{Binding OpenGeneratePlaylistsWindowCommand}"/>
+                                      Command="{Binding OpenGeneratePlaylistsCommand}"/>
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition x:Name="ExpanderFirstRow" Height="*"/>

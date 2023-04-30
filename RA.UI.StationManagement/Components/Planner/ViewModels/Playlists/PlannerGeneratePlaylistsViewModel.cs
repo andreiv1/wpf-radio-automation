@@ -14,14 +14,11 @@ using RA.UI.Core.Services;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
 {
-    public partial class PlannerGeneratePlaylistsViewModel : ViewModelBase
+    public partial class PlannerGeneratePlaylistsViewModel : DialogViewModelBase
     {
         public delegate void PlaylistGeneratedEventHandler();
 
-        private readonly IWindowService windowService;
         private readonly IDispatcherService dispatcherService;
-        private readonly IScheduleManager scheduleManager;
-        private readonly IPlaylistGenerator playlistGenerator;
 
         public event PlaylistGeneratedEventHandler? PlaylistGenerated;
         public ObservableCollection<ScheduleOverviewModel> ScheduleOverview { get; set; } = new();
@@ -29,93 +26,96 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
         [ObservableProperty]
         private int numberOfDaysToSchedule = 1;
 
-        public PlannerGeneratePlaylistsViewModel(IWindowService windowService, IDispatcherService dispatcherService,
-            IScheduleManager scheduleManager, IPlaylistGenerator playlistGenerator)
+        public PlannerGeneratePlaylistsViewModel(IWindowService windowService, IDispatcherService dispatcherService) : base(windowService)
         {
-            this.windowService = windowService;
             this.dispatcherService = dispatcherService;
-            this.scheduleManager = scheduleManager;
-            this.playlistGenerator = playlistGenerator;
-            _ = LoadOverview();
+            //this.scheduleManager = scheduleManager;
+            //this.playlistGenerator = playlistGenerator;
+            //_ = LoadOverview();
         }
 
-        partial void OnNumberOfDaysToScheduleChanged(int value)
+        protected override bool CanFinishDialog()
         {
-            _ = LoadOverview();
+            return false;
         }
 
-        [ObservableProperty]
-        private DateTime startDate = DateTime.Now.Date;
+        //partial void OnNumberOfDaysToScheduleChanged(int value)
+        //{
+        //    _ = LoadOverview();
+        //}
 
-        partial void OnStartDateChanged(DateTime value)
-        {
-            _ = LoadOverview();
-        }
+        //[ObservableProperty]
+        //private DateTime startDate = DateTime.Now.Date;
 
-        private async Task LoadOverview()
-        {
-            ScheduleOverview.Clear();
-            var scheduleOverview = await scheduleManager.GetDefaultScheduleOverviewAsync(StartDate, StartDate.AddDays(NumberOfDaysToSchedule - 1));
-            foreach (var schedule in scheduleOverview)
-            {
-                ScheduleOverview.Add(ScheduleOverviewModel.FromDto(schedule.Key, schedule.Value));
-            }
-        }
+        //partial void OnStartDateChanged(DateTime value)
+        //{
+        //    _ = LoadOverview();
+        //}
 
-        [ObservableProperty]
-        private bool isGeneratingStarted = false;
+        //private async Task LoadOverview()
+        //{
+        //    ScheduleOverview.Clear();
+        //    var scheduleOverview = await scheduleManager.GetDefaultScheduleOverviewAsync(StartDate, StartDate.AddDays(NumberOfDaysToSchedule - 1));
+        //    foreach (var schedule in scheduleOverview)
+        //    {
+        //        ScheduleOverview.Add(ScheduleOverviewModel.FromDto(schedule.Key, schedule.Value));
+        //    }
+        //}
 
-        [RelayCommand(CanExecute = nameof(CanGeneratePlaylists))]
-        private void GeneratePlaylists()
-        {
-            IsGeneratingStarted = true;
-            GeneratePlaylistsCommand.NotifyCanExecuteChanged();
-            Task.Run(() =>
-            {
-                using (var db = new AppDbContext())
-                {
-                    List<Playlist> generatedPlaylists = new();
+        //[ObservableProperty]
+        //private bool isGeneratingStarted = false;
 
-                    foreach (var item in ScheduleOverview)
-                    {
+        //[RelayCommand(CanExecute = nameof(CanGeneratePlaylists))]
+        //private void GeneratePlaylists()
+        //{
+        //    IsGeneratingStarted = true;
+        //    GeneratePlaylistsCommand.NotifyCanExecuteChanged();
+        //    Task.Run(() =>
+        //    {
+        //        using (var db = new AppDbContext())
+        //        {
+        //            List<Playlist> generatedPlaylists = new();
 
-                        item.GenerationStatus = ScheduleGenerationStatus.Generating;
-                        try
-                        {
-                            var p = playlistGenerator.GeneratePlaylist(db, item.Date);
-                            item.GenerationStatus = ScheduleGenerationStatus.Generated;
-                            generatedPlaylists.Add(p);
-                            PlaylistGenerated?.Invoke();
-                        }
-                        catch (Exception ex)
-                        {
-                            item.GenerationStatus = ScheduleGenerationStatus.Error;
-                            item.ErrorMessage = ex.Message;
-                        }
+        //            foreach (var item in ScheduleOverview)
+        //            {
 
-                    }
+        //                item.GenerationStatus = ScheduleGenerationStatus.Generating;
+        //                try
+        //                {
+        //                    var p = playlistGenerator.GeneratePlaylist(db, item.Date);
+        //                    item.GenerationStatus = ScheduleGenerationStatus.Generated;
+        //                    generatedPlaylists.Add(p);
+        //                    PlaylistGenerated?.Invoke();
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    item.GenerationStatus = ScheduleGenerationStatus.Error;
+        //                    item.ErrorMessage = ex.Message;
+        //                }
 
-                    db.Playlists.AddRange(generatedPlaylists);
-                    db.SaveChanges();
-                    IsGeneratingStarted = false;
+        //            }
 
-                    dispatcherService.InvokeOnUIThread(() =>
-                    {
-                        GeneratePlaylistsCommand.NotifyCanExecuteChanged();
-                    });
-                }
-            });
-        }
+        //            db.Playlists.AddRange(generatedPlaylists);
+        //            db.SaveChanges();
+        //            IsGeneratingStarted = false;
 
-        private bool CanGeneratePlaylists()
-        {
-            return !IsGeneratingStarted;
-        }
+        //            dispatcherService.InvokeOnUIThread(() =>
+        //            {
+        //                GeneratePlaylistsCommand.NotifyCanExecuteChanged();
+        //            });
+        //        }
+        //    });
+        //}
 
-        [RelayCommand(CanExecute = nameof(CanGeneratePlaylists))]
-        private void Cancel()
-        {
-            windowService.CloseDialog();
-        }
+        //private bool CanGeneratePlaylists()
+        //{
+        //    return !IsGeneratingStarted;
+        //}
+
+        //[RelayCommand(CanExecute = nameof(CanGeneratePlaylists))]
+        //private void Cancel()
+        //{
+        //    windowService.CloseDialog();
+        //}
     }
 }
