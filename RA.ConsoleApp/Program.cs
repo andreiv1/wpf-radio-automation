@@ -29,16 +29,13 @@ namespace RA.ConsoleApp
         static void TestDefaultScheduleOverview()
         {
             var dbFactory = new DbContextFactory();
-            var db = dbFactory.CreateDbContext();
-
-            var schedulesDates = db.DefaultSchedules
-                .Select(s => new { s.StartDate, s.EndDate })
-                .Distinct()
-                .OrderBy(s => s.StartDate)
-                .ThenBy(s => s.EndDate)
-                .ToList();
-
-            Console.WriteLine();
+            //var db = dbFactory.CreateDbContext();
+            var dsService = new DefaultScheduleService(dbFactory);
+            var schedulesDates = dsService.GetDefaultSchedulesRange();
+            foreach( var schedule in schedulesDates)
+            {
+                Console.WriteLine($"{schedule.StartDate} - {schedule.EndDate}");
+            }
         }
         
     }

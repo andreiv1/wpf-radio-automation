@@ -67,14 +67,20 @@ namespace RA.DAL
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             var result = await dbContext.DefaultSchedules
-                .Select(s => new DateTimeRange(s.StartDate, s.EndDate))
+                .Select(s => new {s.StartDate, s.EndDate})
                 .Distinct()
                 .OrderBy(s => s.StartDate)
                 .ThenBy(s => s.EndDate)
+                .Select(s => new DateTimeRange(s.StartDate, s.EndDate))
                 .ToListAsync();
 
             return result;
 
+        }
+
+        public IEnumerable<DateTimeRange> GetDefaultSchedulesRange(int skip = 0, int limit = 100)
+        {
+            return GetDefaultSchedulesRangeAsync(skip, limit).Result;
         }
     }
 }
