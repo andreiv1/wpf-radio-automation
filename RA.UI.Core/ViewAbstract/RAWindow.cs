@@ -18,6 +18,8 @@ namespace RA.UI.Core
         public RAWindow() : base()
         {
             ThemeManager.ApplyTheme(this);
+            this.ResizeBorderThickness = new Thickness(0);
+            this.CornerRadius = new CornerRadius(0);
         }
     }
 }

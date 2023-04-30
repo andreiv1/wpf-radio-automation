@@ -178,6 +178,7 @@ namespace RA.UI.StationManagement
             var dispatcherService = AppHost!.Services.GetRequiredService<IDispatcherService>();
 
             ThemeManager.SetTheme(ThemeType.Light);
+
             SplashScreenWindow splashScreen = new SplashScreenWindow();
             splashScreen.Show();
             var testDatabaseTask = Task.Run(() => TestDatabase());

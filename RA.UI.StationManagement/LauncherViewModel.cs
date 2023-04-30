@@ -25,14 +25,14 @@ namespace RA.UI.StationManagement
         [RelayCommand]
         private void OpenMediaLibraryComponent()
         {
-            var result = windowService.ShowWindow<MediaLibraryMainViewModel>();
+            windowService.ShowDialog<MediaLibraryMainViewModel>();
             
         }
 
         [RelayCommand]
         private void OpenPlannerComponent()
         {
-            var result = windowService.ShowWindow<PlannerMainViewModel>();
+            windowService.ShowDialog<PlannerMainViewModel>();
         }
     }
 }
