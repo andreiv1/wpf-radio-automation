@@ -65,26 +65,5 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                 });
             }
         }
-
-        #region Test data
-        private void LoadTestData()
-        {
-            ClocksForSelectedTemplate.Add(new TemplateClockItemModel()
-            {
-                ClockName = "Test",
-                ClockSpan = 12,
-                StartTime = DateTime.Now,
-                EndTime = DateTime.Now.AddHours(4),
-            });
-
-            ClocksForSelectedTemplate.Add(new TemplateClockItemModel()
-            {
-                ClockName = "Test",
-                ClockSpan = 12,
-                StartTime = DateTime.Now.AddHours(4),
-                EndTime = DateTime.Now.AddHours(8),
-            });
-        }
-        #endregion
     }
 }

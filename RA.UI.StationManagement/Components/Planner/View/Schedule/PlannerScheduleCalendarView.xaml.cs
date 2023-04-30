@@ -1,4 +1,5 @@
-﻿using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent;
+﻿using RA.UI.Core;
+using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Schedule;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace RA.UI.StationManagement.Components.Planner.View.Schedule
     /// <summary>
     /// Interaction logic for PlannerScheduleCalendarView.xaml
     /// </summary>
-    public partial class PlannerScheduleCalendarView : UserControl
+    public partial class PlannerScheduleCalendarView : RAUserControl
     {
         public PlannerScheduleCalendarView()
         {
