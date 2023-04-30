@@ -132,11 +132,5 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             windowService.ShowDialog<PlannerManageClockCategoryRuleViewModel>(5);
         }
         #endregion
-
-        public override void Dispose()
-        {
-            ClockItemsForSelectedClock.CollectionChanged -= ClockItemsForSelectedClock_CollectionChanged;
-            base.Dispose();
-        }
     }
 }
