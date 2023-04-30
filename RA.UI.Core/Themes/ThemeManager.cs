@@ -29,10 +29,6 @@ namespace RA.UI.Core.Themes
                     Windows11LightThemeSettings windows11LightThemeSettings = new Windows11LightThemeSettings();
                     SfSkinManager.RegisterThemeSettings("Windows11Light", windows11LightThemeSettings);
                     theme = new Theme("Windows11Light");
-                    Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary()
-                    {
-                        Source = new Uri($"/Syncfusion.Themes.Windows11Light.WPF;component/MSControl/Window.xaml", UriKind.RelativeOrAbsolute)
-                    });
                     break;
                 case ThemeType.Dark:
                     Windows11DarkThemeSettings windows11DarkThemeSettings = new Windows11DarkThemeSettings();

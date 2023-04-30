@@ -14,8 +14,8 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <syncfusion:TabControlExt x:Name="tabControl" Grid.Row="1" Margin="-2,-1.5,-2,-2"
-                                  ItemsSource="{Binding TabViewModels}"
-                                  SelectedIndex="0" 
+                                  ItemsSource="{Binding TabViewModels, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedIndex="0"  IsLazyLoaded="True"
                                   EnableLabelEdit="False" KeepTabInFront="False" ShowTabItemContextMenu="False" 
                                   CloseButtonType="Hide">
             <syncfusion:TabControlExt.Resources>
