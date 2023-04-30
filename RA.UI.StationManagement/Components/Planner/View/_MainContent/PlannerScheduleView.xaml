@@ -4,10 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
-             xmlns:local="clr-namespace:RA.UI.StationManagement.Components.Planner.View.MainContent"
              xmlns:schedulevm="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.Schedule"
              xmlns:scheduleview="clr-namespace:RA.UI.StationManagement.Components.Planner.View.Schedule"
-             xmlns:vm="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.MainContent"
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
              mc:Ignorable="d" 
              d:DataContext="d:DesignData Type=vm:PlannerScheduleViewModel}"
@@ -17,7 +15,7 @@
                                   ItemsSource="{Binding TabViewModels, UpdateSourceTrigger=PropertyChanged}"
                                   SelectedIndex="0"  IsLazyLoaded="True"
                                   EnableLabelEdit="False" KeepTabInFront="False" ShowTabItemContextMenu="False" 
-                                  CloseButtonType="Hide">
+                                  CloseButtonType="Hide" Loaded="tabControl_Loaded">
             <syncfusion:TabControlExt.Resources>
                 <DataTemplate DataType="{x:Type TypeName=schedulevm:PlannerScheduleCalendarViewModel}">
                     <scheduleview:PlannerScheduleCalendarView/>
