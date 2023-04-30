@@ -32,6 +32,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using RA.UI.Core.Themes;
 
 namespace RA.UI.StationManagement
 {
@@ -176,6 +177,7 @@ namespace RA.UI.StationManagement
             var windowService = AppHost!.Services.GetRequiredService<IWindowService>();
             var dispatcherService = AppHost!.Services.GetRequiredService<IDispatcherService>();
 
+            ThemeManager.SetTheme(ThemeType.Light);
             SplashScreenWindow splashScreen = new SplashScreenWindow();
             splashScreen.Show();
             var testDatabaseTask = Task.Run(() => TestDatabase());
@@ -183,7 +185,7 @@ namespace RA.UI.StationManagement
             var loadComponents = Task.Run(async () =>
             {
                 //Load any components you need 
-                await Task.Delay(10);
+                await Task.Delay(100);
             });
 
             Task.WhenAll(testDatabaseTask, loadComponents).ContinueWith(t =>

@@ -1,27 +1,12 @@
-﻿using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent;
-using Syncfusion.SfSkinManager;
-using Syncfusion.Themes.Windows11Light.WPF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using RA.UI.Core;
+using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent
 {
-    /// <summary>
-    /// Interaction logic for AllMediaItemsView.xaml
-    /// </summary>
-    public partial class AllMediaItemsView : UserControl
+    public partial class AllMediaItemsView : RAUserControl
     {
         public AllMediaItemsView()
         {

@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.Views"
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         xmlns:localuc="clr-namespace:RA.UI.StationManagement.UserControls"
         xmlns:views="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent"                     
@@ -13,8 +12,6 @@
         Title="Media Library"
         MinHeight="450"
         MinWidth="900">
-    <!--
-        xmlns:vm="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent"-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>

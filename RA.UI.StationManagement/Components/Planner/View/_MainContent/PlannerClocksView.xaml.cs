@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RA.UI.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,10 +16,7 @@ using System.Windows.Shapes;
 
 namespace RA.UI.StationManagement.Components.Planner.View.MainContent
 {
-    /// <summary>
-    /// Interaction logic for PlannerClocksView.xaml
-    /// </summary>
-    public partial class PlannerClocksView : UserControl
+    public partial class PlannerClocksView : RAUserControl
     {
         public PlannerClocksView()
         {

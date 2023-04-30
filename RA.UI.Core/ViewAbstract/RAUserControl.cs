@@ -1,4 +1,5 @@
-﻿using Syncfusion.SfSkinManager;
+﻿using RA.UI.Core.Themes;
+using Syncfusion.SfSkinManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,9 @@ namespace RA.UI.Core
 {
     public partial class RAUserControl : UserControl
     {
-        
+        public RAUserControl() : base()
+        {
+            ThemeManager.ApplyTheme(this);
+        }
     }
 }

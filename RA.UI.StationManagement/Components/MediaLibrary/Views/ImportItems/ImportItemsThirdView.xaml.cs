@@ -1,4 +1,5 @@
-﻿using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems;
+﻿using RA.UI.Core;
+using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Views.ImportItems
     /// <summary>
     /// Interaction logic for ImportItemsThirdView.xaml
     /// </summary>
-    public partial class ImportItemsThirdView : UserControl
+    public partial class ImportItemsThirdView : RAUserControl
     {
         public ImportItemsThirdView()
         {

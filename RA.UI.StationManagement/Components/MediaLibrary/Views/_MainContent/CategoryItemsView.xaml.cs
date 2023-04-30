@@ -1,4 +1,5 @@
 ﻿using RA.DTO;
+using RA.UI.Core;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent
     /// <summary>
     /// Interaction logic for CategoryItemsView.xaml
     /// </summary>
-    public partial class CategoryItemsView : UserControl
+    public partial class CategoryItemsView : RAUserControl
     {
         public CategoryItemsView()
         {
