@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RA.Database;
-using RA.Dto;
-using RA.Dto.Abstract;
+using RA.DTO;
+using RA.DTO.Abstract;
 using RA.Logic.PlanningLogic.Interfaces;
 using RA.Logic.PlanningLogic.Old;
 using RA.Database.Models;

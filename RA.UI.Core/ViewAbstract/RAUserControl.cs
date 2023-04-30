@@ -10,9 +10,6 @@ namespace RA.UI.Core
 {
     public partial class RAUserControl : UserControl
     {
-        public RAUserControl() : base()
-        {
-            SfSkinManager.SetTheme(this, new Theme("Windows11Light"));
-        }
+        
     }
 }

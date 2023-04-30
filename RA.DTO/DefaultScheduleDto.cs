@@ -1,4 +1,4 @@
-﻿using RA.Dto.Abstract;
+﻿using RA.DTO.Abstract;
 using RA.Database.Models;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RA.Dto
+namespace RA.DTO
 {
     public class DefaultScheduleDto : ScheduleDto
     {

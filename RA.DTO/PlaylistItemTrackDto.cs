@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RA.Dto
+namespace RA.DTO
 {
     public class PlaylistItemTrackDto
     {
