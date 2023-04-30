@@ -57,7 +57,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             if (SelectedInterval == null) return;
             DefaultScheduleItemsForSelectedInterval.Clear();
             var schedule = await Task.Run(() =>
-                defaultScheduleService.GetDefaultScheduleWithTemplate(SelectedInterval));
+                defaultScheduleService.GetDefaultScheduleWithTemplateAsync(SelectedInterval));
 
 
             var firstDayOfWeek = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;

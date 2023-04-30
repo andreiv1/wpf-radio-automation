@@ -80,13 +80,11 @@ namespace RA.DAL
 
             return result;
         }
-
         public IEnumerable<DateTimeRange> GetDefaultSchedulesRange(int skip = 0, int limit = 100, bool ascending = false)
         {
             return GetDefaultSchedulesRangeAsync(skip, limit, ascending).Result;
         }
-
-        public async Task<IDictionary<DayOfWeek, DefaultScheduleDto?>> GetDefaultScheduleWithTemplate(DateTimeRange range)
+        public async Task<IDictionary<DayOfWeek, DefaultScheduleDto?>> GetDefaultScheduleWithTemplateAsync(DateTimeRange range)
         {
             var dictionary = new Dictionary<DayOfWeek, DefaultScheduleDto?>();
             using var dbContext = dbContextFactory.CreateDbContext();

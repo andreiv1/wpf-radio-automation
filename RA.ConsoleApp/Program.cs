@@ -31,10 +31,10 @@ namespace RA.ConsoleApp
             var dbFactory = new DbContextFactory();
             //var db = dbFactory.CreateDbContext();
             var dsService = new DefaultScheduleService(dbFactory);
-            var schedulesDates = dsService.GetDefaultSchedulesRange();
-            foreach( var schedule in schedulesDates)
+            var schedulesDates = dsService.GetDefaultScheduleOverview(DateTime.Now.Date,DateTime.Now.Date.AddDays(20));
+            foreach(var s in schedulesDates)
             {
-                Console.WriteLine($"{schedule.StartDate} - {schedule.EndDate}");
+                Console.WriteLine($"{s.Value} - {s.Key}");
             }
         }
         
