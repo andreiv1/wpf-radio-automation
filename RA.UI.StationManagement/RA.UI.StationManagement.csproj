@@ -55,6 +55,7 @@
 
     <ItemGroup>
       <Folder Include="Components\Planner\ViewModels\DayTemplates\" />
+      <Folder Include="Components\Planner\View\Playlists\" />
       <Folder Include="Dialogs\ArtistSelectDialog\" />
       <Folder Include="Services\Data\" />
     </ItemGroup>

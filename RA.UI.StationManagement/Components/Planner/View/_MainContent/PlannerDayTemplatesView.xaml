@@ -116,7 +116,7 @@
                 <syncfusion:SfScheduler.HeaderTemplate>
                     <DataTemplate>
                         <TextBlock Margin="12,0,0,0" FontSize="15">
-                            <!--<Run Text="Template: " FontWeight="DemiBold" />
+                            <Run Text="Template: " FontWeight="DemiBold" />
                             <Run Text="{Binding Path=DataContext.SelectedTemplate.Name,ElementName=clocksListDataGrid}">
                                 <Run.Style>
                                     <Style TargetType="{x:Type Run}">
@@ -128,7 +128,7 @@
                                         </Style.Triggers>
                                     </Style>
                                 </Run.Style>
-                            </Run>-->
+                            </Run>
                         </TextBlock>
                     </DataTemplate>
                 </syncfusion:SfScheduler.HeaderTemplate>

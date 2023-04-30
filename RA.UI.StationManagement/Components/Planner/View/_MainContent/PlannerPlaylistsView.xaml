@@ -1,0 +1,239 @@
+﻿<uicore:RAUserControl x:Class="RA.UI.StationManagement.Components.Planner.View.MainContent.PlannerPlaylistsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <uicore:DoubleToFormattedTimeSpanConverter x:Key="DoubleToFormattedTimeSpanConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Column 1 -->
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <syncfusion:ButtonAdv Grid.Column="0" Margin="5,5,5,0" 
+                                      SmallIcon="{StaticResource PlaylistGenerateIcon}"
+                                      IconHeight="24" IconWidth="24" HorizontalContentAlignment="Left" Padding="12,0,0,0"
+                                      Label="Generate playlists" FontWeight="DemiBold"
+                                      Command="{Binding OpenGeneratePlaylistsWindowCommand}"/>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition x:Name="ExpanderFirstRow" Height="*"/>
+                    <RowDefinition x:Name="ExpanderSecondRow" Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- EXPANDER 1 : PLAYLISTS -->
+                <Expander x:Name="Expander1"
+                    Grid.Row="0" Margin="5" IsExpanded="True" Expanded="Expander_Expanded_1"
+                          Collapsed="Expander_Collapsed_1">
+                    <Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Padding="2,2,2,3" Margin="0 0 4 0">
+                                <Image Source="{StaticResource PlaylistsPlannedIcon}" VerticalAlignment="Center"
+                               Width="24" Height="24" />
+                            </Border>
+
+                            <TextBlock Text="Playlists" Grid.Column="1" 
+                                   FontWeight="DemiBold" FontSize="13"
+                                   VerticalAlignment="Center"/>
+                        </Grid>
+                    </Expander.Header>
+
+                    <Grid>
+                        <syncfusion:SfDataGrid x:Name="playlistsToAirDataGrid"
+                           Margin="0,3,0,0"
+                           ItemsSource="{Binding PlaylistsToAir}"
+                           SelectedItem="{Binding SelectedPlaylistToAir}"
+                           SelectionUnit="Row"
+                           NavigationMode="Row"
+                           AutoGenerateColumns="False"
+                           ColumnSizer="AutoWithLastColumnFill"
+                           SortClickAction="DoubleClick">
+                            <syncfusion:SfDataGrid.RecordContextMenu>
+                                <ContextMenu>
+                                    <MenuItem x:Name="playlistsToAirDataGrid_DeleteItem" Header="Delete"
+                                              Click="playlistsToAirDataGrid_DeleteItem_Click">
+                                        <MenuItem.Icon>
+                                            <Image Source="{StaticResource RemoveIcon}" Width="16" Height="16"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+
+                            </syncfusion:SfDataGrid.RecordContextMenu>
+                            <syncfusion:SfDataGrid.Columns>
+                                <syncfusion:GridTextColumn HeaderText="Status" MappingName="Id" Width="50"/>
+                                <syncfusion:GridDateTimeColumn HeaderText="Air Date" MappingName="AirDate"/>
+                            </syncfusion:SfDataGrid.Columns>
+
+                            <!--<syncfusion:SfDataGrid.RecordContextMenu>
+                                <MenuItem x:Name="Delete" Header="Delete"
+                                              Command="{Binding DeletePlaylistCommand}">
+                                    <MenuItem.Icon>
+                                        <Image Source="{StaticResource RemoveIcon}" Width="16" Height="16"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </syncfusion:SfDataGrid.RecordContextMenu>-->
+                        </syncfusion:SfDataGrid>
+
+                        <Grid x:Name="NoPlaylistsToAirFound"
+                              Visibility="{Binding PlaylistsToAir.Count,Converter={StaticResource CountToVisibilityConverter}}"
+                              VerticalAlignment="Top" 
+                              HorizontalAlignment="Center" 
+                              Panel.ZIndex="1">
+                            <TextBlock Text="There are no playlists to air found for the next days (including today)."
+                               TextWrapping="Wrap" TextAlignment="Center" 
+                               Margin="5,50,5,0" Foreground="Gray"/>
+                        </Grid>
+                    </Grid>
+
+                </Expander>
+
+                <!-- EXPANDER 2: DAY PLANNING -->
+                <Expander x:Name="Expander2"
+                    Grid.Row="1" Margin="5" IsExpanded="False" Expanded="Expander_Expanded_2"
+                          Collapsed="Expander_Collapsed_2">
+                    <Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Padding="2,2,2,3" Margin="0 0 4 0">
+                                <Image Source="{StaticResource PlaylistsDayPlanningIcon}" VerticalAlignment="Center"
+                               Width="24" Height="24" />
+                            </Border>
+
+                            <TextBlock Text="Day planning" Grid.Column="1" 
+                                   FontWeight="DemiBold" FontSize="13"
+                                   VerticalAlignment="Center"/>
+                        </Grid>
+                    </Expander.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <syncfusion:ButtonAdv Grid.Column="0" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" Height="28" Margin="0,0,3,0"
+                                                  SizeMode="Small" SmallIcon="{StaticResource BackIcon}"
+                                                  Command="{Binding GoPreviousDateCommand}"/>
+                            <DatePicker Grid.Column="1" VerticalAlignment="Center" 
+                                SelectedDate="{Binding SelectedDate}"/>
+                            <syncfusion:ButtonAdv Grid.Column="2" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" Height="28" Margin="3,0,0,0"
+                                                  SizeMode="Small" SmallIcon="{StaticResource ForwardIcon}"
+                                                  Command="{Binding GoNextDateCommand}"/>
+
+                        </Grid>
+
+                        <Grid Grid.Row="2">
+                            <syncfusion:SfDataGrid 
+                           Margin="0,3,0,0"
+                           ItemsSource="{Binding PlaylistByHours}"
+                           SelectedItem="{Binding SelectedPlaylistByHour}"
+                           SelectionUnit="Row"
+                           NavigationMode="Row"
+                           AutoGenerateColumns="False"
+                           ColumnSizer="AutoWithLastColumnFill"
+                           SortClickAction="DoubleClick">
+
+                                <syncfusion:SfDataGrid.Columns>
+                                    <syncfusion:GridTextColumn HeaderText="Hour" MappingName="Hour" Width="50"
+                                                               
+                                                               />
+                                    <syncfusion:GridTextColumn HeaderText="Length" MappingName="LengthAsTimeSpan"
+                                                               DisplayBinding="{Binding Path=LengthAsTimeSpan, StringFormat=hh\\:mm\\:ss}"/>
+                                </syncfusion:SfDataGrid.Columns>
+                            </syncfusion:SfDataGrid>
+
+                            <Grid x:Name="NoPlaylistsFound"
+                              Visibility="{Binding PlaylistsToAir.Count,Converter={StaticResource CountToVisibilityConverter}}"
+                              VerticalAlignment="Top" 
+                              HorizontalAlignment="Center" 
+                              Panel.ZIndex="1">
+                                <TextBlock Text="There is no playlist found for selected date."
+                               TextWrapping="Wrap" TextAlignment="Center" 
+                               Margin="5,50,5,0" Foreground="Gray"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Expander>
+            </Grid>
+        </Grid>
+
+        <!-- Column 2 -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <!-- Buttons -->
+            <StackPanel Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal"
+                        Margin="5,5,5,0">
+                <syncfusion:DropDownButtonAdv Label="Item" SmallIcon="{StaticResource EditFileIcon}"/>
+
+            </StackPanel>
+
+            <!-- Items for selected playlist -->
+            <syncfusion:SfDataGrid Grid.Row="1"
+                       Margin="5,5,5,0"
+                       ColumnSizer="Auto"
+                       ItemsSource="{Binding SelectedPlaylistItems}"
+                       SelectionUnit="Row"
+                       NavigationMode="Row"
+                       AllowResizingColumns="True"
+                       AutoGenerateColumns="False">
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTextColumn HeaderText="ETA" MappingName="ETA" DisplayBinding="{Binding Path=ETA, StringFormat={}{0:HH\\:mm\\:ss.fff}}"
+                                               Width="75"/>
+                    <syncfusion:GridTextColumn HeaderText="Type" MappingName="Type" Width="100"
+                                               DisplayBinding="{Binding Path=Track.Type}"/>
+                    <syncfusion:GridTextColumn HeaderText="Item Details" MappingName="Title" Width="200"
+                                               DisplayBinding="{Binding Path=Track.Title}"/>
+                    <syncfusion:GridTextColumn HeaderText="Length" MappingName="Length"
+                                               DisplayBinding="{Binding Path=Length, Converter={StaticResource DoubleToFormattedTimeSpanConverter}}" />
+                </syncfusion:SfDataGrid.Columns>
+                <syncfusion:SfDataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Edit" Command="{Binding OpenItemDetailsCommand}" />
+                    </ContextMenu>
+                </syncfusion:SfDataGrid.ContextMenu>
+            </syncfusion:SfDataGrid>
+
+            <Grid x:Name="NoPlaylistSElectedMessage" Grid.Row="2"
+                              Visibility="{Binding SelectedPlaylistItems.Count,Converter={StaticResource CountToVisibilityConverter}}"
+                              VerticalAlignment="Top" 
+                              HorizontalAlignment="Center" 
+                              Panel.ZIndex="1">
+                <TextBlock Text="To view a playlist details, select from the left menu a playlist."
+                           Width="350"
+                               TextWrapping="Wrap" TextAlignment="Center" 
+                               Margin="5,50,5,0" Foreground="Gray"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</uicore:RAUserControl>

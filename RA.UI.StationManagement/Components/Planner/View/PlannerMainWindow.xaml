@@ -58,6 +58,10 @@
                 <DataTemplate DataType="{x:Type TypeName=contentvm:PlannerScheduleViewModel}">
                     <contentviews:PlannerScheduleView DataContext="{Binding}"/>
                 </DataTemplate>
+
+                <DataTemplate DataType="{x:Type TypeName=contentvm:PlannerPlaylistsViewModel}">
+                    <contentviews:PlannerPlaylistsView DataContext="{Binding}"/>
+                </DataTemplate>
             </syncfusion:TabControlExt.Resources>
 
             <syncfusion:TabControlExt.ContentTemplate>

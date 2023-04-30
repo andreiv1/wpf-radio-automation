@@ -145,6 +145,7 @@ namespace RA.UI.StationManagement
                     viewModelToTransientWindowMap.Add(typeof(PlannerScheduleViewModel), typeof(PlannerScheduleView));
                     viewModelToTransientWindowMap.Add(typeof(PlannerScheduleCalendarViewModel), typeof(PlannerScheduleView));
                     viewModelToTransientWindowMap.Add(typeof(PlannerDefaultScheduleViewModel), typeof(PlannerDefaultScheduleView));
+                    viewModelToTransientWindowMap.Add(typeof(PlannerPlaylistsViewModel), typeof(PlannerPlaylistsView));
 
                     viewModelToTransientWindowMap.Add(typeof(PlannerManageClockCategoryRuleViewModel), typeof(PlannerManageClockCategoryRuleDialog));
                     #endregion
