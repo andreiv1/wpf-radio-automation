@@ -137,12 +137,12 @@
                 <syncfusion:SfDataGrid Grid.Row="1" Height="230"
                 AutoGenerateColumns="False" ColumnSizer="AutoWithLastColumnFill" SelectionUnit="Row"
                        NavigationMode="Row" SelectionMode="Single" RowHoverHighlightingBrush="Transparent"
-                                   ItemsSource="{Binding DefaultScheduleItems}">
+                                   ItemsSource="{Binding DefaultScheduleItemsForSelectedInterval}">
                     <syncfusion:SfDataGrid.Columns>
                         <syncfusion:GridTextColumn HeaderText="Day of week" MinimumWidth="100"
                                                MappingName="Day"/>
                         <syncfusion:GridTextColumn HeaderText="Template" MinimumWidth="100"
-                                               MappingName="TemplateDto.Name"/>
+                                               MappingName="TemplateName"/>
                     </syncfusion:SfDataGrid.Columns>
                 </syncfusion:SfDataGrid>
 

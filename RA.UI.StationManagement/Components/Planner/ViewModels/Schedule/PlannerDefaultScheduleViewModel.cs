@@ -74,14 +74,17 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
                 if (schedule.ContainsKey((DayOfWeek)i))
                 {
                     DefaultScheduleDto item = schedule[(DayOfWeek)i];
-                    DefaultScheduleItemsForSelectedInterval.Add(
-                        new DefaultScheduleItem()
-                        {
-                            Id = (int)item.Id,
-                            TemplateId = item.TemplateDto.Id,
-                            TemplateName = item.TemplateDto.Name,
-                            Day = (DayOfWeek)i,
-                        });
+                    if (item is not null)
+                    {
+                        DefaultScheduleItemsForSelectedInterval.Add(
+                            new DefaultScheduleItem()
+                            {
+                                Id = (int)item.Id,
+                                TemplateId = item.TemplateDto.Id,
+                                TemplateName = item.TemplateDto.Name,
+                                Day = (DayOfWeek)i,
+                            });
+                    }
                 }
 
 
