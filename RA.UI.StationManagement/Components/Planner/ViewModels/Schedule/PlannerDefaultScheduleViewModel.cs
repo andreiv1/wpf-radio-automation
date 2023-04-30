@@ -55,11 +55,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         private async Task LoadDefaultScheduleForSelectedInterval()
         {
             if (SelectedInterval == null) return;
-
             DefaultScheduleItemsForSelectedInterval.Clear();
-
             var schedule = await Task.Run(() =>
                 defaultScheduleService.GetDefaultScheduleWithTemplate(SelectedInterval));
+
 
             var firstDayOfWeek = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
             int startDayIndex = 0;
@@ -85,9 +84,41 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
                                 Day = (DayOfWeek)i,
                             });
                     }
+                    else
+                    {
+                        DefaultScheduleItemsForSelectedInterval.Add(
+                            new DefaultScheduleItem()
+                            {
+                                Day = (DayOfWeek)i
+                            });
+                    }
+                } 
+
+
+            }
+
+            if (firstDayOfWeek == DayOfWeek.Monday)
+            {
+                DefaultScheduleDto item = schedule[DayOfWeek.Sunday];
+                if (item is not null)
+                {
+                    DefaultScheduleItemsForSelectedInterval.Add(
+                        new DefaultScheduleItem()
+                        {
+                            Id = (int)item.Id,
+                            TemplateId = item.TemplateDto.Id,
+                            TemplateName = item.TemplateDto.Name,
+                            Day = DayOfWeek.Sunday,
+                        });
                 }
-
-
+                else
+                {
+                    DefaultScheduleItemsForSelectedInterval.Add(
+                        new DefaultScheduleItem()
+                        {
+                            Day = DayOfWeek.Sunday,
+                        });
+                }
             }
         }
     }

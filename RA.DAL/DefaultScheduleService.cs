@@ -61,26 +61,32 @@ namespace RA.DAL
             }
             return dictionary;
         }
-        public async Task<IEnumerable<DateTimeRange>> GetDefaultSchedulesRangeAsync(int skip = 0, int limit = 100)
+        public async Task<IEnumerable<DateTimeRange>> GetDefaultSchedulesRangeAsync(int skip = 0, int limit = 100, bool ascending = false)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            var result = await dbContext.DefaultSchedules
-                .Select(s => new {s.StartDate, s.EndDate})
-                .Distinct()
-                .OrderBy(s => s.StartDate)
-                .ThenBy(s => s.EndDate)
+            var query = dbContext.DefaultSchedules
+                .Select(s => new { s.StartDate, s.EndDate })
+                .Distinct();
+
+            query = ascending
+                ? query.OrderBy(s => s.StartDate).ThenBy(s => s.EndDate)
+                : query.OrderByDescending(s => s.StartDate).ThenBy(s => s.EndDate);
+
+            var result = await query
                 .Select(s => new DateTimeRange(s.StartDate, s.EndDate))
+                .Skip(skip)
+                .Take(limit)
                 .ToListAsync();
 
             return result;
-
         }
-        public IEnumerable<DateTimeRange> GetDefaultSchedulesRange(int skip = 0, int limit = 100)
+
+        public IEnumerable<DateTimeRange> GetDefaultSchedulesRange(int skip = 0, int limit = 100, bool ascending = false)
         {
-            return GetDefaultSchedulesRangeAsync(skip, limit).Result;
+            return GetDefaultSchedulesRangeAsync(skip, limit, ascending).Result;
         }
 
-        public async Task<IDictionary<DayOfWeek,DefaultScheduleDto?>> GetDefaultScheduleWithTemplate(DateTimeRange range)
+        public async Task<IDictionary<DayOfWeek, DefaultScheduleDto?>> GetDefaultScheduleWithTemplate(DateTimeRange range)
         {
             var dictionary = new Dictionary<DayOfWeek, DefaultScheduleDto?>();
             using var dbContext = dbContextFactory.CreateDbContext();
@@ -90,7 +96,7 @@ namespace RA.DAL
                                         ds.EndDate.Equals(range.EndDate))
                                 .Select(ds => DefaultScheduleDto.FromEntity(ds))
                                 .ToListAsync());
-            for(int i = 0; i < 7; i++)
+            for (int i = 0; i < 7; i++)
             {
                 DefaultScheduleDto? scheduleByDay = data.Where(s => s.Day == (DayOfWeek)i)
                     .FirstOrDefault();
