@@ -32,7 +32,7 @@ namespace RA.Logic.PlanningLogic
                     .Include(ds => ds.Template)
                     .Where(ds =>
                         (ds.StartDate <= searchDateEnd) &&
-                        (!ds.EndDate.HasValue || ds.EndDate >= searchDateStart))
+                        (ds.EndDate >= searchDateStart))
                     .OrderBy(ds => ds.StartDate)
                     .OrderBy(ds => ds.EndDate)
                     .ToListAsync();
@@ -48,7 +48,7 @@ namespace RA.Logic.PlanningLogic
                     DayOfWeek day = dateIndex.DayOfWeek;
                     var item = defaultSchedules.Where(ds => ds.DayOfWeek == day &&
                         (ds.StartDate <= searchDateEnd) &&
-                        (!ds.EndDate.HasValue || ds.EndDate >= dateIndex))
+                        (ds.EndDate >= dateIndex))
                         .FirstOrDefault();
 
                     if (item != null)

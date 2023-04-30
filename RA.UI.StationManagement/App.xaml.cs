@@ -73,13 +73,13 @@ namespace RA.UI.StationManagement
                     services.AddSingleton<IDispatcherService, WpfDispatcherService>();
 
                     //Navigation services
-                    services.AddSingleton<INavigationService<MediaLibraryMainViewModel>,
+                    services.AddScoped<INavigationService<MediaLibraryMainViewModel>,
                         NavigationService<MediaLibraryMainViewModel>>();
 
                     services.AddTransient<INavigationService<MediaLibraryImportItemsViewModel>,
                         NavigationService<MediaLibraryImportItemsViewModel>>();
 
-                    services.AddTransient<MediaLibraryTreeMenuService>();
+                    services.AddScoped<MediaLibraryTreeMenuService>();
 
                     #region DAL services
                     services.AddTransient<IClocksService, ClocksService>();
@@ -88,7 +88,7 @@ namespace RA.UI.StationManagement
                     services.AddTransient<ITemplatesService, TemplatesService>();
                     services.AddTransient<ICategoriesService, CategoriesService>();
                     services.AddTransient<ITagsService, TagsService>();
-                    services.AddTransient<IScheduleService, ScheduleService>();
+                    services.AddTransient<IDefaultScheduleService, DefaultScheduleService>();
                     #endregion
 
                     #region Register window factory
@@ -195,10 +195,16 @@ namespace RA.UI.StationManagement
 
             SplashScreenWindow splashScreen = new SplashScreenWindow();
             splashScreen.Show();
+
             var testDatabaseTask = Task.Run(() =>
             {
-                if(!CanConnectToDatabase()) 
-                    Application.Current.Shutdown();
+                if (!CanConnectToDatabase())
+                {
+                    dispatcherService.InvokeOnUIThread(() =>
+                    {
+                        Application.Current.Shutdown();
+                    });
+                }
             });
 
             var loadComponents = Task.Run(async () =>

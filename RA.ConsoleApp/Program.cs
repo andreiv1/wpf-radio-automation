@@ -29,14 +29,16 @@ namespace RA.ConsoleApp
         static void TestDefaultScheduleOverview()
         {
             var dbFactory = new DbContextFactory();
-            IScheduleService scheduleService = new ScheduleService(dbFactory);
-            var date = new DateTime(2023,3,1);
-            var end = date.AddDays(100);
-            var result = scheduleService.GetDefaultScheduleOverview(date,end);
-            foreach(var item in result)
-            {
-                Console.WriteLine($"{item.Key} - {item.Value?.TemplateDto?.Name ?? "No schedule found"}");
-            }
+            var db = dbFactory.CreateDbContext();
+
+            var schedulesDates = db.DefaultSchedules
+                .Select(s => new { s.StartDate, s.EndDate })
+                .Distinct()
+                .OrderBy(s => s.StartDate)
+                .ThenBy(s => s.EndDate)
+                .ToList();
+
+            Console.WriteLine();
         }
         
     }

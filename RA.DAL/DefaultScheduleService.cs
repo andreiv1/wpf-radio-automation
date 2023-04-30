@@ -1,19 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RA.DAL.Models;
 using RA.Database;
 using RA.DTO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RA.DAL
 {
-    public class ScheduleService : IScheduleService
+    public class DefaultScheduleService : IDefaultScheduleService
     {
         private readonly IDbContextFactory<AppDbContext> dbContextFactory;
 
-        public ScheduleService(IDbContextFactory<AppDbContext> dbContextFactory)
+        public DefaultScheduleService(IDbContextFactory<AppDbContext> dbContextFactory)
         {
             this.dbContextFactory = dbContextFactory;
         }
@@ -22,7 +25,6 @@ namespace RA.DAL
         {
             return GetDefaultScheduleOverviewAsync(searchDateStart, searchDateEnd).Result;
         }
-
         public async Task<IDictionary<DateTime, DefaultScheduleDto>> GetDefaultScheduleOverviewAsync(DateTime searchDateStart, DateTime searchDateEnd)
         {
             var dictionary = new Dictionary<DateTime, DefaultScheduleDto>();
@@ -32,7 +34,7 @@ namespace RA.DAL
                     .Include(ds => ds.Template)
                     .Where(ds =>
                         (ds.StartDate <= searchDateEnd) &&
-                        (!ds.EndDate.HasValue || ds.EndDate >= searchDateStart))
+                        (ds.EndDate >= searchDateStart))
                     .OrderBy(ds => ds.StartDate)
                     .OrderBy(ds => ds.EndDate)
                     .ToListAsync();
@@ -43,7 +45,7 @@ namespace RA.DAL
                     DayOfWeek day = dateIndex.DayOfWeek;
                     var item = defaultSchedules.Where(ds => ds.DayOfWeek == day &&
                         (ds.StartDate <= searchDateEnd) &&
-                        (!ds.EndDate.HasValue || ds.EndDate >= dateIndex))
+                        (ds.EndDate >= dateIndex))
                         .FirstOrDefault();
 
                     if (item != null)
@@ -59,6 +61,20 @@ namespace RA.DAL
                 }
             }
             return dictionary;
+        }
+
+        public async Task<IEnumerable<DateTimeRange>> GetDefaultSchedulesRangeAsync(int skip = 0, int limit = 100)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var result = await dbContext.DefaultSchedules
+                .Select(s => new DateTimeRange(s.StartDate, s.EndDate))
+                .Distinct()
+                .OrderBy(s => s.StartDate)
+                .ThenBy(s => s.EndDate)
+                .ToListAsync();
+
+            return result;
+
         }
     }
 }

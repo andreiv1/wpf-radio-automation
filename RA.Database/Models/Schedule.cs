@@ -10,7 +10,7 @@ namespace RA.Database.Models
     public class Schedule : BaseModel
     {
         public DateTime StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime EndDate { get; set; }
         public int TemplateId { get; set; }
         public Template Template { get; set; }  
     }

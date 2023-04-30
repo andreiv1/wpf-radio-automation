@@ -26,7 +26,7 @@ namespace RA.UI.StationManagement.Converters
                 }
             }
 
-            return null;
+            return String.Empty;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
