@@ -12,7 +12,7 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="220"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
