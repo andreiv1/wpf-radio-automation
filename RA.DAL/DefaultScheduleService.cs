@@ -20,7 +20,6 @@ namespace RA.DAL
         {
             this.dbContextFactory = dbContextFactory;
         }
-
         public IDictionary<DateTime, DefaultScheduleDto> GetDefaultScheduleOverview(DateTime searchDateStart, DateTime searchDateEnd)
         {
             return GetDefaultScheduleOverviewAsync(searchDateStart, searchDateEnd).Result;
@@ -62,7 +61,6 @@ namespace RA.DAL
             }
             return dictionary;
         }
-
         public async Task<IEnumerable<DateTimeRange>> GetDefaultSchedulesRangeAsync(int skip = 0, int limit = 100)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
@@ -77,10 +75,29 @@ namespace RA.DAL
             return result;
 
         }
-
         public IEnumerable<DateTimeRange> GetDefaultSchedulesRange(int skip = 0, int limit = 100)
         {
             return GetDefaultSchedulesRangeAsync(skip, limit).Result;
+        }
+
+        public async Task<IDictionary<DayOfWeek,DefaultScheduleDto?>> GetDefaultScheduleWithTemplate(DateTimeRange range)
+        {
+            var dictionary = new Dictionary<DayOfWeek, DefaultScheduleDto?>();
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var data = await Task.Run(() => dbContext.DefaultSchedules
+                                .Include(ds => ds.Template)
+                                .Where(ds => ds.StartDate.Equals(range.StartDate) &&
+                                        ds.EndDate.Equals(range.EndDate))
+                                .Select(ds => DefaultScheduleDto.FromEntity(ds))
+                                .ToListAsync());
+            for(int i = 0; i < 7; i++)
+            {
+                DefaultScheduleDto? scheduleByDay = data.Where(s => s.Day == (DayOfWeek)i)
+                    .FirstOrDefault();
+
+                dictionary.Add((DayOfWeek)i, scheduleByDay);
+            }
+            return dictionary;
         }
     }
 }
