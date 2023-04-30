@@ -256,7 +256,7 @@
                                 ShowLabel="True"
                                 LabelPosition="Inner"
                                 LabelRotationAngle="0"
-                                
+                               
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 LabelTemplate="{StaticResource AdornmentTemplate}"/>
