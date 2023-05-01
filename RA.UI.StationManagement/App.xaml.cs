@@ -38,6 +38,8 @@ using RA.UI.StationManagement.Components.Planner.ViewModels.Templates;
 using RA.UI.StationManagement.Components.Planner.Views.Schedule;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Playlists;
 using RA.UI.StationManagement.Components.Planner.View.Playlists;
+using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Categories;
+using RA.UI.StationManagement.Components.MediaLibrary.Views.Categories;
 
 namespace RA.UI.StationManagement
 {
@@ -141,7 +143,7 @@ namespace RA.UI.StationManagement
 
                     viewModelToTransientWindowMap.Add(typeof(MediaLibraryManageTrackViewModel), typeof(MediaLibraryManageTrackWindow));
 
-
+                    viewModelToTransientWindowMap.Add(typeof(MediaLibraryManageCategoryViewModel), typeof(MediaLibraryManageCategoryWindow));
                     #endregion
 
                     #region Planner

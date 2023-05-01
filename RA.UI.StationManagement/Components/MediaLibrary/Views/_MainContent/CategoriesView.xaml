@@ -48,6 +48,13 @@
                        AutoGenerateColumns="False" AutoGenerateColumnsMode="None"
                        RowHeight="30">
             <syncfusion:SfDataGrid.Columns>
+                <syncfusion:GridTemplateColumn Width="25" HeaderText="">
+                    <syncfusion:GridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Rectangle Fill="{Binding Color, Converter={StaticResource StringToBrushConverter}}"/>
+                        </DataTemplate>
+                    </syncfusion:GridTemplateColumn.CellTemplate>
+                </syncfusion:GridTemplateColumn>
                 <syncfusion:GridTextColumn HeaderText="Category Name" MappingName="Name" Width="300"/>
                 <syncfusion:GridTextColumn HeaderText="Description" MappingName="Description"/>
                 <syncfusion:GridTemplateColumn HeaderText="Action" Width="190">

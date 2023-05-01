@@ -1,6 +1,9 @@
-﻿using RA.DAL;
+﻿using CommunityToolkit.Mvvm.Input;
+using RA.DAL;
 using RA.DTO;
+using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
+using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Categories;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,12 +15,14 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 {
     public partial class CategoriesViewModel : ViewModelBase
     {
+        private readonly IWindowService windowService;
         private readonly ICategoriesService categoriesService;
 
         public ObservableCollection<CategoryDto> Categories { get; set; } = new();
 
-        public CategoriesViewModel(ICategoriesService categoriesService)
+        public CategoriesViewModel(IWindowService windowService, ICategoriesService categoriesService)
         {
+            this.windowService = windowService;
             this.categoriesService = categoriesService;
             _ = LoadCategories();
         }
@@ -29,5 +34,13 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
                 Categories.Add(category);
             }
         }
+
+        #region Commands
+        [RelayCommand]
+        private void AddCategory()
+        {
+            windowService.ShowDialog<MediaLibraryManageCategoryViewModel>();
+        }
+        #endregion
     }
 }

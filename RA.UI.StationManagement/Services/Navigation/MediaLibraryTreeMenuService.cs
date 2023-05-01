@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
+using RA.Database.Models;
 using RA.DTO;
 using RA.Logic;
 using RA.UI.Core.Services;
@@ -76,7 +77,8 @@ namespace RA.UI.StationManagement.Services
 
         public event EventHandler? CanExecuteChanged;
 
-        public CategoryNavigationCommand(INavigationService<MediaLibraryMainViewModel> navigationService, int categoryId)
+        public CategoryNavigationCommand(INavigationService<MediaLibraryMainViewModel> navigationService, 
+            int categoryId)
         {
             this.navigationService = navigationService;
             this.categoryId = categoryId;
@@ -89,7 +91,7 @@ namespace RA.UI.StationManagement.Services
 
         public void Execute(object? parameter)
         {
-            //navigationService.NavigateTo<CategoryItemsViewModel>(categoryId);
+            navigationService.NavigateTo<CategoryItemsViewModel>(categoryId);
         }
 
         public void NotifyCanExecuteChanged()
@@ -220,6 +222,7 @@ namespace RA.UI.StationManagement.Services
                         IconKey = "FolderTreeIcon",
                         Tag = category,
                         Type = MenuItemType.Category,
+                        NavigationCommand =  new CategoryNavigationCommand(navigationService, (int)category.Id),
                     };
                     dispatcher.InvokeOnUIThread(() =>
                     {
@@ -256,6 +259,7 @@ namespace RA.UI.StationManagement.Services
                         IconKey = "FolderTreeIcon",
                         Tag = childCategory,
                         Type = MenuItemType.Category,
+                        NavigationCommand = new CategoryNavigationCommand(navigationService, (int)childCategory.Id),
                     };
 
                     childItem.IconKey = childItem.HasChildNodes ? "FolderTreeIcon" : "MusicFolderIcon";

@@ -1,0 +1,97 @@
+﻿<uicore:RAWindow x:Class="RA.UI.StationManagement.Components.MediaLibrary.Views.Categories.MediaLibraryManageCategoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        mc:Ignorable="d"
+        Title="MediaLibraryManageCategoryWindow" Height="450" Width="600">
+    <Window.Resources>
+        <!-- Temporary card -->
+        <ControlTemplate x:Key="NoToggleButtonExpanderTemplate" TargetType="{x:Type Expander}">
+            <Border Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="2"
+            SnapsToDevicePixels="True">
+                <DockPanel>
+                    <ContentPresenter DockPanel.Dock="Top"
+                              ContentSource="Header"
+                              Margin="4"
+                              RecognizesAccessKey="True"
+                              TextBlock.FontWeight="Bold" />
+                    <ContentPresenter x:Name="ExpandSite"
+                              DockPanel.Dock="Bottom"
+                              Margin="4"
+                              Visibility="Visible"
+                              TextBlock.FontWeight="Normal"/>
+                    <ContentPresenter Margin="4"
+                              Visibility="Collapsed"
+                              TextBlock.FontWeight="Normal"/>
+                </DockPanel>
+            </Border>
+        </ControlTemplate>
+    </Window.Resources>
+    <StackPanel Margin="15">
+        <Expander Margin="0,0,0,25"
+                       Template="{StaticResource NoToggleButtonExpanderTemplate}">
+
+            <Grid Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Image Source="{StaticResource InfoIcon}" VerticalAlignment="Center" HorizontalAlignment="Left"
+                               Height="32" Width="32" Margin="15,0,15,0"/>
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" Width="auto" 
+                            Text="Categories are a good way to organise the content in the media library name. 
+Please add a name, a suggestive description if you need and a color for easily distinction between category. Keep in mind that categories are useful also for planning, when building clocks." 
+                                   TextWrapping="WrapWithOverflow"/>
+            </Grid>
+        </Expander>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="5"/>
+
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="5"/>
+
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="20"/>
+
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Content="Category Name" FontWeight="DemiBold"/>
+            <syncfusion:SfTextBoxExt Grid.Row="0" Grid.Column="1" Height="24"/>
+
+            <Label Grid.Row="2" Content="Description" FontWeight="DemiBold"/>
+            <syncfusion:SfTextBoxExt Grid.Row="2" Grid.Column="1" Height="150"  VerticalAlignment="Center"
+                                     VerticalContentAlignment="Top"
+                                        
+                                 AcceptsReturn="True"
+                                 AcceptsTab="True" TextWrapping="Wrap"/>
+
+            <Label Grid.Row="4" Content="Color" FontWeight="DemiBold"/>
+            <syncfusion:ColorPicker Grid.Row="4" Grid.Column="1"/>
+
+            <StackPanel Grid.Row="6" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                <syncfusion:ButtonAdv Label="Cancel" SmallIcon="{StaticResource RemoveIcon}"
+                                      Command="{Binding CancelDialogCommand}"
+                                  Margin="0,0,5,0"/>
+                <syncfusion:ButtonAdv Label="Add category" SmallIcon="{StaticResource AddFolderIcon}"
+                                      Command="{Binding FinishDialogCommand}"/>
+
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</uicore:RAWindow>
