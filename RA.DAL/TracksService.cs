@@ -65,7 +65,20 @@ namespace RA.DAL
 
         public IEnumerable<TrackListDto> GetTrackListByArtist(int artistId, int skip, int take)
         {
-            return GetTrackListByArtistAsync(artistId,skip,take).Result;
+            return GetTrackListByArtistAsync(artistId, skip, take).Result;
+        }
+
+        public async Task<IEnumerable<TrackListDto>> GetTrackListByCategoryAsync(int categoryId, int skip, int take)
+        {
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            return await dbContext.GetTracks()
+                .Skip(skip).Take(take)
+                .Where(t => t.Categories.Contains(new Category()
+                    {
+                        Id = categoryId,
+                    }))
+                .Select(t => TrackListDto.FromEntity(t))
+                .ToListAsync();
         }
     }
 }
