@@ -7,7 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="800">
     <UserControl.Resources>
-        <DropShadowEffect x:Key="ShadowEffect" Color="#444" Opacity="0.3" Direction="315" ShadowDepth="5" BlurRadius="10" />
         <Style x:Key="LauncherButtonStyle" TargetType="{x:Type Button}" BasedOn="{x:Null}">
             <Setter Property="OverridesDefaultStyle" Value="True"/>
             <Setter Property="Background" Value="#373737" />
@@ -38,7 +37,7 @@
         </Style>
     </UserControl.Resources>
     <Border CornerRadius="5" Background="{Binding BackgroundColor, RelativeSource={RelativeSource AncestorType={x:Type local:LauncherComponentControl}}}" 
-            Effect="{StaticResource ShadowEffect}"
+            
             Margin="5">
         <Grid>
             <Grid.RowDefinitions>
