@@ -10,7 +10,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule.Models
 {
     public partial class DefaultScheduleItem : ObservableObject
     {
-        public int Id { get; set; }
+        [ObservableProperty]
+        private int? id;
 
         [ObservableProperty]
         private int templateId;

@@ -1,10 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DAL.Models;
 using RA.DTO;
 using RA.UI.Core.Services;
+using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Schedule.Models;
+using RA.UI.StationManagement.Dialogs.TemplateSelectDialog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,6 +21,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
     public partial class PlannerDefaultScheduleViewModel : ViewModelBase
     {
         private readonly IDispatcherService dispatcherService;
+        private readonly IWindowService windowService;
         private readonly IDefaultScheduleService defaultScheduleService;
         private readonly ITemplatesService templatesService;
 
@@ -27,6 +31,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         private DateTimeRange? selectedInterval;
 
         public ObservableCollection<DefaultScheduleItem> DefaultScheduleItemsForSelectedInterval { get; private set; } = new();
+
+        [ObservableProperty]
+        private DefaultScheduleItem? selectedDefaultScheduleItem;
         public ObservableCollection<TemplateDto> Templates { get; private set; } = new();
 
         partial void OnSelectedIntervalChanged(DateTimeRange? value)
@@ -36,10 +43,11 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         }
 
         #region Constructor
-        public PlannerDefaultScheduleViewModel(IDispatcherService dispatcherService,
+        public PlannerDefaultScheduleViewModel(IDispatcherService dispatcherService, IWindowService windowService,
             IDefaultScheduleService defaultScheduleService, ITemplatesService templatesService)
         {
             this.dispatcherService = dispatcherService;
+            this.windowService = windowService;
             this.defaultScheduleService = defaultScheduleService;
             this.templatesService = templatesService;
             _ = LoadIntervals();
@@ -136,6 +144,17 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
                 Templates.Add(template);
             }
         }
+        #endregion
+
+        #region Commands
+
+        //Commands for selected default schedule
+        [RelayCommand]
+        private void SelectTemplateForDay()
+        {
+            windowService.ShowDialog<TemplateSelectViewModel>();
+        }
+
         #endregion
     }
 }
