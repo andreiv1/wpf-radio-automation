@@ -9,6 +9,7 @@ using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Clocks;
 using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Models;
+using RA.UI.StationManagement.Dialogs.TrackSelectDialog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -126,6 +127,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         }
 
         #region Commands
+        [RelayCommand]
+        private void InsertTrackToSelectedClock()
+        {
+            windowService.ShowDialog<TrackSelectViewModel>();
+        }
+
         [RelayCommand]
         private void InsertCategoryRuleToSelectedClock()
         {

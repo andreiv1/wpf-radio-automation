@@ -121,6 +121,8 @@
                                               SmallIcon="{x:Null}"
                                               IsEnabled="True">
                     <syncfusion:DropDownMenuGroup>
+                        <syncfusion:DropDownMenuItem Header="From track"
+                                                     Command="{Binding InsertTrackToSelectedClockCommand}"/>
                         <syncfusion:DropDownMenuItem Header="From category" 
                                                      Command="{Binding InsertCategoryRuleToSelectedClockCommand}"/>
                         <syncfusion:DropDownMenuItem Header="From event"/>

@@ -40,6 +40,7 @@ using RA.UI.StationManagement.Components.Planner.ViewModels.Playlists;
 using RA.UI.StationManagement.Components.Planner.View.Playlists;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Categories;
 using RA.UI.StationManagement.Components.MediaLibrary.Views.Categories;
+using RA.UI.StationManagement.Dialogs.TrackSelectDialog;
 
 namespace RA.UI.StationManagement
 {
@@ -170,6 +171,7 @@ namespace RA.UI.StationManagement
 
                     #region Dialogs
                     viewModelToTransientWindowMap.Add(typeof(CategorySelectViewModel), typeof(CategorySelectDialog));
+                    viewModelToTransientWindowMap.Add(typeof(TrackSelectViewModel), typeof(TrackSelectDialog));
                     #endregion
 
 
