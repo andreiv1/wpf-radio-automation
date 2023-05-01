@@ -21,7 +21,6 @@
         <syncfusion:SfScheduler Grid.Row="1" x:Name="calendar" 
                                 BorderThickness="0" 
                                 AllowViewNavigation="True"
-                                AllowedViewTypes="Month,Week"
                                 ViewType="Month"
                                 ItemsSource="{Binding CalendarItems}" FirstDayOfWeek="Monday"
                                 LoadOnDemandCommand="{Binding LoadScheduleOnDemandCommand}"

@@ -22,6 +22,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule.Models
 
         private int templateId;
 
+        public ScheduleCalendarItem()
+        {
+        }
+
         public ScheduleCalendarItem(DateTime date, string templateName, int templateId)
         {
             this.date = date;

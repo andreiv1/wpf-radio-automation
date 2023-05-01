@@ -39,6 +39,21 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         {
             this.windowService = windowService;
             this.defaultScheduleService = defaultScheduleService;
+            _ = InitSchedule();
+        }
+
+        private async Task InitSchedule()
+        {
+            IsLoadingCalendar = true;
+            var monthDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var initCalendar = await defaultScheduleService
+                .GetDefaultScheduleOverviewAsync(monthDate - new TimeSpan(10, 0, 0, 0), monthDate.AddDays(40));
+            foreach(var item in initCalendar)
+            {
+                if (!String.IsNullOrEmpty(item.Value.TemplateDto?.Name))
+                    CalendarItems.Add(ScheduleCalendarItem.FromDto(item.Value, item.Key));
+            }
+            IsLoadingCalendar = false;
         }
 
         private async Task LoadSchedule(DateTimeRange range)
@@ -46,7 +61,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             CalendarItems.Clear();
             IsLoadingCalendar = true;
             var calendar = await Task.Run(() => defaultScheduleService.GetDefaultScheduleOverview(range.StartDate, range.EndDate));
-            Task.Delay(10);
+            await Task.Delay(10);
             IsLoadingCalendar = false;
             foreach(var item in calendar)
             {
