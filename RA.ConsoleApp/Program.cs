@@ -23,19 +23,20 @@ namespace RA.ConsoleApp
     {
         static void Main(string[] args)
         {
-            TestDefaultScheduleOverview();
+            Test();
         }
 
-        static void TestDefaultScheduleOverview()
+        static void Test()
         {
             var dbFactory = new DbContextFactory();
             //var db = dbFactory.CreateDbContext();
-            var dsService = new DefaultScheduleService(dbFactory);
-            var schedulesDates = dsService.GetDefaultScheduleOverview(DateTime.Now.Date,DateTime.Now.Date.AddDays(20));
-            foreach(var s in schedulesDates)
+            var dsService = new TracksService(dbFactory);
+            var tracks = dsService.GetTrackListByArtist(9, 0, 100);
+            foreach(var t in tracks)
             {
-                Console.WriteLine($"{s.Value} - {s.Key}");
+                Console.WriteLine(t.Artists + " " + t.Title);
             }
+            Console.ReadLine();
         }
         
     }

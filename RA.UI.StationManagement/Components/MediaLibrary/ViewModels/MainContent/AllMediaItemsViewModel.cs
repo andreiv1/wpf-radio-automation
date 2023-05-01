@@ -42,8 +42,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 
         public async Task LoadTracks(int skip, int take)
         {
-            TotalTracks = await Task.Run(() => tracksService.GetTrackCountAsync());
-            var tracks = await Task.Run(() => tracksService.GetTrackListAsync(skip, take));
+            TotalTracks = await tracksService.GetTrackCountAsync();
+            var tracks = await tracksService.GetTrackListAsync(skip, take);
             Pages = TotalTracks > 0 ? (TotalTracks - 1) / tracksPerPage + 1 : 0;
             Items.Clear();
             foreach (var track in tracks)

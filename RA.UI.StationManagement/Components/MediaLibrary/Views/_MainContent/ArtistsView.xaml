@@ -53,7 +53,7 @@
         <syncfusion:SfDataGrid Grid.Row="1"
                        Margin="5,5,5,0"
                        ColumnSizer="Auto"
-                       ItemsSource="{Binding Items}"
+                       ItemsSource="{Binding Artists}"
                        SelectedItem="{Binding SelectedArtist}"
                        SelectionUnit="Row"
                        NavigationMode="Row"

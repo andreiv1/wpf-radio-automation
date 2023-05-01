@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RA.DAL;
 using RA.Database;
+using RA.Database.Models;
 using RA.DTO;
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,25 @@ namespace RA.DAL
                 .Include(c => c.Categories)
                 .Select(t => TrackDto.FromEntity(t))
                 .FirstAsync();
+        }
+
+        public async Task<IEnumerable<TrackListDto>> GetTrackListByArtistAsync(int artistId, int skip, int take)
+        {
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            return await dbContext.GetTracks()
+                .Skip(skip).Take(take)
+                .Where(t => t.TrackArtists.Contains(new ArtistTrack
+                {
+                    ArtistId = artistId,
+                    TrackId = t.Id,
+                }))
+                .Select(t => TrackListDto.FromEntity(t))
+                .ToListAsync();
+        }
+
+        public IEnumerable<TrackListDto> GetTrackListByArtist(int artistId, int skip, int take)
+        {
+            return GetTrackListByArtistAsync(artistId,skip,take).Result;
         }
     }
 }

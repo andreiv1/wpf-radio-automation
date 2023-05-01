@@ -12,5 +12,7 @@ namespace RA.DAL
         Task<IEnumerable<TrackListDto>> GetTrackListAsync(int skip, int take);
         Task<int> GetTrackCountAsync();
         Task<TrackDto> GetTrack(int id);
+        Task<IEnumerable<TrackListDto>> GetTrackListByArtistAsync(int artistId, int skip, int take);
+        IEnumerable<TrackListDto> GetTrackListByArtist(int artistId, int skip, int take);
     }
 }
