@@ -23,7 +23,10 @@
                                 AllowViewNavigation="True"
                                 AllowedViewTypes="Month,Week"
                                 ViewType="Month"
-                                ItemsSource="{Binding CalendarItems}">
+                                ItemsSource="{Binding CalendarItems}" FirstDayOfWeek="Monday"
+                                LoadOnDemandCommand="{Binding LoadScheduleOnDemandCommand}"
+                                ShowBusyIndicator="{Binding IsLoadingCalendar}"
+                               >
             <syncfusion:SfScheduler.MonthViewSettings>
                 <syncfusion:MonthViewSettings AppointmentDisplayMode="Appointment"
                                               AppointmentDisplayCount="1"/>

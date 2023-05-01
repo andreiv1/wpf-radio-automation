@@ -33,6 +33,8 @@ namespace RA.UI.StationManagement.Components.Planner.View.Schedule
         {
             var dataContext = DataContext as PlannerScheduleCalendarViewModel;
             calendar.ItemsSource = dataContext?.CalendarItems;
+           
         }
+       
     }
 }
