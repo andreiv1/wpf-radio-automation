@@ -1,5 +1,4 @@
 ﻿using RA.DTO;
-using RA.DTO;
 
 namespace RA.DAL
 {
@@ -7,6 +6,6 @@ namespace RA.DAL
     {
         Task<IEnumerable<TagCategoryDto>> GetTagCategoriesAsync();
         IEnumerable<TagCategoryDto> GetTagCategories();
-        Task<IEnumerable<TagValueDto>> GetTagsByCategoryAsync(int tagCategoryId);
+        Task<IEnumerable<TagValueDto>> GetTagValuesByCategoryAsync(int tagCategoryId);
     }
 }

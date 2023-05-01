@@ -23,20 +23,27 @@ namespace RA.ConsoleApp
     {
         static void Main(string[] args)
         {
-            Test();
+             Test();
         }
 
-        static void Test()
+        static async void Test()
         {
             var dbFactory = new DbContextFactory();
             //var db = dbFactory.CreateDbContext();
-            var dsService = new TracksService(dbFactory);
-            var tracks = dsService.GetTrackListByArtist(9, 0, 100);
-            foreach(var t in tracks)
+            //var dsService = new TracksService(dbFactory);
+            //var tracks = dsService.GetTrackListByArtist(9, 0, 100);
+            //foreach(var t in tracks)
+            //{
+            //    Console.WriteLine(t.Artists + " " + t.Title);
+            //}
+            //Console.ReadLine();
+
+            var tService = new TagsService(dbFactory);
+            var values = await tService.GetTagValuesByCategoryAsync(1);
+            foreach(var v in values)
             {
-                Console.WriteLine(t.Artists + " " + t.Title);
+                await Console.Out.WriteLineAsync($"{v.Id} - {v.Name}");
             }
-            Console.ReadLine();
         }
         
     }

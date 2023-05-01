@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RA.Logic", "RA.Logic\RA.Log
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RA.UI.DatabaseConfiguration", "RA.UI.DatabaseConfiguration\RA.UI.DatabaseConfiguration.csproj", "{392A4911-1F7D-49F2-8A40-FA382D6590E0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RA.UI.Playout", "RA.UI.Playout\RA.UI.Playout.csproj", "{B22999AC-2AE4-4438-98C6-5C54F8D38633}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DC4ADB31-CF44-474E-A23B-141DBC4AB2CC}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -24,9 +22,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RA.UI.Components", "RA.UI.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RA.UI.StationManagement", "RA.UI.StationManagement\RA.UI.StationManagement.csproj", "{AE69526A-F78B-4964-BE71-4EF4F0D907AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RA.DAL", "RA.DAL\RA.DAL.csproj", "{F87D2975-C9E1-46EF-AEF1-E5EC02C3EA23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RA.DAL", "RA.DAL\RA.DAL.csproj", "{F87D2975-C9E1-46EF-AEF1-E5EC02C3EA23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RA.ConsoleApp", "RA.ConsoleApp\RA.ConsoleApp.csproj", "{E3D2B2F6-C454-4025-98F1-4796B3C14B60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RA.ConsoleApp", "RA.ConsoleApp\RA.ConsoleApp.csproj", "{E3D2B2F6-C454-4025-98F1-4796B3C14B60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,14 +58,6 @@ Global
 		{392A4911-1F7D-49F2-8A40-FA382D6590E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{392A4911-1F7D-49F2-8A40-FA382D6590E0}.Release|x64.ActiveCfg = Release|Any CPU
 		{392A4911-1F7D-49F2-8A40-FA382D6590E0}.Release|x64.Build.0 = Release|Any CPU
-		{B22999AC-2AE4-4438-98C6-5C54F8D38633}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B22999AC-2AE4-4438-98C6-5C54F8D38633}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B22999AC-2AE4-4438-98C6-5C54F8D38633}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{B22999AC-2AE4-4438-98C6-5C54F8D38633}.Debug|x64.Build.0 = Debug|Any CPU
-		{B22999AC-2AE4-4438-98C6-5C54F8D38633}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B22999AC-2AE4-4438-98C6-5C54F8D38633}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B22999AC-2AE4-4438-98C6-5C54F8D38633}.Release|x64.ActiveCfg = Release|Any CPU
-		{B22999AC-2AE4-4438-98C6-5C54F8D38633}.Release|x64.Build.0 = Release|Any CPU
 		{B7143DE1-0DC1-4B39-B3FC-C075B423F262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B7143DE1-0DC1-4B39-B3FC-C075B423F262}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7143DE1-0DC1-4B39-B3FC-C075B423F262}.Debug|x64.ActiveCfg = Debug|Any CPU

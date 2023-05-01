@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RA.UI.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,14 +14,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RA.UI.Playout.Views.Components
+namespace RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent
 {
-    /// <summary>
-    /// Interaction logic for NowPlayingView.xaml
-    /// </summary>
-    public partial class NowPlayingView : UserControl
+    public partial class TagsView : RAUserControl
     {
-        public NowPlayingView()
+        public TagsView()
         {
             InitializeComponent();
         }

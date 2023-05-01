@@ -9,6 +9,8 @@ namespace RA.UI.Core.ViewModels
 {
     public abstract partial class ViewModelBase : ObservableObject, IDisposable
     {
+        [ObservableProperty]
+        private bool isMainDataLoading = false;
         public virtual void Dispose() { }
     }
 }

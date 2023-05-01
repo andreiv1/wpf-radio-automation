@@ -31,11 +31,13 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 
         private async Task LoadArtists()
         {
+            IsMainDataLoading = true;
             var artists = await artistsService.GetArtistsAsync(0, 100);
             foreach(var artist in artists)
             {
                 this.Artists.Add(ArtistModel.FromDto(artist));
             }
+            IsMainDataLoading = false;
         }
 
         public async Task LoadTracksForArtist(ArtistModel artist)

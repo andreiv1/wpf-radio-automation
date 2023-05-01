@@ -199,7 +199,11 @@ namespace RA.UI.StationManagement.Services
             };
             menuItems.Add(categories);
 
-            var tags = new MenuItemModel { DisplayName = "Tags", HasChildNodes = true, IconKey = "TagsIcon", Type = MenuItemType.Tag,  };
+            var tags = new MenuItemModel { DisplayName = "Tags", HasChildNodes = true, IconKey = "TagsIcon", Type = MenuItemType.Tag,
+                NavigationCommand = new RelayCommand(() =>
+                {
+                    navigationService.NavigateTo<TagsViewModel>();
+                })};
             menuItems.Add(tags);
 
             tags.Children?.Add(new MenuItemModel { DisplayName = "Loading...", HasChildNodes = false, Type = MenuItemType.Tag });
@@ -291,6 +295,13 @@ namespace RA.UI.StationManagement.Services
                     DisplayName = tag.Name,
                     HasChildNodes = false,
                     IconKey = "TagsIcon",
+                    NavigationCommand = new RelayCommand(() =>
+                    {
+                        if (tag.Id.HasValue)
+                        {
+                            navigationService.NavigateTo<TagsViewModel>(tag.Id);
+                        }
+                    }),
                 };
 
                 childItems.Add(childTag);

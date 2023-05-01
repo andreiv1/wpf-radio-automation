@@ -136,7 +136,10 @@ namespace RA.UI.StationManagement
                     viewModelToTransientWindowMap.Add(typeof(ArtistsViewModel), typeof(ArtistsView));
                     viewModelToTransientWindowMap.Add(typeof(CategoriesViewModel), typeof(CategoriesView));
                     viewModelToTransientWindowMap.Add(typeof(CategoryItemsViewModel), typeof(CategoryItemsView));
+                    viewModelToTransientWindowMap.Add(typeof(TagsViewModel), typeof(TagsView));
                     #endregion
+
+
                     viewModelToTransientWindowMap.Add(typeof(ImportItemsFirstViewModel), typeof(ImportItemsFirstView));
                     viewModelToTransientWindowMap.Add(typeof(ImportItemsSecondViewModel), typeof(ImportItemsSecondView));
                     viewModelToTransientWindowMap.Add(typeof(ImportItemsThirdViewModel), typeof(ImportItemsThirdView));

@@ -79,5 +79,10 @@
                 </ContextMenu>
             </syncfusion:SfDataGrid.ContextMenu>
         </syncfusion:SfDataGrid>
+        <syncfusion:SfBusyIndicator Grid.Row="1"
+                        IsBusy="{Binding IsMainDataLoading}"
+                        d:IsBusy="True"
+                        VerticalAlignment="Center"
+                        AnimationType="Message"/>
     </Grid>
 </uicore:RAUserControl>

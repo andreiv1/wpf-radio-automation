@@ -29,10 +29,12 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 
         private async Task LoadCategories()
         {
+            IsMainDataLoading = true;
             var categories = await categoriesService.GetRootCategoriesAsync();
             foreach(var category in categories) { 
                 Categories.Add(category);
             }
+            IsMainDataLoading = false;
         }
 
         #region Commands
