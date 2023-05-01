@@ -50,38 +50,39 @@
                 SmallIcon="{StaticResource RemoveIcon}"
                 Label="Delete"/>
         </StackPanel>
-        <syncfusion:SfDataGrid Grid.Row="1"
+        <syncfusion:SfDataGrid x:Name="artistTracksGrid"
+                       Grid.Row="1"
                        Margin="5,5,5,0"
                        ColumnSizer="Auto"
                        ItemsSource="{Binding Artists}"
                        SelectedItem="{Binding SelectedArtist}"
+                           
                        SelectionUnit="Row"
                        NavigationMode="Row"
                        AllowResizingColumns="True"
-                       AutoGenerateColumns="False">
+                       AutoGenerateColumns="False"
+                       
+                               DetailsViewExpanded="artistTracksGrid_DetailsViewExpanded"
+                               DetailsViewCollapsed="artistTracksGrid_DetailsViewCollapsed">
             <syncfusion:SfDataGrid.Columns>
                 <syncfusion:GridTextColumn HeaderText="Artist Name" MappingName="Name" HorizontalHeaderContentAlignment="Left"
                                            AllowResizing="True"
                                     ColumnSizer="Star"/>
             </syncfusion:SfDataGrid.Columns>
             <syncfusion:SfDataGrid.DetailsViewDefinition>
-                <syncfusion:GridViewDefinition RelationalColumn="OrderDetail">
+                <syncfusion:GridViewDefinition RelationalColumn="Tracks">
                     <syncfusion:GridViewDefinition.DataGrid>
                         <syncfusion:SfDataGrid
-                            x:Name="FirstDetailsViewGrid"
-                            AutoGenerateColumns="False"
+                            x:Name="artistTracks"
+                            AutoGenerateColumns="True"
                             ColumnSizer="Star">
                             <syncfusion:SfDataGrid.Columns>
-                                <syncfusion:GridTextColumn HeaderText="Other Artists" MinimumWidth="200"/>
-                                <syncfusion:GridTextColumn HeaderText="Title" MinimumWidth="300"/>
-                                <syncfusion:GridTextColumn HeaderText="Track Type" MappingName="Type" MinimumWidth="60"/>
-                                <syncfusion:GridTextColumn HeaderText="Duration" MappingName="Duration" MinimumWidth="80"
-                                           DisplayBinding="{Binding Path=Duration, Converter={StaticResource DoubleToTimeSpanConverter}, StringFormat={}{0:hh\\:mm\\:ss} }">
-                                </syncfusion:GridTextColumn>
-                                <syncfusion:GridDateTimeColumn HeaderText="Date Added" MappingName="DateAdded"
-                                    MinimumWidth="130"/>
-                                <syncfusion:GridDateTimeColumn HeaderText="Date Modified" MappingName="DateModified"
-                                   MinimumWidth="130"/>
+                                <syncfusion:GridTextColumn HeaderText="Artists" 
+                                                           MappingName="Artists"
+                                                           MinimumWidth="200"/>
+                                <syncfusion:GridTextColumn HeaderText="Title" 
+                                                           MappingName="Title"
+                                                           MinimumWidth="300"/>
                             </syncfusion:SfDataGrid.Columns>
                         </syncfusion:SfDataGrid>
                     </syncfusion:GridViewDefinition.DataGrid>
@@ -95,40 +96,10 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
-                <Grid Margin='6'
-                      VerticalAlignment='Center'
-                      HorizontalAlignment='Center'>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock>
-                                 PageNo 
-                                <TextBlock Text="Page " />
-                                <TextBlock Text="{Binding PaginationHelper.PageNo,FallbackValue=1}"/>
-                                <TextBlock Text=" showing " />
-                                 RecordsPerPage
-                                <TextBlock Text="{Binding PaginationHelper.CurrentRecords,FallbackValue=0}"/>
-                                 TotalCount
-                                <TextBlock Text=" of "/>
-                                <TextBlock Text="{Binding PaginationHelper.TotalRecords,FallbackValue=0}"/>
-                                <TextBlock Text=" items"/>
-                            </TextBlock>
-
-                    </StackPanel>
-                </Grid>
+                
             </StackPanel>
 
-            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                <syncfusion:ButtonAdv Height="30" Margin="0,0,3,0"
-                    Command="{Binding PreviousPageCommand}"
-                    SmallIcon="{StaticResource BackIcon}"
-                    Label="Previous"/>
-
-                <syncfusion:ButtonAdv Height="30" Margin="0,0,3,0"
-                    Command="{Binding NextPageCommand}"
-                    SmallIcon="{StaticResource ForwardIcon}"
-                    HorizontalContentAlignment="Right"
-                    FlowDirection="RightToLeft"
-                    Label="Next"/>
-            </StackPanel>
+            
         </Grid>
     </Grid>
 </uicore:RAUserControl>
