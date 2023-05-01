@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:RA.UI.StationManagement"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
         Title="Splash Window" Height="350" Width="500" ShowTitle="False" ShowIcon="False" TitleBarHeight="0" Icon="/Resources/icon.ico"
         WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
@@ -92,5 +93,11 @@
                      Loaded="progressBar_Loaded"
                      Margin="0,20,0,20" Height="10" VerticalAlignment="Bottom" 
                      Visibility="Visible" Minimum="0" Maximum="100" IsIndeterminate="True"/>
+        
+        
+        
+        <!-- Preload controls -->
+        <syncfusion:SfMaskedEdit Visibility="Hidden"/>
+        <syncfusion:ComboBoxAdv Visibility="Hidden"/>
     </Grid>
 </uicore:RAWindow>

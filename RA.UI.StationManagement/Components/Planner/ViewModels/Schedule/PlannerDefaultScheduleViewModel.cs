@@ -19,29 +19,35 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
     {
         private readonly IDispatcherService dispatcherService;
         private readonly IDefaultScheduleService defaultScheduleService;
+        private readonly ITemplatesService templatesService;
+
         public ObservableCollection<DateTimeRange> DefaultIntervals { get; private set; } = new();
 
         [ObservableProperty]
         private DateTimeRange? selectedInterval;
 
         public ObservableCollection<DefaultScheduleItem> DefaultScheduleItemsForSelectedInterval { get; private set; } = new();
+        public ObservableCollection<TemplateDto> Templates { get; private set; } = new();
 
         partial void OnSelectedIntervalChanged(DateTimeRange? value)
         {
             _ = LoadDefaultScheduleForSelectedInterval();
+            _ = LoadTemplates();
         }
 
         #region Constructor
         public PlannerDefaultScheduleViewModel(IDispatcherService dispatcherService,
-            IDefaultScheduleService defaultScheduleService)
+            IDefaultScheduleService defaultScheduleService, ITemplatesService templatesService)
         {
             this.dispatcherService = dispatcherService;
             this.defaultScheduleService = defaultScheduleService;
+            this.templatesService = templatesService;
             _ = LoadIntervals();
         }
 
         #endregion
 
+        #region Data fetching
         private async Task LoadIntervals()
         {
             var intervals = await Task.Run(() => defaultScheduleService.GetDefaultSchedulesRangeAsync(0, 500));
@@ -121,5 +127,15 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
                 }
             }
         }
+
+        private async Task LoadTemplates()
+        {
+            var templates = await templatesService.GetTemplatesAsync();
+            foreach (var template in templates)
+            {
+                Templates.Add(template);
+            }
+        }
+        #endregion
     }
 }

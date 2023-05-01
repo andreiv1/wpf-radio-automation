@@ -6,8 +6,13 @@
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <syncfusion:ComboBoxAdv Height="30"/>
-    </Grid>
+        Title="MainWindow" Height="450" Width="800"
+                  xmlns:syncfusionskin ="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+                    
+>
+    <StackPanel>
+        <syncfusion:SfMaskedEdit Height="24" Visibility="Hidden"/>
+        <syncfusion:SfMaskedEdit Height="24"/>
+        <syncfusion:SfMaskedEdit Height="24"/>
+    </StackPanel>
 </uicore:RAWindow>
