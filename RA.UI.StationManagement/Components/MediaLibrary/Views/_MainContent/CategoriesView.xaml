@@ -45,14 +45,16 @@
                        SelectionUnit="Row"
                        NavigationMode="Row"
                        AllowResizingColumns="True" 
-                       AutoGenerateColumns="False" AutoGenerateColumnsMode="None">
+                       AutoGenerateColumns="False" AutoGenerateColumnsMode="None"
+                       RowHeight="30">
             <syncfusion:SfDataGrid.Columns>
                 <syncfusion:GridTextColumn HeaderText="Category Name" MappingName="Name" Width="300"/>
                 <syncfusion:GridTextColumn HeaderText="Description" MappingName="Description"/>
-                <syncfusion:GridTemplateColumn HeaderText="Action" Width="200">
+                <syncfusion:GridTemplateColumn HeaderText="Action" Width="190">
                     <syncfusion:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                                        HorizontalAlignment="Center">
                                 <syncfusion:ButtonAdv Label="Open" Margin="0,0,3,0"
                                                       SmallIcon="{StaticResource OpenedFolderIcon}"/>
                                 <syncfusion:ButtonAdv Label="Edit" Margin="0,0,3,0"
