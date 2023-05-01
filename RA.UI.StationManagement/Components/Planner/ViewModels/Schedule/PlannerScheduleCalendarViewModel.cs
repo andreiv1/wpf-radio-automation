@@ -61,7 +61,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             CalendarItems.Clear();
             IsLoadingCalendar = true;
             var calendar = await Task.Run(() => defaultScheduleService.GetDefaultScheduleOverview(range.StartDate, range.EndDate));
-            await Task.Delay(10);
             IsLoadingCalendar = false;
             foreach(var item in calendar)
             {

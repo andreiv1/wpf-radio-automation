@@ -31,19 +31,6 @@ namespace RA.UI.StationManagement
             Application.Current.Shutdown();
         }
 
-        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                this.DragMove();
-            }
-        }
-
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
-
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             Close();

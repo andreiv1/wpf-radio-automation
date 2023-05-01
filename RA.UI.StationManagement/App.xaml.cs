@@ -198,8 +198,6 @@ namespace RA.UI.StationManagement
             var windowService = AppHost!.Services.GetRequiredService<IWindowService>();
             var dispatcherService = AppHost!.Services.GetRequiredService<IDispatcherService>();
 
-            ThemeManager.SetTheme(ThemeType.Light);
-
             SplashScreenWindow splashScreen = new SplashScreenWindow();
             splashScreen.Show();
 
@@ -217,7 +215,12 @@ namespace RA.UI.StationManagement
             var loadComponents = Task.Run(async () =>
             {
                 //Load any components you need 
-                await Task.Delay(100);
+                //await Task.Delay(500000);
+                ThemeManager.SetTheme(ThemeType.Light);
+                var window = AppHost!.Services.GetRequiredService<MediaLibraryMainWindow>();
+                window.Show();
+
+                
             });
 
             Task.WhenAll(testDatabaseTask, loadComponents).ContinueWith(t =>

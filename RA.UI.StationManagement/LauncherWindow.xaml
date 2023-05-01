@@ -9,48 +9,15 @@
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         d:DataContext="{d:DesignInstance Type=local:LauncherViewModel}"
         mc:Ignorable="d"
-        Title="Radio Automation | Management Launcher" Height="400" Width="500" 
-        ShowTitle="False" ShowMaximizeButton="False"
+        Title="RA | Station Management Launcher"         
+        Height="400" Width="500" 
+        
+        ShowTitle="True" ShowMaximizeButton="False"
         Icon="/Resources/icon.ico" WindowStartupLocation="CenterScreen">
 
     <uicore:RAWindow.Resources>
         <DropShadowEffect x:Key="ShadowEffect" Color="#444" Opacity="0.3" Direction="315" ShadowDepth="5" BlurRadius="10" />
-        <ControlTemplate x:Key="CustomTitleBar">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Border Background="#3C3F41" Height="60">
-                    <TextBlock Text="Radio Automation | Management" FontSize="24" Foreground="White" Margin="10"
-                               FontWeight="DemiBold"
-                               Effect="{StaticResource ShadowEffect}"/>
-                </Border>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Grid Margin="0,3,5,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Margin="0,0,4,0"
-                        Style="{StaticResource WindowButtonStyle}"
-                        Click="MinimizeButton_Click">
-                            <TextBlock Margin="0,-1,0,0" Padding="3,0,3,5"
-                        Text="—" Style="{StaticResource WindowButtonTextStyle}"/>
-                        </Button>
-                        <Button Grid.Column="1" Style="{StaticResource WindowCloseButtonStyle}" 
-                        Click="ExitButton_Click">
-                            <TextBlock Text="✕" Padding="3,3,5,5"
-                                   Style="{StaticResource WindowButtonTextStyle}"/>
-                        </Button>
-                    </Grid>
-                </StackPanel>
-            </Grid>
-        </ControlTemplate>
-
+       
         <Style x:Key="WindowButtonStyle" TargetType="Button" BasedOn="{x:Null}">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="White" />

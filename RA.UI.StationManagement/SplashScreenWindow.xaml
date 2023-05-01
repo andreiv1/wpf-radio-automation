@@ -1,12 +1,13 @@
-﻿<Window x:Class="RA.UI.StationManagement.SplashScreenWindow"
+﻿<uicore:RAWindow x:Class="RA.UI.StationManagement.SplashScreenWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RA.UI.StationManagement"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         mc:Ignorable="d"
-        Title="SplashScreenWindow" Height="350" Width="500"
+        Title="SplashScreenWindow" Height="350" Width="500" ShowTitle="False" ShowIcon="False" TitleBarHeight="0" Icon="/Resources/icon.ico"
         WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <DropShadowEffect x:Key="ShadowEffect" Color="#444" Opacity="0.3" Direction="315" ShadowDepth="5" BlurRadius="10" />
@@ -92,4 +93,4 @@
                      Margin="0,20,0,20" Height="10" VerticalAlignment="Bottom" 
                      Visibility="Visible" Minimum="0" Maximum="100" IsIndeterminate="True"/>
     </Grid>
-</Window>
+</uicore:RAWindow>

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -41,16 +41,16 @@
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
-        <PackageReference Include="Syncfusion.SfGrid.WPF" Version="21.1.41" />
-        <PackageReference Include="Syncfusion.Shared.WPF" Version="21.1.41" />
-    <PackageReference Include="Syncfusion.Tools.WPF" Version="21.1.41" />
-    <PackageReference Include="Syncfusion.SfChromelessWindow.WPF" Version="21.1.41" />
-    <PackageReference Include="Syncfusion.Themes.Windows11Light.Wpf" Version="21.1.41" />
-    <PackageReference Include="Syncfusion.SfSkinManager.Wpf" Version="21.1.41" />
+        <PackageReference Include="Syncfusion.SfGrid.WPF" Version="21.1.35" />
+        <PackageReference Include="Syncfusion.Shared.WPF" Version="21.1.35" />
+    <PackageReference Include="Syncfusion.Tools.WPF" Version="21.1.35" />
+    <PackageReference Include="Syncfusion.SfChromelessWindow.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.SfTreeView.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.SfScheduler.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.SfInput.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.SfChart.WPF" Version="21.1.35" />
+    <PackageReference Include="Syncfusion.Themes.Windows11Light.Wpf" Version="21.1.35" />
+    <PackageReference Include="Syncfusion.SfSkinManager.Wpf" Version="21.1.35" />
 </ItemGroup>
 
     <ItemGroup>

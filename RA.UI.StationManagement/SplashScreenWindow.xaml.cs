@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RA.UI.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,10 +16,7 @@ using System.Windows.Shapes;
 
 namespace RA.UI.StationManagement
 {
-    /// <summary>
-    /// Interaction logic for SplashScreenWindow.xaml
-    /// </summary>
-    public partial class SplashScreenWindow : Window
+    public partial class SplashScreenWindow : RAWindow
     {
         public SplashScreenWindow()
         {
