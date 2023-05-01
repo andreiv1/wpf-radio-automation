@@ -152,7 +152,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         [RelayCommand]
         private void SelectTemplateForDay()
         {
-            windowService.ShowDialog<TemplateSelectViewModel>();
+            var templateSelectDialog = windowService.ShowDialog<TemplateSelectViewModel>();
+            if (SelectedDefaultScheduleItem != null &&  templateSelectDialog.SelectedTemplate != null)
+            {
+                SelectedDefaultScheduleItem.TemplateName = templateSelectDialog.SelectedTemplate.Name;
+                SelectedDefaultScheduleItem.TemplateId = templateSelectDialog.SelectedTemplate.Id;
+            }
         }
 
         #endregion

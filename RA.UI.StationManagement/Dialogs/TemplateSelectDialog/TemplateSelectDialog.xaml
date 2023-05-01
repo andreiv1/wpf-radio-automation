@@ -20,7 +20,9 @@
         <Label Grid.Row="0" FontWeight="DemiBold"
             Content="Pick a template:"/>
 
-        <syncfusion:SfDataGrid Grid.Row="2" ItemsSource="{Binding Templates}" AutoGenerateColumns="False">
+        <syncfusion:SfDataGrid Grid.Row="2" ItemsSource="{Binding Templates}" AutoGenerateColumns="False"
+                               SelectionUnit="Row" NavigationMode="Row" 
+                               SelectedItem="{Binding SelectedTemplate}">
             <syncfusion:SfDataGrid.Columns>
                 <!-- Day Of Week -->
                 <syncfusion:GridTextColumn HeaderText="Template Name" ColumnSizer="AutoLastColumnFill"

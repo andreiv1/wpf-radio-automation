@@ -1,4 +1,5 @@
-﻿using RA.DAL;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using RA.DAL;
 using RA.Database.Models;
 using RA.DTO;
 using RA.UI.Core.Services.Interfaces;
@@ -20,7 +21,9 @@ namespace RA.UI.StationManagement.Dialogs.TemplateSelectDialog
 
         public ObservableCollection<TemplateDto> Templates { get; private set; } = new();
 
-
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(FinishDialogCommand))]
+        private TemplateDto? selectedTemplate;
 
         public TemplateSelectViewModel(IWindowService windowService, ITemplatesService templatesService) : base(windowService)
         {
@@ -30,7 +33,7 @@ namespace RA.UI.StationManagement.Dialogs.TemplateSelectDialog
 
         protected override bool CanFinishDialog()
         {
-            return false;
+            return SelectedTemplate is not null;
         }
 
         #region Data fetching
