@@ -36,18 +36,6 @@
                 Command="{Binding AddCategoryCommand}"
                 SmallIcon="{StaticResource AddFolderIcon}"
                 Label="Add category"/>
-
-            <syncfusion:ButtonAdv
-                Margin="0,0,5,0"
-                Command="{Binding EditCategoryCommand}"
-                SmallIcon="{StaticResource EditIcon}"
-                Label="Edit category"/>
-
-            <syncfusion:ButtonAdv
-                Margin="0,0,5,0"
-                Command="{Binding DeleteItemCommand}"
-                SmallIcon="{StaticResource RemoveIcon}"
-                Label="Delete category"/>
         </StackPanel>
 
         <syncfusion:SfDataGrid Grid.Row="1" Margin="5,5,5,0"
@@ -56,11 +44,25 @@
                        SelectedItem="{Binding SelectedCategory}"
                        SelectionUnit="Row"
                        NavigationMode="Row"
-                       AllowResizingColumns="True"
+                       AllowResizingColumns="True" 
                        AutoGenerateColumns="False" AutoGenerateColumnsMode="None">
             <syncfusion:SfDataGrid.Columns>
                 <syncfusion:GridTextColumn HeaderText="Category Name" MappingName="Name" Width="300"/>
                 <syncfusion:GridTextColumn HeaderText="Description" MappingName="Description"/>
+                <syncfusion:GridTemplateColumn HeaderText="Action" Width="200">
+                    <syncfusion:GridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <syncfusion:ButtonAdv Label="Open" Margin="0,0,3,0"
+                                                      SmallIcon="{StaticResource OpenedFolderIcon}"/>
+                                <syncfusion:ButtonAdv Label="Edit" Margin="0,0,3,0"
+                                                      SmallIcon="{StaticResource EditIcon}"/>
+                                <syncfusion:ButtonAdv Label="Delete"
+                                                      SmallIcon="{StaticResource RemoveIcon}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </syncfusion:GridTemplateColumn.CellTemplate>
+                </syncfusion:GridTemplateColumn>
             </syncfusion:SfDataGrid.Columns>
             <syncfusion:SfDataGrid.ContextMenu>
                 <ContextMenu>
