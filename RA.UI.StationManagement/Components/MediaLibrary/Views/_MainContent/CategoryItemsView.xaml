@@ -11,14 +11,15 @@
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
              d:DataContext="{d:DesignData Type=vm:CategoryItemsViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
+    <uicore:RAUserControl.Resources>
         <converters:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverter"/>
         <converters:CollectionToGridLengthConverter x:Key="CollectionToGridLengthConverter"/>
-    </UserControl.Resources>
+    </uicore:RAUserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="55"/>
-            <RowDefinition Height="{Binding Subcategories, Converter={StaticResource CollectionToGridLengthConverter}}"/>
+            <!--<RowDefinition Height="{Binding Subcategories, Converter={StaticResource CollectionToGridLengthConverter}}"/>-->
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -41,14 +42,14 @@
                 VerticalAlignment="Center">
                 
                 <!-- Search categories : hidden when no categories-->
-                <syncfusion:SfTextBoxExt x:Name="searchCategoriesTextbox" Visibility="{Binding HasItems,Converter={StaticResource BooleanToVisibileVisibilityConverter}}"
+                <syncfusion:SfTextBoxExt x:Name="searchCategoriesTextbox" Visibility="{Binding HasTracks,Converter={StaticResource BooleanToVisibileVisibilityConverter}}"
                                     Width="300" Margin="5,0,5,0" Height="25" VerticalAlignment="Center"
                                      Watermark="Search categories..."
                                      Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
                                      ShowClearButton="True"
                                      />
                 <!-- Search items : hidden when categories -->
-                <syncfusion:SfTextBoxExt x:Name="searchItemsTextbox" Visibility="{Binding HasItems,Converter={StaticResource BooleanToCollapsedVisibilityConverter}}"
+                <syncfusion:SfTextBoxExt x:Name="searchItemsTextbox" Visibility="{Binding HasTracks,Converter={StaticResource BooleanToCollapsedVisibilityConverter}}"
                                     Width="300" Margin="5,0,5,0" Height="25" VerticalAlignment="Center"
                                      Watermark="Search items in this category..."
                                      Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
@@ -63,7 +64,7 @@
                 
                 
                 <!-- Buttons shown only for items -->
-                <StackPanel Orientation="Horizontal" Visibility="{Binding HasItems,Converter={StaticResource BooleanToCollapsedVisibilityConverter}}">
+                <StackPanel Orientation="Horizontal" Visibility="{Binding HasTracks,Converter={StaticResource BooleanToCollapsedVisibilityConverter}}">
                     <syncfusion:ButtonAdv
                 Margin="0,0,5,0"
                 Command="{Binding AddItemCommand}"
@@ -98,7 +99,8 @@
                        SelectionUnit="Row"
                        NavigationMode="Row"
                        AllowResizingColumns="True"
-                       AutoGenerateColumns="False" AutoGenerateColumnsMode="None">
+                       AutoGenerateColumns="False" AutoGenerateColumnsMode="None"
+                            >
             <syncfusion:SfDataGrid.Columns>
                 <syncfusion:GridTemplateColumn Width="25" HeaderText="">
                     <syncfusion:GridTemplateColumn.CellTemplate>
@@ -136,13 +138,13 @@
         <syncfusion:SfDataGrid Grid.Row="2"
                        Margin="5,3,5,0"
                        ColumnSizer="Auto"
-                       ItemsSource="{Binding Items}"
+                       ItemsSource="{Binding CategoryTracks}"
                        SelectedItem="{Binding SelectedTrack}"
                        SelectionUnit="Row"
                        NavigationMode="Row"
                        AllowResizingColumns="True"
                        AutoGenerateColumns="False">
-            <!--<syncfusion:SfDataGrid.Columns>
+            <syncfusion:SfDataGrid.Columns>
                 <syncfusion:GridTextColumn HeaderText="Artists" MappingName="Artists"
                                            MinimumWidth="200"
                                            AllowResizing="True"
@@ -156,14 +158,14 @@
                 <syncfusion:GridDateTimeColumn HeaderText="Date Added" MappingName="DateAdded"
                                     MinimumWidth="130"/>
                 <syncfusion:GridDateTimeColumn HeaderText="Date Modified" MappingName="DateModified"
-                                   MinimumWidth="130"/
-            </syncfusion:SfDataGrid.Columns>>-->
+                                   MinimumWidth="130"/>
+            </syncfusion:SfDataGrid.Columns>
 
         </syncfusion:SfDataGrid>
 
         <!-- No category items message -->
         <Grid Grid.Row="2"
-                  Visibility="{Binding HasItems,Converter={StaticResource BooleanToVisibileVisibilityConverter}}"
+                  Visibility="{Binding HasTracks,Converter={StaticResource BooleanToVisibileVisibilityConverter}}"
                   VerticalAlignment="Top" 
                   HorizontalAlignment="Center" 
                   Panel.ZIndex="1">

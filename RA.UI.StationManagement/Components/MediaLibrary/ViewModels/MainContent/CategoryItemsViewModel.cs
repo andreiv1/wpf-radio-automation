@@ -14,22 +14,24 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
     public partial class CategoryItemsViewModel : ViewModelBase
     {
         private readonly ICategoriesService categoryService;
+        private readonly ITracksService tracksService;
         private readonly int categoryId;
-        public ObservableCollection<CategoryDto> Subcategories { get; set; } = new();
+        public ObservableCollection<CategoryDto> Subcategories { get; private set; } = new();
 
-        public ObservableCollection<TrackListDto> CategoryTracks { get; set; } = new();
+        public ObservableCollection<TrackListDto> CategoryTracks { get; private set; } = new();
 
         [ObservableProperty]
         private CategoryHierarchyDto? categoryHierarchy;
 
         [ObservableProperty]
-        private bool hasItems = false;
+        private bool hasTracks = false;
 
         [ObservableProperty]
         private bool hasSubcategories = false;
-        public CategoryItemsViewModel(ICategoriesService categoryService, int categoryId)
+        public CategoryItemsViewModel(ICategoriesService categoryService, ITracksService tracksService, int categoryId)
         {
             this.categoryService = categoryService;
+            this.tracksService = tracksService;
             this.categoryId = categoryId;
             _ = LoadCategory();
             _ = LoadSubcategories();
@@ -44,6 +46,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         private async Task LoadSubcategories()
         {
             var subcategories = await categoryService.GetChildrenCategoriesAsync(categoryId);
+            HasSubcategories = subcategories.Any();
             Subcategories.Clear();
             foreach (var subcategory in subcategories)
             {
@@ -53,7 +56,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 
         private async Task LoadTracksInCategory()
         {
-            var tracks = await categoryService.GetTrackListByCategoryAsync(categoryId, 0, 100);
+            var tracks = await tracksService.GetTrackListByCategoryAsync(categoryId, 0, 100);
+            HasTracks = tracks.Any();
             CategoryTracks.Clear();
             foreach(var track in tracks)
             {
