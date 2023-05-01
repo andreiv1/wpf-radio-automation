@@ -7,6 +7,8 @@ using RA.UI.Core.Factories;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.Themes;
+using RA.UI.Playout.ViewModels;
+using RA.UI.Playout.Views;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,9 +19,6 @@ using System.Windows;
 
 namespace RA.UI.Playout
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         public static IHost? AppHost { get; private set; }
@@ -53,7 +52,38 @@ namespace RA.UI.Playout
                             AppHost!.Services
                         )
                     );
+
                     #endregion
+
+                    #region Singleton viewModel <=> View
+                    viewModelToSingletonWindowMap.Add(typeof(MainViewModel), typeof(MainWindow));
+                    //Register the viewmodel&view
+                    foreach (KeyValuePair<Type, Type> vmAndView in viewModelToSingletonWindowMap)
+                    {
+                        //Key: ViewModel, //Value: View
+                        //Register viewmodel
+                        services.AddSingleton(vmAndView.Key);
+                        //Register view
+                        services.AddTransient(vmAndView.Value, provider =>
+                        {
+                            var viewModel = provider.GetRequiredService(vmAndView.Key);
+                            var window = (Window)Activator.CreateInstance(vmAndView.Value)!;
+                            window.DataContext = viewModel;
+                            return window;
+                        });
+                    }
+                    #endregion
+
+                    #region Transient ViewModel <=> View
+                    foreach (KeyValuePair<Type, Type> vmAndView in viewModelToTransientWindowMap)
+                    {
+                        services.AddTransient(vmAndView.Key);
+                        services.AddTransient(vmAndView.Value);
+                    }
+                    #endregion
+
+
+
 
                 })
                 .Build();
@@ -70,7 +100,7 @@ namespace RA.UI.Playout
         {
             var windowService = AppHost!.Services.GetRequiredService<IWindowService>();
             var dispatcherService = AppHost!.Services.GetRequiredService<IDispatcherService>();
-            ThemeManager.SetTheme(ThemeType.Dark);
+            ThemeManager.SetTheme(ThemeType.Light);
             SplashScreenWindow splashScreen = new SplashScreenWindow();
             splashScreen.Show();
 
@@ -88,10 +118,6 @@ namespace RA.UI.Playout
             var loadComponents = Task.Run(async () =>
             {
                 //Load any components you need 
-                await Task.Delay(50000);
-                
-                //var window = AppHost!.Services.GetRequiredService<MediaLibraryMainWindow>();
-                //window.Show();
 
 
             });
@@ -100,7 +126,7 @@ namespace RA.UI.Playout
             {
                 dispatcherService.InvokeOnUIThread(() =>
                 {
-                    //windowService.ShowWindow<LauncherViewModel>();
+                    windowService.ShowWindow<MainViewModel>();
                     splashScreen.Close();
                 });
             });

@@ -21,6 +21,11 @@ namespace RA.UI.Core.Themes
 
         private static Theme? theme;
 
+        static ThemeManager()
+        {
+            SfSkinManager.ApplyStylesOnApplication = true;
+        }
+
         public static void SetTheme(ThemeType type)
         {
             switch (type)
