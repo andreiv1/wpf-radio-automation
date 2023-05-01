@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+	  <Title>RA | Playout</Title>
+	  <Product>$(AssemblyName)</Product>
+    <AssemblyVersion>0.1</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\playout_icon.ico" />
+    <None Remove="Resources\playout_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="21.1.35" />
+    <PackageReference Include="Syncfusion.Shared.WPF" Version="21.1.35" />
+    <PackageReference Include="Syncfusion.Themes.Windows11Dark.WPF" Version="21.1.35" />
+    <PackageReference Include="Syncfusion.Themes.Windows11Light.WPF" Version="21.1.35" />
+</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RA.DAL\RA.DAL.csproj" />
+    <ProjectReference Include="..\RA.Database\RA.Database.csproj" />
+    <ProjectReference Include="..\RA.DTO\RA.DTO.csproj" />
+    <ProjectReference Include="..\RA.UI.Core\RA.UI.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\playout_icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\playout_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="SplashScreenWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

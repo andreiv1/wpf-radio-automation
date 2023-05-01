@@ -9,6 +9,7 @@
     <Title>RA | Station Management</Title>
     <Product>$(AssemblyName)</Product>
     <AssemblyName>RA - Station Management</AssemblyName>
+	<AssemblyVersion>0.3</AssemblyVersion>
 	<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 

@@ -195,6 +195,8 @@ namespace RA.UI.StationManagement
 
         private void StartApp()
         {
+            ThemeManager.SetTheme(ThemeType.Light);
+
             var windowService = AppHost!.Services.GetRequiredService<IWindowService>();
             var dispatcherService = AppHost!.Services.GetRequiredService<IDispatcherService>();
 
@@ -215,8 +217,7 @@ namespace RA.UI.StationManagement
             var loadComponents = Task.Run(async () =>
             {
                 //Load any components you need 
-                //await Task.Delay(500000);
-                ThemeManager.SetTheme(ThemeType.Light);
+                await Task.Delay(1400);
                 var window = AppHost!.Services.GetRequiredService<MediaLibraryMainWindow>();
                 window.Show();
 

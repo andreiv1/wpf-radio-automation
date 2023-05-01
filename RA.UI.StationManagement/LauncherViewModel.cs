@@ -26,7 +26,6 @@ namespace RA.UI.StationManagement
         private void OpenMediaLibraryComponent()
         {
             windowService.ShowWindow<MediaLibraryMainViewModel>();
-            
         }
 
         [RelayCommand]
