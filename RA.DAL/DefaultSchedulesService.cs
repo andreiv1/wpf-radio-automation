@@ -116,6 +116,11 @@ namespace RA.DAL
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             var schedule = ScheduleDefaultDto.ToEntity(scheduleDefaultDto);
+            foreach(var itm in schedule.ScheduleDefaultItems)
+            {
+                itm.Schedule = schedule;
+                itm.ScheduleId = 0;
+            }
             schedule.ScheduleDefaultItems = items
                 .Select(s => ScheduleDefaultItemDto.ToEntity(s))
                 .ToList();

@@ -38,6 +38,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         [ObservableProperty]
         private DefaultScheduleItem? selectedDefaultScheduleItem;
 
+        [ObservableProperty]
+        private DateTimeRange addNewScheduleRange = new DateTimeRange(DateTime.Now.Date, DateTime.Now.Date.AddDays(7));
+
         partial void OnSelectedDefaultScheduleChanged(ScheduleDefaultDto? value)
         {
             _ = LoadDefaultScheduleForSelectedInterval();
@@ -172,29 +175,42 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         {
             if (SelectedDefaultSchedule == null) return;
 
-            List<ScheduleDefaultItemDto> toAdd = DefaultScheduleItemsForSelected.Where(s => !s.Id.HasValue)
-                .Select(s => DefaultScheduleItem.ToDto(s, SelectedDefaultSchedule))
-                .ToList();
-            List<ScheduleDefaultItemDto> toUpdate = DefaultScheduleItemsForSelected.Where(s => s.IsUpdated)
-                .Select(s => DefaultScheduleItem.ToDto(s, SelectedDefaultSchedule))
-                .ToList();
-
-            int addedNo = await defaultSchedulesService.UpdateDefaultScheduleItems(toAdd);
-            int updatedNo = await defaultSchedulesService.UpdateDefaultScheduleItems(toUpdate);
-
-            _ = LoadDefaultScheduleForSelectedInterval();
-
-            if(addedNo > 0 && updatedNo > 0)
+            //TODO: Bugs
+            if (SelectedDefaultSchedule.Id == null)
             {
-                messageBoxService.ShowInfo($"{addedNo} {(addedNo == 1 ? "day" : "days")} were added and {updatedNo} {(updatedNo == 1 ? "day" : "days")} were updated in the active default schedule.");
-            } else
-            if (updatedNo > 0)
+                //Add new schedule
+                await defaultSchedulesService.AddDefaultSchedule(SelectedDefaultSchedule, null);
+                messageBoxService.ShowInfo($"New default schedule added succesfully.");
+            }
+            else
             {
-                messageBoxService.ShowInfo($"{updatedNo} {(updatedNo == 1 ? "day" : "days")} were updated in the active default schedule.");
-            } else
-            if(addedNo > 0 )
-            {
-                messageBoxService.ShowInfo($"{addedNo} {(addedNo == 1 ? "day" : "days")} were added in the active default schedule.");
+                //Update existing schedule items
+                List<ScheduleDefaultItemDto> toAdd = DefaultScheduleItemsForSelected.Where(s => !s.Id.HasValue)
+                    .Select(s => DefaultScheduleItem.ToDto(s, SelectedDefaultSchedule))
+                    .ToList();
+                List<ScheduleDefaultItemDto> toUpdate = DefaultScheduleItemsForSelected.Where(s => s.IsUpdated)
+                    .Select(s => DefaultScheduleItem.ToDto(s, SelectedDefaultSchedule))
+                    .ToList();
+
+                int addedNo = await defaultSchedulesService.UpdateDefaultScheduleItems(toAdd);
+                int updatedNo = await defaultSchedulesService.UpdateDefaultScheduleItems(toUpdate);
+
+                _ = LoadDefaultScheduleForSelectedInterval();
+
+                if (addedNo > 0 && updatedNo > 0)
+                {
+                    messageBoxService.ShowInfo($"{addedNo} {(addedNo == 1 ? "day" : "days")} were added and {updatedNo} {(updatedNo == 1 ? "day" : "days")} were updated in the active default schedule.");
+                }
+                else
+                if (updatedNo > 0)
+                {
+                    messageBoxService.ShowInfo($"{updatedNo} {(updatedNo == 1 ? "day" : "days")} were updated in the active default schedule.");
+                }
+                else
+                if (addedNo > 0)
+                {
+                    messageBoxService.ShowInfo($"{addedNo} {(addedNo == 1 ? "day" : "days")} were added in the active default schedule.");
+                }
             }
 
         }
@@ -245,8 +261,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
                            {
                                Day = DayOfWeek.Sunday,
                            });
-            
             }
+            SelectedDefaultSchedule = new()
+            {
+                StartDate = AddNewScheduleRange.StartDate,
+                EndDate = AddNewScheduleRange.EndDate
+            };
         }
 
         //DEBUG

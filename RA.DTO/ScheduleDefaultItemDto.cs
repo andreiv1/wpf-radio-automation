@@ -35,10 +35,6 @@ namespace RA.DTO
             {
                 throw new ArgumentException($"Item must have attached a template");
             }
-            if(dto.Schedule.Id == null)
-            {
-                throw new ArgumentException($"Item must have attached a schedule id");
-            }
             return new ScheduleDefaultItem
             {
                 Id = dto.Id.GetValueOrDefault(),
