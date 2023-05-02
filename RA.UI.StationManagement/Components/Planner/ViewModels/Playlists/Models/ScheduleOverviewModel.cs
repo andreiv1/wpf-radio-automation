@@ -37,12 +37,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists.Models
 
         public String? ErrorMessage { get; set; }
 
-        public static ScheduleOverviewModel FromDto(DateTime date, ScheduleDto? dto)
+        public static ScheduleOverviewModel FromDto(DateTime date, ScheduleBaseDto? dto)
         {
             ScheduleOverviewModel model = new();
             model.Date = date;
 
-            if (dto.GetType() == typeof(DefaultScheduleDto))
+            if (dto.GetType() == typeof(ScheduleDefaultDto))
             {
                 model.Type = ScheduleType.Default;
             }
@@ -51,7 +51,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists.Models
                 model.Type = ScheduleType.Planned;
             }
             else throw new InvalidEnumArgumentException($"{dto.GetType()} is not the correct type.");
-            model.TemplateName = dto.TemplateDto?.Name ?? "-";
+            //model.TemplateName = dto.TemplateDto?.Name ?? "-";
+            model.TemplateName = "Not implemented";
             return model;
         }
     }

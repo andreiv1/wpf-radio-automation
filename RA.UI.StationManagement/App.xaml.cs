@@ -92,7 +92,7 @@ namespace RA.UI.StationManagement
                     services.AddTransient<ITemplatesService, TemplatesService>();
                     services.AddTransient<ICategoriesService, CategoriesService>();
                     services.AddTransient<ITagsService, TagsService>();
-                    services.AddTransient<IDefaultScheduleService, DefaultScheduleService>();
+                    services.AddTransient<IDefaultSchedulesService, DefaultSchedulesService>();
                     services.AddTransient<IArtistsService, ArtistsService>();
                     #endregion
 

@@ -20,7 +20,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
         public delegate void PlaylistGeneratedEventHandler();
 
         private readonly IDispatcherService dispatcherService;
-        private readonly IDefaultScheduleService scheduleService;
+        private readonly IDefaultSchedulesService schedulesService;
 
         public event PlaylistGeneratedEventHandler? PlaylistGenerated;
         public ObservableCollection<ScheduleOverviewModel> ScheduleOverview { get; set; } = new();
@@ -42,10 +42,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
         }
 
         public PlannerGeneratePlaylistsViewModel(IWindowService windowService, IDispatcherService dispatcherService,
-            IDefaultScheduleService scheduleService) : base(windowService)
+            IDefaultSchedulesService schedulesService) : base(windowService)
         {
             this.dispatcherService = dispatcherService;
-            this.scheduleService = scheduleService;
+            this.schedulesService = schedulesService;
             _ = LoadOverview();
         }
 
@@ -58,17 +58,17 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
         {
             ScheduleOverview.Clear();
             var scheduleOverview = await Task.Run(() => 
-                scheduleService.GetDefaultScheduleOverviewAsync(StartDate, StartDate.AddDays(NumberOfDaysToSchedule - 1)));
+                schedulesService.GetDefaultScheduleOverviewAsync(StartDate, StartDate.AddDays(NumberOfDaysToSchedule - 1)));
 
             foreach(var schedule in scheduleOverview)
             {
-                var item = ScheduleOverviewModel.FromDto(schedule.Key, schedule.Value);
-               
-                if(schedule.Value.TemplateDto == null)
-                {
-                    item.GenerationStatus = ScheduleGenerationStatus.NoScheduleFound;
-                } 
-                ScheduleOverview.Add(item);
+                //var item = ScheduleOverviewModel.FromDto(schedule.Key, schedule.Value);
+                throw new NotImplementedException();
+                //if(schedule.Value)
+                //{
+                //    item.GenerationStatus = ScheduleGenerationStatus.NoScheduleFound;
+                //} 
+                //ScheduleOverview.Add(item);
             }
         }
 

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using RA.DAL;
 using RA.Database;
+using RA.Database.Models;
 
 namespace RA.ConsoleApp
 {
@@ -21,13 +22,80 @@ namespace RA.ConsoleApp
     }
     public class Program
     {
+        static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
-            var dbFactory = new DbContextFactory();
+            //var db = dbFactory.CreateDbContext();
+            IDefaultSchedulesService defaultSchedulesService = new DefaultSchedulesService(dbFactory);
+            var overview = defaultSchedulesService.GetDefaultScheduleOverview(DateTime.Now.Date, DateTime.Now.Date.AddDays(10));
+            foreach(var item in overview)
+            {
+                Console.WriteLine($"{item.Key.ToString("dd/MM/yyyy")} - {item.Value?.Template?.Name} (templateId={item.Value?.Template?.Id})");
+            }
+        }
+        static void CreateDefaultSchedule()
+        {
             var db = dbFactory.CreateDbContext();
+            db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
-            //var result = db.Tracks.Count();
-            //Console.WriteLine(result.ToString());
+
+            //Creating dummy templates
+            List<Template> templates = new List<Template>();
+            for(int i = 0; i < 20; i++)
+            {
+                templates.Add(new Template()
+                {
+                    Name = $"Dummy template {i}"
+                });
+            }
+
+            List<ScheduleDefault> schedules = new List<ScheduleDefault>();
+            DateTime startDate = DateTime.Today;
+            DateTime endDate = startDate.AddDays(7);
+            var random = new Random();
+
+            //Creating 10 schedules
+            for(int i = 1; i <= 10; i++)
+            {
+                var s = new ScheduleDefault();
+                s.StartDate = startDate;
+                s.EndDate = endDate;
+
+                schedules.Add(s);
+
+                // Move to the next week
+                startDate = endDate;
+                endDate = startDate.AddDays(7);
+
+                //Adding items
+
+                s.ScheduleDefaultItems = new List<ScheduleDefaultItem>();
+                for (DayOfWeek day = DayOfWeek.Sunday; day <= DayOfWeek.Saturday; day++)
+                {
+
+                    s.ScheduleDefaultItems.Add(
+                    new ScheduleDefaultItem()
+                    {
+                        Schedule = s,
+                        DayOfWeek = day,
+                        Template = templates.ElementAt(random.Next(1, 19)),
+
+                    });
+                }
+            }
+            db.SchedulesDefault.AddRange(schedules);
+            db.SaveChanges();
+
+            foreach(var s in db.SchedulesDefault
+                .Include(s => s.ScheduleDefaultItems)
+                .ThenInclude(itm => itm.Template))
+            {
+                Console.WriteLine($"DEFAULT SCHEDULE BETWEEN {s.StartDate} - {s.EndDate}");
+                foreach (var itm in s.ScheduleDefaultItems)
+                {
+                    Console.WriteLine($"  >>> {(DayOfWeek)itm.DayOfWeek} - {itm.Template.Name}");
+                }
+            }
         }
         
     }

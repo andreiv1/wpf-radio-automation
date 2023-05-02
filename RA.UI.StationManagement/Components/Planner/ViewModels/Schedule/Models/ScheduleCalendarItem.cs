@@ -33,12 +33,13 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule.Models
             this.templateId = templateId;
         }
 
-        public static ScheduleCalendarItem FromDto(DefaultScheduleDto dto, DateTime date)
+        public static ScheduleCalendarItem FromDto(ScheduleDefaultDto dto, DateTime date)
         {
-            return new ScheduleCalendarItem(date, dto.TemplateDto?.Name ?? "", dto.TemplateDto?.Id ?? -1)
-            {
-                scheduleId = dto.Id,
-            };
+            //return new ScheduleCalendarItem(date, dto.TemplateDto?.Name ?? "", dto.TemplateDto?.Id ?? -1)
+            //{
+            //    scheduleId = dto.Id,
+            //};
+            throw new NotImplementedException();
         }
 
     }

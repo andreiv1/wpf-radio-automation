@@ -21,7 +21,7 @@ namespace RA.Database.Models
     public class SchedulePlanned : ScheduleBase
     {
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public SchedulePlannedType Type { get; set; }
         public SchedulePlannedFrequency? Frequency { get; set; }
     }

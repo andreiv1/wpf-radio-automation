@@ -13,21 +13,21 @@ using System.Threading.Tasks;
 
 namespace RA.DAL
 {
-    public class DefaultScheduleService : IDefaultScheduleService
+    public class DefaultScheduleObsoletService
     {
         private readonly IDbContextFactory<AppDbContext> dbContextFactory;
 
-        public DefaultScheduleService(IDbContextFactory<AppDbContext> dbContextFactory)
+        public DefaultScheduleObsoletService(IDbContextFactory<AppDbContext> dbContextFactory)
         {
             this.dbContextFactory = dbContextFactory;
         }
-        public IDictionary<DateTime, DefaultScheduleDto> GetDefaultScheduleOverview(DateTime searchDateStart, DateTime searchDateEnd)
+        public IDictionary<DateTime, ScheduleDefaultDto> GetDefaultScheduleOverview(DateTime searchDateStart, DateTime searchDateEnd)
         {
             return GetDefaultScheduleOverviewAsync(searchDateStart, searchDateEnd).Result;
         }
-        public async Task<IDictionary<DateTime, DefaultScheduleDto>> GetDefaultScheduleOverviewAsync(DateTime searchDateStart, DateTime searchDateEnd)
+        public async Task<IDictionary<DateTime, ScheduleDefaultDto>> GetDefaultScheduleOverviewAsync(DateTime searchDateStart, DateTime searchDateEnd)
         {
-            var dictionary = new Dictionary<DateTime, DefaultScheduleDto>();
+            var dictionary = new Dictionary<DateTime, ScheduleDefaultDto>();
             throw new NotImplementedException();
             //using (var dbContext = dbContextFactory.CreateDbContext())
             //{
@@ -63,31 +63,12 @@ namespace RA.DAL
             //}
             return dictionary;
         }
-        public async Task<IEnumerable<DateTimeRange>> GetDefaultSchedulesRangeAsync(int skip = 0, int limit = 100, bool ascending = false)
-        {
-            throw new NotImplementedException();
-            //using var dbContext = dbContextFactory.CreateDbContext();
-            //var query = dbContext.DefaultSchedules
-            //    .Select(s => new { s.StartDate, s.EndDate })
-            //    .Distinct();
-
-            //query = ascending
-            //    ? query.OrderBy(s => s.StartDate).ThenBy(s => s.EndDate)
-            //    : query.OrderByDescending(s => s.StartDate).ThenBy(s => s.EndDate);
-
-            //var result = await query
-            //    .Select(s => new DateTimeRange(s.StartDate, s.EndDate))
-            //    .Skip(skip)
-            //    .Take(limit)
-            //    .ToListAsync();
-
-            //return result;
-        }
         public IEnumerable<DateTimeRange> GetDefaultSchedulesRange(int skip = 0, int limit = 100, bool ascending = false)
         {
-            return GetDefaultSchedulesRangeAsync(skip, limit, ascending).Result;
+            throw new NotImplementedException();
+            //return GetDefaultSchedulesRangeAsync(skip, limit, ascending).Result;
         }
-        public async Task<IDictionary<DayOfWeek, DefaultScheduleDto?>> GetDefaultScheduleWithTemplateAsync(DateTimeRange range)
+        public async Task<IDictionary<DayOfWeek, ScheduleDefaultDto?>> GetDefaultScheduleWithTemplateAsync(DateTimeRange range)
         {
             throw new NotImplementedException();
             //var dictionary = new Dictionary<DayOfWeek, DefaultScheduleDto?>();
@@ -108,7 +89,7 @@ namespace RA.DAL
             //return dictionary;
         }
 
-        public async Task<bool> AddDefaultScheduleItemsAsync(List<DefaultScheduleDto> defaultScheduleItems, DateTimeRange scheduleRange)
+        public async Task<bool> AddDefaultScheduleItemsAsync(List<ScheduleDefaultDto> defaultScheduleItems, DateTimeRange scheduleRange)
         {
             //if (defaultScheduleItems == null || defaultScheduleItems?.Count == 0)
             //{
@@ -151,6 +132,19 @@ namespace RA.DAL
             throw new NotImplementedException();
             return true;
 
+        }
+
+        public IEnumerable<ScheduleDefaultDto> GetDefaultScheduleOverview(int skip = 0, int limit = 100, bool ascending = false)
+        {
+            throw new NotImplementedException();
+            //using var dbContext = dbContextFactory.CreateDbContext();
+           
+            //var query = dbContext.SchedulesDefault.AsEnumerable();
+            //query = ascending
+            //    ? query.OrderBy(s => s.StartDate).ThenBy(s => s.EndDate)
+            //    : query.OrderByDescending(s => s.StartDate).ThenBy(s => s.EndDate);
+            
+            //return query.Select(s => )
         }
     }
 }

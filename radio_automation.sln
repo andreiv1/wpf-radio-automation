@@ -26,7 +26,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RA.DAL", "RA.DAL\RA.DAL.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RA.ConsoleApp", "RA.ConsoleApp\RA.ConsoleApp.csproj", "{E3D2B2F6-C454-4025-98F1-4796B3C14B60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RA.UI.Playout", "RA.UI.Playout\RA.UI.Playout.csproj", "{E423AB45-5B65-44A4-AACD-2C20CDB527D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RA.UI.Playout", "RA.UI.Playout\RA.UI.Playout.csproj", "{E423AB45-5B65-44A4-AACD-2C20CDB527D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

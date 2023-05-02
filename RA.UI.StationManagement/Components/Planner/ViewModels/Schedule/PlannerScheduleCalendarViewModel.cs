@@ -20,7 +20,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
     public partial class PlannerScheduleCalendarViewModel : ViewModelBase
     {
         private readonly IWindowService windowService;
-        private readonly IDefaultScheduleService defaultScheduleService;
+        private readonly IDefaultSchedulesService defaultScheduleService;
 
         public ObservableCollection<ScheduleCalendarItem> CalendarItems { get; private set; } = new()
         {
@@ -35,7 +35,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         private bool isLoadingCalendar;
 
         public PlannerScheduleCalendarViewModel(IWindowService windowService, 
-            IDefaultScheduleService defaultScheduleService)
+            IDefaultSchedulesService defaultScheduleService)
         {
             this.windowService = windowService;
             this.defaultScheduleService = defaultScheduleService;
@@ -50,8 +50,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
                 .GetDefaultScheduleOverviewAsync(monthDate - new TimeSpan(10, 0, 0, 0), monthDate.AddDays(40));
             foreach(var item in initCalendar)
             {
-                if (!String.IsNullOrEmpty(item.Value.TemplateDto?.Name))
-                    CalendarItems.Add(ScheduleCalendarItem.FromDto(item.Value, item.Key));
+                throw new NotImplementedException();
+                //if (!String.IsNullOrEmpty(item.Value.TemplateDto?.Name))
+                    //CalendarItems.Add(ScheduleCalendarItem.FromDto(item.Value, item.Key));
             }
             IsLoadingCalendar = false;
         }
@@ -60,13 +61,14 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         {
             CalendarItems.Clear();
             IsLoadingCalendar = true;
-            var calendar = await Task.Run(() => defaultScheduleService.GetDefaultScheduleOverview(range.StartDate, range.EndDate));
+            throw new NotImplementedException();
+            //var calendar = await Task.Run(() => defaultScheduleService.GetDefaultScheduleOverview(range.StartDate, range.EndDate));
             IsLoadingCalendar = false;
-            foreach(var item in calendar)
-            {
-                if(!String.IsNullOrEmpty(item.Value.TemplateDto?.Name))
-                CalendarItems.Add(ScheduleCalendarItem.FromDto(item.Value, item.Key));
-            }
+            //foreach(var item in calendar)
+            //{
+            //    if(!String.IsNullOrEmpty(item.Value.TemplateDto?.Name))
+            //    CalendarItems.Add(ScheduleCalendarItem.FromDto(item.Value, item.Key));
+            //}
         }
         #region Commands
         [RelayCommand]

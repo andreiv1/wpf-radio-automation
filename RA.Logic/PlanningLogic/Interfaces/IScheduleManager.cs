@@ -9,8 +9,8 @@ namespace RA.Logic.PlanningLogic.Interfaces
 {
     public interface IScheduleManager
     {
-        Task<Dictionary<DateTime, DefaultScheduleDto>> GetDefaultScheduleOverviewAsync(DateTime searchDateStart, DateTime searchDateEnd);
-        DefaultScheduleDto GetDefaultSchedule(DateTime date);
+        Task<Dictionary<DateTime, ScheduleDefaultDto>> GetDefaultScheduleOverviewAsync(DateTime searchDateStart, DateTime searchDateEnd);
+        ScheduleDefaultDto GetDefaultSchedule(DateTime date);
 
     }
 }
