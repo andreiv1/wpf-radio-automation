@@ -10,10 +10,15 @@ namespace RA.DTO
     public class TemplateDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public TemplateDto(string name)
         {
             Name = name;
+        }
+
+        public TemplateDto(int id)
+        {
+            Id = id;
         }
 
         public static TemplateDto FromEntity(Template entity)

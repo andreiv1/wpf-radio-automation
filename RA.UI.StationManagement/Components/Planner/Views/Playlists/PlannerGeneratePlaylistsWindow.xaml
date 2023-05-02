@@ -73,7 +73,8 @@
                         <syncfusion:GridTextColumn HeaderText="Air Date" MappingName="Date" Width="130" HorizontalHeaderContentAlignment="Left"
                                                DisplayBinding="{Binding Path=Date, StringFormat=dd.MM.yyyy (ddd)}"/>
                         <syncfusion:GridTextColumn HeaderText="Template Name" MappingName="TemplateName" HorizontalHeaderContentAlignment="Left"/>
-                        <syncfusion:GridTemplateColumn HeaderText="Status" HorizontalHeaderContentAlignment="Left">
+                        <syncfusion:GridTemplateColumn HeaderText="Status" HorizontalHeaderContentAlignment="Left"
+                                                       Width="120">
                             <syncfusion:GridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>

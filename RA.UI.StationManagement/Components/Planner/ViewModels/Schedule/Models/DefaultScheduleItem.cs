@@ -23,13 +23,23 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule.Models
         [ObservableProperty]
         private DayOfWeek day;
 
-        public static ScheduleDefaultDto ToDto(DefaultScheduleItem model)
+        //public static ScheduleDefaultDto ToDto(DefaultScheduleItem model)
+        //{
+        //    return new ScheduleDefaultDto
+        //    {
+        //        Id = model.Id,
+        //        //TemplateDto = new TemplateDto() { Id = model.TemplateId },
+        //        Day = model.Day,
+        //    };
+        //}
+
+        public static ScheduleDefaultItemDto ToDto(DefaultScheduleItem model, ScheduleDefaultDto scheduleDto)
         {
-            return new ScheduleDefaultDto
+            return new ScheduleDefaultItemDto(scheduleDto)
             {
                 Id = model.Id,
-                //TemplateDto = new TemplateDto() { Id = model.TemplateId },
-                Day = model.Day,
+                DayOfWeek = model.Day,
+                Template = new TemplateDto(model.TemplateId),
             };
         }
     }

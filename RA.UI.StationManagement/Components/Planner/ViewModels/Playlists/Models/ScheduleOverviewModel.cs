@@ -12,6 +12,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists.Models
 {
     public enum ScheduleType
     {
+        Empty,
         Default,
         Planned
     }
@@ -37,22 +38,30 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists.Models
 
         public String? ErrorMessage { get; set; }
 
-        public static ScheduleOverviewModel FromDto(DateTime date, ScheduleBaseDto? dto)
+        public static ScheduleOverviewModel FromDto(DateTime date, ScheduleDefaultItemDto? dto)
         {
             ScheduleOverviewModel model = new();
             model.Date = date;
-
-            if (dto.GetType() == typeof(ScheduleDefaultDto))
+            if(dto == null)
+            {
+                model.Type = ScheduleType.Empty;
+                model.TemplateName = "-";
+            } else
             {
                 model.Type = ScheduleType.Default;
+                model.TemplateName = dto.Template?.Name;
             }
-            else if (dto.GetType() == typeof(PlannedScheduleDto))
-            {
-                model.Type = ScheduleType.Planned;
-            }
-            else throw new InvalidEnumArgumentException($"{dto.GetType()} is not the correct type.");
-            //model.TemplateName = dto.TemplateDto?.Name ?? "-";
-            model.TemplateName = "Not implemented";
+            
+            return model;
+        }
+
+        public static ScheduleOverviewModel FromDto(DateTime date, SchedulePlannedDto dto)
+        {
+            ScheduleOverviewModel model = new();
+            model.Date = date;
+            model.Type = ScheduleType.Planned;
+            //TODO
+            model.TemplateName = "Planned - to do";
             return model;
         }
     }

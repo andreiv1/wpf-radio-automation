@@ -63,12 +63,13 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
             foreach(var schedule in scheduleOverview)
             {
                 //var item = ScheduleOverviewModel.FromDto(schedule.Key, schedule.Value);
-                throw new NotImplementedException();
-                //if(schedule.Value)
-                //{
-                //    item.GenerationStatus = ScheduleGenerationStatus.NoScheduleFound;
-                //} 
-                //ScheduleOverview.Add(item);
+                var item = ScheduleOverviewModel.FromDto(schedule.Key, schedule.Value);
+
+                if (schedule.Value == null)
+                {
+                    item.GenerationStatus = ScheduleGenerationStatus.NoScheduleFound;
+                }
+                ScheduleOverview.Add(item);
             }
         }
 

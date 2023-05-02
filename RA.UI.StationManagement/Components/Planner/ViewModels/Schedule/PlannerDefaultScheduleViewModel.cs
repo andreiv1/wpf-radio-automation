@@ -177,9 +177,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         // Save the selected default template items
         private async void SaveSelectedDefaultTemplate()
         {
-            List<ScheduleDefaultDto> toAdd = DefaultScheduleItemsForSelectedInterval
-                .Select(it => DefaultScheduleItem.ToDto(it))
-                .ToList();
+            //List<ScheduleDefaultDto> toAdd = DefaultScheduleItemsForSelectedInterval
+            //    .Select(it => DefaultScheduleItem.ToDto(it))
+            //    .ToList();
             throw new NotImplementedException();
             //var result = await defaultScheduleService.AddDefaultScheduleItemsAsync(toAdd, SelectedInterval!);
         }
