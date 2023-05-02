@@ -17,9 +17,9 @@ namespace RA.Database
         public DbSet<Event> Events { get; set; }
         public DbSet<Playlist> Playlists { get; set; }
         public DbSet<PlaylistItem> PlaylistItems { get; set; }
-        public DbSet<Schedule> Schedules { get; set; }
-        public DbSet<DefaultSchedule> DefaultSchedules { get; set; }
-        public DbSet<PlannedSchedule> PlannedSchedules { get; set; }
+        public DbSet<ScheduleDefault> SchedulesDefault { get; set; }
+        public DbSet<ScheduleDefaultItem> ScheduleDefaultItems { get; set; }
+        public DbSet<SchedulePlanned> SchedulesPlanned { get; set; }
         public DbSet<Template> Templates { get; set; }
         public DbSet<Track> Tracks { get; set; }
         public DbSet<TagCategory> TagCategories { get; set; }
@@ -33,11 +33,6 @@ namespace RA.Database
         {
             // This constructor is typically used by the Entity Framework Core infrastructure
             // to create an instance of your DbContext with the options that it has configured.
-        }
-
-        public AppDbContext()
-        {
-            throw new NotImplementedException();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -55,7 +50,6 @@ namespace RA.Database
             modelBuilder.ApplyConfiguration(new ClockTemplateConfig());
             modelBuilder.ApplyConfiguration(new CategoryConfig());
             modelBuilder.ApplyConfiguration(new UserGroupConfig());
-            modelBuilder.ApplyConfiguration(new ScheduleConfig());
             modelBuilder.ApplyConfiguration(new UserRuleConfig());
             modelBuilder.ApplyConfiguration(new UserGroupConfig());
             modelBuilder.ApplyConfiguration(new TrackHistoryConfig());

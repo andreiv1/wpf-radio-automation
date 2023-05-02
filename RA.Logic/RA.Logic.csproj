@@ -7,7 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="PlanningLogic\PlaylistGenerator.cs" />
+    <Compile Remove="PlanningLogic\ScheduleManager.cs" />
+    <Compile Remove="TrackFileLogic\TrackFilesImporter.cs" />
+    <Compile Remove="TrackFileLogic\TrackFilesProcessor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Include="PlanningLogic\PlaylistGenerator.cs" />
+    <None Include="PlanningLogic\ScheduleManager.cs" />
+    <None Include="TrackFileLogic\TrackFilesImporter.cs" />
+    <None Include="TrackFileLogic\TrackFilesProcessor.cs" />
   </ItemGroup>
 
   <ItemGroup>

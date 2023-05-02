@@ -13,13 +13,13 @@ namespace RA.UI.StationManagement.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is PlannedScheduleFrequency frequency)
+            if (value is SchedulePlannedFrequency frequency)
             {
                 switch (frequency)
                 {
-                    case PlannedScheduleFrequency.EveryWeek:
+                    case SchedulePlannedFrequency.EveryWeek:
                         return "Every week";
-                    case PlannedScheduleFrequency.EveryTwoWeeks:
+                    case SchedulePlannedFrequency.EveryTwoWeeks:
                         return "Every two weeks";
                     default:
                         return frequency.ToString();

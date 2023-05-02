@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace RA.Logic.TrackFileLogic
 {
+    [Obsolete]
     public class TrackFilesImporter : ITrackFilesImporter
     {
         public int Import(List<ProcessingTrack> processingTracks)

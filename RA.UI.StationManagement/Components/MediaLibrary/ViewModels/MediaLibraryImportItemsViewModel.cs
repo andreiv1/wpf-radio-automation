@@ -80,37 +80,39 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
 
         private List<ProcessingTrack> processingTracks;
 
-        private TrackFilesProcessor trackFilesProcessor;
+        //private TrackFilesProcessor trackFilesProcessor;
         private readonly IWindowService windowService;
         private readonly INavigationService<MediaLibraryImportItemsViewModel> navigationService;
 
+        //TODO
         private async Task HandleProcessTracks()
         {
-            Model.IsTrackProcessRunning = true;
-            DebugHelper.WriteLine(this, "Starting processing tracks...");
-            trackFilesProcessor = new();
-            trackFilesProcessor.TrackProcessed += TrackFilesProcessor_TrackProcessed;
-            if (Model.FolderPath is not null && Model.SelectedCategory is not null)
-            {
-                //processingTracks = trackFilesProcessor.ProcessItemsFromDirectory(TrackModel.FolderPath, TrackModel.SelectedCategory.Id,
-                //    TrackModel.SelectedTrackType, TrackModel.SelectedTrackStatus, TrackModel.ReadItemsMetadata);
-            }
+            //Model.IsTrackProcessRunning = true;
+            //DebugHelper.WriteLine(this, "Starting processing tracks...");
+            //trackFilesProcessor = new();
+            //trackFilesProcessor.TrackProcessed += TrackFilesProcessor_TrackProcessed;
+            //if (Model.FolderPath is not null && Model.SelectedCategory is not null)
+            //{
+            //    //processingTracks = trackFilesProcessor.ProcessItemsFromDirectory(TrackModel.FolderPath, TrackModel.SelectedCategory.Id,
+            //    //    TrackModel.SelectedTrackType, TrackModel.SelectedTrackStatus, TrackModel.ReadItemsMetadata);
+            //}
 
-            //Processed finished
-            Model.IsTrackProcessRunning = false;
+            ////Processed finished
+            //Model.IsTrackProcessRunning = false;
         }
 
+        //TODO
         private void TrackFilesProcessor_TrackProcessed(object sender, Logic.TrackFileLogic.Interfaces.ProcessingTrackEventArgs e)
         {
-            Model.TotalItems = trackFilesProcessor.TotalItems;
-            Model.ValidItems = trackFilesProcessor.ValidItems;
-            Model.InvalidItems = trackFilesProcessor.InvalidItems;
-            Model.WarningItems = trackFilesProcessor.WarningItems;
+            //Model.TotalItems = trackFilesProcessor.TotalItems;
+            //Model.ValidItems = trackFilesProcessor.ValidItems;
+            //Model.InvalidItems = trackFilesProcessor.InvalidItems;
+            //Model.WarningItems = trackFilesProcessor.WarningItems;
 
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                Model.ProcessingTracks.Add(e.Track);
-            });
+            //Application.Current.Dispatcher.Invoke(() =>
+            //{
+            //    Model.ProcessingTracks.Add(e.Track);
+            //});
         }
 
         [RelayCommand(CanExecute = nameof(CanExecuteImport))]
@@ -123,11 +125,12 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
                     Model.Messages.Add("Started the process of importing...");
                 });
                 
-                TrackFilesImporter importer = new TrackFilesImporter();
-                int result = importer.Import(processingTracks);
+                //TODO
+                //TrackFilesImporter importer = new TrackFilesImporter();
+                //int result = importer.Import(processingTracks);
                 Application.Current?.Dispatcher.Invoke(() =>
                 {
-                    Model.Messages.Add($"{result} tracks has been imported succesfully into database.");
+                    //Model.Messages.Add($"{result} tracks has been imported succesfully into database.");
                 });
             });
         }

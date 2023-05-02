@@ -61,7 +61,7 @@ namespace RA.UI.StationManagement
                 {
                     services.AddDbContextFactory<AppDbContext>(options =>
                     {
-                        String connString = "server=192.168.200.113;Port=3306;database=rasoftware;user=root;password=andrewyw1412";
+                        String connString = "server=localhost;Port=3306;database=ratest;user=root;password=";
                         options.UseMySql(connString, ServerVersion.AutoDetect(connString))
                             .EnableSensitiveDataLogging(false);
                     });

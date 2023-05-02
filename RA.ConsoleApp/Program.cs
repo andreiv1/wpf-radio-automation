@@ -10,7 +10,7 @@ namespace RA.ConsoleApp
         public AppDbContext CreateDbContext()
         {
             DbContextOptionsBuilder<AppDbContext> optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            String connString = "server=192.168.200.113;Port=3306;database=rasoftware;user=root;password=andrewyw1412";
+            String connString = "server=localhost;Port=3306;database=ratest;user=root;password=";
             DbContextOptions<AppDbContext> dbContextOptions = new DbContextOptions<AppDbContext>();
 
             dbContextOptions = optionsBuilder.UseMySql(connString, ServerVersion.AutoDetect(connString))
@@ -23,27 +23,11 @@ namespace RA.ConsoleApp
     {
         static void Main(string[] args)
         {
-             Test();
-        }
-
-        static async void Test()
-        {
             var dbFactory = new DbContextFactory();
-            //var db = dbFactory.CreateDbContext();
-            //var dsService = new TracksService(dbFactory);
-            //var tracks = dsService.GetTrackListByArtist(9, 0, 100);
-            //foreach(var t in tracks)
-            //{
-            //    Console.WriteLine(t.Artists + " " + t.Title);
-            //}
-            //Console.ReadLine();
-
-            var tService = new TagsService(dbFactory);
-            var values = await tService.GetTagValuesByCategoryAsync(1);
-            foreach(var v in values)
-            {
-                await Console.Out.WriteLineAsync($"{v.Id} - {v.Name}");
-            }
+            var db = dbFactory.CreateDbContext();
+            db.Database.EnsureCreated();
+            //var result = db.Tracks.Count();
+            //Console.WriteLine(result.ToString());
         }
         
     }

@@ -14,7 +14,8 @@ namespace RA.Database.Models
     {
         [Required]
         public String Name { get; set; }
-        public ICollection<Schedule> Schedules { get; set; }
+        public ICollection<ScheduleDefaultItem> ScheduleDefaultItems { get; set; }
+        public ICollection<SchedulePlanned> PlannedSchedules { get; set; }
         public ICollection<ClockTemplate> TemplateClocks { get; set; }
     }
 }

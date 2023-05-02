@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RA.Database.Models
+namespace RA.Database.Models.Abstract
 {
-    public class DefaultSchedule : Schedule
+    public abstract class ScheduleBase : BaseModel
     {
-        public DayOfWeek DayOfWeek { get; set; }
     }
 }

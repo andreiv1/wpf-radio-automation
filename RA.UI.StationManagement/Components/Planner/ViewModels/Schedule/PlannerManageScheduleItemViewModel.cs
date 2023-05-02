@@ -19,14 +19,14 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
     public partial class PlannerManageScheduleItemViewModel : DialogViewModelBase
     {
         [ObservableProperty]
-        private PlannedScheduleType scheduleType = PlannedScheduleType.Recurrent;
+        private SchedulePlannedType scheduleType = SchedulePlannedType.Recurrent;
 
-        private static IEnumerable<PlannedScheduleFrequency> scheduleFrequencies = (IEnumerable<PlannedScheduleFrequency>)
-            Enum.GetValues(typeof(PlannedScheduleFrequency)).Cast<PlannedScheduleType>();
+        private static IEnumerable<SchedulePlannedFrequency> scheduleFrequencies = (IEnumerable<SchedulePlannedFrequency>)
+            Enum.GetValues(typeof(SchedulePlannedFrequency)).Cast<SchedulePlannedType>();
         private readonly IDispatcherService dispatcherService;
         private readonly ITemplatesService templatesService;
 
-        public List<PlannedScheduleFrequency> ScheduleFrequencies => scheduleFrequencies.ToList();
+        public List<SchedulePlannedFrequency> ScheduleFrequencies => scheduleFrequencies.ToList();
 
         public ObservableCollection<TemplateDto> Templates { get; set; } = new();
 

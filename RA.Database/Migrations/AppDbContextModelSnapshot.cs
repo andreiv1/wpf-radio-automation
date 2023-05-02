@@ -16,7 +16,7 @@ namespace RA.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Categories_Tracks", b =>
@@ -113,7 +113,9 @@ namespace RA.Database.Migrations
                     b.Property<string>("PathName")
                         .HasColumnType("longtext");
 
-                    b.ToView("CategoriesHierarchy");
+                    b.ToTable((string)null);
+
+                    b.ToView("CategoriesHierarchy", (string)null);
                 });
 
             modelBuilder.Entity("RA.Database.Models.Clock", b =>
@@ -262,32 +264,73 @@ namespace RA.Database.Migrations
                     b.ToTable("PlaylistItems");
                 });
 
-            modelBuilder.Entity("RA.Database.Models.Schedule", b =>
+            modelBuilder.Entity("RA.Database.Models.ScheduleDefault", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Discriminator_Type")
-                        .IsRequired()
-                        .HasColumnType("char");
-
-                    b.Property<DateTime?>("EndDate")
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SchedulesDefault");
+                });
+
+            modelBuilder.Entity("RA.Database.Models.ScheduleDefaultItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ScheduleId")
+                        .HasColumnType("int");
 
                     b.Property<int>("TemplateId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ScheduleId");
+
                     b.HasIndex("TemplateId");
 
-                    b.ToTable("Schedules");
+                    b.ToTable("ScheduleDefaultItems");
+                });
 
-                    b.HasDiscriminator<string>("Discriminator_Type").HasValue("Schedule");
+            modelBuilder.Entity("RA.Database.Models.SchedulePlanned", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("Frequency")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("TemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TemplateId");
+
+                    b.ToTable("SchedulesPlanned");
                 });
 
             modelBuilder.Entity("RA.Database.Models.TagCategory", b =>
@@ -538,29 +581,6 @@ namespace RA.Database.Migrations
                     b.ToTable("UserGroups_UserRules");
                 });
 
-            modelBuilder.Entity("RA.Database.Models.DefaultSchedule", b =>
-                {
-                    b.HasBaseType("RA.Database.Models.Schedule");
-
-                    b.Property<int>("DayOfWeek")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("d");
-                });
-
-            modelBuilder.Entity("RA.Database.Models.PlannedSchedule", b =>
-                {
-                    b.HasBaseType("RA.Database.Models.Schedule");
-
-                    b.Property<int?>("Frequency")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("p");
-                });
-
             modelBuilder.Entity("Categories_Tracks", b =>
                 {
                     b.HasOne("RA.Database.Models.Category", null)
@@ -678,15 +698,30 @@ namespace RA.Database.Migrations
                     b.Navigation("Track");
                 });
 
-            modelBuilder.Entity("RA.Database.Models.Schedule", b =>
+            modelBuilder.Entity("RA.Database.Models.ScheduleDefaultItem", b =>
                 {
+                    b.HasOne("RA.Database.Models.ScheduleDefault", "Schedule")
+                        .WithMany("ScheduleDefaultItems")
+                        .HasForeignKey("ScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("RA.Database.Models.Template", "Template")
-                        .WithMany("Schedules")
+                        .WithMany("ScheduleDefaultItems")
                         .HasForeignKey("TemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Schedule");
+
                     b.Navigation("Template");
+                });
+
+            modelBuilder.Entity("RA.Database.Models.SchedulePlanned", b =>
+                {
+                    b.HasOne("RA.Database.Models.Template", null)
+                        .WithMany("PlannedSchedules")
+                        .HasForeignKey("TemplateId");
                 });
 
             modelBuilder.Entity("RA.Database.Models.TagValue", b =>
@@ -779,6 +814,11 @@ namespace RA.Database.Migrations
                     b.Navigation("PlaylistItems");
                 });
 
+            modelBuilder.Entity("RA.Database.Models.ScheduleDefault", b =>
+                {
+                    b.Navigation("ScheduleDefaultItems");
+                });
+
             modelBuilder.Entity("RA.Database.Models.TagCategory", b =>
                 {
                     b.Navigation("Values");
@@ -791,7 +831,9 @@ namespace RA.Database.Migrations
 
             modelBuilder.Entity("RA.Database.Models.Template", b =>
                 {
-                    b.Navigation("Schedules");
+                    b.Navigation("PlannedSchedules");
+
+                    b.Navigation("ScheduleDefaultItems");
 
                     b.Navigation("TemplateClocks");
                 });

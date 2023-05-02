@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace RA.Database.Models
 {
-    public class Schedule : BaseModel
+    public class ScheduleDefaultItem : BaseModel
     {
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public ScheduleDefault Schedule { get; set; }
+        public int ScheduleId { get; set; }
+        public DayOfWeek DayOfWeek { get; set; }
         public int TemplateId { get; set; }
-        public Template Template { get; set; }  
+        public Template Template { get; set; }
     }
 }
