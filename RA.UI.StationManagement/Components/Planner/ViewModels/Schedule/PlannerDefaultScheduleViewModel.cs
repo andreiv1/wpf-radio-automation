@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DAL.Models;
 using RA.DTO;
+using RA.Logic;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
@@ -134,6 +135,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
                         });
                 }
             }
+
+            SaveSelectedDefaultTemplateCommand.NotifyCanExecuteChanged();
         }
 
         private async Task LoadTemplates()
@@ -157,7 +160,34 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             {
                 SelectedDefaultScheduleItem.TemplateName = templateSelectDialog.SelectedTemplate.Name;
                 SelectedDefaultScheduleItem.TemplateId = templateSelectDialog.SelectedTemplate.Id;
+                SaveSelectedDefaultTemplateCommand.NotifyCanExecuteChanged();
             }
+        }
+
+        [RelayCommand(CanExecute = nameof(CanSaveSelectedDefaultTemplate))]
+        private async void SaveSelectedDefaultTemplate()
+        {
+            List<DefaultScheduleDto> toAdd = DefaultScheduleItemsForSelectedInterval
+                .Select(it => DefaultScheduleItem.ToDto(it))
+                .ToList();
+
+            var result = await defaultScheduleService.AddDefaultScheduleItemsAsync(toAdd, SelectedInterval!);
+        }
+
+        private bool CanSaveSelectedDefaultTemplate()
+        {
+            if(DefaultScheduleItemsForSelectedInterval.Count == 0)
+            {
+                return false;
+            }
+            foreach(var item in DefaultScheduleItemsForSelectedInterval)
+            {
+                if(item.TemplateId == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         #endregion

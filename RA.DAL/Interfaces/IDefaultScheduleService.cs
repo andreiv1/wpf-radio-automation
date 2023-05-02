@@ -11,5 +11,6 @@ namespace RA.DAL
         Task<IEnumerable<DateTimeRange>> GetDefaultSchedulesRangeAsync(int skip = 0, int limit = 100, bool ascending = false);
         IEnumerable<DateTimeRange> GetDefaultSchedulesRange(int skip = 0, int limit = 100, bool ascending = false);
         Task<IDictionary<DayOfWeek, DefaultScheduleDto?>> GetDefaultScheduleWithTemplateAsync(DateTimeRange range);
+        Task<bool> AddDefaultScheduleItemsAsync(List<DefaultScheduleDto> defaultScheduleItems, DateTimeRange scheduleRange);
     }
 }

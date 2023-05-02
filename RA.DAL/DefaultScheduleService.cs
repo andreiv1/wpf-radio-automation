@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RA.DAL.Models;
 using RA.Database;
+using RA.Database.Models;
 using RA.DTO;
 using System;
 using System.Collections;
@@ -102,6 +103,51 @@ namespace RA.DAL
                 dictionary.Add((DayOfWeek)i, scheduleByDay);
             }
             return dictionary;
+        }
+
+        public async Task<bool> AddDefaultScheduleItemsAsync(List<DefaultScheduleDto> defaultScheduleItems, DateTimeRange scheduleRange)
+        {
+            if (defaultScheduleItems == null || defaultScheduleItems?.Count == 0)
+            {
+                throw new ArgumentNullException(nameof(defaultScheduleItems), "The default schedule items list cannot be null or empty.");
+            }
+
+            var allDays = new HashSet<DayOfWeek>(Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>());
+            var daysInList = new HashSet<DayOfWeek>(defaultScheduleItems!.Select(d => d.Day));
+
+            if (!allDays.IsSubsetOf(daysInList))
+            {
+                throw new ArgumentException("The default schedule items list does not contain all the possible DayOfWeek values.", nameof(defaultScheduleItems));
+            }
+
+            foreach(var item in defaultScheduleItems)
+            {
+                if(item.TemplateDto?.Id == 0 || item.TemplateDto == null)
+                {
+                    throw new ArgumentException("A default schedule must have a template set.");
+                }
+            }
+
+            var hasAllTemplatesSet = defaultScheduleItems.Select(x => x.TemplateDto)
+                .Where(x => x?.Id != 0).Count() > 0;
+
+            foreach(var scheduleDto in defaultScheduleItems)
+            {
+                scheduleDto.StartDate = scheduleRange.StartDate;
+                scheduleDto.EndDate = scheduleRange.EndDate;
+            }
+            var data = defaultScheduleItems.Select(dto => DefaultScheduleDto.ToEntity(dto)).ToList();
+            using var dbContext = dbContextFactory.CreateDbContext();
+
+            await dbContext.DefaultSchedules
+                .AddRangeAsync(data.Where(x => x.Id == 0));
+
+            dbContext.DefaultSchedules
+               .UpdateRange(data.Where(x => x.Id != 0));
+            await dbContext.SaveChangesAsync();
+
+            return true;
+
         }
     }
 }

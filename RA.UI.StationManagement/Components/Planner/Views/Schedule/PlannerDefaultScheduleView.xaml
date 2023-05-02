@@ -49,7 +49,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Expander Grid.Row="1"  Header="Add new interval" IsExpanded="True">
+            <Expander Grid.Row="1"  Header="Add new default schedule" IsExpanded="True">
                 <!-- Add new interval grid -->
                 <Grid Height="auto" VerticalAlignment="Top">
                     <Grid.ColumnDefinitions>
@@ -67,7 +67,7 @@
                     <Label Grid.Column="0" Content="Start Date:" FontWeight="DemiBold"
                        VerticalAlignment="Center" Grid.ColumnSpan="2"/>
 
-                    <syncfusion:DateTimeEdit Grid.Column="1" 
+                    <syncfusion:DateTimeEdit Grid.Column="1"
                         Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)" 
                         />
 
@@ -151,20 +151,12 @@
                             <syncfusion:GridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
-                                        <TextBlock Text="{Binding TemplateName}" VerticalAlignment="Center" Foreground="Green" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding TemplateName}" VerticalAlignment="Center" Foreground="Green" FontWeight="Bold"
+                                                   Visibility="{Binding TemplateId, Converter={StaticResource NullToVisibilityConverter}}"/>
 
-                                        <TextBlock Text="Not added" VerticalAlignment="Center" Foreground="Red" FontWeight="Bold">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Id, TargetNullValue=0}" Value="0">
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
+                                        <TextBlock Text="Not added" VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"
+                                                   Visibility="{Binding TemplateName, Converter={StaticResource StringToVisibilityConverter}, 
+                                                        ConverterParameter=Inversed}"/>
                                     </Grid>
                                 </DataTemplate>
                             </syncfusion:GridTemplateColumn.CellTemplate>
@@ -176,10 +168,18 @@
                             <syncfusion:GridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Horizontal">
-                                        <syncfusion:ButtonAdv Label="Add" SmallIcon="{StaticResource PlusIcon}" Width="60" Margin="0,0,3,0"
-                                                              Command="{Binding DataContext.SelectTemplateForDayCommand, RelativeSource={RelativeSource AncestorType={x:Type syncfusion:SfDataGrid}}}"/>
-                                        <syncfusion:ButtonAdv Label="Edit" SmallIcon="{StaticResource EditIcon}" Width="60"
-                                                              Command="{Binding DataContext.SelectTemplateForDayCommand, RelativeSource={RelativeSource AncestorType={x:Type syncfusion:SfDataGrid}}}"/>
+                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                <!-- ADD BTN -->
+                                                <syncfusion:ButtonAdv Label="Add" SmallIcon="{StaticResource PlusIcon}" Width="60" Margin="0,0,3,0"
+                                                  Command="{Binding DataContext.SelectTemplateForDayCommand, RelativeSource={RelativeSource AncestorType={x:Type syncfusion:SfDataGrid}}}"/>
+                                            
+                                                 <!-- EDIT BTN -->
+
+                                                            <syncfusion:ButtonAdv Label="Edit" SmallIcon="{StaticResource EditIcon}" Width="60"
+                                                  Command="{Binding DataContext.SelectTemplateForDayCommand, RelativeSource={RelativeSource AncestorType={x:Type syncfusion:SfDataGrid}}}"
+                                                                 />
+                                        </StackPanel>
+
                                     </StackPanel>
                                 </DataTemplate>
                             </syncfusion:GridTemplateColumn.CellTemplate>
@@ -188,7 +188,8 @@
                 </syncfusion:SfDataGrid>
 
                 <syncfusion:ButtonAdv Grid.Row="2" Height="24" Margin="0,5,0,0" Width="120" HorizontalAlignment="Right" 
-                                  Label="Save schedule" SmallIcon="{StaticResource SaveIcon}"/>
+                                  Label="Save schedule" SmallIcon="{StaticResource SaveIcon}"
+                                      Command="{Binding SaveSelectedDefaultTemplateCommand}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,10,0,0">

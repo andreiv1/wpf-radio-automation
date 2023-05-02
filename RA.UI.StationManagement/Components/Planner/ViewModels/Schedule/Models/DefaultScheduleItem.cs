@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using RA.DTO;
 using RA.UI.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -22,5 +23,14 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule.Models
         [ObservableProperty]
         private DayOfWeek day;
 
+        public static DefaultScheduleDto ToDto(DefaultScheduleItem model)
+        {
+            return new DefaultScheduleDto
+            {
+                Id = model.Id,
+                TemplateDto = new TemplateDto() { Id = model.TemplateId },
+                Day = model.Day,
+            };
+        }
     }
 }

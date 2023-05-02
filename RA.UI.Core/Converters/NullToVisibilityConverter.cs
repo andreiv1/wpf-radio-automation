@@ -13,12 +13,22 @@ namespace RA.UI.Core
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value != null ? Visibility.Collapsed : Visibility.Visible;
+            bool isInverted = parameter != null && parameter.ToString().Equals("Inverted", StringComparison.OrdinalIgnoreCase);
+
+            if (value == null)
+            {
+                return isInverted ? Visibility.Visible : Visibility.Collapsed;
+            }
+            else
+            {
+                return isInverted ? Visibility.Collapsed : Visibility.Visible;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
+
 }

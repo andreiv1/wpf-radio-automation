@@ -206,7 +206,7 @@
                 </syncfusion:SfDataGrid>
                 <!-- Clock items message when clock is not selected -->
                 <Grid Grid.Row="2"
-                  Visibility="{Binding SelectedClock,Converter={StaticResource NullToVisibilityConverter}}"
+                  Visibility="{Binding SelectedClock,Converter={StaticResource NullToVisibilityConverter},ConverterParameter=Inverted}"
                   VerticalAlignment="Top" 
                   HorizontalAlignment="Center" 
                   Panel.ZIndex="1">
