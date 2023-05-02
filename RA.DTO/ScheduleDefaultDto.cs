@@ -27,5 +27,15 @@ namespace RA.DTO
                     .ToList();
             return dto;
         }
+
+        public static ScheduleDefault ToEntity(ScheduleDefaultDto scheduleDefaultDto)
+        {
+            return new ScheduleDefault()
+            {
+                Id = scheduleDefaultDto.Id.GetValueOrDefault(),
+                StartDate = scheduleDefaultDto.StartDate ?? throw new ArgumentException($"Schedule must have a start date"),
+                EndDate = scheduleDefaultDto.EndDate ?? throw new ArgumentException($"Schedule must have an end date"),
+            };
+        }
     }
 }

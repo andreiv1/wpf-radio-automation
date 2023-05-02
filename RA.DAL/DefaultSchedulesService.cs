@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using RA.Database;
+using RA.Database.Models;
 using RA.DTO;
 using System;
 using System.Collections.Generic;
@@ -94,6 +95,32 @@ namespace RA.DAL
                 result.Add(day, items.Where(itm => itm.DayOfWeek == day).FirstOrDefault());
             }
             return result;
+        }
+
+        public async Task<int> UpdateDefaultScheduleItems(List<ScheduleDefaultItemDto> defaultScheduleItems)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var toUpdate = defaultScheduleItems
+                .Select(s => ScheduleDefaultItemDto.ToEntity(s))
+                .ToList();
+
+            foreach(var item in toUpdate)
+            {
+                item.Template = dbContext.AttachOrGetTrackedEntity<Template>(item.Template);
+            }
+            dbContext.UpdateRange(toUpdate);
+            return await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<int> AddDefaultSchedule(ScheduleDefaultDto scheduleDefaultDto, List<ScheduleDefaultItemDto> items)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var schedule = ScheduleDefaultDto.ToEntity(scheduleDefaultDto);
+            schedule.ScheduleDefaultItems = items
+                .Select(s => ScheduleDefaultItemDto.ToEntity(s))
+                .ToList();
+            await dbContext.AddAsync(schedule);
+            return await dbContext.SaveChangesAsync();
         }
     }
 }

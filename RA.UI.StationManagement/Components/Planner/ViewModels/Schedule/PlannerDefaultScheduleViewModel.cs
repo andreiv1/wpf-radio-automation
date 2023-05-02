@@ -24,6 +24,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
     {
         private readonly IDispatcherService dispatcherService;
         private readonly IWindowService windowService;
+        private readonly IMessageBoxService messageBoxService;
         private readonly IDefaultSchedulesService defaultSchedulesService;
         private readonly ITemplatesService templatesService;
 
@@ -47,11 +48,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         
 
         #region Constructor
-        public PlannerDefaultScheduleViewModel(IDispatcherService dispatcherService, IWindowService windowService,
+        public PlannerDefaultScheduleViewModel(IDispatcherService dispatcherService, IWindowService windowService, IMessageBoxService messageBoxService,
             IDefaultSchedulesService defaultSchedulesService, ITemplatesService templatesService)
         {
             this.dispatcherService = dispatcherService;
             this.windowService = windowService;
+            this.messageBoxService = messageBoxService;
             this.defaultSchedulesService = defaultSchedulesService;
             this.templatesService = templatesService;
             _ = LoadDefaultSchedules();
@@ -81,12 +83,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             if (SelectedDefaultSchedule == null || SelectedDefaultSchedule.Id == null) return;
             DefaultScheduleItemsForSelected.Clear();
             var schedule = await defaultSchedulesService.GetDefaultScheduleItems(SelectedDefaultSchedule);
-
-
-
             DayOfWeek firstDayOfWeek = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
-
-
             for (DayOfWeek day = firstDayOfWeek; day <= DayOfWeek.Saturday; day++)
             {
                 if (schedule.ContainsKey(day))
@@ -164,6 +161,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             {
                 SelectedDefaultScheduleItem.TemplateName = templateSelectDialog.SelectedTemplate.Name;
                 SelectedDefaultScheduleItem.TemplateId = templateSelectDialog.SelectedTemplate.Id;
+                SelectedDefaultScheduleItem.IsUpdated = true;
                 SaveSelectedDefaultTemplateCommand.NotifyCanExecuteChanged();
             }
         }
@@ -172,11 +170,33 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         // Save the selected default template items
         private async void SaveSelectedDefaultTemplate()
         {
-            //List<ScheduleDefaultDto> toAdd = DefaultScheduleItemsForSelectedInterval
-            //    .Select(it => DefaultScheduleItem.ToDto(it))
-            //    .ToList();
-            throw new NotImplementedException();
-            //var result = await defaultScheduleService.AddDefaultScheduleItemsAsync(toAdd, SelectedInterval!);
+            if (SelectedDefaultSchedule == null) return;
+
+            List<ScheduleDefaultItemDto> toAdd = DefaultScheduleItemsForSelected.Where(s => !s.Id.HasValue)
+                .Select(s => DefaultScheduleItem.ToDto(s, SelectedDefaultSchedule))
+                .ToList();
+            List<ScheduleDefaultItemDto> toUpdate = DefaultScheduleItemsForSelected.Where(s => s.IsUpdated)
+                .Select(s => DefaultScheduleItem.ToDto(s, SelectedDefaultSchedule))
+                .ToList();
+
+            int addedNo = await defaultSchedulesService.UpdateDefaultScheduleItems(toAdd);
+            int updatedNo = await defaultSchedulesService.UpdateDefaultScheduleItems(toUpdate);
+
+            _ = LoadDefaultScheduleForSelectedInterval();
+
+            if(addedNo > 0 && updatedNo > 0)
+            {
+                messageBoxService.ShowInfo($"{addedNo} {(addedNo == 1 ? "day" : "days")} were added and {updatedNo} {(updatedNo == 1 ? "day" : "days")} were updated in the active default schedule.");
+            } else
+            if (updatedNo > 0)
+            {
+                messageBoxService.ShowInfo($"{updatedNo} {(updatedNo == 1 ? "day" : "days")} were updated in the active default schedule.");
+            } else
+            if(addedNo > 0 )
+            {
+                messageBoxService.ShowInfo($"{addedNo} {(addedNo == 1 ? "day" : "days")} were added in the active default schedule.");
+            }
+
         }
 
         private bool CanSaveSelectedDefaultTemplate()
