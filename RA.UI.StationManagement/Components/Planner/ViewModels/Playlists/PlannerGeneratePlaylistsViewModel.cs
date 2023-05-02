@@ -62,7 +62,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
 
             foreach(var schedule in scheduleOverview)
             {
-                //var item = ScheduleOverviewModel.FromDto(schedule.Key, schedule.Value);
                 var item = ScheduleOverviewModel.FromDto(schedule.Key, schedule.Value);
 
                 if (schedule.Value == null)
