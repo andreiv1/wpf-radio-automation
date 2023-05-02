@@ -19,7 +19,7 @@ namespace RA.DAL
             this.dbContextFactory = dbContextFactory;
         }
 
-        public async Task<IDictionary<DateTime, ScheduleDefaultItemDto?>> GetDefaultScheduleOverviewAsync(DateTime searchDateStart, DateTime searchDateEnd)
+        public async Task<IDictionary<DateTime, ScheduleDefaultItemDto?>> GetDefaultSchedulesOverviewAsync(DateTime searchDateStart, DateTime searchDateEnd)
         {
             var dictionary = new Dictionary<DateTime, ScheduleDefaultItemDto?>();
             using var dbContext = dbContextFactory.CreateDbContext();
@@ -58,9 +58,9 @@ namespace RA.DAL
             return dictionary;
         }
 
-        public IDictionary<DateTime, ScheduleDefaultItemDto?> GetDefaultScheduleOverview(DateTime searchDateStart, DateTime searchDateEnd)
+        public IDictionary<DateTime, ScheduleDefaultItemDto?> GetDefaultSchedulesOverview(DateTime searchDateStart, DateTime searchDateEnd)
         {
-            return GetDefaultScheduleOverviewAsync(searchDateStart, searchDateEnd).Result;
+            return GetDefaultSchedulesOverviewAsync(searchDateStart, searchDateEnd).Result;
         }
         public IEnumerable<ScheduleDefaultDto> GetDefaultSchedules(int skip = 0, int limit = 100, bool ascending = false)
         {

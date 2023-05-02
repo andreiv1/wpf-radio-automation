@@ -220,10 +220,6 @@ namespace RA.UI.StationManagement
             {
                 //Load any components you need 
                 await Task.Delay(1400);
-                var window = AppHost!.Services.GetRequiredService<MediaLibraryMainWindow>();
-                window.Show();
-
-                
             });
 
             Task.WhenAll(testDatabaseTask, loadComponents).ContinueWith(t =>

@@ -47,12 +47,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             IsLoadingCalendar = true;
             var monthDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             var initCalendar = await defaultScheduleService
-                .GetDefaultScheduleOverviewAsync(monthDate - new TimeSpan(10, 0, 0, 0), monthDate.AddDays(40));
+                .GetDefaultSchedulesOverviewAsync(monthDate - new TimeSpan(10, 0, 0, 0), monthDate.AddDays(40));
             foreach(var item in initCalendar)
             {
-                throw new NotImplementedException();
-                //if (!String.IsNullOrEmpty(item.Value.TemplateDto?.Name))
-                    //CalendarItems.Add(ScheduleCalendarItem.FromDto(item.Value, item.Key));
+                //throw new NotImplementedException();
+                if (item.Value != null && item.Value.Template != null)
+                    CalendarItems.Add(ScheduleCalendarItem.FromDto(item.Value, item.Key));
             }
             IsLoadingCalendar = false;
         }
@@ -61,14 +61,16 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         {
             CalendarItems.Clear();
             IsLoadingCalendar = true;
-            throw new NotImplementedException();
-            //var calendar = await Task.Run(() => defaultScheduleService.GetDefaultScheduleOverview(range.StartDate, range.EndDate));
+            var calendar = await defaultScheduleService.GetDefaultSchedulesOverviewAsync(range.StartDate, range.EndDate);
             IsLoadingCalendar = false;
-            //foreach(var item in calendar)
-            //{
-            //    if(!String.IsNullOrEmpty(item.Value.TemplateDto?.Name))
-            //    CalendarItems.Add(ScheduleCalendarItem.FromDto(item.Value, item.Key));
-            //}
+            foreach(var item in calendar)
+            {
+                if (!String.IsNullOrEmpty(item.Value?.Template?.Name))
+                {
+                    CalendarItems.Add(ScheduleCalendarItem.FromDto(item.Value, item.Key));
+                }
+            }
+            IsLoadingCalendar = false;
         }
         #region Commands
         [RelayCommand]

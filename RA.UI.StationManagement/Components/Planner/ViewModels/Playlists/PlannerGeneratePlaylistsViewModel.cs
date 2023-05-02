@@ -22,7 +22,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
         private readonly IDispatcherService dispatcherService;
         private readonly IDefaultSchedulesService schedulesService;
 
-        public event PlaylistGeneratedEventHandler? PlaylistGenerated;
+        #region Properties
         public ObservableCollection<ScheduleOverviewModel> ScheduleOverview { get; set; } = new();
 
         [ObservableProperty]
@@ -41,6 +41,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
             _ = LoadOverview();
         }
 
+        #endregion
+
+        #region Constructor
+
         public PlannerGeneratePlaylistsViewModel(IWindowService windowService, IDispatcherService dispatcherService,
             IDefaultSchedulesService schedulesService) : base(windowService)
         {
@@ -49,16 +53,14 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
             _ = LoadOverview();
         }
 
-        protected override bool CanFinishDialog()
-        {
-            return false;
-        }
+        #endregion
 
+        #region Data fetching
         private async Task LoadOverview()
         {
             ScheduleOverview.Clear();
             var scheduleOverview = await Task.Run(() => 
-                schedulesService.GetDefaultScheduleOverviewAsync(StartDate, StartDate.AddDays(NumberOfDaysToSchedule - 1)));
+                schedulesService.GetDefaultSchedulesOverviewAsync(StartDate, StartDate.AddDays(NumberOfDaysToSchedule - 1)));
 
             foreach(var schedule in scheduleOverview)
             {
@@ -71,11 +73,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
                 ScheduleOverview.Add(item);
             }
         }
-
-        //partial void OnNumberOfDaysToScheduleChanged(int value)
-        //{
-        //    _ = LoadOverview();
-        //}
+        #endregion
 
         //[ObservableProperty]
         //private DateTime startDate = DateTime.Now.Date;
@@ -140,15 +138,14 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
         //    });
         //}
 
-        //private bool CanGeneratePlaylists()
-        //{
-        //    return !IsGeneratingStarted;
-        //}
-
-        //[RelayCommand(CanExecute = nameof(CanGeneratePlaylists))]
-        //private void Cancel()
-        //{
-        //    windowService.CloseDialog();
-        //}
+        protected override void FinishDialog()
+        {
+            throw new NotImplementedException("Generate playlists and then finish.");
+            base.FinishDialog();
+        }
+        protected override bool CanFinishDialog()
+        {
+            return false;
+        }
     }
 }

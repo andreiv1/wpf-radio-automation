@@ -27,7 +27,7 @@ namespace RA.ConsoleApp
         {
             //var db = dbFactory.CreateDbContext();
             IDefaultSchedulesService defaultSchedulesService = new DefaultSchedulesService(dbFactory);
-            var overview = defaultSchedulesService.GetDefaultScheduleOverview(DateTime.Now.Date, DateTime.Now.Date.AddDays(10));
+            var overview = defaultSchedulesService.GetDefaultSchedulesOverview(DateTime.Now.Date, DateTime.Now.Date.AddDays(10));
             foreach(var item in overview)
             {
                 Console.WriteLine($"{item.Key.ToString("dd/MM/yyyy")} - {item.Value?.Template?.Name} (templateId={item.Value?.Template?.Id})");
