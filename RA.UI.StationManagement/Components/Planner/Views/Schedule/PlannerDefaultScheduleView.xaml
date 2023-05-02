@@ -93,9 +93,9 @@
                                    SelectedItem="{Binding SelectedInterval}" 
                                    >
                 <syncfusion:SfDataGrid.Columns>
-                    <syncfusion:GridDateTimeColumn HeaderText="Start date"
+                    <syncfusion:GridDateTimeColumn HeaderText="Start date" TextAlignment="Center"
                                                    MappingName="StartDate"/>
-                    <syncfusion:GridDateTimeColumn HeaderText="End date"
+                    <syncfusion:GridDateTimeColumn HeaderText="End date" TextAlignment="Center"
                                                    MappingName="EndDate"/>
                 </syncfusion:SfDataGrid.Columns>
             </syncfusion:SfDataGrid>
