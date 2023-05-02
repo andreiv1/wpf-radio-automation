@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DAL.Models;
+using RA.Database.Models;
 using RA.DTO;
 using RA.Logic;
 using RA.UI.Core.Services;
@@ -27,6 +28,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         private readonly ITemplatesService templatesService;
 
         public ObservableCollection<DateTimeRange> DefaultIntervals { get; private set; } = new();
+
+        [ObservableProperty]
+        private DateTimeRange? addNewScheduleRange;
 
         [ObservableProperty]
         private DateTimeRange? selectedInterval;
@@ -165,6 +169,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         }
 
         [RelayCommand(CanExecute = nameof(CanSaveSelectedDefaultTemplate))]
+        // Save the selected default template items
         private async void SaveSelectedDefaultTemplate()
         {
             List<DefaultScheduleDto> toAdd = DefaultScheduleItemsForSelectedInterval
@@ -189,6 +194,47 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             }
             return true;
         }
+
+        [RelayCommand(CanExecute = nameof(CanAddNewDefaultSchedule))]
+        private void AddNewDefaultSchedule()
+        {
+            DefaultScheduleItemsForSelectedInterval.Clear();
+            var firstDayOfWeek = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+            int startDayIndex = 0;
+
+            if (firstDayOfWeek == DayOfWeek.Monday)
+            {
+                startDayIndex = 1;
+            }
+
+            for (int i = startDayIndex; i < 7; i++)
+            {
+                DefaultScheduleItemsForSelectedInterval.Add(
+                           new DefaultScheduleItem()
+                           {
+                               Day = (DayOfWeek)i
+                           });
+
+
+            }
+
+            if (firstDayOfWeek == DayOfWeek.Monday)
+            {
+                DefaultScheduleItemsForSelectedInterval.Add(
+                           new DefaultScheduleItem()
+                           {
+                               Day = DayOfWeek.Sunday,
+                           });
+            
+            }
+        }
+
+        //DEBUG
+        private bool CanAddNewDefaultSchedule()
+        {
+            return true;
+        }
+
 
         #endregion
     }
