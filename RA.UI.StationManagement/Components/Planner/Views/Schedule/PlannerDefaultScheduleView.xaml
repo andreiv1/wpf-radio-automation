@@ -89,8 +89,8 @@
             <syncfusion:SfDataGrid Grid.Row="3" AllowSorting="False"
                                    AutoGenerateColumns="False" SelectionUnit="Row" NavigationMode="Row" SelectionMode="Single"
                                    syncfusion:ScrollableContentViewer.HorizontalScrollBarVisibility="Hidden"
-                                   ItemsSource="{Binding DefaultIntervals}"
-                                   SelectedItem="{Binding SelectedInterval}">
+                                   ItemsSource="{Binding DefaultSchedules}"
+                                   SelectedItem="{Binding SelectedDefaultSchedule}">
                 <syncfusion:SfDataGrid.Columns>
                     <syncfusion:GridDateTimeColumn HeaderText="Start date" TextAlignment="Center"
                                                    MappingName="StartDate"/>
@@ -136,7 +136,7 @@
                 <syncfusion:SfDataGrid Grid.Row="1" Height="280" RowHeight="30" AllowSorting="False"
                 AutoGenerateColumns="False" ColumnSizer="AutoWithLastColumnFill" SelectionUnit="Row"
                        NavigationMode="Row" SelectionMode="Single" RowHoverHighlightingBrush="Transparent"
-                                   ItemsSource="{Binding DefaultScheduleItemsForSelectedInterval}"
+                                   ItemsSource="{Binding DefaultScheduleItemsForSelected}"
                                     SelectedItem="{Binding SelectedDefaultScheduleItem}">
                     <syncfusion:SfDataGrid.Columns>
                         <!-- Day Of Week -->

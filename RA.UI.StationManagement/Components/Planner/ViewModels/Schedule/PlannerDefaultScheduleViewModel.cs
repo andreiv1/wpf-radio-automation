@@ -28,27 +28,23 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         private readonly ITemplatesService templatesService;
 
         #region Properties
-        public ObservableCollection<DateTimeRange> DefaultIntervals { get; private set; } = new();
-
+        public ObservableCollection<ScheduleDefaultDto> DefaultSchedules { get; private set; } = new(); 
+        
         [ObservableProperty]
-        private DateTimeRange? addNewScheduleRange;
-
-        [ObservableProperty]
-        private DateTimeRange? selectedInterval;
-
-        public ObservableCollection<DefaultScheduleItem> DefaultScheduleItemsForSelectedInterval { get; private set; } = new();
+        private ScheduleDefaultDto? selectedDefaultSchedule;
+        public ObservableCollection<DefaultScheduleItem> DefaultScheduleItemsForSelected { get; private set; } = new();
 
         [ObservableProperty]
         private DefaultScheduleItem? selectedDefaultScheduleItem;
-        public ObservableCollection<TemplateDto> Templates { get; private set; } = new();
 
-        #endregion
-
-        partial void OnSelectedIntervalChanged(DateTimeRange? value)
+        partial void OnSelectedDefaultScheduleChanged(ScheduleDefaultDto? value)
         {
             _ = LoadDefaultScheduleForSelectedInterval();
-            _ = LoadTemplates();
         }
+        public ObservableCollection<TemplateDto> Templates { get; private set; } = new();
+        #endregion
+
+        
 
         #region Constructor
         public PlannerDefaultScheduleViewModel(IDispatcherService dispatcherService, IWindowService windowService,
@@ -58,93 +54,92 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             this.windowService = windowService;
             this.defaultSchedulesService = defaultSchedulesService;
             this.templatesService = templatesService;
-            _ = LoadIntervals();
+            _ = LoadDefaultSchedules();
         }
 
         #endregion
 
         #region Data fetching
-        private async Task LoadIntervals()
+        private async Task LoadDefaultSchedules()
         {
-            //var intervals = await Task.Run(() => defaultSchedulesService.GetDefaultSchedulesRangeAsync(0, 500));
-            DefaultIntervals.Clear();
-            //foreach(var interval in intervals)
-            //{
-            //    DefaultIntervals.Add(interval);                
-            //}
-            throw new NotImplementedException();
+            DefaultSchedules.Clear();
+            await Task.Run(() =>
+            {
+                foreach (var schedule in defaultSchedulesService.GetDefaultSchedules())
+                {
+                    dispatcherService.InvokeOnUIThread(() =>
+                    {
+                        DefaultSchedules.Add(schedule);
+                    });
+                }
+            });
+            
         }
 
         private async Task LoadDefaultScheduleForSelectedInterval()
         {
-            throw new NotImplementedException();
-            //if (SelectedInterval == null) return;
-            //DefaultScheduleItemsForSelectedInterval.Clear();
-            //var schedule = await Task.Run(() =>
-            //    defaultSchedulesService.GetDefaultScheduleWithTemplateAsync(SelectedInterval));
+            if (SelectedDefaultSchedule == null || SelectedDefaultSchedule.Id == null) return;
+            DefaultScheduleItemsForSelected.Clear();
+            var schedule = await defaultSchedulesService.GetDefaultScheduleItems(SelectedDefaultSchedule);
 
 
-            //var firstDayOfWeek = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
-            //int startDayIndex = 0;
 
-            //if (firstDayOfWeek == DayOfWeek.Monday)
-            //{
-            //    startDayIndex = 1;
-            //}
-
-            //for (int i = startDayIndex; i < 7; i++)
-            //{
-            //    if (schedule.ContainsKey((DayOfWeek)i))
-            //    {
-            //        ScheduleDefaultDto item = schedule[(DayOfWeek)i];
-            //        if (item is not null)
-            //        {
-            //            DefaultScheduleItemsForSelectedInterval.Add(
-            //                new DefaultScheduleItem()
-            //                {
-            //                    Id = (int)item.Id,
-            //                    TemplateId = item.TemplateDto.Id,
-            //                    TemplateName = item.TemplateDto.Name,
-            //                    Day = (DayOfWeek)i,
-            //                });
-            //        }
-            //        else
-            //        {
-            //            DefaultScheduleItemsForSelectedInterval.Add(
-            //                new DefaultScheduleItem()
-            //                {
-            //                    Day = (DayOfWeek)i
-            //                });
-            //        }
-            //    } 
+            DayOfWeek firstDayOfWeek = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
 
 
-            //}
+            for (DayOfWeek day = firstDayOfWeek; day <= DayOfWeek.Saturday; day++)
+            {
+                if (schedule.ContainsKey(day))
+                {
+                    ScheduleDefaultItemDto? item = schedule[day];
+                    if (item != null && item.Template != null)
+                    {
+                        DefaultScheduleItemsForSelected.Add(
+                            new DefaultScheduleItem()
+                            {
+                                Id = item.Id.GetValueOrDefault(),
+                                TemplateId = item.Template.Id,
+                                TemplateName = item.Template?.Name ?? "",
+                                Day = day,
+                            });
+                    }
+                    else
+                    {
+                        DefaultScheduleItemsForSelected.Add(
+                          new DefaultScheduleItem()
+                          {
+                              Day = day,
+                          });
+                    }
+                }
+            }
 
-            //if (firstDayOfWeek == DayOfWeek.Monday)
-            //{
-            //    ScheduleDefaultDto item = schedule[DayOfWeek.Sunday];
-            //    if (item is not null)
-            //    {
-            //        DefaultScheduleItemsForSelectedInterval.Add(
-            //            new DefaultScheduleItem()
-            //            {
-            //                Id = (int)item.Id,
-            //                TemplateId = item.TemplateDto.Id,
-            //                TemplateName = item.TemplateDto.Name,
-            //                Day = DayOfWeek.Sunday,
-            //            });
-            //    }
-            //    else
-            //    {
-            //        DefaultScheduleItemsForSelectedInterval.Add(
-            //            new DefaultScheduleItem()
-            //            {
-            //                Day = DayOfWeek.Sunday,
-            //            });
-            //    }
-            //}
+            if(firstDayOfWeek == DayOfWeek.Monday)
+            {
+                var day = DayOfWeek.Sunday;
+                ScheduleDefaultItemDto? item = schedule[day];
+                if (item != null && item.Template != null)
+                {
+                    DefaultScheduleItemsForSelected.Add(
+                        new DefaultScheduleItem()
+                        {
+                            Id = item.Id.GetValueOrDefault(),
+                            TemplateId = item.Template.Id,
+                            TemplateName = item.Template?.Name ?? "",
+                            Day = day,
+                        });
+                }
+                else
+                {
+                    DefaultScheduleItemsForSelected.Add(
+                      new DefaultScheduleItem()
+                      {
+                          Day = day,
+                      });
+                }
+            }
 
+ 
             SaveSelectedDefaultTemplateCommand.NotifyCanExecuteChanged();
         }
 
@@ -186,11 +181,11 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
 
         private bool CanSaveSelectedDefaultTemplate()
         {
-            if(DefaultScheduleItemsForSelectedInterval.Count == 0)
+            if(DefaultScheduleItemsForSelected.Count == 0)
             {
                 return false;
             }
-            foreach(var item in DefaultScheduleItemsForSelectedInterval)
+            foreach(var item in DefaultScheduleItemsForSelected)
             {
                 if(item.TemplateId == 0)
                 {
@@ -203,7 +198,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         [RelayCommand(CanExecute = nameof(CanAddNewDefaultSchedule))]
         private void AddNewDefaultSchedule()
         {
-            DefaultScheduleItemsForSelectedInterval.Clear();
+            DefaultScheduleItemsForSelected.Clear();
             var firstDayOfWeek = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
             int startDayIndex = 0;
 
@@ -214,7 +209,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
 
             for (int i = startDayIndex; i < 7; i++)
             {
-                DefaultScheduleItemsForSelectedInterval.Add(
+                DefaultScheduleItemsForSelected.Add(
                            new DefaultScheduleItem()
                            {
                                Day = (DayOfWeek)i
@@ -225,7 +220,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
 
             if (firstDayOfWeek == DayOfWeek.Monday)
             {
-                DefaultScheduleItemsForSelectedInterval.Add(
+                DefaultScheduleItemsForSelected.Add(
                            new DefaultScheduleItem()
                            {
                                Day = DayOfWeek.Sunday,

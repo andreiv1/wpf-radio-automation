@@ -64,7 +64,36 @@ namespace RA.DAL
         }
         public IEnumerable<ScheduleDefaultDto> GetDefaultSchedules(int skip = 0, int limit = 100, bool ascending = false)
         {
-            throw new NotImplementedException();
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var schedules = dbContext.SchedulesDefault
+                .Skip(skip)
+                .Take(limit)
+                .AsEnumerable();
+            schedules = ascending ?
+                schedules.OrderBy(s => s.StartDate).ThenBy(s => s.EndDate) :
+                schedules.OrderByDescending(s => s.StartDate).ThenBy(s => s.EndDate);
+            foreach(var schedule in schedules)
+            {
+                yield return ScheduleDefaultDto.FromEntity(schedule);
+            }
+        }
+
+        public async Task<IDictionary<DayOfWeek, ScheduleDefaultItemDto?>> GetDefaultScheduleItems(ScheduleDefaultDto parentDefaultScheduleDto)
+        {
+            SortedDictionary<DayOfWeek, ScheduleDefaultItemDto?> result = new();
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var items = await dbContext.ScheduleDefaultItems
+                .Include(s => s.Template)
+                .Where(s => s.ScheduleId == parentDefaultScheduleDto.Id)
+                .OrderBy(s => s.DayOfWeek)
+                .Select(s => ScheduleDefaultItemDto.FromEntity(s, parentDefaultScheduleDto))
+                .ToListAsync();
+
+            for(DayOfWeek day = DayOfWeek.Sunday; day <= DayOfWeek.Saturday; day++)
+            {
+                result.Add(day, items.Where(itm => itm.DayOfWeek == day).FirstOrDefault());
+            }
+            return result;
         }
     }
 }

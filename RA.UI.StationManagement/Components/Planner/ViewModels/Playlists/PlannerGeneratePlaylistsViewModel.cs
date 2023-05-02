@@ -75,23 +75,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
         }
         #endregion
 
-        //[ObservableProperty]
-        //private DateTime startDate = DateTime.Now.Date;
-
-        //partial void OnStartDateChanged(DateTime value)
-        //{
-        //    _ = LoadOverview();
-        //}
-
-        //private async Task LoadOverview()
-        //{
-        //    ScheduleOverview.Clear();
-        //    var scheduleOverview = await scheduleManager.GetDefaultScheduleOverviewAsync(StartDate, StartDate.AddDays(NumberOfDaysToSchedule - 1));
-        //    foreach (var schedule in scheduleOverview)
-        //    {
-        //        ScheduleOverview.Add(ScheduleOverviewModel.FromDto(schedule.Key, schedule.Value));
-        //    }
-        //}
 
         //[ObservableProperty]
         //private bool isGeneratingStarted = false;

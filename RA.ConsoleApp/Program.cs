@@ -26,12 +26,13 @@ namespace RA.ConsoleApp
         static void Main(string[] args)
         {
             //var db = dbFactory.CreateDbContext();
-            IDefaultSchedulesService defaultSchedulesService = new DefaultSchedulesService(dbFactory);
-            var overview = defaultSchedulesService.GetDefaultSchedulesOverview(DateTime.Now.Date, DateTime.Now.Date.AddDays(10));
-            foreach(var item in overview)
-            {
-                Console.WriteLine($"{item.Key.ToString("dd/MM/yyyy")} - {item.Value?.Template?.Name} (templateId={item.Value?.Template?.Id})");
-            }
+            //IDefaultSchedulesService defaultSchedulesService = new DefaultSchedulesService(dbFactory);
+            //var overview = defaultSchedulesService.GetDefaultSchedulesOverview(DateTime.Now.Date, DateTime.Now.Date.AddDays(10));
+            //foreach(var item in overview)
+            //{
+            //    Console.WriteLine($"{item.Key.ToString("dd/MM/yyyy")} - {item.Value?.Template?.Name} (templateId={item.Value?.Template?.Id})");
+            //}
+            CreateDefaultSchedule();
         }
         static void CreateDefaultSchedule()
         {
@@ -50,7 +51,7 @@ namespace RA.ConsoleApp
             }
 
             List<ScheduleDefault> schedules = new List<ScheduleDefault>();
-            DateTime startDate = DateTime.Today;
+            DateTime startDate = DateTime.Today.AddDays(-1);
             DateTime endDate = startDate.AddDays(7);
             var random = new Random();
 
@@ -62,10 +63,6 @@ namespace RA.ConsoleApp
                 s.EndDate = endDate;
 
                 schedules.Add(s);
-
-                // Move to the next week
-                startDate = endDate;
-                endDate = startDate.AddDays(7);
 
                 //Adding items
 
@@ -82,6 +79,11 @@ namespace RA.ConsoleApp
 
                     });
                 }
+
+                // Move to the next week
+                startDate = endDate.AddDays(1);
+                endDate = startDate.AddDays(7);
+
             }
             db.SchedulesDefault.AddRange(schedules);
             db.SaveChanges();

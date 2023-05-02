@@ -22,7 +22,7 @@ namespace RA.DTO
                 
 
             };
-            dto.Items = entity.ScheduleDefaultItems
+            dto.Items = entity.ScheduleDefaultItems?
                     .Select(sd => ScheduleDefaultItemDto.FromEntity(sd, dto))
                     .ToList();
             return dto;
