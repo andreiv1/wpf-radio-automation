@@ -82,15 +82,9 @@ namespace RA.UI.Core.Services
             return ShowDialogInternal<TViewModel>(window, viewModel);
         }
 
-        public TViewModel ShowDialog<TViewModel>(object parameter) where TViewModel : ViewModelBase
+        public TViewModel ShowDialog<TViewModel>(params object[] parameters) where TViewModel : ViewModelBase
         {
-            (Window window, ViewModelBase viewModel) = windowFactory.CreateWindow<TViewModel>(parameter);
-            return ShowDialogInternal<TViewModel>(window, viewModel);
-        }
-
-        public TViewModel ShowDialog<TViewModel>(object param1, object param2) where TViewModel : ViewModelBase
-        {
-            (Window window, ViewModelBase viewModel) = windowFactory.CreateWindow<TViewModel>(new object[] { param1, param2 });
+            (Window window, ViewModelBase viewModel) = windowFactory.CreateWindow<TViewModel>(parameters);
             return ShowDialogInternal<TViewModel>(window, viewModel);
         }
 

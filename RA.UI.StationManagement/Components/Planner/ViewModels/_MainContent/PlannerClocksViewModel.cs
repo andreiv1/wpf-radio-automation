@@ -42,7 +42,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private TimeSpan totalDuration;
 
         #region Constructor
-        public PlannerClocksViewModel(IWindowService windowService, IDispatcherService dispatcherService, 
+        public PlannerClocksViewModel(IWindowService windowService, IDispatcherService dispatcherService,
             IClocksService clocksService)
         {
             this.windowService = windowService;
@@ -57,6 +57,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             CalculateStartTime();
             FillPieChart();
         }
+
+        #region Data fetching
         private async Task LoadClocks()
         {
             var clocks = await Task.Run(() => clocksService.GetClocksAsync());
@@ -72,12 +74,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         }
         private async Task LoadClockItemsForSelectedClock()
         {
-            if(SelectedClock is not null)
+            if (SelectedClock != null)
             {
-                var clockItems = await Task.Run(() => clocksService.GetClockItemsAsync(SelectedClock.Id));
+                var clockItems = await Task.Run(() => clocksService.GetClockItemsAsync(SelectedClock.Id.GetValueOrDefault()));
                 ClockItemsForSelectedClock.Clear();
 
-                var categoryAvgDurations = await Task.Run(() => clocksService.CalculateAverageDurationsForCategoriesInClockWithId(SelectedClock.Id));
+                var categoryAvgDurations = await Task.Run(() => clocksService.CalculateAverageDurationsForCategoriesInClockWithId(SelectedClock.Id.GetValueOrDefault()));
 
                 foreach (var clockItemDto in clockItems)
                 {
@@ -101,6 +103,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                 }
             }
         }
+
+        #endregion
 
         private void CalculateStartTime()
         {
@@ -148,9 +152,19 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         [RelayCommand]
         private void EditClockDialog()
         {
-            if(SelectedClock == null) return;
-            windowService.ShowDialog<PlannerManageClockViewModel>(SelectedClock.Id);
+            if (SelectedClock == null) return;
+            windowService.ShowDialog<PlannerManageClockViewModel>(SelectedClock.Id ?? throw new ArgumentException("Id cannot be empty."));
+        }
+
+        [RelayCommand]
+        private void DuplicateClockDialog()
+        {
+            if (SelectedClock == null) return;
+            windowService.ShowDialog<PlannerManageClockViewModel>(SelectedClock.Id ?? throw new ArgumentException("Id cannot be empty."),
+               true);
         }
         #endregion
+
+
     }
 }

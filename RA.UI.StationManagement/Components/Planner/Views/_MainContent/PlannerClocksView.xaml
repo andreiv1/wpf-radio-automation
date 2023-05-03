@@ -65,7 +65,7 @@
                                      Source="{StaticResource EditIcon}" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Header="Duplicate clock" Command="{Binding DuplicateSelectedClockCommand}">
+                        <MenuItem Header="Duplicate clock" Command="{Binding DuplicateClockDialogCommand}">
                             <MenuItem.Icon>
                                 <Image
                                     Width="16"

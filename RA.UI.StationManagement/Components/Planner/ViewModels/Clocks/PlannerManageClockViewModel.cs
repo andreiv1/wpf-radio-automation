@@ -9,111 +9,66 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RA.DAL;
+using RA.DTO;
+using System.Configuration;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
 {
     public partial class PlannerManageClockViewModel : DialogViewModelBase
     {
         [ObservableProperty]
-        private String clockName = "";
-
-        private int? clockId;
+        private ClockDto clockDto = new();
         private bool duplicate = false;
-        public PlannerManageClockViewModel(IWindowService windowService) : base(windowService)
+        private readonly IClocksService clocksService;
+
+        public PlannerManageClockViewModel(IWindowService windowService, IClocksService clocksService) 
+            : base(windowService)
         {
             DialogName = "Add new clock";
+            this.clocksService = clocksService;
         }
 
-        public PlannerManageClockViewModel(IWindowService windowService, int clockId, bool duplicate = false) : base(windowService)
+        public PlannerManageClockViewModel(IWindowService windowService, IClocksService clocksService, int clockId, bool duplicate = false) 
+            : base(windowService)
         {
             DialogName = "Edit clock";
-            this.clockId = clockId;
+            this.clocksService = clocksService;
+            this.clockDto.Id = clockId;
             this.duplicate = duplicate;
-            LoadClock();
+            _ = LoadClock();
         }
 
-        private void LoadClock()
+        #region Data fetching
+        private async Task LoadClock()
         {
-            //if (!clockId.HasValue)
-            //{
-            //    return;
-            //}
-            //using (var db = new AppDbContext())
-            //{
-            //    ClockName = db.Clocks
-            //        .Where(c => c.Id == clockId.Value)
-            //        .Select(c => c.Name)
-            //        .First();
-            //}
-            //if (dialogOperation == DialogOperation.Duplicate)
-            //{
-            //    ClockName += " (COPY)";
-            //}
-        }
+            if (ClockDto?.Id != null)
+            {
+                ClockDto = await clocksService.GetClock(ClockDto.Id.GetValueOrDefault());
 
-        [RelayCommand]
-        private void SaveClock()
+                if (duplicate)
+                {
+                    ClockDto.Id = null;
+                    ClockDto.Name += " (COPY)";
+                }
+
+            }
+        }
+        #endregion
+
+        #region Commands
+        //[RelayCommand] in base class
+        protected override void FinishDialog()
         {
-            //if (ClockName is null)
-            //{
-            //    return;
-            //}
-            //using (var db = new AppDbContext())
-            //{
-            //    Clock clock = new Clock();
-            //    clock.Name = ClockName.Trim();
-            //    if (clockId.HasValue && dialogOperation == DialogOperation.Edit)
-            //    {
-            //        clock.Id = clockId.Value;
-            //        db.Clocks.Update(clock);
-            //    }
-            //    else
-            //    {
-            //        db.Clocks.Add(clock);
-            //    }
-
-            //    if (dialogOperation == DialogOperation.Duplicate)
-            //    {
-            //        DuplicateClockItems(db, clock);
-            //    }
-
-            //    db.SaveChangesAsync();
-            //}
-            base.CancelDialog();
+            base.FinishDialog();
         }
 
-        private void DuplicateClockItems(AppDbContext db, Clock clock)
-        {
-            //if (!clockId.HasValue)
-            //{
-            //    return;
-            //}
-
-            //if (dialogOperation == DialogOperation.Duplicate)
-            //{
-
-            //    var clockItems = db.ClockItems.Where(ci => ci.ClockId == clockId.Value);
-
-            //    var duplicates = new List<ClockItem>();
-            //    foreach (var clockItem in clockItems)
-            //    {
-            //        duplicates.Add(new ClockItem
-            //        {
-            //            Clock = clock,
-            //            OrderIndex = clockItem.OrderIndex,
-            //            CategoryId = clockItem.CategoryId,
-            //            TrackId = clockItem.TrackId,
-            //        });
-            //    }
-
-            //    _ = db.ClockItems.AddRangeAsync(duplicates);
-
-            //}
-        }
 
         protected override bool CanFinishDialog()
         {
             return false;
         }
+
+        #endregion
     }
 }

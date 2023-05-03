@@ -14,11 +14,11 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
         public int Id { get; private set; }
         public int? TrackId { get; set; }
         public int? CategoryId { get; set; }
-        public String CategoryName { get; set; }
+        public String CategoryName { get; set; } = String.Empty;
         public int? ClockId { get; set; }
         public int OrderIndex { get; set; }
 
-        public String ItemDetails { get; set; }
+        public String ItemDetails { get; set; } = String.Empty;
 
         [ObservableProperty]
         private TimeSpan startTime;

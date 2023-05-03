@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RA.DAL.Exceptions;
 using RA.Database;
+using RA.Database.Models;
 using RA.DTO;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,10 @@ namespace RA.DAL
     public class ClocksService : IClocksService
     {
         private readonly IDbContextFactory<AppDbContext> dbContextFactory;
-
         public ClocksService(IDbContextFactory<AppDbContext> dbContextFactory)
         {
             this.dbContextFactory = dbContextFactory;
         }
-
         public async Task<ClockDto> GetClock(int id)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
@@ -35,7 +34,6 @@ namespace RA.DAL
         {
             return GetClockItemsAsync(clockId).Result;
         }
-
         public async Task<IEnumerable<ClockItemDto>> GetClockItemsAsync(int clockId)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
@@ -109,6 +107,13 @@ namespace RA.DAL
                 }
             }
             return result;
+        }
+        public async Task AddClock(ClockDto clockDto)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var entity = ClockDto.ToEntity(clockDto);
+            await dbContext.AddAsync(entity);
+            await dbContext.SaveChangesAsync();
         }
     }
 }

@@ -12,10 +12,8 @@ namespace RA.UI.Core.Services.Interfaces
         T ShowWindow<T>() where T : ViewModelBase;
         T ShowWindow<T>(object parameter) where T : ViewModelBase;
         T ShowDialog<T>() where T : ViewModelBase;
-        T ShowDialog<T>(object parameter) where T : ViewModelBase;
-
-        T ShowDialog<T>(object param1, object param2) where T : ViewModelBase;
         void CloseDialog();
         void CloseWindow(ViewModelBase viewModel);
+        TViewModel ShowDialog<TViewModel>(params object[] parameters) where TViewModel : ViewModelBase;
     }
 }

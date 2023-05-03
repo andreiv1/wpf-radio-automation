@@ -14,5 +14,7 @@ namespace RA.DAL
         IEnumerable<ClockItemDto> GetClockItems(int clockId);
         Task<IEnumerable<ClockItemDto>> GetClockItemsAsync(int clockId);
         Task<Dictionary<int, TimeSpan>> CalculateAverageDurationsForCategoriesInClockWithId(int clockId);
+        Task AddClock(ClockDto clockDto);
+        Task<ClockDto> GetClock(int id);
     }
 }
