@@ -23,6 +23,7 @@ namespace RA.UI.Core.Services
         private TViewModel ShowWindowInternal<TViewModel>(Window window, ViewModelBase viewModel) where TViewModel : ViewModelBase
         {
             window.DataContext = viewModel;
+            // Get the active window
             window.Show();
             return (TViewModel)viewModel;
         }
@@ -32,6 +33,23 @@ namespace RA.UI.Core.Services
             dialogStack.Push(window);
             window.Closed += Window_Closed!;
             window.DataContext = viewModel;
+            // Get the active window
+            Window? activeWindow = Application.Current.Windows.OfType<Window>().SingleOrDefault(w => w.IsActive);
+            if (activeWindow != null)
+            {
+                window.Owner = activeWindow;
+            }
+            window.WindowStartupLocation = WindowStartupLocation.Manual;
+            if (activeWindow != null)
+            {
+                window.Left = activeWindow.Left + (activeWindow.Width - window.Width) / 2;
+                window.Top = activeWindow.Top + (activeWindow.Height - window.Height) / 2;
+            }
+            else
+            {
+                window.Left = (SystemParameters.PrimaryScreenWidth - window.Width) / 2;
+                window.Top = (SystemParameters.PrimaryScreenHeight - window.Height) / 2;
+            }
             window.ShowDialog();
             return (TViewModel)viewModel;
         }

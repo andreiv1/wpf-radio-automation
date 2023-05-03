@@ -227,10 +227,10 @@ namespace RA.UI.StationManagement
                 dispatcherService.InvokeOnUIThread(() =>
                 {
                     windowService.ShowWindow<LauncherViewModel>();
-                    splashScreen.Close();
+                    splashScreen.Hide();
                 });
             });
-
+            
 
         }
 
