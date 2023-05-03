@@ -51,8 +51,6 @@ namespace RA.Database
             modelBuilder.ApplyConfiguration(new CategoryConfig());
             modelBuilder.ApplyConfiguration(new UserGroupConfig());
             modelBuilder.ApplyConfiguration(new UserRuleConfig());
-            modelBuilder.ApplyConfiguration(new UserGroupConfig());
-            modelBuilder.ApplyConfiguration(new TrackHistoryConfig());
             modelBuilder.ApplyConfiguration(new TrackTagConfig());
             modelBuilder.ApplyConfiguration(new PlaylistConfig());
 

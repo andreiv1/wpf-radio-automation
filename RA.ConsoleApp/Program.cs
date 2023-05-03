@@ -25,7 +25,8 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
-            //var db = dbFactory.CreateDbContext();
+            var db = dbFactory.CreateDbContext();
+            db.Database.EnsureDeleted();
             //IDefaultSchedulesService defaultSchedulesService = new DefaultSchedulesService(dbFactory);
             //var overview = defaultSchedulesService.GetDefaultSchedulesOverview(DateTime.Now.Date, DateTime.Now.Date.AddDays(10));
             //foreach(var item in overview)
@@ -42,7 +43,7 @@ namespace RA.ConsoleApp
 
             //Creating dummy templates
             List<Template> templates = new List<Template>();
-            for(int i = 0; i < 20; i++)
+            for(int i = 0; i < 5; i++)
             {
                 templates.Add(new Template()
                 {
@@ -75,7 +76,7 @@ namespace RA.ConsoleApp
                     {
                         Schedule = s,
                         DayOfWeek = day,
-                        Template = templates.ElementAt(random.Next(1, 19)),
+                        Template = templates.ElementAt(random.Next(1, 5)),
 
                     });
                 }

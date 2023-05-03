@@ -13,6 +13,7 @@ namespace RA.Database.Models
     public partial class Template : BaseModel
     {
         [Required]
+        [MaxLength(100)]
         public String Name { get; set; }
         public ICollection<ScheduleDefaultItem> ScheduleDefaultItems { get; set; }
         public ICollection<SchedulePlanned> PlannedSchedules { get; set; }

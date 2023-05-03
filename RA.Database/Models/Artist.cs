@@ -13,8 +13,10 @@ namespace RA.Database.Models
     public class Artist : BaseModel
     {
         [Required]
+        [MaxLength(100)]
         public string Name { get; set; }
 
+        [MaxLength(1500)]
         public string Description { get; set; }
 
         public ICollection<ArtistTrack> ArtistTracks { get; set; }

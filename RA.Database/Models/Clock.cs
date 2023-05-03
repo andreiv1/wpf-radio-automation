@@ -13,6 +13,7 @@ namespace RA.Database.Models
     public class Clock : BaseModel
     {
         [Required]
+        [MaxLength(100)]
         public String Name { get; set; }
 
         public ICollection<ClockItem> ClockItems { get; set; }

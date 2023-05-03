@@ -13,9 +13,6 @@ namespace RA.Database.Config
     {
         public void Configure(EntityTypeBuilder<UserGroup> builder)
         {
-            builder.Property(ug => ug.Name).IsRequired()
-                .HasMaxLength(100);
-
             builder.HasMany(ur => ur.Rules)
                 .WithMany(ug => ug.Groups)
                 .UsingEntity<Dictionary<string, object>>(

@@ -38,6 +38,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         [ObservableProperty]
         private DefaultScheduleItem? selectedDefaultScheduleItem;
 
+        /// <summary>
+        /// Used for creating a SelectedDefaultSchedule
+        /// </summary>
         [ObservableProperty]
         private DateTimeRange addNewScheduleRange = new DateTimeRange(DateTime.Now.Date, DateTime.Now.Date.AddDays(7));
 
@@ -169,18 +172,24 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             }
         }
 
+
         [RelayCommand(CanExecute = nameof(CanSaveSelectedDefaultTemplate))]
-        // Save the selected default template items
         private async void SaveSelectedDefaultTemplate()
         {
             if (SelectedDefaultSchedule == null) return;
 
-            //TODO: Bugs
             if (SelectedDefaultSchedule.Id == null)
             {
                 //Add new schedule
-                await defaultSchedulesService.AddDefaultSchedule(SelectedDefaultSchedule, null);
+                SelectedDefaultSchedule.Items = DefaultScheduleItemsForSelected.Select(s => DefaultScheduleItem.ToDto(s, SelectedDefaultSchedule)).ToList();
+                await defaultSchedulesService.AddDefaultSchedule(SelectedDefaultSchedule);
                 messageBoxService.ShowInfo($"New default schedule added succesfully.");
+
+                //Refresh the schedules
+                await LoadDefaultSchedules();
+
+                SelectedDefaultSchedule = null;
+                DefaultScheduleItemsForSelected.Clear();
             }
             else
             {

@@ -19,7 +19,7 @@ namespace RA.DTO
                 Id = entity.Id,
                 StartDate = entity.StartDate,
                 EndDate = entity.EndDate,
-                
+                Name = entity.Name,
 
             };
             dto.Items = entity.ScheduleDefaultItems?

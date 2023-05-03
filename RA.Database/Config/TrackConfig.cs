@@ -15,22 +15,6 @@ namespace RA.Database.Config
     {
         public void Configure(EntityTypeBuilder<Track> builder)
         {
-            builder.Property(t => t.Type).HasConversion<int>()
-                .HasColumnType("tinyint");
-
-            builder.Property(t => t.Status).HasConversion<int>()
-                .HasColumnType("tinyint")
-                .HasDefaultValue(TrackStatus.Enabled);
-
-            builder.Property(t => t.Title).HasMaxLength(300);
-            builder.Property(t => t.Duration).HasColumnType("double(11,5)");
-            builder.Property(t => t.Album).HasMaxLength(300);
-            builder.Property(t => t.Bpm).HasColumnType("int(3)");
-            builder.Property(t => t.FilePath).HasMaxLength(500);
-            builder.Property(t => t.ImageName).HasMaxLength(50);
-            builder.Property(t => t.ISRC).HasMaxLength(55);
-
-
             builder.HasMany(t => t.Categories)
                 .WithMany(c => c.Tracks)
                 .UsingEntity<Dictionary<string, object>>(

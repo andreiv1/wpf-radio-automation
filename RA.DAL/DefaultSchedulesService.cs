@@ -112,18 +112,21 @@ namespace RA.DAL
             return await dbContext.SaveChangesAsync();
         }
 
-        public async Task<int> AddDefaultSchedule(ScheduleDefaultDto scheduleDefaultDto, List<ScheduleDefaultItemDto> items)
+        public async Task<int> AddDefaultSchedule(ScheduleDefaultDto scheduleDefaultDto)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             var schedule = ScheduleDefaultDto.ToEntity(scheduleDefaultDto);
+            schedule.ScheduleDefaultItems = scheduleDefaultDto?.Items?.Select(itm => ScheduleDefaultItemDto.ToEntity(itm)).ToList();
+            if(schedule.ScheduleDefaultItems == null)
+            {
+                throw new ArgumentNullException($"The schedule can't be added without items (ScheduleDefaultItems).");
+            }
             foreach(var itm in schedule.ScheduleDefaultItems)
             {
                 itm.Schedule = schedule;
                 itm.ScheduleId = 0;
+                itm.Template = dbContext.AttachOrGetTrackedEntity(itm.Template);
             }
-            schedule.ScheduleDefaultItems = items
-                .Select(s => ScheduleDefaultItemDto.ToEntity(s))
-                .ToList();
             await dbContext.AddAsync(schedule);
             return await dbContext.SaveChangesAsync();
         }

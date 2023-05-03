@@ -49,7 +49,10 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Expander Grid.Row="1"  Header="Add new default schedule" IsExpanded="True">
+            <Expander Grid.Row="1" IsExpanded="True">
+                <Expander.Header>
+                    <TextBlock Text="Add new default schedule" FontWeight="Bold"/>
+                </Expander.Header>
                 <!-- Add new interval grid -->
                 <Grid Height="auto" VerticalAlignment="Top">
                     <Grid.ColumnDefinitions>
@@ -62,29 +65,41 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="5"/>
                         <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Column="0" Content="Start Date:" FontWeight="DemiBold"
+                    <Label Grid.Column="0" Content="Name:" FontWeight="DemiBold"
                        VerticalAlignment="Center" Grid.ColumnSpan="2"/>
 
-                    <syncfusion:DateTimeEdit Grid.Column="1" DateTime="{Binding AddNewScheduleRange.StartDate,Mode=TwoWay}"
+                    <!--<syncfusion:DateTimeEdit Grid.Column="1" DateTime="{Binding AddNewScheduleRange.StartDate,Mode=TwoWay}"
+                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)" 
+                        />-->
+                    <syncfusion:SfTextBoxExt Grid.Column="1" Height="24" VerticalAlignment="Center"/>
+
+                    <Label Grid.Row="2" Grid.Column="0" Content="Start Date*:" FontWeight="DemiBold"
+                       VerticalAlignment="Center" Grid.ColumnSpan="2"/>
+
+                    <syncfusion:DateTimeEdit Grid.Row="2" Grid.Column="1" DateTime="{Binding AddNewScheduleRange.StartDate,Mode=TwoWay}"
                         Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)" 
                         />
 
-                    <Label Grid.Row="2" Grid.Column="0" Content="End Date:" FontWeight="DemiBold"
+                    <Label Grid.Row="4" Grid.Column="0" Content="End Date*:" FontWeight="DemiBold"
                        VerticalAlignment="Center" Grid.ColumnSpan="2"/>
 
-                    <syncfusion:DateTimeEdit Grid.Row="2" Grid.Column="1" DateTime="{Binding AddNewScheduleRange.EndDate,Mode=TwoWay}"
+                    <syncfusion:DateTimeEdit Grid.Row="4" Grid.Column="1" DateTime="{Binding AddNewScheduleRange.EndDate,Mode=TwoWay}"
                         Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)" 
                         />
 
-                    <syncfusion:ButtonAdv Grid.Row="4" Grid.Column="2" Label="Add and fill schedule" SmallIcon="{StaticResource PlusIcon}"
+                    <syncfusion:ButtonAdv Grid.Row="6" Grid.Column="2" Label="Add and fill schedule" SmallIcon="{StaticResource PlusIcon}"
                                     Width="198" HorizontalAlignment="Right"
                                     Command="{Binding AddNewDefaultScheduleCommand}"/>
                 </Grid>
             </Expander>
             <syncfusion:SfTextBoxExt Grid.Row="2" Height="24" Margin="0,5,0,0" VerticalAlignment="Center"
-                                     Watermark="Search existing intervals..."/>
+                                     Watermark="Search schedule by its name..."/>
 
             <syncfusion:SfDataGrid Grid.Row="3" AllowSorting="False"
                                    AutoGenerateColumns="False" SelectionUnit="Row" NavigationMode="Row" SelectionMode="Single"
@@ -92,9 +107,11 @@
                                    ItemsSource="{Binding DefaultSchedules}"
                                    SelectedItem="{Binding SelectedDefaultSchedule}">
                 <syncfusion:SfDataGrid.Columns>
-                    <syncfusion:GridDateTimeColumn HeaderText="Start date" TextAlignment="Center"
+                    <syncfusion:GridTextColumn HeaderText="Name" TextAlignment="Center"
+                                                   MappingName="Name" ColumnSizer="Star"/>
+                    <syncfusion:GridDateTimeColumn HeaderText="Start" TextAlignment="Center" Width="80"
                                                    MappingName="StartDate"/>
-                    <syncfusion:GridDateTimeColumn HeaderText="End date" TextAlignment="Center"
+                    <syncfusion:GridDateTimeColumn HeaderText="End" TextAlignment="Center" Width="80"
                                                    MappingName="EndDate"/>
                 </syncfusion:SfDataGrid.Columns>
             </syncfusion:SfDataGrid>

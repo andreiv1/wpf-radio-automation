@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,7 @@ namespace RA.Database.Models
         /// <summary>
         /// How many consecutive hours a clock should last
         /// </summary>
+        [MaxLength(2)]
         public int ClockSpan { get; set; }
     }
 }

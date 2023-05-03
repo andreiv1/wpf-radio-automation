@@ -8,5 +8,6 @@ namespace RA.Database.Models.Abstract
 {
     public abstract class ScheduleBase : BaseModel
     {
+        public String Name { get; set; }
     }
 }

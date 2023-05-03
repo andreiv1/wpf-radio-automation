@@ -10,6 +10,6 @@ namespace RA.DAL
 
         Task<IDictionary<DayOfWeek, ScheduleDefaultItemDto?>> GetDefaultScheduleItems(ScheduleDefaultDto parentDefaultScheduleDto);
         Task<int> UpdateDefaultScheduleItems(List<ScheduleDefaultItemDto> defaultScheduleItems);
-        Task<int> AddDefaultSchedule(ScheduleDefaultDto scheduleDefaultDto, List<ScheduleDefaultItemDto> items);
+        Task<int> AddDefaultSchedule(ScheduleDefaultDto scheduleDefaultDto);
     }
 }

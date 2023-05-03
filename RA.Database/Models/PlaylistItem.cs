@@ -12,6 +12,8 @@ namespace RA.Database.Models
     public class PlaylistItem : BaseModel
     {
         public DateTime ETA { get; set; }
+
+        [Column(TypeName = "double(11,5)")]
         public double Length { get; set; }
         public Track Track { get; set; }
 

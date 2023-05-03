@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RA.Database;
 
@@ -10,9 +11,11 @@ using RA.Database;
 namespace RA.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230503112759_Added_ScheduleBase_Name")]
+    partial class Added_ScheduleBase_Name
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,13 +44,11 @@ namespace RA.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(1500)
-                        .HasColumnType("varchar(1500)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -79,17 +80,14 @@ namespace RA.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Color")
-                        .HasMaxLength(7)
-                        .HasColumnType("varchar(7)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(1000)
-                        .HasColumnType("varchar(1000)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
@@ -131,8 +129,7 @@ namespace RA.Database.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -186,7 +183,6 @@ namespace RA.Database.Migrations
                         .HasColumnType("time(6)");
 
                     b.Property<int>("ClockSpan")
-                        .HasMaxLength(2)
                         .HasColumnType("int");
 
                     b.HasKey("ClockId", "TemplateId", "StartTime");
@@ -203,15 +199,16 @@ namespace RA.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Command")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.Property<TimeSpan>("EstimatedDuration")
                         .HasColumnType("time(6)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -253,7 +250,7 @@ namespace RA.Database.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<double>("Length")
-                        .HasColumnType("double(11,5)");
+                        .HasColumnType("double");
 
                     b.Property<int>("PlaylistId")
                         .HasColumnType("int");
@@ -352,8 +349,7 @@ namespace RA.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -367,8 +363,7 @@ namespace RA.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("TagCategoryId")
                         .HasColumnType("int");
@@ -388,8 +383,7 @@ namespace RA.Database.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -403,15 +397,14 @@ namespace RA.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Album")
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)");
 
                     b.Property<int?>("Bpm")
-                        .HasColumnType("int");
+                        .HasColumnType("int(3)");
 
                     b.Property<string>("Comments")
-                        .HasMaxLength(2000)
-                        .HasColumnType("varchar(2000)");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime(6)");
@@ -426,7 +419,9 @@ namespace RA.Database.Migrations
                         .HasColumnType("double(11,5)");
 
                     b.Property<string>("FilePath")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
 
                     b.Property<string>("ISRC")
                         .HasMaxLength(55)
@@ -437,22 +432,23 @@ namespace RA.Database.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("Lyrics")
-                        .HasMaxLength(2000)
-                        .HasColumnType("varchar(2000)");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime?>("ReleaseDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<sbyte>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint")
+                        .HasDefaultValue((sbyte)1);
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<sbyte>("Type")
+                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
@@ -469,7 +465,7 @@ namespace RA.Database.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("varchar(1000)");
 
-                    b.Property<string>("CategoryName")
+                    b.Property<string>("Category")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
@@ -480,18 +476,19 @@ namespace RA.Database.Migrations
                         .HasMaxLength(55)
                         .HasColumnType("varchar(55)");
 
-                    b.Property<TimeSpan>("LengthPlayed")
+                    b.Property<TimeSpan>("Length")
                         .HasColumnType("time(6)");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)");
 
                     b.Property<int?>("TrackId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TrackType")
-                        .HasColumnType("int");
+                    b.Property<sbyte>("TrackType")
+                        .HasColumnType("tinyint(4)");
 
                     b.HasKey("Id");
 
@@ -528,22 +525,16 @@ namespace RA.Database.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.Property<int?>("UserGroupId")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
