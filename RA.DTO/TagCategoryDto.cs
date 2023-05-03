@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class TagCategoryDto
+    public class TagCategoryDTO
     {
         public int? Id { get; private set; }
         public string Name { get; set; } = "";
-        public static TagCategoryDto FromEntity(TagCategory entity)
+        public static TagCategoryDTO FromEntity(TagCategory entity)
         {
-            return new TagCategoryDto
+            return new TagCategoryDTO
             {
                 Id = entity.Id,
                 Name = entity.Name,

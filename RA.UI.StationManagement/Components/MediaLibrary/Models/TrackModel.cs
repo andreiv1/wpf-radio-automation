@@ -58,8 +58,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
 
         [ObservableProperty]
         private DateTime? dateDeleted;
-        public ObservableCollection<TrackArtistDto>? Artists { get; set; }
-        public ObservableCollection<TrackCategoryDto>? Categories { get; set; }
+        public ObservableCollection<TrackArtistDTO>? Artists { get; set; }
+        public ObservableCollection<TrackCategoryDTO>? Categories { get; set; }
         public String ArtistsText
         {
             get
@@ -71,7 +71,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
                 return "";
             }
         }
-        public static TrackModel FromDto(TrackDto dto)
+        public static TrackModel FromDto(TrackDTO dto)
         {
             
             return new TrackModel()
@@ -92,8 +92,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
                 DateAdded = dto.DateAdded,
                 DateModified = dto.DateModified,
                 DateDeleted = dto.DateDeleted,
-                Artists = dto.Artists != null ? new ObservableCollection<TrackArtistDto>(dto.Artists) : null,
-                Categories = dto.Categories != null ? new ObservableCollection<TrackCategoryDto>(dto.Categories) : null,
+                Artists = dto.Artists != null ? new ObservableCollection<TrackArtistDTO>(dto.Artists) : null,
+                Categories = dto.Categories != null ? new ObservableCollection<TrackCategoryDTO>(dto.Categories) : null,
             };
         }
     }

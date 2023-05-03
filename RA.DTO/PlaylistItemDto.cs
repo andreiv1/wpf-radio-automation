@@ -7,24 +7,24 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class PlaylistItemDto
+    public class PlaylistItemDTO
     {
         public int Id { get; set; }
         public DateTime ETA { get; set; }
         public double Length { get; set; }
         public int PlaylistId { get; set; }
 
-        public PlaylistItemTrackDto TrackDto { get; set; }
+        public PlaylistItemTrackDTO TrackDto { get; set; }
 
-        public static PlaylistItemDto FromEntity(PlaylistItem entity)
+        public static PlaylistItemDTO FromEntity(PlaylistItem entity)
         {
-            return new PlaylistItemDto
+            return new PlaylistItemDTO
             {
                 Id = entity.Id,
                 ETA = entity.ETA,
                 Length = entity.Length,
                 PlaylistId = entity.PlaylistId,
-                TrackDto = entity.Track is not null ? PlaylistItemTrackDto.FromEntity(entity.Track) 
+                TrackDto = entity.Track is not null ? PlaylistItemTrackDTO.FromEntity(entity.Track) 
                     : throw new Exception("Track is required."),
             };
         }

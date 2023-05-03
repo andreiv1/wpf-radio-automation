@@ -20,7 +20,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(FinishDialogCommand))]
-        private CategoryHierarchyDto? selectedCategory;
+        private CategoryHierarchyDTO? selectedCategory;
 
         public PlannerManageClockCategoryRuleViewModel(IWindowService windowService, ICategoriesService categoriesService,
             int clockId) : base(windowService)

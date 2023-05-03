@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class ArtistDto
+    public class ArtistDTO
     {
         public int Id { get; set; }
         public string? Name { get; set; }
 
-        public static ArtistDto FromEntity(Artist artist)
+        public static ArtistDTO FromEntity(Artist artist)
         {
-            return new ArtistDto { Id = artist.Id, Name = artist.Name };
+            return new ArtistDTO { Id = artist.Id, Name = artist.Name };
         }
     }
 }

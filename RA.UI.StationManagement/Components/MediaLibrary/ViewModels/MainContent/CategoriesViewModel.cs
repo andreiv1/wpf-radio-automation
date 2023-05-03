@@ -18,7 +18,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         private readonly IWindowService windowService;
         private readonly ICategoriesService categoriesService;
 
-        public ObservableCollection<CategoryDto> Categories { get; set; } = new();
+        public ObservableCollection<CategoryDTO> Categories { get; set; } = new();
 
         public CategoriesViewModel(IWindowService windowService, ICategoriesService categoriesService)
         {

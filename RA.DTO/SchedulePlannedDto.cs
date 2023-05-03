@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class SchedulePlannedDto : ScheduleBaseDto
+    public class SchedulePlannedDTO : ScheduleBaseDto
     {
         public SchedulePlannedType Type { get; set; }
         public SchedulePlannedFrequency? Frequency { get; set; }
 
-        public static SchedulePlannedDto FromEntity(SchedulePlanned entity)
+        public static SchedulePlannedDTO FromEntity(SchedulePlanned entity)
         {
             throw new NotImplementedException();
         }

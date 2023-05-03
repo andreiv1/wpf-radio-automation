@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class ClockTemplateDto
+    public class ClockTemplateDTO
     {
         public int ClockId { get; set; }
         public int TemplateId { get; set; }
@@ -15,9 +15,9 @@ namespace RA.DTO
         public TimeSpan StartTime { get; set; } 
         public int ClockSpan { get; set; }
 
-        public static ClockTemplateDto FromEntity(ClockTemplate entity)
+        public static ClockTemplateDTO FromEntity(ClockTemplate entity)
         {
-            return new ClockTemplateDto
+            return new ClockTemplateDTO
             {
                 ClockId = entity.ClockId,
                 TemplateId = entity.TemplateId,

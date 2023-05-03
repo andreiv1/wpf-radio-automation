@@ -4,8 +4,8 @@ namespace RA.DAL
 {
     public interface ITagsService
     {
-        Task<IEnumerable<TagCategoryDto>> GetTagCategoriesAsync();
-        IEnumerable<TagCategoryDto> GetTagCategories();
-        Task<IEnumerable<TagValueDto>> GetTagValuesByCategoryAsync(int tagCategoryId);
+        Task<IEnumerable<TagCategoryDTO>> GetTagCategoriesAsync();
+        IEnumerable<TagCategoryDTO> GetTagCategories();
+        Task<IEnumerable<TagValueDTO>> GetTagValuesByCategoryAsync(int tagCategoryId);
     }
 }

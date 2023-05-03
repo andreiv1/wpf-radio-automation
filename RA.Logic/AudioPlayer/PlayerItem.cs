@@ -12,7 +12,7 @@ namespace RA.Logic.AudioPlayer
 {
     public class PlayerItem : IPlayerItem, INotifyPropertyChanged
     {
-        private readonly PlaylistItemTrackDto track;
+        private readonly PlaylistItemTrackDTO track;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public string FilePath => track.FilePath;
@@ -35,7 +35,7 @@ namespace RA.Logic.AudioPlayer
         {
 
         }
-        public PlayerItem(PlaylistItemDto playlistItemDto)
+        public PlayerItem(PlaylistItemDTO playlistItemDto)
         {
             this.track = playlistItemDto.TrackDto;
         }

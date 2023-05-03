@@ -28,7 +28,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
 
         public List<SchedulePlannedFrequency> ScheduleFrequencies => scheduleFrequencies.ToList();
 
-        public ObservableCollection<TemplateDto> Templates { get; set; } = new();
+        public ObservableCollection<TemplateDTO> Templates { get; set; } = new();
 
         public PlannerManageScheduleItemViewModel(IWindowService windowService, IDispatcherService dispatcherService,
             ITemplatesService templatesService) : base(windowService)

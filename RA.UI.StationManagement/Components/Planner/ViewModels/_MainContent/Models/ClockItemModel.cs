@@ -32,7 +32,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
         [ObservableProperty]
         private SolidColorBrush backgroundColor = new SolidColorBrush(Color.FromRgb(51, 51, 51));
 
-        public static ClockItemModel FromDto(ClockItemDto dto)
+        public static ClockItemModel FromDto(ClockItemDTO dto)
         {
             var model = new ClockItemModel()
             {

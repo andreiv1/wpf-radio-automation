@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class TrackCategoryDto
+    public class TrackCategoryDTO
     {
         public int CategoryId { get; set; }
         public String CategoryName { get; set; }
 
-        public static TrackCategoryDto FromEntity(Category category)
+        public static TrackCategoryDTO FromEntity(Category category)
         {
-            return new TrackCategoryDto()
+            return new TrackCategoryDTO()
             {
                 CategoryId = category.Id,
                 CategoryName = category.Name,
             };
         }
 
-        public static Category ToEntity(TrackCategoryDto dto)
+        public static Category ToEntity(TrackCategoryDTO dto)
         {
             return new Category()
             {

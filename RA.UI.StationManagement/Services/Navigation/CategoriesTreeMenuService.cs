@@ -62,7 +62,7 @@ namespace RA.UI.StationManagement.Services.Navigation
                 return;
             }
 
-            CategoryDto? categoryDto = parentCategory.Tag as CategoryDto ?? null;
+            CategoryDTO? categoryDto = parentCategory.Tag as CategoryDTO ?? null;
             if (categoryDto != null && categoryDto.Id.HasValue)
             {
                 var childCategories = await categoriesService.GetChildrenCategoriesAsync(categoryDto.Id.Value);

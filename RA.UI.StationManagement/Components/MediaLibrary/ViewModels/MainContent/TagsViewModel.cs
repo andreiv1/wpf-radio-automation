@@ -18,12 +18,12 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         private readonly IDispatcherService dispatcherService;
         private readonly ITagsService tagsService;
 
-        public ObservableCollection<TagCategoryDto> TagCategories { get; private set; } = new();
-        public ObservableCollection<TagValueDto> TagValues { get; private set; } = new();
+        public ObservableCollection<TagCategoryDTO> TagCategories { get; private set; } = new();
+        public ObservableCollection<TagValueDTO> TagValues { get; private set; } = new();
 
         [ObservableProperty]
-        private TagCategoryDto? selectedTagCategory;
-        partial void OnSelectedTagCategoryChanged(TagCategoryDto? value)
+        private TagCategoryDTO? selectedTagCategory;
+        partial void OnSelectedTagCategoryChanged(TagCategoryDTO? value)
         {
             if(value != null && value.Id.HasValue)
             {

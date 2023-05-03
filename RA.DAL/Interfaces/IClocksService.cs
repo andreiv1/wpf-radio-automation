@@ -9,13 +9,13 @@ namespace RA.DAL
 {
     public interface IClocksService
     {
-        IEnumerable<ClockDto> GetClocks();
-        Task<IEnumerable<ClockDto>> GetClocksAsync();
-        IEnumerable<ClockItemDto> GetClockItems(int clockId);
-        Task<IEnumerable<ClockItemDto>> GetClockItemsAsync(int clockId);
+        IEnumerable<ClockDTO> GetClocks();
+        Task<IEnumerable<ClockDTO>> GetClocksAsync();
+        IEnumerable<ClockItemDTO> GetClockItems(int clockId);
+        Task<IEnumerable<ClockItemDTO>> GetClockItemsAsync(int clockId);
         Task<Dictionary<int, TimeSpan>> CalculateAverageDurationsForCategoriesInClockWithId(int clockId);
-        Task AddClock(ClockDto clockDto);
-        Task<ClockDto> GetClock(int id);
-        Task UpdateClock(ClockDto clockDto);
+        Task AddClock(ClockDTO clockDto);
+        Task<ClockDTO> GetClock(int id);
+        Task UpdateClock(ClockDTO clockDto);
     }
 }

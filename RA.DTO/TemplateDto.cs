@@ -7,26 +7,26 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class TemplateDto
+    public class TemplateDTO
     {
         public int Id { get; set; }
         public string? Name { get; set; }
-        public TemplateDto(string name)
+        public TemplateDTO(string name)
         {
             Name = name;
         }
 
-        public TemplateDto(int id)
+        public TemplateDTO(int id)
         {
             Id = id;
         }
 
-        public static TemplateDto FromEntity(Template entity)
+        public static TemplateDTO FromEntity(Template entity)
         {
-            return new TemplateDto(entity.Name) { Id = entity.Id, };
+            return new TemplateDTO(entity.Name) { Id = entity.Id, };
         }
 
-        public static Template ToEntity(TemplateDto dto)
+        public static Template ToEntity(TemplateDTO dto)
         {
             return new Template 
             { 

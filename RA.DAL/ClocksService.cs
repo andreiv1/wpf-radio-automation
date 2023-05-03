@@ -18,11 +18,11 @@ namespace RA.DAL
         {
             this.dbContextFactory = dbContextFactory;
         }
-        public async Task<ClockDto> GetClock(int id)
+        public async Task<ClockDTO> GetClock(int id)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             var result = await dbContext.Clocks.Where(c => c.Id == id)
-                .Select(c => ClockDto.FromEntity(c))
+                .Select(c => ClockDTO.FromEntity(c))
                 .FirstOrDefaultAsync();
             if(result == null)
             {
@@ -30,29 +30,29 @@ namespace RA.DAL
             }
             return result;
         }
-        public IEnumerable<ClockItemDto> GetClockItems(int clockId)
+        public IEnumerable<ClockItemDTO> GetClockItems(int clockId)
         {
             return GetClockItemsAsync(clockId).Result;
         }
-        public async Task<IEnumerable<ClockItemDto>> GetClockItemsAsync(int clockId)
+        public async Task<IEnumerable<ClockItemDTO>> GetClockItemsAsync(int clockId)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             return await dbContext.ClockItems
                 .Where(cl => cl.ClockId == clockId)
                 .Include(c => c.Category)
                 .OrderBy(ci => ci.OrderIndex)
-                .Select(ci => ClockItemDto.FromEntity(ci))
+                .Select(ci => ClockItemDTO.FromEntity(ci))
                 .ToListAsync();
         }
-        public IEnumerable<ClockDto> GetClocks()
+        public IEnumerable<ClockDTO> GetClocks()
         {
             return GetClocksAsync().Result;
         }
-        public async Task<IEnumerable<ClockDto>> GetClocksAsync()
+        public async Task<IEnumerable<ClockDTO>> GetClocksAsync()
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             return await dbContext.Clocks
-                .Select(c => ClockDto.FromEntity(c))
+                .Select(c => ClockDTO.FromEntity(c))
                 .ToListAsync();
         }
         public async Task<Dictionary<int, TimeSpan>> CalculateAverageDurationsForCategoriesInClockWithId(int clockId)
@@ -108,18 +108,18 @@ namespace RA.DAL
             }
             return result;
         }
-        public async Task AddClock(ClockDto clockDto)
+        public async Task AddClock(ClockDTO clockDto)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            var entity = ClockDto.ToEntity(clockDto);
+            var entity = ClockDTO.ToEntity(clockDto);
             await dbContext.AddAsync(entity);
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateClock(ClockDto clockDto)
+        public async Task UpdateClock(ClockDTO clockDto)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            var entity = ClockDto.ToEntity(clockDto);
+            var entity = ClockDTO.ToEntity(clockDto);
             dbContext.Update(entity);
             await dbContext.SaveChangesAsync();
         }

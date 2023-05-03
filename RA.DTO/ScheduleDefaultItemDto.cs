@@ -7,29 +7,29 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class ScheduleDefaultItemDto
+    public class ScheduleDefaultItemDTO
     {
         public int? Id { get; set; }
-        public  ScheduleDefaultDto Schedule { get; set; }
+        public  ScheduleDefaultDTO Schedule { get; set; }
         public DayOfWeek DayOfWeek { get; set; }
-        public TemplateDto? Template { get; set; }
+        public TemplateDTO? Template { get; set; }
 
-        public ScheduleDefaultItemDto(ScheduleDefaultDto schedule)
+        public ScheduleDefaultItemDTO(ScheduleDefaultDTO schedule)
         {
             Schedule = schedule;
         }
 
-        public static ScheduleDefaultItemDto FromEntity(ScheduleDefaultItem entity, ScheduleDefaultDto parentDefaultScheduleDto)
+        public static ScheduleDefaultItemDTO FromEntity(ScheduleDefaultItem entity, ScheduleDefaultDTO parentDefaultScheduleDto)
         {
-            return new ScheduleDefaultItemDto(parentDefaultScheduleDto)
+            return new ScheduleDefaultItemDTO(parentDefaultScheduleDto)
             {
                 Id = entity.Id,
                 DayOfWeek = entity.DayOfWeek,
-                Template = TemplateDto.FromEntity(entity.Template)
+                Template = TemplateDTO.FromEntity(entity.Template)
             };
         }
 
-        public static ScheduleDefaultItem ToEntity(ScheduleDefaultItemDto dto)
+        public static ScheduleDefaultItem ToEntity(ScheduleDefaultItemDTO dto)
         {
             if(dto.Template == null)
             {
@@ -40,7 +40,7 @@ namespace RA.DTO
                 Id = dto.Id.GetValueOrDefault(),
                 ScheduleId = dto.Schedule.Id.GetValueOrDefault(),
                 DayOfWeek = dto.DayOfWeek,
-                Template = TemplateDto.ToEntity(dto.Template),
+                Template = TemplateDTO.ToEntity(dto.Template),
             };
         }
             

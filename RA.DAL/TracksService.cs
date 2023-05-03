@@ -28,28 +28,28 @@ namespace RA.DAL
             }
         }
 
-        public async Task<IEnumerable<TrackListDto>> GetTrackListAsync(int skip, int take)
+        public async Task<IEnumerable<TrackListDTO>> GetTrackListAsync(int skip, int take)
         {
             using (var dbContext = dbContextFactory.CreateDbContext())
             {
                 return await dbContext.GetTracks()
                     .Skip(skip)
                     .Take(take)
-                    .Select(t => TrackListDto.FromEntity(t))
+                    .Select(t => TrackListDTO.FromEntity(t))
                     .ToListAsync();
             }
         }
 
-        public async Task<TrackDto> GetTrack(int id)
+        public async Task<TrackDTO> GetTrack(int id)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             return await dbContext.GetTrackById(id)
                 .Include(c => c.Categories)
-                .Select(t => TrackDto.FromEntity(t))
+                .Select(t => TrackDTO.FromEntity(t))
                 .FirstAsync();
         }
 
-        public async Task<IEnumerable<TrackListDto>> GetTrackListByArtistAsync(int artistId, int skip, int take)
+        public async Task<IEnumerable<TrackListDTO>> GetTrackListByArtistAsync(int artistId, int skip, int take)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             return await dbContext.GetTracks()
@@ -59,16 +59,16 @@ namespace RA.DAL
                     ArtistId = artistId,
                     TrackId = t.Id,
                 }))
-                .Select(t => TrackListDto.FromEntity(t))
+                .Select(t => TrackListDTO.FromEntity(t))
                 .ToListAsync();
         }
 
-        public IEnumerable<TrackListDto> GetTrackListByArtist(int artistId, int skip, int take)
+        public IEnumerable<TrackListDTO> GetTrackListByArtist(int artistId, int skip, int take)
         {
             return GetTrackListByArtistAsync(artistId, skip, take).Result;
         }
 
-        public async Task<IEnumerable<TrackListDto>> GetTrackListByCategoryAsync(int categoryId, int skip, int take)
+        public async Task<IEnumerable<TrackListDTO>> GetTrackListByCategoryAsync(int categoryId, int skip, int take)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             return await dbContext.GetTracks()
@@ -77,7 +77,7 @@ namespace RA.DAL
                     {
                         Id = categoryId,
                     }))
-                .Select(t => TrackListDto.FromEntity(t))
+                .Select(t => TrackListDTO.FromEntity(t))
                 .ToListAsync();
         }
     }

@@ -19,11 +19,11 @@ namespace RA.UI.StationManagement.Dialogs.TemplateSelectDialog
     {
         private readonly ITemplatesService templatesService;
 
-        public ObservableCollection<TemplateDto> Templates { get; private set; } = new();
+        public ObservableCollection<TemplateDTO> Templates { get; private set; } = new();
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(FinishDialogCommand))]
-        private TemplateDto? selectedTemplate;
+        private TemplateDTO? selectedTemplate;
 
         public TemplateSelectViewModel(IWindowService windowService, ITemplatesService templatesService) : base(windowService)
         {

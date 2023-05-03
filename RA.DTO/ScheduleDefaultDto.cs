@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class ScheduleDefaultDto : ScheduleBaseDto
+    public class ScheduleDefaultDTO : ScheduleBaseDto
     {
-        public ICollection<ScheduleDefaultItemDto>? Items { get; set; }
+        public ICollection<ScheduleDefaultItemDTO>? Items { get; set; }
 
-        public static ScheduleDefaultDto FromEntity(ScheduleDefault entity)
+        public static ScheduleDefaultDTO FromEntity(ScheduleDefault entity)
         {
-            var dto = new ScheduleDefaultDto()
+            var dto = new ScheduleDefaultDTO()
             {
                 Id = entity.Id,
                 StartDate = entity.StartDate,
@@ -23,12 +23,12 @@ namespace RA.DTO
 
             };
             dto.Items = entity.ScheduleDefaultItems?
-                    .Select(sd => ScheduleDefaultItemDto.FromEntity(sd, dto))
+                    .Select(sd => ScheduleDefaultItemDTO.FromEntity(sd, dto))
                     .ToList();
             return dto;
         }
 
-        public static ScheduleDefault ToEntity(ScheduleDefaultDto scheduleDefaultDto)
+        public static ScheduleDefault ToEntity(ScheduleDefaultDTO scheduleDefaultDto)
         {
             return new ScheduleDefault()
             {

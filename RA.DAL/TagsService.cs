@@ -18,26 +18,26 @@ namespace RA.DAL
             this.dbContextFactory = dbContextFactory;
         }
 
-        public IEnumerable<TagCategoryDto> GetTagCategories()
+        public IEnumerable<TagCategoryDTO> GetTagCategories()
         {
             return GetTagCategoriesAsync().Result;
         }
 
-        public async Task<IEnumerable<TagCategoryDto>> GetTagCategoriesAsync()
+        public async Task<IEnumerable<TagCategoryDTO>> GetTagCategoriesAsync()
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             return await dbContext.TagCategories
-                .Select(tc => TagCategoryDto.FromEntity(tc))
+                .Select(tc => TagCategoryDTO.FromEntity(tc))
                 .ToListAsync();
         }
 
         
-        public async Task<IEnumerable<TagValueDto>> GetTagValuesByCategoryAsync(int tagCategoryId)
+        public async Task<IEnumerable<TagValueDTO>> GetTagValuesByCategoryAsync(int tagCategoryId)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             return await dbContext.TagValues
                 .Where(tv => tv.TagCategoryId == tagCategoryId)
-                .Select(tv => TagValueDto.FromEntity(tv))
+                .Select(tv => TagValueDTO.FromEntity(tv))
                 .ToListAsync();
         }
     }

@@ -25,13 +25,13 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule.Models
 
         public bool IsUpdated { get; set; } = false;
 
-        public static ScheduleDefaultItemDto ToDto(DefaultScheduleItem model, ScheduleDefaultDto scheduleDto)
+        public static ScheduleDefaultItemDTO ToDto(DefaultScheduleItem model, ScheduleDefaultDTO scheduleDto)
         {
-            return new ScheduleDefaultItemDto(scheduleDto)
+            return new ScheduleDefaultItemDTO(scheduleDto)
             {
                 Id = model.Id,
                 DayOfWeek = model.Day,
-                Template = new TemplateDto(model.TemplateId),
+                Template = new TemplateDTO(model.TemplateId),
             };
         }
     }

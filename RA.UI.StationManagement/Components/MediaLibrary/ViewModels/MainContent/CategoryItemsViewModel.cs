@@ -16,12 +16,12 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         private readonly ICategoriesService categoryService;
         private readonly ITracksService tracksService;
         private readonly int categoryId;
-        public ObservableCollection<CategoryDto> Subcategories { get; private set; } = new();
+        public ObservableCollection<CategoryDTO> Subcategories { get; private set; } = new();
 
-        public ObservableCollection<TrackListDto> CategoryTracks { get; private set; } = new();
+        public ObservableCollection<TrackListDTO> CategoryTracks { get; private set; } = new();
 
         [ObservableProperty]
-        private CategoryHierarchyDto? categoryHierarchy;
+        private CategoryHierarchyDTO? categoryHierarchy;
 
         [ObservableProperty]
         private bool hasTracks = false;

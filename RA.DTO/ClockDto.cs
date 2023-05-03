@@ -7,27 +7,27 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class ClockDto
+    public class ClockDTO
     {
         public int? Id { get; set; }
         public String Name { get; set; }
 
-        public ClockDto()
+        public ClockDTO()
         {
             Name = string.Empty;    
         }
 
-        public ClockDto(string name)
+        public ClockDTO(string name)
         {
             Name = name;
         }
 
-        public static ClockDto FromEntity(Clock clock)
+        public static ClockDTO FromEntity(Clock clock)
         {
-            return new ClockDto { Id = clock.Id, Name = clock.Name, };
+            return new ClockDTO { Id = clock.Id, Name = clock.Name, };
         }
 
-        public static Clock ToEntity(ClockDto dto)
+        public static Clock ToEntity(ClockDTO dto)
         {
             return new Clock { Id = dto.Id.GetValueOrDefault(), Name = dto.Name, };
         }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class PlaylistDto
+    public class PlaylistDTO
     {
         public int Id { get; set; }
 
@@ -15,9 +15,9 @@ namespace RA.DTO
         public DateTime DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
 
-        public static PlaylistDto FromEntity(Playlist entity)
+        public static PlaylistDTO FromEntity(Playlist entity)
         {
-            return new PlaylistDto { Id = entity.Id, AirDate = entity.AirDate, DateAdded = entity.DateAdded, DateModified = entity.DateModified };
+            return new PlaylistDTO { Id = entity.Id, AirDate = entity.AirDate, DateAdded = entity.DateAdded, DateModified = entity.DateModified };
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class ClockItemDto
+    public class ClockItemDTO
     {
         public int Id { get; set; }
         public int? TrackId { get; set; }
@@ -17,9 +17,9 @@ namespace RA.DTO
 
         public int OrderIndex { get; set; }
 
-        public static ClockItemDto FromEntity(ClockItem clockItem)
+        public static ClockItemDTO FromEntity(ClockItem clockItem)
         {
-            return new ClockItemDto
+            return new ClockItemDTO
             {
                 Id = clockItem.Id,
                 TrackId = clockItem.TrackId,
@@ -30,7 +30,7 @@ namespace RA.DTO
             };
         }
 
-        public static ClockItem ToEntity(ClockItemDto clockItemDto)
+        public static ClockItem ToEntity(ClockItemDTO clockItemDto)
         {
             return new ClockItem
             {

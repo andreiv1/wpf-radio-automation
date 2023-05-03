@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class CategoryDto
+    public class CategoryDTO
     {
         public int? Id { get; set; }
         public string Name { get; set; }
@@ -16,9 +16,9 @@ namespace RA.DTO
 
         public string Color { get; set; }
 
-        public static CategoryDto FromEntity(Category category)
+        public static CategoryDTO FromEntity(Category category)
         {
-            return new CategoryDto { 
+            return new CategoryDTO { 
                 Id = category.Id, 
                 Name = category.Name, 
                 Description = category.Description, 
@@ -27,7 +27,7 @@ namespace RA.DTO
             };
         }
 
-        public static Category FromDto(CategoryDto dto)
+        public static Category FromDto(CategoryDTO dto)
         {
             return new Category
             {

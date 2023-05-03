@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using RA.Logic;
-using RA.Logic.TrackFileLogic;
+using RA.Logic.TrackFileLogic.Models;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;

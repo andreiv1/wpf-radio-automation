@@ -16,15 +16,15 @@ namespace RA.DAL
         {
             this.dbContextFactory = dbContextFactory;
         }
-        public async Task<IEnumerable<TemplateDto>> GetTemplatesAsync()
+        public async Task<IEnumerable<TemplateDTO>> GetTemplatesAsync()
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             return await dbContext.Templates
-                .Select(t => TemplateDto.FromEntity(t))
+                .Select(t => TemplateDTO.FromEntity(t))
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<TemplateClockDto>> GetTemplatesForClockWithId(int clockId)
+        public async Task<IEnumerable<TemplateClockDTO>> GetTemplatesForClockWithId(int clockId)
         {
             using (var dbContext = dbContextFactory.CreateDbContext())
             {
@@ -33,33 +33,33 @@ namespace RA.DAL
                       .ThenInclude(tc => tc.Clock)
                       .Where(t => t.Id == clockId)
                       .SelectMany(t => t.TemplateClocks)
-                      .Select(t => TemplateClockDto.FromEntity(t))
+                      .Select(t => TemplateClockDTO.FromEntity(t))
                       .ToListAsync();
             }
 
         }
 
-        public async Task AddTemplate(TemplateDto templateDto)
+        public async Task AddTemplate(TemplateDTO templateDto)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            var entity = TemplateDto.ToEntity(templateDto);
+            var entity = TemplateDTO.ToEntity(templateDto);
             await dbContext.Templates.AddAsync(entity);
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateTemplate(TemplateDto templateDto)
+        public async Task UpdateTemplate(TemplateDTO templateDto)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            var entity = TemplateDto.ToEntity(templateDto);
+            var entity = TemplateDTO.ToEntity(templateDto);
             dbContext.Templates.Update(entity);
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<TemplateDto> GetTemplate(int templateId)
+        public async Task<TemplateDTO> GetTemplate(int templateId)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             var dto = await dbContext.Templates.Where(t => t.Id == templateId)
-                .Select(t => TemplateDto.FromEntity(t))
+                .Select(t => TemplateDTO.FromEntity(t))
                 .FirstOrDefaultAsync();
             if(dto == null)
             {

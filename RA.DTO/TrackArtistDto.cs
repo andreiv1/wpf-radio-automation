@@ -7,19 +7,16 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class TrackArtistDto
+    public class TrackArtistDTO
     {
         public int ArtistId { get; set; }
-
         public string ArtistName { get; set; }
-
         public int TrackId { get; set; }
-
         public int OrderIndex { get; set; }
 
-        public static TrackArtistDto FromEntity(ArtistTrack artistTrack)
+        public static TrackArtistDTO FromEntity(ArtistTrack artistTrack)
         {
-            return new TrackArtistDto { 
+            return new TrackArtistDTO { 
                 ArtistId = artistTrack.ArtistId,
                 ArtistName = artistTrack.Artist.Name, 
                 TrackId = artistTrack.TrackId,
@@ -27,7 +24,7 @@ namespace RA.DTO
             };
         }
 
-        public static ArtistTrack ToEntity(TrackArtistDto dto)
+        public static ArtistTrack ToEntity(TrackArtistDTO dto)
         {
             return new ArtistTrack
             {

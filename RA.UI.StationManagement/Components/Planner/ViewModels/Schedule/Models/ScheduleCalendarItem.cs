@@ -33,7 +33,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule.Models
             this.templateId = templateId;
         }
 
-        public static ScheduleCalendarItem FromDto(ScheduleDefaultItemDto dto, DateTime date)
+        public static ScheduleCalendarItem FromDto(ScheduleDefaultItemDTO dto, DateTime date)
         {
             return new ScheduleCalendarItem(date, dto.Template?.Name, 
                 dto.Template?.Id ?? -1);

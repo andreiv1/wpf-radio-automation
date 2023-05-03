@@ -26,15 +26,15 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private readonly IWindowService windowService;
         private readonly IDispatcherService dispatcherService;
 
-        public ObservableCollection<ClockDto> Clocks { get; set; } = new();
+        public ObservableCollection<ClockDTO> Clocks { get; set; } = new();
 
         public ObservableCollection<ClockItemModel> ClockItemsForSelectedClock { get; set; } = new();
 
         public ObservableCollection<ClockPieChartModel> ClockItemsPieChart { get; set; } = new();
 
         [ObservableProperty]
-        private ClockDto? selectedClock = null;
-        partial void OnSelectedClockChanged(ClockDto? value)
+        private ClockDTO? selectedClock = null;
+        partial void OnSelectedClockChanged(ClockDTO? value)
         {
             _ = LoadClockItemsForSelectedClock();
         }

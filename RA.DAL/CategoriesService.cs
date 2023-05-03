@@ -19,11 +19,11 @@ namespace RA.DAL
             this.dbContextFactory = dbContextFactory;
         }
 
-        public async Task<IEnumerable<CategoryDto>> GetRootCategoriesAsync()
+        public async Task<IEnumerable<CategoryDTO>> GetRootCategoriesAsync()
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             return await dbContext.GetRootCategories()
-                .Select(c => CategoryDto.FromEntity(c))
+                .Select(c => CategoryDTO.FromEntity(c))
                 .ToListAsync();
         }
 
@@ -35,22 +35,22 @@ namespace RA.DAL
                 .AnyAsync();
         }
 
-        public async Task<IEnumerable<CategoryDto>> GetChildrenCategoriesAsync(int parentCategoryId)
+        public async Task<IEnumerable<CategoryDTO>> GetChildrenCategoriesAsync(int parentCategoryId)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             return await dbContext.Categories
                 .Where(c => c.ParentId == parentCategoryId)
-                .Select(c => CategoryDto.FromEntity(c))
+                .Select(c => CategoryDTO.FromEntity(c))
                 .ToListAsync();
         }
 
 
-        public async Task<CategoryHierarchyDto> GetCategoryHierarchy(int categoryId)
+        public async Task<CategoryHierarchyDTO> GetCategoryHierarchy(int categoryId)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             var result = await dbContext.CategoriesHierarchy
                         .Where(ch => ch.Id == categoryId)
-                        .Select(ch => CategoryHierarchyDto.FromEntity(ch))
+                        .Select(ch => CategoryHierarchyDTO.FromEntity(ch))
                         .FirstOrDefaultAsync();
             if(result == null)
             {

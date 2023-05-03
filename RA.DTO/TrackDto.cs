@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class TrackDto
+    public class TrackDTO
     {
         public int Id { get; set; }
         public TrackType Type { get; set; }
@@ -26,12 +26,12 @@ namespace RA.DTO
         public DateTime DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
         public DateTime? DateDeleted { get; set; }
-        public List<TrackArtistDto>? Artists { get; set; }
+        public List<TrackArtistDTO>? Artists { get; set; }
 
-        public List<TrackCategoryDto>? Categories { get; set; }
-        public static TrackDto FromEntity(Track track)
+        public List<TrackCategoryDTO>? Categories { get; set; }
+        public static TrackDTO FromEntity(Track track)
         {
-            return new TrackDto
+            return new TrackDTO
             {
                 Id = track.Id,
                 Type = track.Type,
@@ -50,19 +50,19 @@ namespace RA.DTO
                 DateModified = track.DateModified,
                 DateDeleted = track.DateDeleted,
                 Artists = track.TrackArtists != null ?
-                    track.TrackArtists.Select(ta => TrackArtistDto.FromEntity(ta)).ToList() : null,
+                    track.TrackArtists.Select(ta => TrackArtistDTO.FromEntity(ta)).ToList() : null,
                 Categories = track.Categories != null ?
-                    track.Categories.Select(c => TrackCategoryDto.FromEntity(c)).ToList() : null,
+                    track.Categories.Select(c => TrackCategoryDTO.FromEntity(c)).ToList() : null,
             };
         }
 
-        public static Track ToEntity(TrackDto dto)
+        public static Track ToEntity(TrackDTO dto)
         {
             return new Track
             {
                 Id = dto.Id,
-                TrackArtists = dto.Artists != null ? dto.Artists.Select(a => TrackArtistDto.ToEntity(a)).ToList() : null,
-                Categories = dto.Categories != null ? dto.Categories.Select(c => TrackCategoryDto.ToEntity(c)).ToList() : null,
+                TrackArtists = dto.Artists != null ? dto.Artists.Select(a => TrackArtistDTO.ToEntity(a)).ToList() : null,
+                Categories = dto.Categories != null ? dto.Categories.Select(c => TrackCategoryDTO.ToEntity(c)).ToList() : null,
                 Type = dto.Type,
                 Status = dto.Status,
                 Title = dto.Title,

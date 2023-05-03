@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class TagValueDto
+    public class TagValueDTO
     {
         public int Id { get; private set; }
         public string? Name { get; set; }
         public int TagCategoryId { get; set; }
 
-        public static TagValueDto FromEntity(TagValue entity)
+        public static TagValueDTO FromEntity(TagValue entity)
         {
-            return new TagValueDto { 
+            return new TagValueDTO { 
                 Id = entity.Id, 
                 Name = entity.Name, 
                 TagCategoryId = entity.TagCategoryId 

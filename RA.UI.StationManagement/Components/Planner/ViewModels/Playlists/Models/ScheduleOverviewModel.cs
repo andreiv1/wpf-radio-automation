@@ -38,7 +38,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists.Models
 
         public String? ErrorMessage { get; set; }
 
-        public static ScheduleOverviewModel FromDto(DateTime date, ScheduleDefaultItemDto? dto)
+        public static ScheduleOverviewModel FromDto(DateTime date, ScheduleDefaultItemDTO? dto)
         {
             ScheduleOverviewModel model = new();
             model.Date = date;
@@ -55,7 +55,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists.Models
             return model;
         }
 
-        public static ScheduleOverviewModel FromDto(DateTime date, SchedulePlannedDto dto)
+        public static ScheduleOverviewModel FromDto(DateTime date, SchedulePlannedDTO dto)
         {
             ScheduleOverviewModel model = new();
             model.Date = date;

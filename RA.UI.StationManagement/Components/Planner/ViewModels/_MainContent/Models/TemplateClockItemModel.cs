@@ -66,8 +66,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
         }
 
         [ObservableProperty]
-        private TemplateDto template;
-        public static TemplateClockItemModel FromDto(TemplateClockDto dto)
+        private TemplateDTO template;
+        public static TemplateClockItemModel FromDto(TemplateClockDTO dto)
         {
             return new TemplateClockItemModel()
             {

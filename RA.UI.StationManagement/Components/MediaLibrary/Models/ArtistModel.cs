@@ -15,7 +15,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
         [ObservableProperty]
         private string name = "";
         public ObservableCollection<ArtistTrackModel>? Tracks { get; set; }
-        public static ArtistModel FromDto(ArtistDto dto)
+        public static ArtistModel FromDto(ArtistDTO dto)
         {
             return new ArtistModel
             {

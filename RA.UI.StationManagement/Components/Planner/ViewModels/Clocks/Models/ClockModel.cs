@@ -30,7 +30,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
         }
 
 
-        public static ClockModel FromDto(ClockDto dto)
+        public static ClockModel FromDto(ClockDTO dto)
         {
             return new ClockModel()
             {
@@ -39,9 +39,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
             };
         }
 
-        public static ClockDto ToDto(ClockModel model)
+        public static ClockDTO ToDto(ClockModel model)
         {
-            return new ClockDto()
+            return new ClockDTO()
             {
                 Id = model.Id.GetValueOrDefault(),
                 Name = model.Name

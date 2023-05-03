@@ -24,13 +24,13 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private readonly ITemplatesService templatesService;
         private readonly IDispatcherService dispatcherService;
 
-        public ObservableCollection<TemplateDto> Templates { get; set; } = new();
+        public ObservableCollection<TemplateDTO> Templates { get; set; } = new();
         public ObservableCollection<TemplateClockItemModel> ClocksForSelectedTemplate { get; set; } = new();
 
         [ObservableProperty]
-        private TemplateDto? selectedTemplate = null;
+        private TemplateDTO? selectedTemplate = null;
 
-        partial void OnSelectedTemplateChanged(TemplateDto? value)
+        partial void OnSelectedTemplateChanged(TemplateDTO? value)
         {
             _ = LoadClocksForSelectedTemplate();
         }

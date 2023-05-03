@@ -20,9 +20,9 @@ namespace RA.DAL
             this.dbContextFactory = dbContextFactory;
         }
 
-        public async Task<IDictionary<DateTime, ScheduleDefaultItemDto?>> GetDefaultSchedulesOverviewAsync(DateTime searchDateStart, DateTime searchDateEnd)
+        public async Task<IDictionary<DateTime, ScheduleDefaultItemDTO?>> GetDefaultSchedulesOverviewAsync(DateTime searchDateStart, DateTime searchDateEnd)
         {
-            var dictionary = new Dictionary<DateTime, ScheduleDefaultItemDto?>();
+            var dictionary = new Dictionary<DateTime, ScheduleDefaultItemDTO?>();
             using var dbContext = dbContextFactory.CreateDbContext();
 
             var defaultSchedulesInRange = await dbContext.SchedulesDefault
@@ -34,7 +34,7 @@ namespace RA.DAL
                        )
                 .OrderBy(item => item.StartDate)
                 .ThenBy(item => item.EndDate)
-                .Select(item => ScheduleDefaultDto.FromEntity(item))
+                .Select(item => ScheduleDefaultDTO.FromEntity(item))
                 .ToListAsync();
 
             DateTime dateIndex = searchDateStart;
@@ -59,11 +59,11 @@ namespace RA.DAL
             return dictionary;
         }
 
-        public IDictionary<DateTime, ScheduleDefaultItemDto?> GetDefaultSchedulesOverview(DateTime searchDateStart, DateTime searchDateEnd)
+        public IDictionary<DateTime, ScheduleDefaultItemDTO?> GetDefaultSchedulesOverview(DateTime searchDateStart, DateTime searchDateEnd)
         {
             return GetDefaultSchedulesOverviewAsync(searchDateStart, searchDateEnd).Result;
         }
-        public IEnumerable<ScheduleDefaultDto> GetDefaultSchedules(int skip = 0, int limit = 100, bool ascending = false)
+        public IEnumerable<ScheduleDefaultDTO> GetDefaultSchedules(int skip = 0, int limit = 100, bool ascending = false)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             var schedules = dbContext.SchedulesDefault
@@ -75,19 +75,19 @@ namespace RA.DAL
                 schedules.OrderByDescending(s => s.StartDate).ThenBy(s => s.EndDate);
             foreach(var schedule in schedules)
             {
-                yield return ScheduleDefaultDto.FromEntity(schedule);
+                yield return ScheduleDefaultDTO.FromEntity(schedule);
             }
         }
 
-        public async Task<IDictionary<DayOfWeek, ScheduleDefaultItemDto?>> GetDefaultScheduleItems(ScheduleDefaultDto parentDefaultScheduleDto)
+        public async Task<IDictionary<DayOfWeek, ScheduleDefaultItemDTO?>> GetDefaultScheduleItems(ScheduleDefaultDTO parentDefaultScheduleDto)
         {
-            SortedDictionary<DayOfWeek, ScheduleDefaultItemDto?> result = new();
+            SortedDictionary<DayOfWeek, ScheduleDefaultItemDTO?> result = new();
             using var dbContext = dbContextFactory.CreateDbContext();
             var items = await dbContext.ScheduleDefaultItems
                 .Include(s => s.Template)
                 .Where(s => s.ScheduleId == parentDefaultScheduleDto.Id)
                 .OrderBy(s => s.DayOfWeek)
-                .Select(s => ScheduleDefaultItemDto.FromEntity(s, parentDefaultScheduleDto))
+                .Select(s => ScheduleDefaultItemDTO.FromEntity(s, parentDefaultScheduleDto))
                 .ToListAsync();
 
             for(DayOfWeek day = DayOfWeek.Sunday; day <= DayOfWeek.Saturday; day++)
@@ -97,11 +97,11 @@ namespace RA.DAL
             return result;
         }
 
-        public async Task<int> UpdateDefaultScheduleItems(List<ScheduleDefaultItemDto> defaultScheduleItems)
+        public async Task<int> UpdateDefaultScheduleItems(List<ScheduleDefaultItemDTO> defaultScheduleItems)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             var toUpdate = defaultScheduleItems
-                .Select(s => ScheduleDefaultItemDto.ToEntity(s))
+                .Select(s => ScheduleDefaultItemDTO.ToEntity(s))
                 .ToList();
 
             foreach(var item in toUpdate)
@@ -112,11 +112,11 @@ namespace RA.DAL
             return await dbContext.SaveChangesAsync();
         }
 
-        public async Task<int> AddDefaultSchedule(ScheduleDefaultDto scheduleDefaultDto)
+        public async Task<int> AddDefaultSchedule(ScheduleDefaultDTO scheduleDefaultDto)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            var schedule = ScheduleDefaultDto.ToEntity(scheduleDefaultDto);
-            schedule.ScheduleDefaultItems = scheduleDefaultDto?.Items?.Select(itm => ScheduleDefaultItemDto.ToEntity(itm)).ToList();
+            var schedule = ScheduleDefaultDTO.ToEntity(scheduleDefaultDto);
+            schedule.ScheduleDefaultItems = scheduleDefaultDto?.Items?.Select(itm => ScheduleDefaultItemDTO.ToEntity(itm)).ToList();
             if(schedule.ScheduleDefaultItems == null)
             {
                 throw new ArgumentNullException($"The schedule can't be added without items (ScheduleDefaultItems).");

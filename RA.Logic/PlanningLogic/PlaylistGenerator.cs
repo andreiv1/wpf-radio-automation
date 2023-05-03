@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace RA.Logic.PlanningLogic
 {
+    [Obsolete]
     public class PlaylistGenerator : IPlaylistGenerator
     {
         private readonly IScheduleManager scheduleManager;

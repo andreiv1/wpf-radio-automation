@@ -24,15 +24,15 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Templates.Models
             set => SetProperty(ref name, value, true);
         }
 
-        public static TemplateModel FromDto(TemplateDto dto)
+        public static TemplateModel FromDto(TemplateDTO dto)
         {
             return new TemplateModel() { Id = dto.Id, Name = dto.Name };
 
         }
 
-        public static TemplateDto ToDto(TemplateModel template)
+        public static TemplateDTO ToDto(TemplateModel template)
         {
-            return new TemplateDto(template.Name) { Id = template.Id.GetValueOrDefault(),  };
+            return new TemplateDTO(template.Name) { Id = template.Id.GetValueOrDefault(),  };
         }
     }
 }

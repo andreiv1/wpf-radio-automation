@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using RA.Logic.TrackFileLogic;
 using RA.Database;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using RA.Logic.TrackFileLogic.Models;
 
 namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Models
 {
@@ -44,7 +44,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Models
         [NotifyDataErrorInfo]
         [Required]
         [ObservableProperty]
-        private CategoryHierarchyDto? selectedCategory;
+        private CategoryHierarchyDTO? selectedCategory;
 
         [ObservableProperty]
         private string? categorySearchQuery = null;
@@ -59,7 +59,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Models
             //    Task.Run(() => AddCategoriesAsync(value));
         }
 
-        public ObservableCollection<CategoryHierarchyDto> Categories { get; set; } = new();
+        public ObservableCollection<CategoryHierarchyDTO> Categories { get; set; } = new();
 
         public static List<string> TrackTypes => Enum.GetNames(typeof(TrackType)).ToList();
         public static List<string> TrackStatuses => Enum.GetNames(typeof(TrackStatus)).ToList();

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class CategoryHierarchyDto
+    public class CategoryHierarchyDTO
     {
         public int Id { get; set; }
         public string PathName { get; set; }
@@ -16,9 +16,9 @@ namespace RA.DTO
 
         public int Level { get; set; }
 
-        public static CategoryHierarchyDto FromEntity(CategoryHierarchy categoryHierarchy)
+        public static CategoryHierarchyDTO FromEntity(CategoryHierarchy categoryHierarchy)
         {
-            return new CategoryHierarchyDto { 
+            return new CategoryHierarchyDTO { 
                 Id = categoryHierarchy.Id, 
                 PathName = categoryHierarchy.PathName, 
                 ParentId = categoryHierarchy.ParentId,

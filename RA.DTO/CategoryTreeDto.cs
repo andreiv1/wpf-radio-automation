@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class CategoryTreeDto
+    public class CategoryTreeDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public int? ParentId { get; set; }
 
-        public static CategoryTreeDto FromEntity(Category category)
+        public static CategoryTreeDTO FromEntity(Category category)
         {
-            return new CategoryTreeDto
+            return new CategoryTreeDTO
             {
                 Id = category.Id,
                 Name = category.Name,

@@ -9,9 +9,9 @@ namespace RA.DAL
 {
     public interface ICategoriesService
     {
-        Task<CategoryHierarchyDto> GetCategoryHierarchy(int categoryId);
-        Task<IEnumerable<CategoryDto>> GetChildrenCategoriesAsync(int parentCategoryId);
-        Task<IEnumerable<CategoryDto>> GetRootCategoriesAsync();
+        Task<CategoryHierarchyDTO> GetCategoryHierarchy(int categoryId);
+        Task<IEnumerable<CategoryDTO>> GetChildrenCategoriesAsync(int parentCategoryId);
+        Task<IEnumerable<CategoryDTO>> GetRootCategoriesAsync();
         Task<bool> HasCategoryChildren(int categoryId);
     }
 }

@@ -29,10 +29,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         private readonly ITemplatesService templatesService;
 
         #region Properties
-        public ObservableCollection<ScheduleDefaultDto> DefaultSchedules { get; private set; } = new(); 
+        public ObservableCollection<ScheduleDefaultDTO> DefaultSchedules { get; private set; } = new(); 
         
         [ObservableProperty]
-        private ScheduleDefaultDto? selectedDefaultSchedule;
+        private ScheduleDefaultDTO? selectedDefaultSchedule;
         public ObservableCollection<DefaultScheduleItem> DefaultScheduleItemsForSelected { get; private set; } = new();
 
         [ObservableProperty]
@@ -44,11 +44,11 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         [ObservableProperty]
         private DateTimeRange addNewScheduleRange = new DateTimeRange(DateTime.Now.Date, DateTime.Now.Date.AddDays(7));
 
-        partial void OnSelectedDefaultScheduleChanged(ScheduleDefaultDto? value)
+        partial void OnSelectedDefaultScheduleChanged(ScheduleDefaultDTO? value)
         {
             _ = LoadDefaultScheduleForSelectedInterval();
         }
-        public ObservableCollection<TemplateDto> Templates { get; private set; } = new();
+        public ObservableCollection<TemplateDTO> Templates { get; private set; } = new();
         #endregion
 
         
@@ -94,7 +94,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             {
                 if (schedule.ContainsKey(day))
                 {
-                    ScheduleDefaultItemDto? item = schedule[day];
+                    ScheduleDefaultItemDTO? item = schedule[day];
                     if (item != null && item.Template != null)
                     {
                         DefaultScheduleItemsForSelected.Add(
@@ -120,7 +120,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             if(firstDayOfWeek == DayOfWeek.Monday)
             {
                 var day = DayOfWeek.Sunday;
-                ScheduleDefaultItemDto? item = schedule[day];
+                ScheduleDefaultItemDTO? item = schedule[day];
                 if (item != null && item.Template != null)
                 {
                     DefaultScheduleItemsForSelected.Add(
@@ -194,10 +194,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             else
             {
                 //Update existing schedule items
-                List<ScheduleDefaultItemDto> toAdd = DefaultScheduleItemsForSelected.Where(s => !s.Id.HasValue)
+                List<ScheduleDefaultItemDTO> toAdd = DefaultScheduleItemsForSelected.Where(s => !s.Id.HasValue)
                     .Select(s => DefaultScheduleItem.ToDto(s, SelectedDefaultSchedule))
                     .ToList();
-                List<ScheduleDefaultItemDto> toUpdate = DefaultScheduleItemsForSelected.Where(s => s.IsUpdated)
+                List<ScheduleDefaultItemDTO> toUpdate = DefaultScheduleItemsForSelected.Where(s => s.IsUpdated)
                     .Select(s => DefaultScheduleItem.ToDto(s, SelectedDefaultSchedule))
                     .ToList();
 

@@ -16,7 +16,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
         [ObservableProperty]
         private string artists;
 
-        public static ArtistTrackModel FromDto(TrackListDto dto)
+        public static ArtistTrackModel FromDto(TrackListDTO dto)
         {
             return new ArtistTrackModel
             {

@@ -23,14 +23,14 @@ namespace RA.DAL
             return await dbContext.Artists.CountAsync();
         }
 
-        public async Task<IEnumerable<ArtistDto>> GetArtistsAsync(int skip, int take)
+        public async Task<IEnumerable<ArtistDTO>> GetArtistsAsync(int skip, int take)
         {
             using (var dbContext = dbContextFactory.CreateDbContext())
             {
                 return await dbContext.Artists
                     .Skip(skip)
                     .Take(take)
-                    .Select(a => ArtistDto.FromEntity(a))
+                    .Select(a => ArtistDTO.FromEntity(a))
                     .ToListAsync();
             }
         }
