@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DTO;
 using RA.UI.Core.ViewModels;
@@ -17,10 +18,16 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         private readonly IArtistsService artistsService;
         private readonly ITracksService tracksService;
 
+        #region Properties
         public ObservableCollection<ArtistModel> Artists { get; private set; } = new();
 
         [ObservableProperty]
+        private string searchQuery = "";
+
+        [ObservableProperty]
         private ArtistModel? selectedArtist;
+
+        #endregion
 
         public ArtistsViewModel(IArtistsService artistsService, ITracksService tracksService)
         {
@@ -29,6 +36,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             _ = LoadArtists();
         }
 
+        #region Data fetching
         private async Task LoadArtists()
         {
             IsMainDataLoading = true;
@@ -59,5 +67,28 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             }
 
         }
+
+        #endregion
+
+        #region Commands
+
+        [RelayCommand]
+        private void AddItem()
+        {
+            throw new NotImplementedException();
+        }
+
+        [RelayCommand]
+        private void OpenItemDetails()
+        {
+            throw new NotImplementedException();
+        }
+
+        [RelayCommand]
+        private void DeleteItem()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }

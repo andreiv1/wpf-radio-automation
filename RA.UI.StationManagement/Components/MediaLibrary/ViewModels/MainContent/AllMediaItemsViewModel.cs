@@ -19,7 +19,12 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         private readonly IWindowService windowService;
         private readonly IDispatcherService dispatcherService;
         private readonly ITracksService tracksService;
+
+        #region Properties
         public ObservableCollection<TrackListDto> Items { get; set; } = new();
+
+        [ObservableProperty]
+        private string searchQuery = "";
 
         [ObservableProperty]
         private int totalTracks = 0;
@@ -32,6 +37,10 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         [ObservableProperty]
         private TrackListDto? selectedTrack;
 
+        #endregion
+
+        #region Constructor
+
         public AllMediaItemsViewModel(IWindowService windowService, IDispatcherService dispatcherService,
             ITracksService tracksService)
         {
@@ -40,6 +49,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             this.tracksService = tracksService;
             _ = LoadTracks(0, tracksPerPage);
         }
+
+        #endregion
 
         public async Task LoadTracks(int skip, int take)
         {
@@ -60,6 +71,13 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 
         #region Commands
         [RelayCommand]
+        private void AddItem()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        [RelayCommand]
         private void ImportItems()
         {
             windowService.ShowWindow<MediaLibraryImportItemsViewModel>();
@@ -74,6 +92,18 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             }
 
             windowService.ShowWindow<MediaLibraryManageTrackViewModel>(SelectedTrack.Id);
+        }
+
+        [RelayCommand]
+        private void DeleteItem()
+        {
+            throw new NotImplementedException();
+        }
+
+        [RelayCommand]
+        private void FilterItems()
+        {
+            throw new NotImplementedException();
         }
         #endregion
 

@@ -108,7 +108,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         [RelayCommand]
         private void RefreshTemplates()
         {
-            throw new NotImplementedException();
+            _ = LoadTemplates();
         }
         #endregion
     }

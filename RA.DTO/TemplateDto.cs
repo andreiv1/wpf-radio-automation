@@ -31,7 +31,7 @@ namespace RA.DTO
             return new Template 
             { 
                 Id = dto.Id, 
-                Name = dto.Name ?? throw new ArgumentNullException($"The template must have a name."),
+                Name = dto.Name,
             };
         }
     }

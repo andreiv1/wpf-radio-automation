@@ -170,6 +170,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             windowService.ShowDialog<PlannerManageClockViewModel>(SelectedClock.Id ?? throw new ArgumentException("Id cannot be empty."),
                true);
         }
+
+        [RelayCommand]
+        private void RefreshClocks()
+        {
+            _ = LoadClocks();
+        }
         #endregion
 
 
