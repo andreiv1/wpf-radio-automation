@@ -10,7 +10,7 @@
     <UserControl.Resources>
         <uicore:DoubleToFormattedTimeSpanConverter x:Key="DoubleToFormattedTimeSpanConverter" />
     </UserControl.Resources>
-    <Grid>
+    <Grid KeyboardNavigation.TabNavigation="None">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="220"/>
             <ColumnDefinition Width="*"/>

@@ -11,8 +11,8 @@
     <UserControl.Resources>
        
     </UserControl.Resources>
- 
-    <Grid Margin="0,5,0,0">
+
+    <Grid Margin="0,5,0,0" KeyboardNavigation.TabNavigation="None">
         <Grid.RowDefinitions>
             <RowDefinition Height="25"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>

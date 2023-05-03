@@ -12,7 +12,7 @@
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
         Title="PlannerMainWindow" Height="850" MinWidth="850" Width="850">
-    <Grid>
+    <Grid KeyboardNavigation.TabNavigation="None">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>

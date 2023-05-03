@@ -15,7 +15,7 @@
         Height="600" Width="700"
         MinHeight="600" MinWidth="700" ResizeBorderThickness="0"
         CornerRadius="0">
-    <Grid Margin="15">
+    <Grid Margin="15" KeyboardNavigation.TabNavigation="None">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>

@@ -15,7 +15,7 @@
         <converters:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverter"/>
         <converters:CollectionToGridLengthConverter x:Key="CollectionToGridLengthConverter"/>
     </uicore:RAUserControl.Resources>
-    <Grid>
+    <Grid KeyboardNavigation.TabNavigation="None">
         <Grid.RowDefinitions>
             <RowDefinition Height="55"/>
             <!--<RowDefinition Height="{Binding Subcategories, Converter={StaticResource CollectionToGridLengthConverter}}"/>-->

@@ -12,7 +12,7 @@
         Title="Media Library"
         MinHeight="450"
         MinWidth="900">
-    <Grid>
+    <Grid KeyboardNavigation.TabNavigation="None">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
