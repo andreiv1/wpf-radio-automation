@@ -53,6 +53,7 @@
     <PackageReference Include="Syncfusion.SfChart.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.Themes.Windows11Light.Wpf" Version="21.1.35" />
     <PackageReference Include="Syncfusion.SfSkinManager.Wpf" Version="21.1.35" />
+    <PackageReference Include="Syncfusion.SfTextInputLayout.WPF" Version="21.1.35" />
 </ItemGroup>
 
     <ItemGroup>

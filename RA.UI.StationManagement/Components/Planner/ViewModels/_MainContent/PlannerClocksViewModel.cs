@@ -146,14 +146,21 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         [RelayCommand]
         private void OpenAddClockDialog()
         {
-            windowService.ShowDialog<PlannerManageClockViewModel>();
+            var result = windowService.ShowDialog<PlannerManageClockViewModel>();
+            var dto = ClockModel.ToDto(result.ManagedClock);
+            clocksService.AddClock(dto);
+            _ = LoadClocks();
         }
 
         [RelayCommand]
         private void EditClockDialog()
         {
             if (SelectedClock == null) return;
-            windowService.ShowDialog<PlannerManageClockViewModel>(SelectedClock.Id ?? throw new ArgumentException("Id cannot be empty."));
+            var result = windowService.ShowDialog<PlannerManageClockViewModel>(SelectedClock.Id ?? throw new ArgumentException("Id cannot be empty."));
+            var dto = ClockModel.ToDto(result.ManagedClock);
+            clocksService.UpdateClock(dto);
+            _ = LoadClocks();
+
         }
 
         [RelayCommand]

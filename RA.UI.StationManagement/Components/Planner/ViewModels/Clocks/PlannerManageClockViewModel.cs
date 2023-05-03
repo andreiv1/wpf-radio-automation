@@ -12,21 +12,27 @@ using System.Threading.Tasks;
 using RA.DAL;
 using RA.DTO;
 using System.Configuration;
+using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Models;
+using System.ComponentModel;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
 {
     public partial class PlannerManageClockViewModel : DialogViewModelBase
     {
         [ObservableProperty]
-        private ClockDto clockDto = new();
+        private ClockModel managedClock = new();
+
         private bool duplicate = false;
         private readonly IClocksService clocksService;
 
+        #region Constructors
         public PlannerManageClockViewModel(IWindowService windowService, IClocksService clocksService) 
             : base(windowService)
         {
             DialogName = "Add new clock";
             this.clocksService = clocksService;
+            managedClock.ErrorsChanged += ManagedClock_ErrorsChanged;
+            ManagedClock.Validate();
         }
 
         public PlannerManageClockViewModel(IWindowService windowService, IClocksService clocksService, int clockId, bool duplicate = false) 
@@ -34,22 +40,35 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
         {
             DialogName = "Edit clock";
             this.clocksService = clocksService;
-            this.clockDto.Id = clockId;
+            ManagedClock.Id = clockId;
             this.duplicate = duplicate;
+            managedClock.ErrorsChanged += ManagedClock_ErrorsChanged;
             _ = LoadClock();
+
         }
+        #endregion
+
+        #region Events
+        private void ManagedClock_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
+        {
+            if (e.PropertyName == "Name")
+            {
+                FinishDialogCommand.NotifyCanExecuteChanged();
+            }
+        }
+        #endregion
 
         #region Data fetching
         private async Task LoadClock()
         {
-            if (ClockDto?.Id != null)
+            if (ManagedClock?.Id != null)
             {
-                ClockDto = await clocksService.GetClock(ClockDto.Id.GetValueOrDefault());
-
+                var dto = await clocksService.GetClock(ManagedClock.Id.GetValueOrDefault());
+                ManagedClock = ClockModel.FromDto(dto);
                 if (duplicate)
                 {
-                    ClockDto.Id = null;
-                    ClockDto.Name += " (COPY)";
+                    ManagedClock.Id = null;
+                    ManagedClock.Name += " (COPY)";
                 }
 
             }
@@ -66,9 +85,16 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
 
         protected override bool CanFinishDialog()
         {
-            return false;
+            return !ManagedClock.HasErrors;
+        }
+        #endregion
+
+
+        public override void Dispose()
+        {
+            ManagedClock.ErrorsChanged -= ManagedClock_ErrorsChanged;
+            base.Dispose();
         }
 
-        #endregion
     }
 }

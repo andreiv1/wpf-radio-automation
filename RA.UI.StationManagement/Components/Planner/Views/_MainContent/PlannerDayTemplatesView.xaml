@@ -32,7 +32,7 @@
                 <syncfusion:ButtonAdv Grid.Column="0"
                                       SmallIcon="{StaticResource PlusIcon}"
                                       Label="Add new template"
-                                      Command="{Binding AddTemplateCommand}"/>
+                                      Command="{Binding AddTemplateDialogCommand}"/>
                 <syncfusion:ButtonAdv Grid.Column="2"
                                       SmallIcon="{StaticResource RefreshIcon}"
                                       Label="Refresh templates"
@@ -56,9 +56,36 @@
                        SortClickAction="DoubleClick">
                 <syncfusion:SfDataGrid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Edit template" Command="{Binding OpenEditClockDialogCommand}"/>
-                        <MenuItem Header="Duplicate template" Command="{Binding DuplicateSelectedClockCommand}"/>
-                        <MenuItem Header="Remove template" Command="{Binding RemoveSelectedClockCommand}"/>
+                        <MenuItem Header="Edit template" Command="{Binding EditTemplateDialogCommand}">
+                            <MenuItem.Icon>
+                                <Image
+                                    Width="16"
+                                    Height="16"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                     Source="{StaticResource EditIcon}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Duplicate template" Command="{Binding DuplicateTemplateDialogCommand}">
+                            <MenuItem.Icon>
+                                <Image
+                                    Width="16"
+                                    Height="16"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                     Source="{StaticResource CopyIcon}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Remove template" Command="{Binding RemoveSelectedTemplatedCommand}">
+                            <MenuItem.Icon>
+                                <Image
+                                    Width="16"
+                                    Height="16"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                     Source="{StaticResource RemoveIcon}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </ContextMenu>
                 </syncfusion:SfDataGrid.ContextMenu>
                 <syncfusion:SfDataGrid.Columns>

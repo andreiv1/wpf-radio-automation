@@ -115,5 +115,13 @@ namespace RA.DAL
             await dbContext.AddAsync(entity);
             await dbContext.SaveChangesAsync();
         }
+
+        public async Task UpdateClock(ClockDto clockDto)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var entity = ClockDto.ToEntity(clockDto);
+            dbContext.Update(entity);
+            await dbContext.SaveChangesAsync();
+        }
     }
 }

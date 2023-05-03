@@ -2,11 +2,13 @@
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DTO;
+using RA.Logic;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Models;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Templates;
+using RA.UI.StationManagement.Components.Planner.ViewModels.Templates.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -58,7 +60,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
         private async Task LoadClocksForSelectedTemplate()
         {
-            var items = await templatesService.GetTemplatesForClockWithId(selectedTemplate.Id);
+            if (SelectedTemplate == null) return; 
+            var items = await templatesService.GetTemplatesForClockWithId(SelectedTemplate.Id);
             ClocksForSelectedTemplate.Clear();
             foreach (var item in items)
             {
@@ -71,9 +74,41 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
         #region Commands
         [RelayCommand]
-        private void AddTemplate()
+        private void AddTemplateDialog()
         {
-            windowService.ShowDialog<PlannerManageTemplateViewModel>();
+            var result = windowService.ShowDialog<PlannerManageTemplateViewModel>();
+            TemplateModel template = result.ManagedTemplate;
+            templatesService.AddTemplate(TemplateModel.ToDto(template));
+
+            _ = LoadTemplates();
+        }
+
+        [RelayCommand]
+        private void EditTemplateDialog()
+        {
+            if (SelectedTemplate == null) return;
+            var result = windowService.ShowDialog<PlannerManageTemplateViewModel>(SelectedTemplate.Id);
+            TemplateModel template = result.ManagedTemplate;
+            templatesService.UpdateTemplate(TemplateModel.ToDto(template));
+            _ = LoadTemplates();
+        }
+
+        [RelayCommand]
+        private void DeleteTemplateDialog()
+        {
+            throw new NotImplementedException();
+        }
+
+        [RelayCommand]
+        private void DuplicateTemplateDialog()
+        {
+            throw new NotImplementedException();
+        }
+
+        [RelayCommand]
+        private void RefreshTemplates()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

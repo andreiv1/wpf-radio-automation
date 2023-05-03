@@ -16,5 +16,6 @@ namespace RA.DAL
         Task<Dictionary<int, TimeSpan>> CalculateAverageDurationsForCategoriesInClockWithId(int clockId);
         Task AddClock(ClockDto clockDto);
         Task<ClockDto> GetClock(int id);
+        Task UpdateClock(ClockDto clockDto);
     }
 }

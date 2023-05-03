@@ -28,7 +28,11 @@ namespace RA.DTO
 
         public static Template ToEntity(TemplateDto dto)
         {
-            return new Template { Id = dto.Id, Name = dto.Name };
+            return new Template 
+            { 
+                Id = dto.Id, 
+                Name = dto.Name ?? throw new ArgumentNullException($"The template must have a name."),
+            };
         }
     }
 }
