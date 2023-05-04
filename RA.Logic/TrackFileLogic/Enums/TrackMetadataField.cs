@@ -18,6 +18,7 @@ namespace RA.Logic.TrackFileLogic.Enums
         ISRC,
         Composers,
         Lyrics,
-        Duration
+        Duration,
+        Image
     }
 }

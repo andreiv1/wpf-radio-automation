@@ -17,7 +17,7 @@ namespace RA.UI.Core.ViewModels
     {
         public delegate void PageChangedEventHandler(object sender, int newPageIndex);
 
-        public event PageChangedEventHandler PageChanged;
+        public event PageChangedEventHandler? PageChanged;
 
         [ObservableProperty]
         private INavigationService<TViewModel> navigationService;

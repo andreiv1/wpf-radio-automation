@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using RA.Logic;
-using RA.Logic.TrackFileLogic.Models;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
@@ -78,9 +77,6 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             }
         }
 
-        private List<ProcessingTrack> processingTracks;
-
-        //private TrackFilesProcessor trackFilesProcessor;
         private readonly IWindowService windowService;
         private readonly INavigationService<MediaLibraryImportItemsViewModel> navigationService;
 
@@ -102,18 +98,18 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         }
 
         //TODO
-        private void TrackFilesProcessor_TrackProcessed(object sender, Logic.TrackFileLogic.Interfaces.ProcessingTrackEventArgs e)
-        {
-            //Model.TotalItems = trackFilesProcessor.TotalItems;
-            //Model.ValidItems = trackFilesProcessor.ValidItems;
-            //Model.InvalidItems = trackFilesProcessor.InvalidItems;
-            //Model.WarningItems = trackFilesProcessor.WarningItems;
+        //private void TrackFilesProcessor_TrackProcessed(object sender, ProcessingTrackEventArgs e)
+        //{
+        //    //Model.TotalItems = trackFilesProcessor.TotalItems;
+        //    //Model.ValidItems = trackFilesProcessor.ValidItems;
+        //    //Model.InvalidItems = trackFilesProcessor.InvalidItems;
+        //    //Model.WarningItems = trackFilesProcessor.WarningItems;
 
-            //Application.Current.Dispatcher.Invoke(() =>
-            //{
-            //    Model.ProcessingTracks.Add(e.Track);
-            //});
-        }
+        //    //Application.Current.Dispatcher.Invoke(() =>
+        //    //{
+        //    //    Model.ProcessingTracks.Add(e.Track);
+        //    //});
+        //}
 
         [RelayCommand(CanExecute = nameof(CanExecuteImport))]
         private void ExecuteImport()

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RA.Logic.TrackFileLogic.Models;
 
-namespace RA.Logic.TrackFileLogic.Interfaces
+namespace RA.Logic.TrackFileLogic.Obsolet
 {
     public interface ITrackFilesImporter
     {

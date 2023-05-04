@@ -34,5 +34,23 @@ namespace RA.DAL
                     .ToListAsync();
             }
         }
+
+        public async Task<ArtistDTO?> GetArtistByName(string name)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            return await dbContext.Artists
+                .Where(a => a.Name.Equals(name))
+                .Select(a => ArtistDTO.FromEntity(a))
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task AddArtist(ArtistDTO artist)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var entity = ArtistDTO.ToEntity(artist);
+            await dbContext.Artists.AddAsync(entity);
+            await dbContext.SaveChangesAsync(); 
+
+        }
     }
 }

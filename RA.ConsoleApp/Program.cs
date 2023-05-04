@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using RA.DAL;
 using RA.Database;
 using RA.Database.Models;
+using RA.Logic.TrackFileLogic;
 
 namespace RA.ConsoleApp
 {
@@ -25,15 +26,18 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
+            TestImport();
+            
+        }
+
+        static void TestImport()
+        {
             var db = dbFactory.CreateDbContext();
-            db.Database.EnsureDeleted();
-            //IDefaultSchedulesService defaultSchedulesService = new DefaultSchedulesService(dbFactory);
-            //var overview = defaultSchedulesService.GetDefaultSchedulesOverview(DateTime.Now.Date, DateTime.Now.Date.AddDays(10));
-            //foreach(var item in overview)
-            //{
-            //    Console.WriteLine($"{item.Key.ToString("dd/MM/yyyy")} - {item.Value?.Template?.Name} (templateId={item.Value?.Template?.Id})");
-            //}
-            CreateDefaultSchedule();
+            IArtistsService artistsService = new ArtistsService(dbFactory);
+            ITrackFilesProcessor processor = new TrackFilesProcessor(artistsService);
+            TrackMetadataReader.ImagePath = "C:\\Users\\Andrei\\Desktop\\images";
+            var track = processor.ProcessSingleItem(@"C:\Users\Andrei\Music\FakeRadio\Music\Current Hits\Metro Boomin - Creepin'.mp3", true);
+            
         }
         static void CreateDefaultSchedule()
         {

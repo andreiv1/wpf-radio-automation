@@ -16,5 +16,10 @@ namespace RA.DTO
         {
             return new ArtistDTO { Id = artist.Id, Name = artist.Name };
         }
+
+        public static Artist ToEntity(ArtistDTO dto)
+        {
+            return new Artist { Id = dto.Id, Name = dto.Name };
+        }
     }
 }

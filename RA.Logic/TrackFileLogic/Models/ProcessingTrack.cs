@@ -10,13 +10,13 @@ namespace RA.Logic.TrackFileLogic.Models
 {
     public class ProcessingTrack
     {
-        public TrackDTO TrackDto { get; set; }
+        public TrackDTO? TrackDto { get; set; }
         public ProcessingTrackStatus Status { get; set; }
 
-        public string? CategoryName => TrackDto.Categories != null && TrackDto.Categories.Count > 0
-            ? TrackDto.Categories.ElementAt(0).CategoryName : null;
+        public string? Categories => TrackDto?.Categories?.Count > 0 ?
+            string.Join("; ", TrackDto.Categories.Select(c => c.CategoryName)) : null;
 
-        public string? Artists => TrackDto.Artists != null
-            ? string.Join(", ", TrackDto.Artists.Select(a => a.ArtistName)) : null;
+        public string? Artists => TrackDto?.Artists?.Count > 0 ?
+            string.Join(" / ", TrackDto.Artists.Select(a => a.ArtistName)) : null;
     }
 }

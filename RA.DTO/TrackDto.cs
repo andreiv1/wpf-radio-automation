@@ -22,7 +22,7 @@ namespace RA.DTO
         public string? FilePath { get; set; }
         public string? ImageName { get; set; }
         public int? Bpm { get; set; }
-        public string ISRC { get; set; }
+        public string? ISRC { get; set; }
         public DateTime DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
         public DateTime? DateDeleted { get; set; }
