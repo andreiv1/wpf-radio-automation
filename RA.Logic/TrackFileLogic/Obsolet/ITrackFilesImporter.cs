@@ -9,6 +9,6 @@ namespace RA.Logic.TrackFileLogic.Obsolet
 {
     public interface ITrackFilesImporter
     {
-        public int Import(List<ProcessingTrack> processingTracks);
+        public Task<bool> Import(IEnumerable<ProcessingTrack> processingTracks);
     }
 }

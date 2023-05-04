@@ -44,7 +44,7 @@ namespace RA.Logic.TrackFileLogic
                     dto.ISRC = metaReader.GetField(TrackMetadataField.ISRC) as String ?? String.Empty;
                     dto.ImageName = metaReader.GetField(TrackMetadataField.Image) as String ?? String.Empty;
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     track.Status = ProcessingTrackStatus.FAILED;
                 }
@@ -56,7 +56,6 @@ namespace RA.Logic.TrackFileLogic
         {
             throw new NotImplementedException();
         }
-
         private async Task<IEnumerable<TrackArtistDTO>> ProcessArtistsAsync(TrackDTO trackDto, String inputArtists)
         {
             List<TrackArtistDTO> trackArtists = new();
