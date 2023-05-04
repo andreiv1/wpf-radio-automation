@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DTO;
+using RA.Logic;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
@@ -57,11 +58,13 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             IsMainDataLoading = true;
             Items.Clear();
             TotalTracks = await tracksService.GetTrackCountAsync();
-            var tracks = await tracksService.GetTrackListAsync(skip, take);
             Pages = TotalTracks > 0 ? (TotalTracks - 1) / tracksPerPage + 1 : 0;
+            var tracks = await tracksService.GetTrackListAsync(skip, take);
+            
             foreach (var track in tracks)
             {
-                dispatcherService.InvokeOnUIThread(() =>
+                DebugHelper.WriteLine(this, $"Fetched {track.Id}");
+                await dispatcherService.InvokeOnUIThreadAsync(() =>
                 {
                     Items.Add(track);
                 });

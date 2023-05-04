@@ -1,18 +1,38 @@
-﻿using RA.Logic.TrackFileLogic.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RA.DAL;
+using RA.DTO;
+using RA.Logic.TrackFileLogic.Models;
 
 namespace RA.Logic.TrackFileLogic
 {
     public class TrackFileImporter : ITrackFilesImporter
     {
-       public async Task<int> Import(IEnumerable<ProcessingTrack> processingTracks)
+        private readonly ITracksService tracksService;
+
+        public TrackFileImporter(ITracksService tracksService)
         {
-            int numberOfTracks = 0;
-            throw new NotImplementedException();
+            this.tracksService = tracksService;
         }
+
+        public void Import(IEnumerable<ProcessingTrack> processingTracks)
+        {
+            ImportAsync(processingTracks).Wait();
+        }
+
+        public async Task ImportSingleAsync(ProcessingTrack processingTrack)
+        {
+            await ImportAsync(new ProcessingTrack[] { processingTrack });
+        }
+
+        public async Task ImportAsync(IEnumerable<ProcessingTrack> processingTracks)
+        {
+            List<TrackDTO?> toImport = processingTracks.Where(pt => pt.Status == Enums.ProcessingTrackStatus.OK &&
+                 pt.TrackDto != null)
+                .Select(pt => pt.TrackDto)
+                .ToList();
+            
+            await tracksService.AddTracks(toImport);
+
+        }
+
     }
 }

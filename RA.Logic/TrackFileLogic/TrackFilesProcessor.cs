@@ -54,7 +54,23 @@ namespace RA.Logic.TrackFileLogic
         }
         public IEnumerable<ProcessingTrack> ProcessItemsFromDirectory(TrackFilesProcessorOptions options)
         {
-            throw new NotImplementedException();
+            if(options.DirectoryPath is not null)
+            {
+                //Fara traversare in sub-foldere
+                var files = Directory.EnumerateFiles(options.DirectoryPath)
+                    .Where(f => SupportedTrackFormats.Contains(Path.GetExtension(f).ToLowerInvariant()));
+                foreach (var file in files)
+                {
+                    string fileExtension = Path.GetExtension(file);
+                    var processingTrack = ProcessSingleItem(file, options.ReadMetadata);
+                    if(processingTrack != null)
+                    {
+                        processingTrack.TrackDto.Type = options.TrackType;
+                        processingTrack.TrackDto.Status = options.TrackStatus;
+                    }
+                    yield return processingTrack;
+                }
+            }
         }
         private async Task<IEnumerable<TrackArtistDTO>> ProcessArtistsAsync(TrackDTO trackDto, String inputArtists)
         {

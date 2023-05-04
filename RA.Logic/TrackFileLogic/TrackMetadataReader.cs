@@ -103,6 +103,7 @@ namespace RA.Logic.TrackFileLogic
                 var imageData = picture.Data.Data;
                 var imageFormat = picture.MimeType;
 
+                //Temporary process
                 // Save the track image to disk
                 var guid = Guid.NewGuid().ToString("N");
                 var imageFileName = $"{guid}.jpg";

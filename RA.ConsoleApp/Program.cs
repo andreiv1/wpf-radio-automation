@@ -4,6 +4,7 @@ using RA.DAL;
 using RA.Database;
 using RA.Database.Models;
 using RA.Logic.TrackFileLogic;
+using RA.Logic.TrackFileLogic.Models;
 
 namespace RA.ConsoleApp
 {
@@ -26,18 +27,42 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
-            TestImport();
-            
+            TestImportDirectory();
+            Console.ReadLine();
         }
 
-        static void TestImport()
+        static async void TestImport()
         {
             var db = dbFactory.CreateDbContext();
             IArtistsService artistsService = new ArtistsService(dbFactory);
             ITrackFilesProcessor processor = new TrackFilesProcessor(artistsService);
             TrackMetadataReader.ImagePath = "C:\\Users\\Andrei\\Desktop\\images";
-            var track = processor.ProcessSingleItem(@"C:\Users\Andrei\Music\FakeRadio\Music\Current Hits\Metro Boomin - Creepin'.mp3", true);
+            var track = processor.ProcessSingleItem(
+                @"C:\Users\Andrei\Music\FakeRadio\Music\Current Hits\Miley Cyrus - River.mp3", true);
             
+            ITracksService tracksService = new TracksService(dbFactory);
+            ITrackFilesImporter importer = new TrackFileImporter(tracksService);
+            await importer.ImportAsync(new ProcessingTrack[] { track });
+            Console.WriteLine($"Imported");
+        }
+
+        static async void TestImportDirectory()
+        {
+            var db = dbFactory.CreateDbContext();
+            IArtistsService artistsService = new ArtistsService(dbFactory);
+            ITracksService tracksService = new TracksService(dbFactory);
+            ITrackFilesProcessor processor = new TrackFilesProcessor(artistsService);
+            TrackMetadataReader.ImagePath = "C:\\Users\\Andrei\\Desktop\\images";
+            TrackFilesProcessorOptionsBuilder optionsBuilder = new TrackFilesProcessorOptionsBuilder(
+                @"C:\Users\Andrei\Music\FakeRadio\Music\Current Hits", 1);
+
+            var tracks = processor.ProcessItemsFromDirectory(optionsBuilder
+                .SetReadMetadata(true)
+                .Build()).ToList();
+
+            ITrackFilesImporter importer = new TrackFileImporter(tracksService);
+            await importer.ImportAsync(tracks);
+
         }
         static void CreateDefaultSchedule()
         {

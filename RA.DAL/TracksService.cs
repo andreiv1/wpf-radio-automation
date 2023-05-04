@@ -30,14 +30,18 @@ namespace RA.DAL
 
         public async Task<IEnumerable<TrackListDTO>> GetTrackListAsync(int skip, int take)
         {
-            using (var dbContext = dbContextFactory.CreateDbContext())
-            {
+            using var dbContext = dbContextFactory.CreateDbContext();
                 return await dbContext.GetTracks()
                     .Skip(skip)
                     .Take(take)
                     .Select(t => TrackListDTO.FromEntity(t))
                     .ToListAsync();
-            }
+            
+        }
+
+        public IEnumerable<TrackListDTO> GetTrackList(int skip, int take)
+        {
+            return GetTrackListAsync(skip, take).Result;
         }
 
         public async Task<TrackDTO> GetTrack(int id)
@@ -80,5 +84,15 @@ namespace RA.DAL
                 .Select(t => TrackListDTO.FromEntity(t))
                 .ToListAsync();
         }
+
+        public async Task AddTracks(IEnumerable<TrackDTO> trackDTOs)
+        {
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            var tracks = trackDTOs.Select(t => TrackDTO.ToEntity(t)).ToList();
+            dbContext.Tracks.AddRange(tracks);
+            await dbContext.SaveChangesAsync();
+        }
+
+        
     }
 }
