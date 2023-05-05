@@ -10,6 +10,8 @@ namespace RA.DTO
     public class CategoryHierarchyDTO
     {
         public int Id { get; set; }
+
+        public string Name { get; set; }
         public string PathName { get; set; }
 
         public int? ParentId { get; set; }
@@ -20,6 +22,7 @@ namespace RA.DTO
         {
             return new CategoryHierarchyDTO { 
                 Id = categoryHierarchy.Id, 
+                Name = categoryHierarchy.Name,
                 PathName = categoryHierarchy.PathName, 
                 ParentId = categoryHierarchy.ParentId,
                 Level = categoryHierarchy.Level,

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RA.DAL;
 using RA.Database;
 using RA.DTO;
+using RA.Logic;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
@@ -134,13 +135,24 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         [RelayCommand]
         private void InsertTrackToSelectedClock()
         {
+            if (SelectedClock == null) return;
             windowService.ShowDialog<TrackSelectViewModel>();
         }
 
         [RelayCommand]
         private void InsertCategoryRuleToSelectedClock()
         {
-            windowService.ShowDialog<PlannerManageClockCategoryRuleViewModel>(5);
+            if (SelectedClock == null) return;
+            var vm = windowService.ShowDialog<PlannerManageClockCategoryRuleViewModel>(SelectedClock.Id);
+            if(vm.SelectedCategory != null)
+            {
+                DebugHelper.WriteLine(this, $"To add clock rule - {vm.SelectedCategory.Id}");
+                ClockItemsForSelectedClock.Add(new ClockItemModel()
+                {
+                    CategoryId = vm.SelectedCategory.Id,
+                    ItemDetails = $"From category: {vm.SelectedCategory.Name}",
+                });
+            }
         }
 
         [RelayCommand]

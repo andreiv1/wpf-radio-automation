@@ -46,5 +46,17 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
 
             return model;
         }
+
+        public static ClockItemDTO ToDto(ClockItemModel model)
+        {
+            return new ClockItemDTO()
+            {
+                Id = model.Id,
+                TrackId = model.TrackId,
+                CategoryId = model.CategoryId,
+                ClockId = model.ClockId,
+                OrderIndex = model.OrderIndex,
+            };
+        }
     }
 }

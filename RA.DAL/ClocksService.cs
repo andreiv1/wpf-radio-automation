@@ -123,5 +123,21 @@ namespace RA.DAL
             dbContext.Update(entity);
             await dbContext.SaveChangesAsync();
         }
+
+        public async Task AddClockItem(ClockItemDTO clockItemDto)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var entity = ClockItemDTO.ToEntity(clockItemDto);
+            dbContext.Add(entity);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task RemoveClockItem(ClockItemDTO clockItemDto)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var entity = ClockItemDTO.ToEntity(clockItemDto);
+            dbContext.Remove(entity);
+            await dbContext.SaveChangesAsync();
+        }
     }
 }
