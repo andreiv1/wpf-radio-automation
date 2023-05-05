@@ -71,18 +71,19 @@ Please add a name, a suggestive description if you need and a color for easily d
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="0" Content="Category Name" FontWeight="DemiBold"/>
-            <syncfusion:SfTextBoxExt Grid.Row="0" Grid.Column="1" Height="24"/>
+            <Label Grid.Row="0" Content="Category Name*" FontWeight="DemiBold"/>
+            <syncfusion:SfTextBoxExt Grid.Row="0" Grid.Column="1" Height="24" VerticalAlignment="Center"
+                                     Text="{Binding Category.Name}"/>
 
             <Label Grid.Row="2" Content="Description" FontWeight="DemiBold"/>
-            <syncfusion:SfTextBoxExt Grid.Row="2" Grid.Column="1" Height="150"  VerticalAlignment="Center"
-                                     VerticalContentAlignment="Top"
-                                        
-                                 AcceptsReturn="True"
-                                 AcceptsTab="True" TextWrapping="Wrap"/>
+            <syncfusion:SfTextBoxExt Grid.Row="2" Grid.Column="1" Height="150"  VerticalAlignment="Top"
+                                 AcceptsReturn="True" 
+                                 AcceptsTab="True" TextWrapping="Wrap"
+                                     Text="{Binding Category.Description}"/>
 
             <Label Grid.Row="4" Content="Color" FontWeight="DemiBold"/>
-            <syncfusion:ColorPicker Grid.Row="4" Grid.Column="1"/>
+            <syncfusion:ColorPicker Grid.Row="4" Grid.Column="1" Color="{Binding Category.Color}"
+                                    />
 
             <StackPanel Grid.Row="6" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
                 <syncfusion:ButtonAdv Label="Cancel" SmallIcon="{StaticResource RemoveIcon}"

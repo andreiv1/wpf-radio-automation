@@ -19,6 +19,30 @@ namespace RA.DAL
             this.dbContextFactory = dbContextFactory;
         }
 
+        public async Task<CategoryDTO> GetCategory(int categoryId)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var result = await dbContext.Categories.FindAsync(categoryId);
+            if (result == null) throw new NotFoundException($"Category with id {categoryId} does not exist.");
+            var dto = CategoryDTO.FromEntity(result);
+            return dto;
+        }
+
+        public async Task AddCategory(CategoryDTO category)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var entity = CategoryDTO.FromDto(category);
+            dbContext.Categories.Add(entity);
+            await dbContext.SaveChangesAsync(); 
+        }
+
+        public async Task UpdateCategory(CategoryDTO category)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var entity = CategoryDTO.FromDto(category);
+            dbContext.Categories.Update(entity);
+            await dbContext.SaveChangesAsync();
+        }
         public async Task<IEnumerable<CategoryDTO>> GetRootCategoriesAsync()
         {
             using var dbContext = dbContextFactory.CreateDbContext();

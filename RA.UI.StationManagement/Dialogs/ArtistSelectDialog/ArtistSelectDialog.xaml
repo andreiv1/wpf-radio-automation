@@ -1,0 +1,58 @@
+﻿<uicore:RAWindow x:Class="RA.UI.StationManagement.Dialogs.ArtistSelectDialog.ArtistSelectDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+                 xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        mc:Ignorable="d"
+        Title="{Binding DialogName}" Height="450" Width="400" ResizeMode="NoResize">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" FontWeight="DemiBold"
+            Content="Pick an artist:"/>
+
+        <syncfusion:SfDataGrid Grid.Row="2" Grid.Column="1" Margin="5,0,0,0"
+                       ColumnSizer="Auto"
+                       ItemsSource="{Binding Items}"
+                       SelectedItem="{Binding SelectedTrack}"
+                       SelectionUnit="Row"
+                       NavigationMode="Row"
+                       AllowResizingColumns="True"
+                       AutoGenerateColumns="False">
+            <syncfusion:SfDataGrid.Columns>
+                <syncfusion:GridTextColumn HeaderText="Artist" MappingName="Artist"
+                                           MinimumWidth="200"
+                                           AllowResizing="True"
+                                           ColumnSizer="Star"/>
+            </syncfusion:SfDataGrid.Columns>
+            <syncfusion:SfDataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Edit" Command="{Binding EditItemCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource EditIcon}" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </syncfusion:SfDataGrid.ContextMenu>
+        </syncfusion:SfDataGrid>
+
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+            <syncfusion:ButtonAdv Label="Cancel" Margin="0,0,5,0"
+                                  SmallIcon="{StaticResource CloseIcon}"
+                                  Command="{Binding CancelDialogCommand}"/>
+            <syncfusion:ButtonAdv Label="Select"
+                                  SmallIcon="{StaticResource DoneIcon}"
+                                  Command="{Binding FinishDialogCommand}"/>
+        </StackPanel>
+    </Grid>
+</uicore:RAWindow>

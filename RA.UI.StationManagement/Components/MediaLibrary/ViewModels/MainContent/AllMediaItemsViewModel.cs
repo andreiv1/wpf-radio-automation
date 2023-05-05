@@ -60,7 +60,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             Pages = TotalTracks > 0 ? (TotalTracks - 1) / tracksPerPage + 1 : 0;
             var tracks = await tracksService.GetTrackListAsync(skip, take);
             
-            foreach (var track in tracks)
+            foreach (var track in tracks.ToList())
             {
                 DebugHelper.WriteLine(this, $"Fetched {track.Id}");
                 await dispatcherService.InvokeOnUIThreadAsync(() =>

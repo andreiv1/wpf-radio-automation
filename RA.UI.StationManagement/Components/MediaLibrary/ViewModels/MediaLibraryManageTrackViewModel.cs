@@ -5,6 +5,7 @@ using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.MediaLibrary.Models;
+using RA.UI.StationManagement.Dialogs.ArtistSelectDialog;
 using RA.UI.StationManagement.Dialogs.CategorySelectDialog;
 using System;
 using System.Collections.Generic;
@@ -95,6 +96,13 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
                 return;
             }
             messageBoxService.ShowInfo($"Selected {vm.SelectedCategory.CategoryId}");
+        }
+
+        [RelayCommand]
+        private void AddArtist()
+        {
+            var vm = windowService.ShowDialog<ArtistSelectViewModel>();
+            
         }
 
         [RelayCommand]

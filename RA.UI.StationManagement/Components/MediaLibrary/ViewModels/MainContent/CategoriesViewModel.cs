@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DTO;
 using RA.UI.Core.Services.Interfaces;
@@ -20,6 +21,9 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 
         public ObservableCollection<CategoryDTO> Categories { get; set; } = new();
 
+        [ObservableProperty]
+        private CategoryDTO? selectedCategory;
+
         public CategoriesViewModel(IWindowService windowService, ICategoriesService categoriesService)
         {
             this.windowService = windowService;
@@ -29,6 +33,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 
         private async Task LoadCategories()
         {
+            Categories.Clear();
             IsMainDataLoading = true;
             var categories = await categoriesService.GetRootCategoriesAsync();
             foreach(var category in categories) { 
@@ -41,7 +46,16 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         [RelayCommand]
         private void AddCategory()
         {
-            windowService.ShowDialog<MediaLibraryManageCategoryViewModel>();
+            var vm = windowService.ShowDialog<MediaLibraryManageCategoryViewModel>();
+            _ = categoriesService.AddCategory(vm.Category);
+            _ = LoadCategories();
+        }
+
+        [RelayCommand]
+        private void EditCategory()
+        {
+            if(SelectedCategory == null) return;
+            windowService.ShowDialog<MediaLibraryManageCategoryViewModel>(SelectedCategory.Id);
         }
         #endregion
     }

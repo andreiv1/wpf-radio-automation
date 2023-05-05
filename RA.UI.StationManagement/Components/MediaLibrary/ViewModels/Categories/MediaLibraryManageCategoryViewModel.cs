@@ -1,4 +1,7 @@
-﻿using RA.UI.Core.Services.Interfaces;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using RA.DAL;
+using RA.DTO;
+using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -10,13 +13,30 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Categories
 {
     public partial class MediaLibraryManageCategoryViewModel : DialogViewModelBase
     {
-        public MediaLibraryManageCategoryViewModel(IWindowService windowService) : base(windowService)
+        [ObservableProperty]
+        private CategoryDTO category;
+
+        private readonly ICategoriesService categoriesService;
+
+        public MediaLibraryManageCategoryViewModel(IWindowService windowService, ICategoriesService categoriesService) : base(windowService)
         {
+            this.categoriesService = categoriesService;
+            Category = new();
         }
 
+        public MediaLibraryManageCategoryViewModel(IWindowService windowService, ICategoriesService categoriesService, int categoryId) : base(windowService)
+        {
+            this.categoriesService = categoriesService;
+            _ = LoadCategory(categoryId);
+        }
+
+        private async Task LoadCategory(int categoryId)
+        {
+            Category = await categoriesService.GetCategory(categoryId);
+        }
         protected override bool CanFinishDialog()
         {
-            return false;
+            return true;
         }
     }
 }

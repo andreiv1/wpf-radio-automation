@@ -64,7 +64,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Dialogs\ArtistSelectDialog\" />
       <Folder Include="Services\Data\" />
     </ItemGroup>
 
