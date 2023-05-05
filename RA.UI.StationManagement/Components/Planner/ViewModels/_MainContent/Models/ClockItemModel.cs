@@ -17,8 +17,24 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
         public String CategoryName { get; set; } = String.Empty;
         public int? ClockId { get; set; }
         public int OrderIndex { get; set; }
+        public String ItemDetails
+        {
+            get
+            {
+                if (CategoryId.HasValue)
+                {
+                    return $"From category: {CategoryName}";
+                }
 
-        public String ItemDetails { get; set; } = String.Empty;
+                if (TrackId.HasValue)
+                {
+                    return $"Track: Id={TrackId}";
+                }
+
+
+                return $"Unknown item";
+            }
+        }
 
         [ObservableProperty]
         private TimeSpan startTime;

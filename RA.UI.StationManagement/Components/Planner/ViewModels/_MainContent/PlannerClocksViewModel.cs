@@ -89,12 +89,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                     //TODO: Here treat multiple Clock Items type to display String clockItemDto details
                     if (clockItemDto.CategoryId.HasValue)
                     {
-                        clockItemModel.ItemDetails = $"From category: {clockItemDto.CategoryName}";
                         clockItemModel.Duration = categoryAvgDurations[clockItemDto.CategoryId.Value];
                     }
                     else
                     {
-                        clockItemModel.ItemDetails = "Unknown - TODO";
                         clockItemModel.Duration = TimeSpan.Zero;
                     }
                     dispatcherService.InvokeOnUIThread(() =>
@@ -147,14 +145,22 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             if(vm.SelectedCategory != null)
             {
                 DebugHelper.WriteLine(this, $"To add clock rule - {vm.SelectedCategory.Id}");
-                ClockItemsForSelectedClock.Add(new ClockItemModel()
+                clocksService.AddClockItem(new ClockItemDTO()
                 {
                     CategoryId = vm.SelectedCategory.Id,
-                    ItemDetails = $"From category: {vm.SelectedCategory.Name}",
+                    ClockId = SelectedClock.Id,
                 });
+
+                //Reload clocks from db
+                _ = LoadClockItemsForSelectedClock();
             }
         }
 
+        [RelayCommand]
+        private void InsertEventRuleToSelectedClock()
+        {
+            throw new NotImplementedException();
+        }
         [RelayCommand]
         private void OpenAddClockDialog()
         {
