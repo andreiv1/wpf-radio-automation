@@ -89,6 +89,16 @@ namespace RA.DAL
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             var tracks = trackDTOs.Select(t => TrackDTO.ToEntity(t)).ToList();
+            foreach(var t in tracks)
+            {
+                var categories = t.Categories.ToList();
+                for(int i = 0; i < categories.Count; i++)
+                {
+                    categories[i] = dbContext.AttachOrGetTrackedEntity<Category>(categories[i]);
+                }
+                t.Categories = categories;
+
+            }
             dbContext.Tracks.AddRange(tracks);
             await dbContext.SaveChangesAsync();
         }

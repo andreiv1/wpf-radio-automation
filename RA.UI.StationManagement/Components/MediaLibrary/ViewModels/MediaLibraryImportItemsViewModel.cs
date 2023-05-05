@@ -90,10 +90,15 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
 
         private async Task HandleProcessTracks()
         {
-            Model.IsTrackProcessRunning = true;
-            DebugHelper.WriteLine(this, "Starting processing tracks...");
+            
             if (Model.FolderPath != null && Model.SelectedCategory != null)
             {
+                Model.IsTrackProcessRunning = true;
+                dispatcherService.InvokeOnUIThread(() =>
+                {
+                    Model.Messages.Add("Started the process of importing...");
+                });
+
                 TrackMetadataReader.ImagePath = @"C:\Users\Andrei\Desktop\images";
                 TrackFilesProcessorOptions options = new TrackFilesProcessorOptionsBuilder(Model.FolderPath, Model.SelectedCategory.Id)
                     .SetReadMetadata(Model.ReadItemsMetadata)
@@ -119,12 +124,6 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         [RelayCommand(CanExecute = nameof(CanExecuteImport))]
         private async Task ExecuteImport()
         {
-            dispatcherService.InvokeOnUIThread(() =>
-            {
-                Model.Messages.Add("Started the process of importing...");
-            });
-                
-
             await trackFilesImporter.ImportAsync(Model.ProcessingTracks);
             dispatcherService.InvokeOnUIThread(() =>
             {

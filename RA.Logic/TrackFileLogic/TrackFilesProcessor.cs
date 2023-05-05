@@ -10,12 +10,14 @@ namespace RA.Logic.TrackFileLogic
     {
         public static readonly string[] SupportedTrackFormats = { ".mp3", ".flac", ".ogg", ".wav" };
         private readonly IArtistsService artistsService;
+        private readonly ICategoriesService categoriesService;
         private static string defaultTitle = "Unknown Title";
         private static string defaultArtist = "Unknown Artist";
 
-        public TrackFilesProcessor(IArtistsService artistsService)
+        public TrackFilesProcessor(IArtistsService artistsService, ICategoriesService categoriesService)
         {
             this.artistsService = artistsService;
+            this.categoriesService = categoriesService;
         }
 
         public async Task<ProcessingTrack> ProcessSingleItemAsync(string path, bool readMetadata = false)
@@ -59,12 +61,22 @@ namespace RA.Logic.TrackFileLogic
                 //Fara traversare in sub-foldere
                 var files = Directory.EnumerateFiles(options.DirectoryPath)
                     .Where(f => SupportedTrackFormats.Contains(Path.GetExtension(f).ToLowerInvariant()));
+                CategoryDTO categoryDTO = categoriesService.GetCategory(options.MainCategoryId).Result;
+                if(categoryDTO != null)
                 foreach (var file in files)
                 {
                     string fileExtension = Path.GetExtension(file);
                     var processingTrack = ProcessSingleItem(file, options.ReadMetadata);
                     if(processingTrack != null)
                     {
+                        processingTrack.TrackDto.Categories = new()
+                        {
+                            new TrackCategoryDTO()
+                            {
+                                CategoryId = categoryDTO.Id.GetValueOrDefault(),
+                                CategoryName = categoryDTO.Name,
+                            }
+                        };
                         processingTrack.TrackDto.Type = options.TrackType;
                         processingTrack.TrackDto.Status = options.TrackStatus;
                     }
