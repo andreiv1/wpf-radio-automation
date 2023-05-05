@@ -27,8 +27,7 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
-            TestImportDirectory();
-            Console.ReadLine();
+            
         }
 
         static async void TestImport()

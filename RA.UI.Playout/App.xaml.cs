@@ -100,7 +100,7 @@ namespace RA.UI.Playout
         {
             var windowService = AppHost!.Services.GetRequiredService<IWindowService>();
             var dispatcherService = AppHost!.Services.GetRequiredService<IDispatcherService>();
-            ThemeManager.SetTheme(ThemeType.Light);
+            ThemeManager.SetTheme(ThemeType.Dark);
             SplashScreenWindow splashScreen = new SplashScreenWindow();
             splashScreen.Show();
 

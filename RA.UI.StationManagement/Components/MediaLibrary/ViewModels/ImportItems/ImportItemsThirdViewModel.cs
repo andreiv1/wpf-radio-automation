@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using RA.Logic.TrackFileLogic.Models;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Models;
 using System;
@@ -13,6 +14,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems
     public partial class ImportItemsThirdViewModel : ViewModelBase
     {
         public ImportItemsModel Model { get; set; }
+
+        
         public ImportItemsThirdViewModel()
         {
             Model?.Messages.Add("Started processing tracks...");

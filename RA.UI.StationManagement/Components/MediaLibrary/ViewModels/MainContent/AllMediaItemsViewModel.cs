@@ -48,7 +48,6 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             this.windowService = windowService;
             this.dispatcherService = dispatcherService;
             this.tracksService = tracksService;
-            _ = LoadTracks(0, tracksPerPage);
         }
 
         #endregion

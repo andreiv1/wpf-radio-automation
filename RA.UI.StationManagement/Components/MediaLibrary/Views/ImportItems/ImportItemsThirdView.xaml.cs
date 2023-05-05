@@ -1,5 +1,7 @@
 ﻿using RA.UI.Core;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems;
+using Syncfusion.UI.Xaml.Grid.Helpers;
+using Syncfusion.UI.Xaml.ScrollAxis;
 using System;
 using System.Collections.Generic;
 using System.Linq;

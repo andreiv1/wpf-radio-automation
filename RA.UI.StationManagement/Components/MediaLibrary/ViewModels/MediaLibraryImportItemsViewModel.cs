@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using RA.Logic;
+using RA.Logic.TrackFileLogic;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
@@ -21,14 +22,24 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
 {
     public partial class MediaLibraryImportItemsViewModel : PagedViewModel<MediaLibraryImportItemsViewModel>
     {
+        private readonly IWindowService windowService;
+        private readonly IDispatcherService dispatcherService;
+        private readonly INavigationService<MediaLibraryImportItemsViewModel> navigationService;
+        private readonly ITrackFilesProcessor trackFilesProcessor;
+        private readonly ITrackFilesImporter trackFilesImporter;
+
         [ObservableProperty]
         private ImportItemsModel model = new();
-        public MediaLibraryImportItemsViewModel(IWindowService windowService, 
-            INavigationService<MediaLibraryImportItemsViewModel> navigationService) : base(navigationService)
+        public MediaLibraryImportItemsViewModel(IWindowService windowService, IDispatcherService dispatcherService,
+            INavigationService<MediaLibraryImportItemsViewModel> navigationService,
+            ITrackFilesProcessor trackFilesProcessor, ITrackFilesImporter trackFilesImporter) : base(navigationService)
         {
             PageChanged += MediaLibraryImportItemsViewModel_PageChanged;
             this.windowService = windowService;
+            this.dispatcherService = dispatcherService;
             this.navigationService = navigationService;
+            this.trackFilesProcessor = trackFilesProcessor;
+            this.trackFilesImporter = trackFilesImporter;
         }
         protected override void InitialisePages()
         {
@@ -77,58 +88,49 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             }
         }
 
-        private readonly IWindowService windowService;
-        private readonly INavigationService<MediaLibraryImportItemsViewModel> navigationService;
-
-        //TODO
         private async Task HandleProcessTracks()
         {
-            //Model.IsTrackProcessRunning = true;
-            //DebugHelper.WriteLine(this, "Starting processing tracks...");
-            //trackFilesProcessor = new();
-            //trackFilesProcessor.TrackProcessed += TrackFilesProcessor_TrackProcessed;
-            //if (Model.FolderPath is not null && Model.SelectedCategory is not null)
-            //{
-            //    //processingTracks = trackFilesProcessor.ProcessItemsFromDirectory(TrackModel.FolderPath, TrackModel.SelectedCategory.Id,
-            //    //    TrackModel.SelectedTrackType, TrackModel.SelectedTrackStatus, TrackModel.ReadItemsMetadata);
-            //}
+            Model.IsTrackProcessRunning = true;
+            DebugHelper.WriteLine(this, "Starting processing tracks...");
+            if (Model.FolderPath != null && Model.SelectedCategory != null)
+            {
+                TrackMetadataReader.ImagePath = @"C:\Users\Andrei\Desktop\images";
+                TrackFilesProcessorOptions options = new TrackFilesProcessorOptionsBuilder(Model.FolderPath, Model.SelectedCategory.Id)
+                    .SetReadMetadata(Model.ReadItemsMetadata)
+                    .SetTrackStatus(Model.SelectedTrackStatus)
+                    .SetTrackType(Model.SelectedTrackType)
+                    .Build();
 
-            ////Processed finished
-            //Model.IsTrackProcessRunning = false;
+                await Task.Run(() =>
+                {
+                    foreach (var processingTrack in trackFilesProcessor.ProcessItemsFromDirectory(options))
+                    {
+                        dispatcherService.InvokeOnUIThread(() =>
+                        {
+                            Model.ProcessingTracks.Add(processingTrack);
+                        });
+                        
+                    }
+                });    
+            }
+            Model.IsTrackProcessRunning = false;
         }
 
-        //TODO
-        //private void TrackFilesProcessor_TrackProcessed(object sender, ProcessingTrackEventArgs e)
-        //{
-        //    //Model.TotalItems = trackFilesProcessor.TotalItems;
-        //    //Model.ValidItems = trackFilesProcessor.ValidItems;
-        //    //Model.InvalidItems = trackFilesProcessor.InvalidItems;
-        //    //Model.WarningItems = trackFilesProcessor.WarningItems;
-
-        //    //Application.Current.Dispatcher.Invoke(() =>
-        //    //{
-        //    //    Model.ProcessingTracks.Add(e.Track);
-        //    //});
-        //}
-
         [RelayCommand(CanExecute = nameof(CanExecuteImport))]
-        private void ExecuteImport()
+        private async Task ExecuteImport()
         {
-            Task.Run(() =>
+            dispatcherService.InvokeOnUIThread(() =>
             {
-                Application.Current?.Dispatcher.Invoke(() =>
-                {
-                    Model.Messages.Add("Started the process of importing...");
-                });
-                
-                //TODO
-                //TrackFilesImporter importer = new TrackFilesImporter();
-                //int result = importer.Import(processingTracks);
-                Application.Current?.Dispatcher.Invoke(() =>
-                {
-                    //Model.Messages.Add($"{result} tracks has been imported succesfully into database.");
-                });
+                Model.Messages.Add("Started the process of importing...");
             });
+                
+
+            await trackFilesImporter.ImportAsync(Model.ProcessingTracks);
+            dispatcherService.InvokeOnUIThread(() =>
+            {
+                Model.Messages.Add($"Tracks has been imported succesfully into database.");
+            });
+
         }
 
         private bool CanExecuteImport()

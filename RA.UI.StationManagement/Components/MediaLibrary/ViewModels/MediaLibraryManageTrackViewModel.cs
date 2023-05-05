@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
 {
@@ -20,8 +21,16 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         private readonly ITracksService tracksService;
         private readonly IMessageBoxService messageBoxService;
         private readonly IFileBrowserDialogService fileBrowserDialogService;
+
         [ObservableProperty]
         private TrackModel? track;
+
+        private string? fullImagePath;
+        public string? FullImagePath
+        {
+            get => fullImagePath;
+            private set => SetProperty(ref fullImagePath, value);
+        }
 
         #region Constructor
         public MediaLibraryManageTrackViewModel(IWindowService windowService, IFileBrowserDialogService fileBrowserDialogService,
@@ -48,6 +57,9 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         {
             var track = await Task.Run(() => tracksService.GetTrack(trackId));
             Track = TrackModel.FromDto(track);
+            if (!string.IsNullOrEmpty(Track.ImageName))
+                FullImagePath = $"C:\\Users\\Andrei\\Desktop\\images\\{Track.ImageName}";
+            else FullImagePath = "pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png";
         }
 
         #region Commands

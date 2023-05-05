@@ -17,6 +17,7 @@
     <converters:TimeSpanToIntSecondsConverter x:Key="TimeSpanToIntSecondsConverter"/>
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+    <converters:StringIsNullOrEmptyConverter x:Key="StringIsNullOrEmptyConverter"/>
 
 
 </ResourceDictionary>

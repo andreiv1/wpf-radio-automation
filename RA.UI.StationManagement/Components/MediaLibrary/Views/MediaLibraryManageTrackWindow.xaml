@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         xmlns:vm="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.ViewModels"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
@@ -31,10 +32,11 @@
             </Grid.ColumnDefinitions>
 
             <!-- Track image -->
-            <Image Grid.Column="0" 
+            <Image Grid.Column="0" Width="100" 
                    VerticalAlignment="Center"
-                   Source="pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png" />
-
+                   Source="{Binding FullImagePath}"
+                   d:Source="pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png">
+            </Image>
             <!-- Item essential info -->
             <Grid Grid.Column="1" Margin="10,5,0,0">
                 <Grid.RowDefinitions>

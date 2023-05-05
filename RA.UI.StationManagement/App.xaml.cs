@@ -42,6 +42,7 @@ using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Categories;
 using RA.UI.StationManagement.Components.MediaLibrary.Views.Categories;
 using RA.UI.StationManagement.Dialogs.TrackSelectDialog;
 using RA.UI.StationManagement.Dialogs.TemplateSelectDialog;
+using RA.Logic.TrackFileLogic;
 
 namespace RA.UI.StationManagement
 {
@@ -94,6 +95,11 @@ namespace RA.UI.StationManagement
                     services.AddTransient<ITagsService, TagsService>();
                     services.AddTransient<IDefaultSchedulesService, DefaultSchedulesService>();
                     services.AddTransient<IArtistsService, ArtistsService>();
+                    #endregion
+
+                    #region Logic services
+                    services.AddTransient<ITrackFilesImporter,TrackFileImporter>();
+                    services.AddTransient<ITrackFilesProcessor, TrackFilesProcessor>();
                     #endregion
 
                     #region Register window factory

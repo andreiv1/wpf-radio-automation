@@ -125,6 +125,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Models
         private bool isTrackProcessRunning = false;
         public ObservableCollection<ProcessingTrack> ProcessingTracks { get; set; } = new();
 
+        [ObservableProperty]
+        private ProcessingTrack? selectedProcessingTrack;
         public ObservableCollection<string> Messages { get; set; } = new();
 
         [ObservableProperty]

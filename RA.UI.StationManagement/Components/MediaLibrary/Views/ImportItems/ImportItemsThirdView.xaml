@@ -27,10 +27,12 @@
             </Grid.RowDefinitions>
             
             <!-- Preview to import items -->
-            <syncfusion:SfDataGrid Grid.Row="0" Margin="5,5,5,0"
+            <syncfusion:SfDataGrid x:Name="importItemsGrid" Grid.Row="0" Margin="5,5,5,0"
                                    AutoGenerateColumns="False"
                                    ColumnSizer="AutoWithLastColumnFill"
-                                   ItemsSource="{Binding Model.ProcessingTracks}">
+                                   SelectionUnit="Row" NavigationMode="Row"
+                                   ItemsSource="{Binding Model.ProcessingTracks}"
+                                   >
                 <syncfusion:SfDataGrid.Columns>
                     <syncfusion:GridTextColumn HeaderText="Status"
                                                MappingName="Status" Width="50"/>
@@ -39,7 +41,7 @@
                     <syncfusion:GridTextColumn HeaderText="Title" Width="220"
                                                MappingName="TrackDto.Title"/>
                     <syncfusion:GridTextColumn HeaderText="Category" Width="120"
-                                               MappingName="CategoryName"/>
+                                               MappingName="Categories"/>
                     <syncfusion:GridTextColumn HeaderText="File Path"
                                                MappingName="TrackDto.FilePath"/>
                 </syncfusion:SfDataGrid.Columns>
