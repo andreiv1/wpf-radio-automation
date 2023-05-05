@@ -44,6 +44,7 @@ using RA.UI.StationManagement.Dialogs.TrackSelectDialog;
 using RA.UI.StationManagement.Dialogs.TemplateSelectDialog;
 using RA.Logic.TrackFileLogic;
 using RA.UI.StationManagement.Dialogs.ArtistSelectDialog;
+using RA.UI.StationManagement.Components.Planner.Views.Templates;
 
 namespace RA.UI.StationManagement
 {
@@ -174,6 +175,8 @@ namespace RA.UI.StationManagement
                     viewModelToTransientWindowMap.Add(typeof(PlannerManageScheduleItemViewModel), typeof(PlannerManageScheduleItemDialog));
 
                     viewModelToTransientWindowMap.Add(typeof(PlannerGeneratePlaylistsViewModel), typeof(PlannerGeneratePlaylistsWindow));
+
+                    viewModelToTransientWindowMap.Add(typeof(PlannerTemplateSelectClockViewModel), typeof(PlannerTemplateSelectClockWindow));
                     
                     #endregion
 

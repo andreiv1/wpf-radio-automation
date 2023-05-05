@@ -110,6 +110,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         {
             _ = LoadTemplates();
         }
+
+        [RelayCommand]
+        private void InsertClock()
+        {
+            windowService.ShowWindow<PlannerTemplateSelectClockViewModel>();
+        }
         #endregion
     }
 }

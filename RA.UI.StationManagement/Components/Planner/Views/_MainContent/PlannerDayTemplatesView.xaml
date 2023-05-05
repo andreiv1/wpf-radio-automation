@@ -117,6 +117,7 @@
             <!-- Buttons -->
             <StackPanel Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal">
                 <syncfusion:ButtonAdv Label="Insert clock" Height="25" Margin="0,0,3,0"
+                                      Command="{Binding InsertClockCommand}"
                                       SmallIcon="{StaticResource ClockIcon}"/>
                 <syncfusion:ButtonAdv Label="Delete clock" Height="25" Margin="0,0,3,0"
                                       

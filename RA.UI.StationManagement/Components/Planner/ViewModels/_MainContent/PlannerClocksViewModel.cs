@@ -145,8 +145,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             if(vm.SelectedCategory != null)
             {
                 DebugHelper.WriteLine(this, $"To add clock rule - {vm.SelectedCategory.Id}");
+                int latestIndex = ClockItemsForSelectedClock.Count;
                 clocksService.AddClockItem(new ClockItemDTO()
                 {
+                    OrderIndex = latestIndex,
                     CategoryId = vm.SelectedCategory.Id,
                     ClockId = SelectedClock.Id,
                 });
