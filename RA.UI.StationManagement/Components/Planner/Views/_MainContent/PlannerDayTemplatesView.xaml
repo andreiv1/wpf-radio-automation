@@ -131,6 +131,10 @@
                                 AllowViewNavigation="False"
                                 ViewType="Day" ShowDatePickerButton="True"
                                 ItemsSource="{Binding ClocksForSelectedTemplate}"
+                                DragOver="selectedTemplateScheduler_DragOver"
+                                AllowDrop="True"
+                                Drop="selectedTemplateScheduler_Drop"
+                                AppointmentDropping="selectedTemplateScheduler_AppointmentDropping"
                                 >
                 <syncfusion:SfScheduler.AppointmentMapping>
                     <syncfusion:AppointmentMapping

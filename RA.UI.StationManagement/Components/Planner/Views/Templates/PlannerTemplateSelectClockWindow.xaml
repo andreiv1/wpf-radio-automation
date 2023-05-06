@@ -20,14 +20,17 @@
         <Label Grid.Row="0" FontWeight="DemiBold"
             Content="By using drag and drop you can place a clock inside a template."/>
 
-        <syncfusion:SfDataGrid Grid.Row="2" Grid.Column="1" Margin="5,0,0,0"
+        <syncfusion:SfDataGrid x:Name="sfDataGrid"
+                     Grid.Row="2" Grid.Column="1" Margin="5,0,0,0"
                        ColumnSizer="Auto"
                        ItemsSource="{Binding Clocks}"
                        SelectedItem="{Binding SelectedTrack}"
-                       SelectionUnit="Row"
-                       NavigationMode="Row"
+                       AllowDraggingRows="True"
                        AllowResizingColumns="True"
-                       AutoGenerateColumns="False">
+                       AutoGenerateColumns="False"
+                       SelectionMode="None"
+                       NavigationMode="Row"
+                       >
             <syncfusion:SfDataGrid.Columns>
                 <syncfusion:GridTextColumn HeaderText="Clock" MappingName="Name"
                                            MinimumWidth="200"
