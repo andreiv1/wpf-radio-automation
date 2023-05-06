@@ -44,7 +44,7 @@ namespace RA.UI.StationManagement.Components.Planner.Views.MainContent
                 if (clock == null) return;
                 DebugHelper.WriteLine(this, $"Dropped clock: {clock.Id} - {clock.Name}");
                 DebugHelper.WriteLine(this, $"At HOUR {droppingTime.Hour}");
-
+                DebugHelper.WriteLine(this, $"Full: {droppingTime.ToString("HH:mm")}");
                 var vm = DataContext as PlannerDayTemplatesViewModel;
                 if(vm != null && clock != null && clock.Id != null)
                 {
