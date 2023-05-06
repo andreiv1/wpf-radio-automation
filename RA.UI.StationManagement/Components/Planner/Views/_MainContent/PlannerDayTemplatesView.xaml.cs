@@ -27,8 +27,10 @@ namespace RA.UI.StationManagement.Components.Planner.Views.MainContent
 
         private void selectedTemplateScheduler_DragOver(object sender, DragEventArgs e)
         {
-            //e.Effects = DragDropEffects.Copy;
-            //e.Handled = true;
+            if (e.Data.GetDataPresent(typeof(ClockDTO)))
+            {
+                e.Effects = DragDropEffects.Copy;
+            }
         }
 
         private void selectedTemplateScheduler_Drop(object sender, DragEventArgs e)
@@ -40,6 +42,8 @@ namespace RA.UI.StationManagement.Components.Planner.Views.MainContent
                 ClockDTO? clock = e.Data.GetData(typeof(ClockDTO)) as ClockDTO;
                 if (clock == null) return;
                 DebugHelper.WriteLine(this, $"Dropped clock: {clock.Id} - {clock.Name}");
+                DebugHelper.WriteLine(this, $"At HOUR {droppingTime.Hour}");
+                e.Handled = true;
             }
         }
 
@@ -47,7 +51,6 @@ namespace RA.UI.StationManagement.Components.Planner.Views.MainContent
         private void selectedTemplateScheduler_AppointmentDropping(object sender, AppointmentDroppingEventArgs e)
         {
             droppingTime = e.DropTime;
-            DebugHelper.WriteLine(this, droppingTime.ToString("HH:mm"));
         }
     }
 }

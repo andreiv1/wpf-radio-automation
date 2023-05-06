@@ -23,7 +23,7 @@ namespace RA.UI.StationManagement.Components.Planner.Views.Templates
         public PlannerTemplateSelectClockWindow()
         {
             InitializeComponent();
-            sfDataGrid.RowDragDropController.DragStart += RowDragDropController_DragStart; ;
+            sfDataGrid.RowDragDropController.DragStart += RowDragDropController_DragStart;
         }
 
         private void RowDragDropController_DragStart(object? sender, GridRowDragStartEventArgs e)
@@ -31,20 +31,6 @@ namespace RA.UI.StationManagement.Components.Planner.Views.Templates
             var draggingClock = e.DraggingRecords[0] as ClockDTO;
             if (draggingClock == null) return;
             DragDrop.DoDragDrop(sfDataGrid, draggingClock, DragDropEffects.Move);
-        }
-
-        private void SfDataGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var sfDataGrid = sender as SfDataGrid;
-            if (sfDataGrid != null)
-            {
-
-                var selectedItem = sfDataGrid.CurrentItem as ClockDTO;
-                if (selectedItem != null)
-                {
-                    DragDrop.DoDragDrop(sfDataGrid, selectedItem, DragDropEffects.Move);
-                }
-            }
         }
     }
 }
