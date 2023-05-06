@@ -26,5 +26,16 @@ namespace RA.DTO
                 ClockSpan = entity.ClockSpan,
             };
         }
+
+        public static ClockTemplate ToEntity(ClockTemplateDTO clockTemplate)
+        {
+            return new ClockTemplate
+            {
+                ClockId = clockTemplate.ClockId,
+                TemplateId = clockTemplate.TemplateId,
+                StartTime = clockTemplate.StartTime,
+                ClockSpan = clockTemplate.ClockSpan,
+            };
+        }
     }
 }

@@ -45,6 +45,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             _ = LoadTemplates();
         }
 
+        #region Data fetching
         private async Task LoadTemplates()
         {
             var templates = await templatesService.GetTemplatesAsync();
@@ -70,6 +71,22 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                     ClocksForSelectedTemplate.Add(TemplateClockItemModel.FromDto(item));
                 });
             }
+        }
+
+        #endregion
+
+        public async Task AddClockToTemplate(int clockId, TimeSpan start, int span)
+        {
+            if (SelectedTemplate == null) return;
+            var clockTemplate = new ClockTemplateDTO()
+            {
+                ClockId = clockId,
+                StartTime = start,
+                ClockSpan = span,
+                TemplateId = SelectedTemplate.Id,
+            };
+            await templatesService.AddClockToTemplate(clockTemplate);
+            _ = LoadClocksForSelectedTemplate();
         }
 
         #region Commands

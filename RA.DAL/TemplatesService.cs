@@ -68,5 +68,13 @@ namespace RA.DAL
             return dto;
 
         }
+
+        public async Task AddClockToTemplate(ClockTemplateDTO clockTemplate)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var entity = ClockTemplateDTO.ToEntity(clockTemplate);
+            dbContext.ClockTemplates.Add(entity);
+            await dbContext.SaveChangesAsync();
+        }
     }
 }

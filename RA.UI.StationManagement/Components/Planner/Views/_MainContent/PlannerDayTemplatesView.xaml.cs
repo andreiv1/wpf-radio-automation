@@ -4,6 +4,7 @@ using RA.UI.Core;
 using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent;
 using Syncfusion.UI.Xaml.Scheduler;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 
 
@@ -33,7 +34,7 @@ namespace RA.UI.StationManagement.Components.Planner.Views.MainContent
             }
         }
 
-        private void selectedTemplateScheduler_Drop(object sender, DragEventArgs e)
+        private async void selectedTemplateScheduler_Drop(object sender, DragEventArgs e)
         {
             DebugHelper.WriteLine(this, $"Trying to handle something to drop.");
             if (e.Data.GetDataPresent(typeof(ClockDTO)))
@@ -43,6 +44,12 @@ namespace RA.UI.StationManagement.Components.Planner.Views.MainContent
                 if (clock == null) return;
                 DebugHelper.WriteLine(this, $"Dropped clock: {clock.Id} - {clock.Name}");
                 DebugHelper.WriteLine(this, $"At HOUR {droppingTime.Hour}");
+
+                var vm = DataContext as PlannerDayTemplatesViewModel;
+                if(vm != null && clock != null && clock.Id != null)
+                {
+                    await vm.AddClockToTemplate(clock.Id.Value, new TimeSpan(droppingTime.Hour, 0, 0), 1);
+                }
                 e.Handled = true;
             }
         }

@@ -9,6 +9,7 @@ namespace RA.DAL
 {
     public interface ITemplatesService
     {
+        Task AddClockToTemplate(ClockTemplateDTO clockTemplate);
         Task AddTemplate(TemplateDTO templateDto);
         Task<TemplateDTO> GetTemplate(int templateId);
         Task<IEnumerable<TemplateDTO>> GetTemplatesAsync();
