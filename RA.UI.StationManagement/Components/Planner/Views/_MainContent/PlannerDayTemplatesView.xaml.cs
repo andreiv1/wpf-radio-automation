@@ -55,9 +55,17 @@ namespace RA.UI.StationManagement.Components.Planner.Views.MainContent
         }
 
         private DateTime droppingTime;
+
         private void selectedTemplateScheduler_AppointmentDropping(object sender, AppointmentDroppingEventArgs e)
         {
-            droppingTime = e.DropTime;
+            if (e.DropTime.Minute > 30)
+            {
+                droppingTime = e.DropTime.AddHours(1);
+            }
+            else
+            {
+                droppingTime = e.DropTime;
+            }
         }
     }
 }

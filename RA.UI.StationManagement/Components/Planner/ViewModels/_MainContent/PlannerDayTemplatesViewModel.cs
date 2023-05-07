@@ -85,7 +85,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                 ClockSpan = span,
                 TemplateId = SelectedTemplate.Id,
             };
-            await templatesService.AddClockToTemplate(clockTemplate);
+            if (ClocksForSelectedTemplate.Where(c => c.StartTime.TimeOfDay == start).Any()) return;
+                await templatesService.AddClockToTemplate(clockTemplate);
             _ = LoadClocksForSelectedTemplate();
         }
 
