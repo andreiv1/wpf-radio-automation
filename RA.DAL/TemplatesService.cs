@@ -76,5 +76,10 @@ namespace RA.DAL
             dbContext.ClockTemplates.Add(entity);
             await dbContext.SaveChangesAsync();
         }
+
+        public Task UpdateClockInTemplate(ClockTemplateDTO clockTemplate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -28,8 +28,12 @@ namespace RA.UI.StationManagement.Components.Planner.Views.Templates
 
         private void RowDragDropController_DragStart(object? sender, GridRowDragStartEventArgs e)
         {
+            if (Mouse.LeftButton != MouseButtonState.Pressed)
+                return;
+
             var draggingClock = e.DraggingRecords[0] as ClockDTO;
             if (draggingClock == null) return;
+
             DragDrop.DoDragDrop(sfDataGrid, draggingClock, DragDropEffects.Move);
         }
     }
