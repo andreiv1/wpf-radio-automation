@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace RA.Logic.PlanningLogic.Abstract
 {
-    public abstract class TrackSelectionBaseStrategy : ITrackSelectionStrategy
+    public abstract class TrackSelectionBaseStrategy
     {
-        private readonly IPlaylistsService playlistsService;
-        private readonly ITracksService tracksService;
+        protected readonly IPlaylistsService playlistsService;
+        protected readonly ITracksService tracksService;
 
         /// <summary>
         /// Minimum time in minutes that must pass before a track with the same artist can be selected again 

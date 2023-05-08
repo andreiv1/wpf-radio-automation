@@ -103,6 +103,37 @@ namespace RA.DAL
             await dbContext.SaveChangesAsync();
         }
 
+        private static readonly Random random = new Random();
+        public async Task<TrackListDTO> GetRandomTrack(int categoryId, List<int>? trackIdsToExclude = null)
+        {
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+
+            var noOfTracksQuery = dbContext.Tracks.Include(t => t.Categories)
+                .Where(t => t.Categories.Contains(new Category() { Id = categoryId }))
+                .AsQueryable();
+
+            var query = dbContext.Tracks.Include(t => t.Categories)
+                .Include(t => t.TrackArtists)
+                .ThenInclude(ta => ta.Artist)
+                .Where(t => t.Categories.Contains(new Category() { Id = categoryId }));
+                
+            if(trackIdsToExclude != null)
+            {
+                query = query.Where(t => !trackIdsToExclude.Contains(t.Id));
+                noOfTracksQuery = noOfTracksQuery.Where(t => !trackIdsToExclude.Contains(t.Id));
+            }
+
+            var noOfTracks = await noOfTracksQuery.CountAsync();
+            
+            var track = query.Skip(random.Next(noOfTracks))
+                .Take(1)
+                .Select(t => TrackListDTO.FromEntity(t))
+                .First();
+
+
+            return track;
+        }
+
         
     }
 }

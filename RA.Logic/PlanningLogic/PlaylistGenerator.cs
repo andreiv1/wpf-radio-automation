@@ -34,7 +34,6 @@ namespace RA.Logic.PlanningLogic
         public PlaylistDTO GeneratePlaylistForDate(DateTime date)
         {
             PlaylistDTO playlist = InitialisePlaylist(date);
-            DateTime estimatedPlaylistStart = new DateTime(date.Year, date.Month, date.Day);
             IScheduleDTO schedule = schedulesService.GetScheduleByDate(date);
             int scheduleTemplateId = schedule.Template?.Id ?? throw new Exception("Template must have an id");
             var clocksForSchedule = templatesService.GetClocksForTemplate(scheduleTemplateId);
@@ -42,7 +41,7 @@ namespace RA.Logic.PlanningLogic
             foreach(var clock in clocksForSchedule)
             {
 
-                ProcessClock(clock, playlist, ref estimatedPlaylistStart);
+                ProcessClock(clock, playlist);
                
             }
             return playlist;
@@ -62,7 +61,7 @@ namespace RA.Logic.PlanningLogic
         /// Handle processing a clock inside a template
         /// </summary>
         /// <param name="clock">The specific clock in the template</param>
-        private void ProcessClock(ClockTemplateDTO clock, PlaylistDTO playlistDTO, ref DateTime estimatedPlaylistStart)
+        private void ProcessClock(ClockTemplateDTO clock, PlaylistDTO playlistDTO)
         {
             TimeSpan clockSpan = new TimeSpan(clock.ClockSpan, 0, 0);
             TimeSpan clockStart = clock.StartTime;
@@ -81,7 +80,7 @@ namespace RA.Logic.PlanningLogic
 
                 foreach (ClockItemDTO clockItem in clockItems)
                 {
-                    ProcessClockItem(clockItem, playlistDTO, ref estimatedPlaylistStart);
+                    ProcessClockItem(clockItem, playlistDTO);
                 }
 
                 Console.WriteLine("=======================================");
@@ -92,10 +91,9 @@ namespace RA.Logic.PlanningLogic
         /// Handle processing a single item from a clock
         /// </summary>
         /// <param name="clockItem"></param>
-        private void ProcessClockItem(ClockItemDTO clockItem, PlaylistDTO playlistDTO, ref DateTime estimatedPlaylistStart)
+        private void ProcessClockItem(ClockItemDTO clockItem, PlaylistDTO playlistDTO)
         {
             Console.WriteLine($"Id={clockItem.Id},CategoryId={clockItem.CategoryId}");
-            PlaylistItemBaseDTO? playlistItem = null;
             if (clockItem.TrackId.HasValue)
             {
                 //TODO: Specific element from library
@@ -107,18 +105,12 @@ namespace RA.Logic.PlanningLogic
 
             if (clockItem.CategoryId.HasValue)
             {
-                ITrackSelectionStrategy selectionStrategy = new RandomTrackSelectionStrategy(playlistsService, tracksService);
-                playlistItem = (PlaylistItemTrackDTO)selectionStrategy.SelectTrack(playlistDTO);
-                var trackItem = (PlaylistItemTrackDTO)playlistItem;
-                Console.WriteLine($"From Cat: trackId={trackItem.TrackId}");
-
+                TrackSelectionBaseStrategy selectionStrategy = 
+                    new RandomTrackSelectionStrategy(playlistsService, tracksService, clockItem.CategoryId.Value);
+                selectionStrategy.SelectTrack(playlistDTO);
             }
 
-            if (playlistItem == null) throw new Exception("Couldn't select any playlist item based on clock item.");
-
-            playlistDTO!.Items!.Add(playlistItem);
-
-            
+          
         }
     }
 }
