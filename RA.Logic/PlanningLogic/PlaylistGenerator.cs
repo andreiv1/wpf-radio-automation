@@ -45,7 +45,7 @@ namespace RA.Logic.PlanningLogic
                 ProcessClock(clock, playlist, ref estimatedPlaylistStart);
                
             }
-            return result;
+            return playlist;
         }
 
         private PlaylistDTO InitialisePlaylist(DateTime date)
@@ -95,10 +95,11 @@ namespace RA.Logic.PlanningLogic
         private void ProcessClockItem(ClockItemDTO clockItem, PlaylistDTO playlistDTO, ref DateTime estimatedPlaylistStart)
         {
             Console.WriteLine($"Id={clockItem.Id},CategoryId={clockItem.CategoryId}");
-
+            PlaylistItemBaseDTO? playlistItem = null;
             if (clockItem.TrackId.HasValue)
             {
-                //TODO: Fixed track id
+                //TODO: Specific element from library
+                //no selection to made
 
             }
 
@@ -107,8 +108,14 @@ namespace RA.Logic.PlanningLogic
             if (clockItem.CategoryId.HasValue)
             {
                 Console.WriteLine("Item has category - selection strategy");
-                ITrackSelectionStrategy selectionStrategy = new RandomTrackSelectionStrategy()
+                ITrackSelectionStrategy selectionStrategy = new RandomTrackSelectionStrategy(playlistsService, tracksService);
+                playlistItem = selectionStrategy.SelectTrack(playlistDTO);
+                
             }
+
+            if (playlistItem == null) throw new Exception("Couldn't select any playlist item based on clock item.");
+
+            playlistDTO!.Items!.Add(playlistItem);
 
             
         }

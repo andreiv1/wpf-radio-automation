@@ -9,6 +9,6 @@ namespace RA.Logic.PlanningLogic
 {
     public interface ITrackSelectionStrategy
     {
-        PlaylistItemTrackDTO SelectTrack();
+        PlaylistItemTrackDTO SelectTrack(PlaylistDTO playlist);
     }
 }
