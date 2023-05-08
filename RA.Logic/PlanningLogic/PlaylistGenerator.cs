@@ -107,10 +107,11 @@ namespace RA.Logic.PlanningLogic
 
             if (clockItem.CategoryId.HasValue)
             {
-                Console.WriteLine("Item has category - selection strategy");
                 ITrackSelectionStrategy selectionStrategy = new RandomTrackSelectionStrategy(playlistsService, tracksService);
-                playlistItem = selectionStrategy.SelectTrack(playlistDTO);
-                
+                playlistItem = (PlaylistItemTrackDTO)selectionStrategy.SelectTrack(playlistDTO);
+                var trackItem = (PlaylistItemTrackDTO)playlistItem;
+                Console.WriteLine($"From Cat: trackId={trackItem.TrackId}");
+
             }
 
             if (playlistItem == null) throw new Exception("Couldn't select any playlist item based on clock item.");

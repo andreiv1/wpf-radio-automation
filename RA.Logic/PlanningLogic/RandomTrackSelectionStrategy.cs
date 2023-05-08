@@ -20,7 +20,10 @@ namespace RA.Logic.PlanningLogic
         public override PlaylistItemTrackDTO SelectTrack(PlaylistDTO playlist)
         {
             //TODO: check from previous playlists for repetition
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            PlaylistItemTrackDTO item = new();
+            item.TrackId = 1;
+            return item;
         }
     }
 }
