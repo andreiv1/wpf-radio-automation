@@ -18,7 +18,7 @@ namespace RA.DAL
             this.dbContextFactory = dbContextFactory;
         }
 
-        public async Task AddPlaylist(PlaylistDTO playlistDTO)
+        public async Task AddPlaylistAsync(PlaylistDTO playlistDTO)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             var entity = PlaylistDTO.ToEntity(playlistDTO);

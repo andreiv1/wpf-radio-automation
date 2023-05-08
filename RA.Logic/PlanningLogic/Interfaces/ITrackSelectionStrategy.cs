@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RA.DAL
+namespace RA.Logic.PlanningLogic.Interfaces
 {
-    public interface IPlaylistsService
+    public interface ITrackSelectionStrategy
     {
-        Task AddPlaylistAsync(PlaylistDTO playlistDTO);
+        PlaylistItemTrackDTO SelectTrack();
     }
 }
