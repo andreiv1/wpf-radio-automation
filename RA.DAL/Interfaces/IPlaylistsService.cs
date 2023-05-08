@@ -10,5 +10,6 @@ namespace RA.DAL
     public interface IPlaylistsService
     {
         Task AddPlaylistAsync(PlaylistDTO playlistDTO);
+        IEnumerable<PlaylistListingDTO> GetPlaylistsToAir(DateTime? date = null);
     }
 }
