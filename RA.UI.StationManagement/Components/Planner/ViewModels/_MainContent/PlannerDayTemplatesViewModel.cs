@@ -62,7 +62,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private async Task LoadClocksForSelectedTemplate()
         {
             if (SelectedTemplate == null) return; 
-            var items = await templatesService.GetTemplatesForClockWithId(SelectedTemplate.Id);
+            var items = await templatesService.GetTemplatesForClockAsync(SelectedTemplate.Id);
             ClocksForSelectedTemplate.Clear();
             foreach (var item in items)
             {

@@ -1,4 +1,5 @@
 ﻿using RA.Database.Models;
+using RA.DTO.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class ScheduleDefaultItemDTO
+    public class ScheduleDefaultItemDTO : IScheduleDTO
     {
         public int? Id { get; set; }
         public  ScheduleDefaultDTO Schedule { get; set; }

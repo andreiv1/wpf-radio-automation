@@ -11,9 +11,11 @@ namespace RA.DAL
     {
         Task AddClockToTemplate(ClockTemplateDTO clockTemplate);
         Task AddTemplate(TemplateDTO templateDto);
+        IEnumerable<ClockTemplateDTO> GetClocksForTemplate(int templateId);
+        Task<IEnumerable<ClockTemplateDTO>> GetClocksForTemplateAsync(int templateId);
         Task<TemplateDTO> GetTemplate(int templateId);
         Task<IEnumerable<TemplateDTO>> GetTemplatesAsync();
-        Task<IEnumerable<TemplateClockDTO>> GetTemplatesForClockWithId(int clockId);
+        Task<IEnumerable<TemplateClockDTO>> GetTemplatesForClockAsync(int clockId);
         Task UpdateClockInTemplate(ClockTemplateDTO clockTemplate);
         Task UpdateTemplate(TemplateDTO templateDto);
     }

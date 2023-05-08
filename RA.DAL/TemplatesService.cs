@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RA.Database;
+using RA.Database.Models;
 using RA.DTO;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace RA.DAL
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<TemplateClockDTO>> GetTemplatesForClockWithId(int clockId)
+        public async Task<IEnumerable<TemplateClockDTO>> GetTemplatesForClockAsync(int clockId)
         {
             using (var dbContext = dbContextFactory.CreateDbContext())
             {
@@ -39,6 +40,20 @@ namespace RA.DAL
 
         }
 
+        public async Task<IEnumerable<ClockTemplateDTO>> GetClocksForTemplateAsync(int templateId)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            return await dbContext.ClockTemplates
+                .Where(ct => ct.TemplateId == templateId)
+                .OrderBy(ct => ct.StartTime)
+                .Select(ct => ClockTemplateDTO.FromEntity(ct))
+                .ToListAsync();
+        }
+
+        public IEnumerable<ClockTemplateDTO> GetClocksForTemplate(int templateId)
+        {
+            return GetClocksForTemplateAsync(templateId).Result;
+        }
         public async Task AddTemplate(TemplateDTO templateDto)
         {
             using var dbContext = dbContextFactory.CreateDbContext();

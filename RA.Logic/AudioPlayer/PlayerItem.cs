@@ -12,37 +12,48 @@ namespace RA.Logic.AudioPlayer
 {
     public class PlayerItem : IPlayerItem, INotifyPropertyChanged
     {
-        private readonly PlaylistItemTrackDTO track;
+        //private readonly PlaylistItemTrackDTO track;
+
+        //public event PropertyChangedEventHandler? PropertyChanged;
+        //public string FilePath => track.FilePath;
+        //public TimeSpan Duration => TimeSpan.FromSeconds(track.Duration);
+
+        //private DateTime eta;
+        //public DateTime ETA { get => eta;
+        //    set
+        //    {
+        //        eta = value;
+        //        OnPropertyChanged(nameof(ETA));
+        //    }
+        //}
+
+        //public string? Artists => track.Artists;
+
+        //public string Title => track.Title;
+
+        //public PlayerItem()
+        //{
+
+        //}
+        //public PlayerItem(PlaylistItemDTO playlistItemDto)
+        //{
+        //    this.track = playlistItemDto.TrackDto;
+        //}
+
+        //protected virtual void OnPropertyChanged(string propertyName)
+        //{
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //}
+        public string FilePath => throw new NotImplementedException();
+
+        public TimeSpan Duration => throw new NotImplementedException();
+
+        public DateTime ETA { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public string? Artists => throw new NotImplementedException();
+
+        public string Title => throw new NotImplementedException();
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        public string FilePath => track.FilePath;
-        public TimeSpan Duration => TimeSpan.FromSeconds(track.Duration);
-
-        private DateTime eta;
-        public DateTime ETA { get => eta;
-            set
-            {
-                eta = value;
-                OnPropertyChanged(nameof(ETA));
-            }
-        }
-
-        public string? Artists => track.Artists;
-
-        public string Title => track.Title;
-
-        public PlayerItem()
-        {
-
-        }
-        public PlayerItem(PlaylistItemDTO playlistItemDto)
-        {
-            this.track = playlistItemDto.TrackDto;
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

@@ -27,14 +27,36 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
-            ISchedulesDefaultService defaultSchedulesService = new SchedulesDefaultService(dbFactory);
+            //ITemplatesService templatesService = new TemplatesService(dbFactory);
+            //IClocksService clocksService = new ClocksService(dbFactory);
 
-            var overview = defaultSchedulesService.GetDefaultSchedulesOverview(DateTime.Now.Date.AddDays(-10), DateTime.Now.AddDays(40));
+            //var clocksForTemplate = templatesService.GetClocksForTemplateAsync(1).Result;
 
-            foreach(var s in overview)
-            {
-                Console.WriteLine($"{s.Key.ToString("dd/MM/yyyy")} - {s.Value?.Schedule?.Name}");
-            }
+            //foreach(var clock in clocksForTemplate)
+            //{
+            //    TimeSpan clockSpan = new TimeSpan(clock.ClockSpan, 0, 0);
+            //    TimeSpan clockStart = clock.StartTime;
+            //    TimeSpan clockEnd = clockStart.Add(clockSpan);
+
+            //    Console.WriteLine($"ClockId={clock.ClockId},ClockStart={clockStart},ClockEnd={clockEnd}");
+            //    Console.WriteLine($"Generating playlist for {clock.ClockSpan} consecutive hours");
+
+            //    var clockItems = clocksService.GetClockItems(clock.ClockId);
+
+            //    Console.WriteLine($"Current clock has {clockItems.Count()} items");
+
+            //    int h = 0;
+            //    for (int i = 1; i <= clock.ClockSpan; i++)
+            //    {
+            //        Console.WriteLine($"Generating for hour {h++}");
+            //    }
+
+            //}
+
+
+            SchedulesService schedulesService = new SchedulesService(new SchedulesDefaultService(dbFactory), new SchedulesPlannedService());
+
+            var s = schedulesService.GetScheduleByDate(DateTime.Now.Date.AddDays(10));
         }
 
         static void InitDb()
