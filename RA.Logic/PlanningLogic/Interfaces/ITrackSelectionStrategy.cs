@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RA.Logic.PlanningLogic.Interfaces
+namespace RA.Logic.PlanningLogic
 {
     public interface ITrackSelectionStrategy
     {

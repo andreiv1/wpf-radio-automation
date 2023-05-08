@@ -2,6 +2,7 @@
 using RA.Database.Models;
 using RA.DTO;
 using RA.DTO.Abstract;
+using RA.Logic.PlanningLogic.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,6 +95,22 @@ namespace RA.Logic.PlanningLogic
         private void ProcessClockItem(ClockItemDTO clockItem, PlaylistDTO playlistDTO, ref DateTime estimatedPlaylistStart)
         {
             Console.WriteLine($"Id={clockItem.Id},CategoryId={clockItem.CategoryId}");
+
+            if (clockItem.TrackId.HasValue)
+            {
+                //TODO: Fixed track id
+
+            }
+
+            //TODO: Event 
+
+            if (clockItem.CategoryId.HasValue)
+            {
+                Console.WriteLine("Item has category - selection strategy");
+                ITrackSelectionStrategy selectionStrategy = new RandomTrackSelectionStrategy()
+            }
+
+            
         }
     }
 }

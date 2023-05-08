@@ -11,6 +11,6 @@ namespace RA.DTO
 {
     public class PlaylistItemTrackDTO : PlaylistItemBaseDTO
     {
-       
+       public int TrackId { get; set; }
     }
 }
