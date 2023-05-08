@@ -19,7 +19,7 @@ namespace RA.Logic.AudioPlayer.Interfaces
         event EventHandler PlaybackPaused;
         event EventHandler PlaybackItemChange;
 
-        public IPlayerItem NowPlaying { get; }
+        public IPlayerItem? NowPlaying { get; }
         public PlaybackMode Mode { get; set; }
         public void Play();
         public void Pause();

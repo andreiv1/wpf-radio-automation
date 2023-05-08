@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RA.Logic.PlanningLogic
+namespace RA.DAL
 {
-    public interface IPlaylistGenerator
+    public class SchedulesPlannedService : ISchedulesPlannedService
     {
     }
 }

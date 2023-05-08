@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class ScheduleDefaultDTO : ScheduleBaseDto
+    public class ScheduleDefaultDTO : ScheduleBaseDTO
     {
         public ICollection<ScheduleDefaultItemDTO>? Items { get; set; }
 

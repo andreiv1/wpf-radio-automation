@@ -25,7 +25,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         private readonly IDispatcherService dispatcherService;
         private readonly IWindowService windowService;
         private readonly IMessageBoxService messageBoxService;
-        private readonly IDefaultSchedulesService defaultSchedulesService;
+        private readonly ISchedulesDefaultService defaultSchedulesService;
         private readonly ITemplatesService templatesService;
 
         #region Properties
@@ -55,7 +55,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
 
         #region Constructor
         public PlannerDefaultScheduleViewModel(IDispatcherService dispatcherService, IWindowService windowService, IMessageBoxService messageBoxService,
-            IDefaultSchedulesService defaultSchedulesService, ITemplatesService templatesService)
+            ISchedulesDefaultService defaultSchedulesService, ITemplatesService templatesService)
         {
             this.dispatcherService = dispatcherService;
             this.windowService = windowService;

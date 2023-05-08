@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RA.DTO.Abstract
 {
-    public abstract class ScheduleBaseDto
+    public abstract class ScheduleBaseDTO
     {
         public int? Id { get; set; }
         public string? Name { get; set; }

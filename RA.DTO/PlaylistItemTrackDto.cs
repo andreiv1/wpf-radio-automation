@@ -1,5 +1,6 @@
 ﻿using RA.Database.Models;
 using RA.Database.Models.Enums;
+using RA.DTO.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,27 +9,8 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class PlaylistItemTrackDTO
+    public class PlaylistItemTrackDTO : PlaylistItemBaseDTO
     {
-        public int Id { get; set; }
-        public string Artists { get; set; }
-        public string Title { get; set; }
-        public string FilePath { get; set; }
-
-        public double Duration { get; set; }
-        public TrackType Type { get; set; }
-
-        public static PlaylistItemTrackDTO FromEntity(Track track)
-        {
-            return new PlaylistItemTrackDTO
-            {
-                Id = track.Id,
-                Artists = track.TrackArtists != null ? string.Join(" / ", track.TrackArtists.Select(ta => ta.Artist.Name)) : String.Empty,
-                Title = track.Title,
-                FilePath = track.FilePath,
-                Duration = track.Duration,
-                Type = track.Type,
-            };
-        }
+       
     }
 }

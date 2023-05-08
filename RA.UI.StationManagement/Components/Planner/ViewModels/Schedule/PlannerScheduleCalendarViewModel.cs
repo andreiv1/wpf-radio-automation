@@ -20,7 +20,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
     public partial class PlannerScheduleCalendarViewModel : ViewModelBase
     {
         private readonly IWindowService windowService;
-        private readonly IDefaultSchedulesService defaultScheduleService;
+        private readonly ISchedulesDefaultService defaultScheduleService;
 
         public ObservableCollection<ScheduleCalendarItem> CalendarItems { get; private set; } = new()
         {
@@ -35,7 +35,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         private bool isLoadingCalendar;
 
         public PlannerScheduleCalendarViewModel(IWindowService windowService, 
-            IDefaultSchedulesService defaultScheduleService)
+            ISchedulesDefaultService defaultScheduleService)
         {
             this.windowService = windowService;
             this.defaultScheduleService = defaultScheduleService;

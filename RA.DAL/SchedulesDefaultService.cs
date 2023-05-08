@@ -11,16 +11,17 @@ using System.Threading.Tasks;
 
 namespace RA.DAL
 {
-    public class DefaultSchedulesService : IDefaultSchedulesService
+    public class SchedulesDefaultService : ISchedulesDefaultService
     {
         private readonly IDbContextFactory<AppDbContext> dbContextFactory;
 
-        public DefaultSchedulesService(IDbContextFactory<AppDbContext> dbContextFactory)
+        public SchedulesDefaultService(IDbContextFactory<AppDbContext> dbContextFactory)
         {
             this.dbContextFactory = dbContextFactory;
         }
 
-        public async Task<IDictionary<DateTime, ScheduleDefaultItemDTO?>> GetDefaultSchedulesOverviewAsync(DateTime searchDateStart, DateTime searchDateEnd)
+        public async Task<IDictionary<DateTime, ScheduleDefaultItemDTO?>> GetDefaultSchedulesOverviewAsync(DateTime searchDateStart, 
+            DateTime searchDateEnd)
         {
             var dictionary = new Dictionary<DateTime, ScheduleDefaultItemDTO?>();
             using var dbContext = dbContextFactory.CreateDbContext();

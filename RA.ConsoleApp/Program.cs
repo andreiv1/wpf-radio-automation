@@ -27,7 +27,7 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
-            IDefaultSchedulesService defaultSchedulesService = new DefaultSchedulesService(dbFactory);
+            ISchedulesDefaultService defaultSchedulesService = new SchedulesDefaultService(dbFactory);
 
             var overview = defaultSchedulesService.GetDefaultSchedulesOverview(DateTime.Now.Date.AddDays(-10), DateTime.Now.AddDays(40));
 

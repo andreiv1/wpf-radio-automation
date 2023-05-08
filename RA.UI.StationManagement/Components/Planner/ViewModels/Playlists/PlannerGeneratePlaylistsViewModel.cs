@@ -20,7 +20,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
         public delegate void PlaylistGeneratedEventHandler();
 
         private readonly IDispatcherService dispatcherService;
-        private readonly IDefaultSchedulesService schedulesService;
+        private readonly ISchedulesDefaultService schedulesService;
 
         #region Properties
         public ObservableCollection<ScheduleOverviewModel> ScheduleOverview { get; set; } = new();
@@ -46,7 +46,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
         #region Constructor
 
         public PlannerGeneratePlaylistsViewModel(IWindowService windowService, IDispatcherService dispatcherService,
-            IDefaultSchedulesService schedulesService) : base(windowService)
+            ISchedulesDefaultService schedulesService) : base(windowService)
         {
             this.dispatcherService = dispatcherService;
             this.schedulesService = schedulesService;

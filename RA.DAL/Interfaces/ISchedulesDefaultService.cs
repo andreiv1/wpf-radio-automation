@@ -2,7 +2,7 @@
 
 namespace RA.DAL
 {
-    public interface IDefaultSchedulesService
+    public interface ISchedulesDefaultService
     {
         IDictionary<DateTime, ScheduleDefaultItemDTO?> GetDefaultSchedulesOverview(DateTime searchDateStart, DateTime searchDateEnd);
         Task<IDictionary<DateTime, ScheduleDefaultItemDTO?>> GetDefaultSchedulesOverviewAsync(DateTime searchDateStart, DateTime searchDateEnd);

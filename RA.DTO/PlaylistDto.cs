@@ -1,4 +1,5 @@
 ﻿using RA.Database.Models;
+using RA.DTO.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,28 @@ namespace RA.DTO
         public DateTime DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
 
+        public List<PlaylistItemBaseDTO>? Items { get; set; }
+
         public static PlaylistDTO FromEntity(Playlist entity)
         {
-            return new PlaylistDTO { Id = entity.Id, AirDate = entity.AirDate, DateAdded = entity.DateAdded, DateModified = entity.DateModified };
+            //TODO: get items
+            return new PlaylistDTO { 
+                Id = entity.Id, 
+                AirDate = entity.AirDate, 
+                DateAdded = entity.DateAdded, 
+                DateModified = entity.DateModified 
+            };
+        }
+
+        public static Playlist ToEntity(PlaylistDTO dto)
+        {
+            return new Playlist
+            {
+                Id = dto.Id,
+                AirDate = dto.AirDate,
+                DateAdded = dto.DateAdded,
+
+            };
         }
     }
 }

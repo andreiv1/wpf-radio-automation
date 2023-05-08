@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class SchedulePlannedDTO : ScheduleBaseDto
+    public class SchedulePlannedDTO : ScheduleBaseDTO
     {
         public SchedulePlannedType Type { get; set; }
         public SchedulePlannedFrequency? Frequency { get; set; }

@@ -7,13 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="PlanningLogic\PlaylistGenerator.cs" />
     <Compile Remove="TrackFileLogic\TrackFilesImporter.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="PlanningLogic\PlaylistGenerator.cs" />
+    <None Include="PlanningLogic\Old\PlaylistGenerator.cs" />
     <None Include="TrackFileLogic\Obsolet\TrackFilesImporter.cs" />
     <None Include="TrackFileLogic\Obsolet\TrackFilesProcessor.cs" />
   </ItemGroup>
@@ -28,6 +27,10 @@
     <ProjectReference Include="..\RA.DAL\RA.DAL.csproj" />
     <ProjectReference Include="..\RA.Database\RA.Database.csproj" />
     <ProjectReference Include="..\RA.Dto\RA.Dto.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="PlanningLogic\Exceptions\" />
   </ItemGroup>
 
 </Project>

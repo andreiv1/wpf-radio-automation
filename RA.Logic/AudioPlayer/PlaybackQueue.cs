@@ -13,13 +13,13 @@ namespace RA.Logic.AudioPlayer
         private readonly IAudioPlayer audioPlayer;
         private PlaybackMode mode = PlaybackMode.Manual;
 
-        public event EventHandler PlaybackStarted;
-        public event EventHandler PlaybackStopped;
-        public event EventHandler PlaybackPaused;
-        public event EventHandler PlaybackItemChange;
+        public event EventHandler? PlaybackStarted;
+        public event EventHandler? PlaybackStopped;
+        public event EventHandler? PlaybackPaused;
+        public event EventHandler? PlaybackItemChange;
 
         private IPlayerItem? nowPlaying = null;
-        public IPlayerItem NowPlaying => nowPlaying;
+        public IPlayerItem? NowPlaying => nowPlaying;
         public PlaybackQueue(IAudioPlayer audioPlayer)
         {
             list = new List<IPlayerItem>();
@@ -62,7 +62,7 @@ namespace RA.Logic.AudioPlayer
         }
 
         private bool isUpdatingETAs = false;
-        private System.Timers.Timer etaTimer;
+        private System.Timers.Timer? etaTimer = null;
 
         private void StartUpdateETAs()
         {
