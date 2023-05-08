@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RA.DTO
 {
-    public class TrackListDTO
+    public class TrackListingDTO
     {
         public int Id { get; set; }
 
@@ -22,9 +22,9 @@ namespace RA.DTO
         public DateTime? DateModified { get; set; }
         public DateTime? DateDeleted { get; set; }
 
-        public static TrackListDTO FromEntity(Track track)
+        public static TrackListingDTO FromEntity(Track track)
         {
-            return new TrackListDTO
+            return new TrackListingDTO
             {
                 Id = track.Id,
                 Artists = track.TrackArtists != null ? string.Join(" / ", track.TrackArtists.Select(ta => ta.Artist.Name)) : String.Empty,

@@ -28,18 +28,18 @@ namespace RA.DAL
             }
         }
 
-        public async Task<IEnumerable<TrackListDTO>> GetTrackListAsync(int skip, int take)
+        public async Task<IEnumerable<TrackListingDTO>> GetTrackListAsync(int skip, int take)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
                 return await dbContext.GetTracks()
                     .Skip(skip)
                     .Take(take)
-                    .Select(t => TrackListDTO.FromEntity(t))
+                    .Select(t => TrackListingDTO.FromEntity(t))
                     .ToListAsync();
             
         }
 
-        public IEnumerable<TrackListDTO> GetTrackList(int skip, int take)
+        public IEnumerable<TrackListingDTO> GetTrackList(int skip, int take)
         {
             return GetTrackListAsync(skip, take).Result;
         }
@@ -53,7 +53,7 @@ namespace RA.DAL
                 .FirstAsync();
         }
 
-        public async Task<IEnumerable<TrackListDTO>> GetTrackListByArtistAsync(int artistId, int skip, int take)
+        public async Task<IEnumerable<TrackListingDTO>> GetTrackListByArtistAsync(int artistId, int skip, int take)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             return await dbContext.GetTracks()
@@ -63,16 +63,16 @@ namespace RA.DAL
                     ArtistId = artistId,
                     TrackId = t.Id,
                 }))
-                .Select(t => TrackListDTO.FromEntity(t))
+                .Select(t => TrackListingDTO.FromEntity(t))
                 .ToListAsync();
         }
 
-        public IEnumerable<TrackListDTO> GetTrackListByArtist(int artistId, int skip, int take)
+        public IEnumerable<TrackListingDTO> GetTrackListByArtist(int artistId, int skip, int take)
         {
             return GetTrackListByArtistAsync(artistId, skip, take).Result;
         }
 
-        public async Task<IEnumerable<TrackListDTO>> GetTrackListByCategoryAsync(int categoryId, int skip, int take)
+        public async Task<IEnumerable<TrackListingDTO>> GetTrackListByCategoryAsync(int categoryId, int skip, int take)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             return await dbContext.GetTracks()
@@ -81,7 +81,7 @@ namespace RA.DAL
                     {
                         Id = categoryId,
                     }))
-                .Select(t => TrackListDTO.FromEntity(t))
+                .Select(t => TrackListingDTO.FromEntity(t))
                 .ToListAsync();
         }
 
@@ -104,7 +104,7 @@ namespace RA.DAL
         }
 
         private static readonly Random random = new Random();
-        public async Task<TrackListDTO> GetRandomTrack(int categoryId, List<int>? trackIdsToExclude = null)
+        public async Task<TrackListingDTO> GetRandomTrack(int categoryId, List<int>? trackIdsToExclude = null)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
 
@@ -127,7 +127,7 @@ namespace RA.DAL
             
             var track = query.Skip(random.Next(noOfTracks))
                 .Take(1)
-                .Select(t => TrackListDTO.FromEntity(t))
+                .Select(t => TrackListingDTO.FromEntity(t))
                 .First();
 
 

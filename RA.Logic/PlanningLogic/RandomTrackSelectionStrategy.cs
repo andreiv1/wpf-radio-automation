@@ -14,6 +14,7 @@ namespace RA.Logic.PlanningLogic
     {
         private readonly int categoryId;
 
+        //Generation works only with a fixed sep
         public RandomTrackSelectionStrategy(IPlaylistsService playlistsService, ITracksService tracksService, 
             int categoryId,
             int artistSeparation = 30, int trackSeparation = 60, int titleSeparation = 30) 

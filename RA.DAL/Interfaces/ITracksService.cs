@@ -9,14 +9,14 @@ namespace RA.DAL
 {
     public interface ITracksService
     {
-        IEnumerable<TrackListDTO> GetTrackList(int skip, int take);
-        Task<IEnumerable<TrackListDTO>> GetTrackListAsync(int skip, int take);
+        IEnumerable<TrackListingDTO> GetTrackList(int skip, int take);
+        Task<IEnumerable<TrackListingDTO>> GetTrackListAsync(int skip, int take);
         Task<int> GetTrackCountAsync();
         Task<TrackDTO> GetTrack(int id);
-        Task<IEnumerable<TrackListDTO>> GetTrackListByArtistAsync(int artistId, int skip, int take);
-        IEnumerable<TrackListDTO> GetTrackListByArtist(int artistId, int skip, int take);
-        Task<IEnumerable<TrackListDTO>> GetTrackListByCategoryAsync(int categoryId, int skip, int take);
+        Task<IEnumerable<TrackListingDTO>> GetTrackListByArtistAsync(int artistId, int skip, int take);
+        IEnumerable<TrackListingDTO> GetTrackListByArtist(int artistId, int skip, int take);
+        Task<IEnumerable<TrackListingDTO>> GetTrackListByCategoryAsync(int categoryId, int skip, int take);
         Task AddTracks(IEnumerable<TrackDTO> trackDTOs);
-        Task<TrackListDTO> GetRandomTrack(int categoryId, List<int>? trackIdsToExclude = null);
+        Task<TrackListingDTO> GetRandomTrack(int categoryId, List<int>? trackIdsToExclude = null);
     }
 }

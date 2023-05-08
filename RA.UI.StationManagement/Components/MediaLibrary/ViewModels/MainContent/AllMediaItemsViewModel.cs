@@ -22,7 +22,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         private readonly ITracksService tracksService;
 
         #region Properties
-        public ObservableCollection<TrackListDTO> Items { get; set; } = new();
+        public ObservableCollection<TrackListingDTO> Items { get; set; } = new();
 
         [ObservableProperty]
         private string searchQuery = "";
@@ -36,7 +36,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         private const int tracksPerPage = 100;
 
         [ObservableProperty]
-        private TrackListDTO? selectedTrack;
+        private TrackListingDTO? selectedTrack;
 
         #endregion
 

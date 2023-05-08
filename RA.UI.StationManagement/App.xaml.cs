@@ -45,6 +45,7 @@ using RA.UI.StationManagement.Dialogs.TemplateSelectDialog;
 using RA.Logic.TrackFileLogic;
 using RA.UI.StationManagement.Dialogs.ArtistSelectDialog;
 using RA.UI.StationManagement.Components.Planner.Views.Templates;
+using RA.Logic.PlanningLogic;
 
 namespace RA.UI.StationManagement
 {
@@ -97,11 +98,15 @@ namespace RA.UI.StationManagement
                     services.AddTransient<ITagsService, TagsService>();
                     services.AddTransient<ISchedulesDefaultService, SchedulesDefaultService>();
                     services.AddTransient<IArtistsService, ArtistsService>();
+                    services.AddTransient<ISchedulesService, SchedulesService>();
+                    services.AddTransient<ISchedulesPlannedService, SchedulesPlannedService>();
+                    services.AddTransient<IPlaylistsService, PlaylistsService>();
                     #endregion
 
                     #region Logic services
                     services.AddTransient<ITrackFilesImporter,TrackFileImporter>();
                     services.AddTransient<ITrackFilesProcessor, TrackFilesProcessor>();
+                    services.AddTransient<IPlaylistGenerator, PlaylistGenerator>();
                     #endregion
 
                     #region Register window factory

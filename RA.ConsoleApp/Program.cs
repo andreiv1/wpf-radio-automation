@@ -67,7 +67,7 @@ namespace RA.ConsoleApp
             var db = dbFactory.CreateDbContext();
             PlaylistGenerator playlistGenerator = new PlaylistGenerator(new PlaylistsService(dbFactory), new TracksService(dbFactory),
                 new ClocksService(dbFactory), new TemplatesService(dbFactory), new SchedulesService(new SchedulesDefaultService(dbFactory),null));
-            playlistGenerator.GeneratePlaylistForDate(DateTime.Now);
+            playlistGenerator.GeneratePlaylistForDate(DateTime.Now.AddDays(1));
         }
 
         static void InitDb()

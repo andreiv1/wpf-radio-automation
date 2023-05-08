@@ -21,24 +21,35 @@ namespace RA.DTO
         public static PlaylistDTO FromEntity(Playlist entity)
         {
             //TODO: get items
-            return new PlaylistDTO { 
+            var dto = new PlaylistDTO { 
                 Id = entity.Id, 
                 AirDate = entity.AirDate, 
                 DateAdded = entity.DateAdded, 
                 DateModified = entity.DateModified 
             };
+
+            return dto;
         }
 
         public static Playlist ToEntity(PlaylistDTO dto)
         {
             //TODO: add items
-            return new Playlist
+            var entity = new Playlist
             {
                 Id = dto.Id,
                 AirDate = dto.AirDate,
                 DateAdded = dto.DateAdded,
-
+                PlaylistItems = dto.Items.Select(x =>
+                {
+                    if (x.GetType() == typeof(PlaylistItemTrackDTO))
+                    {
+                        return PlaylistItemTrackDTO.ToEntity(x as PlaylistItemTrackDTO);
+                    }
+                    return null;
+                }).ToList()
             };
+
+            return entity;
         }
     }
 }
