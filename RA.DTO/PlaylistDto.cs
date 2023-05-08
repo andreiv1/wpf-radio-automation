@@ -31,6 +31,7 @@ namespace RA.DTO
 
         public static Playlist ToEntity(PlaylistDTO dto)
         {
+            //TODO: add items
             return new Playlist
             {
                 Id = dto.Id,
