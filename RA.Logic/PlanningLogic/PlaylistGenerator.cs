@@ -32,7 +32,7 @@ namespace RA.Logic.PlanningLogic
 
         public PlaylistDTO GeneratePlaylistForDate(DateTime date)
         {
-            var result = InitialisePlaylist(date);
+            PlaylistDTO playlist = InitialisePlaylist(date);
             DateTime estimatedPlaylistStart = new DateTime(date.Year, date.Month, date.Day);
             IScheduleDTO schedule = schedulesService.GetScheduleByDate(date);
             int scheduleTemplateId = schedule.Template?.Id ?? throw new Exception("Template must have an id");
@@ -41,7 +41,7 @@ namespace RA.Logic.PlanningLogic
             foreach(var clock in clocksForSchedule)
             {
 
-                ProcessClock(clock);
+                ProcessClock(clock, playlist, ref estimatedPlaylistStart);
                
             }
             return result;
@@ -61,7 +61,7 @@ namespace RA.Logic.PlanningLogic
         /// Handle processing a clock inside a template
         /// </summary>
         /// <param name="clock">The specific clock in the template</param>
-        private void ProcessClock(ClockTemplateDTO clock)
+        private void ProcessClock(ClockTemplateDTO clock, PlaylistDTO playlistDTO, ref DateTime estimatedPlaylistStart)
         {
             TimeSpan clockSpan = new TimeSpan(clock.ClockSpan, 0, 0);
             TimeSpan clockStart = clock.StartTime;
@@ -80,7 +80,7 @@ namespace RA.Logic.PlanningLogic
 
                 foreach (ClockItemDTO clockItem in clockItems)
                 {
-                    ProcessClockItem(clockItem);
+                    ProcessClockItem(clockItem, playlistDTO, ref estimatedPlaylistStart);
                 }
 
                 Console.WriteLine("=======================================");
@@ -91,7 +91,7 @@ namespace RA.Logic.PlanningLogic
         /// Handle processing a single item from a clock
         /// </summary>
         /// <param name="clockItem"></param>
-        private void ProcessClockItem(ClockItemDTO clockItem)
+        private void ProcessClockItem(ClockItemDTO clockItem, PlaylistDTO playlistDTO, ref DateTime estimatedPlaylistStart)
         {
             Console.WriteLine($"Id={clockItem.Id},CategoryId={clockItem.CategoryId}");
         }
