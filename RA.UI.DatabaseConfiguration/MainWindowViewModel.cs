@@ -33,20 +33,20 @@ namespace RA.UI.DatabaseConfiguration
             try
             {
                 databaseCredentials.DatabasePassword = NewPassword;
-                using (var db = new AppDbContext())
-                {
-                    connectedToDatabase = db.Database.CanConnect();
-                    if(connectedToDatabase)
-                    {
-                        MessageBox.Show("Connected succesfully to database!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    } else
-                    {
-                        MessageBox.Show("Connection failed! Please check your credentials and try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    databaseCredentials.SaveCredentials();
-                    InstallDatabaseCommand.NotifyCanExecuteChanged();
-                    UpgradeDatabaseCommand.NotifyCanExecuteChanged();
-                }
+                //using (var db = new AppDbContext())
+                //{
+                //    connectedToDatabase = db.Database.CanConnect();
+                //    if(connectedToDatabase)
+                //    {
+                //        MessageBox.Show("Connected succesfully to database!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                //    } else
+                //    {
+                //        MessageBox.Show("Connection failed! Please check your credentials and try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                //    }
+                //    databaseCredentials.SaveCredentials();
+                //    InstallDatabaseCommand.NotifyCanExecuteChanged();
+                //    UpgradeDatabaseCommand.NotifyCanExecuteChanged();
+                //}
             }
             catch(Exception e)
             {
@@ -57,20 +57,20 @@ namespace RA.UI.DatabaseConfiguration
         [RelayCommand(CanExecute = nameof(IsConnectedToDatabase))]
         private void InstallDatabase()
         {
-            using(var db = new AppDbContext())
-            {
-                db.Database.EnsureCreated();
-            }
+            //using(var db = new AppDbContext())
+            //{
+            //    db.Database.EnsureCreated();
+            //}
 
         }
 
         [RelayCommand(CanExecute = nameof(IsConnectedToDatabase))]
         private void UpgradeDatabase()
         {
-            using(var db = new AppDbContext())
-            {
-                db.Database.Migrate();
-            }
+            //using(var db = new AppDbContext())
+            //{
+            //    db.Database.Migrate();
+            //}
         }
 
         private bool IsConnectedToDatabase()

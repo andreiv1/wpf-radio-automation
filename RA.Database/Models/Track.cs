@@ -9,12 +9,10 @@ namespace RA.Database.Models
     public partial class Track : BaseModel
     {
         [Required]
-        //[Column(TypeName = "tinyint(1)")]
         [EnumDataType(typeof(TrackType))]
         public TrackType Type { get; set; }
 
         [Required]
-        //[Column(TypeName = "tinyint(1)")]
         [EnumDataType(typeof(TrackStatus))]
         public TrackStatus Status { get; set; }
 

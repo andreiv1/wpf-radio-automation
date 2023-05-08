@@ -27,14 +27,61 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
-            
+            IDefaultSchedulesService defaultSchedulesService = new DefaultSchedulesService(dbFactory);
+
+            var overview = defaultSchedulesService.GetDefaultSchedulesOverview(DateTime.Now.Date.AddDays(-10), DateTime.Now.AddDays(40));
+
+            foreach(var s in overview)
+            {
+                Console.WriteLine($"{s.Key.ToString("dd/MM/yyyy")} - {s.Value?.Schedule?.Name}");
+            }
+        }
+
+        static void InitDb()
+        {
+            var db = dbFactory.CreateDbContext();
+            db.Database.EnsureDeleted();
+            db.Database.Migrate();
+
+            db.Categories.Add(new Category()
+            {
+                Name = "Music"
+            });
+
+            db.Categories.Add(new Category()
+            {
+                Name = "Station IDs"
+            });
+
+            db.Categories.Add(new Category()
+            {
+                Name = "Commercials"
+            });
+
+            db.TagCategories.Add(new TagCategory()
+            {
+                Name = "Genre"
+            });
+
+            db.TagCategories.Add(new TagCategory()
+            {
+                Name = "Language"
+            });
+
+            db.TagCategories.Add(new TagCategory()
+            {
+                Name = "Mood"
+            });
+
+            db.SaveChanges();
         }
 
         static async void TestImport()
         {
             var db = dbFactory.CreateDbContext();
             IArtistsService artistsService = new ArtistsService(dbFactory);
-            ITrackFilesProcessor processor = new TrackFilesProcessor(artistsService);
+            ICategoriesService categoriesService = new CategoriesService(dbFactory);
+            ITrackFilesProcessor processor = new TrackFilesProcessor(artistsService, categoriesService);
             TrackMetadataReader.ImagePath = "C:\\Users\\Andrei\\Desktop\\images";
             var track = processor.ProcessSingleItem(
                 @"C:\Users\Andrei\Music\FakeRadio\Music\Current Hits\Miley Cyrus - River.mp3", true);
@@ -50,7 +97,8 @@ namespace RA.ConsoleApp
             var db = dbFactory.CreateDbContext();
             IArtistsService artistsService = new ArtistsService(dbFactory);
             ITracksService tracksService = new TracksService(dbFactory);
-            ITrackFilesProcessor processor = new TrackFilesProcessor(artistsService);
+            ICategoriesService categoriesService = new CategoriesService(dbFactory);
+            ITrackFilesProcessor processor = new TrackFilesProcessor(artistsService, categoriesService);
             TrackMetadataReader.ImagePath = "C:\\Users\\Andrei\\Desktop\\images";
             TrackFilesProcessorOptionsBuilder optionsBuilder = new TrackFilesProcessorOptionsBuilder(
                 @"C:\Users\Andrei\Music\FakeRadio\Music\Current Hits", 1);

@@ -41,8 +41,9 @@ namespace RA.DAL
             while (dateIndex <= searchDateEnd)
             {
                 DayOfWeek day = dateIndex.DayOfWeek;
-                var schedule = defaultSchedulesInRange.Where(schedule => (schedule.StartDate <= searchDateEnd) 
-                                                                            && (schedule.EndDate >= searchDateStart))
+                var schedule = defaultSchedulesInRange.Where(schedule => (schedule.StartDate <= searchDateEnd)
+                                                                        && (dateIndex <= schedule.EndDate) 
+                                                                        && dateIndex >= schedule.StartDate)
                                                                             .FirstOrDefault();
                 var scheduleItem = schedule?.Items?.Where(s => s.DayOfWeek == day).FirstOrDefault();
                 if(schedule == null || scheduleItem == null)

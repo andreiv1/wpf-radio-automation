@@ -11,11 +11,8 @@
         Title="Radio Automation - Database Setup Utility" Height="400" Width="600"
         MinWidth="600" MinHeight="400"
         ResizeBorderThickness="0"
-        CornerRadius="0">
-    <syncfusion:ChromelessWindow.DataContext>
-        <local:MainWindowViewModel/>
-    </syncfusion:ChromelessWindow.DataContext>
-    <syncfusion:TabControlExt Name="tabControlExt">
+        CornerRadius="0">s
+    <!--<syncfusion:TabControlExt Name="tabControlExt">
         <syncfusion:TabItemExt Header="Database Configuration">
             <StackPanel Orientation="Vertical">
                 <Grid Margin="15">
@@ -77,5 +74,5 @@
             </StackPanel>
 
         </syncfusion:TabItemExt>
-    </syncfusion:TabControlExt>
+    </syncfusion:TabControlExt>-->
 </syncfusion:ChromelessWindow>
