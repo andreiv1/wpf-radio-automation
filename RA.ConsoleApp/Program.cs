@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using RA.DAL;
 using RA.Database;
 using RA.Database.Models;
+using RA.Logic.PlanningLogic;
 using RA.Logic.TrackFileLogic;
 using RA.Logic.TrackFileLogic.Models;
 
@@ -54,9 +55,19 @@ namespace RA.ConsoleApp
             //}
 
 
-            SchedulesService schedulesService = new SchedulesService(new SchedulesDefaultService(dbFactory), new SchedulesPlannedService());
+            //SchedulesService schedulesService = new SchedulesService(new SchedulesDefaultService(dbFactory), new SchedulesPlannedService());
 
-            var s = schedulesService.GetScheduleByDate(DateTime.Now.Date.AddDays(10));
+            //var s = schedulesService.GetScheduleByDate(DateTime.Now.Date.AddDays(10));
+
+            TestPlaylistGen();
+        }
+
+        static void TestPlaylistGen()
+        {
+            var db = dbFactory.CreateDbContext();
+            PlaylistGenerator playlistGenerator = new PlaylistGenerator(new PlaylistsService(dbFactory),
+                new ClocksService(dbFactory), new TemplatesService(dbFactory), new SchedulesService(new SchedulesDefaultService(dbFactory),null));
+            playlistGenerator.GeneratePlaylistForDate(DateTime.Now);
         }
 
         static void InitDb()

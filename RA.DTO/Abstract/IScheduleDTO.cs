@@ -8,5 +8,6 @@ namespace RA.DTO.Abstract
 {
     public interface IScheduleDTO
     {
+        public TemplateDTO? Template { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace RA.DTO
     {
         public SchedulePlannedType Type { get; set; }
         public SchedulePlannedFrequency? Frequency { get; set; }
+        public TemplateDTO? Template { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public static SchedulePlannedDTO FromEntity(SchedulePlanned entity)
         {
