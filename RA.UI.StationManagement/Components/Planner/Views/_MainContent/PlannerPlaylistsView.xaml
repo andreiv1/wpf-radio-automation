@@ -152,7 +152,7 @@
                         <Grid Grid.Row="2">
                             <syncfusion:SfDataGrid 
                            Margin="0,3,0,0"
-                           ItemsSource="{Binding PlaylistByHours}"
+                           ItemsSource="{Binding PlaylistsByHour}"
                            SelectedItem="{Binding SelectedPlaylistByHour}"
                            SelectionUnit="Row"
                            NavigationMode="Row"
@@ -161,7 +161,8 @@
                            SortClickAction="DoubleClick">
 
                                 <syncfusion:SfDataGrid.Columns>
-                                    <syncfusion:GridTextColumn HeaderText="Hour" MappingName="Hour" Width="50"
+                                    <syncfusion:GridTextColumn HeaderText="Hour" MappingName="HourAsTimeSpan" Width="50"
+                                                               DisplayBinding="{Binding Path=HourAsTimeSpan, StringFormat=hh\\:mm}"
                                                                
                                                                />
                                     <syncfusion:GridTextColumn HeaderText="Length" MappingName="LengthAsTimeSpan"

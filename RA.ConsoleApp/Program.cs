@@ -69,7 +69,7 @@ namespace RA.ConsoleApp
             var db = dbFactory.CreateDbContext();
             IPlaylistsService plService = new PlaylistsService(dbFactory);
 
-            var pl = plService.GetPlaylistsByHour(DateTime.Now.Date);
+            var pl = plService.GetPlaylistsByHour(DateTime.Now.Date.AddDays(1));
             foreach(var itm in pl)
             {
                 Console.WriteLine($"[{itm.PlaylistId}]{itm.Hour} - {itm.Length}");
