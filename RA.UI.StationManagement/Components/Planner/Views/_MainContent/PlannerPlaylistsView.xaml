@@ -211,11 +211,11 @@
                 <syncfusion:SfDataGrid.Columns>
                     <syncfusion:GridTextColumn HeaderText="ETA" MappingName="ETA" DisplayBinding="{Binding Path=ETA, StringFormat={}{0:HH\\:mm\\:ss.fff}}"
                                                Width="75"/>
-                    <syncfusion:GridTextColumn HeaderText="Type" MappingName="Type" Width="100"
-                                               DisplayBinding="{Binding Path=Track.Type}"/>
-                    <syncfusion:GridTextColumn HeaderText="Item Details" MappingName="Title" Width="200"
-                                               DisplayBinding="{Binding Path=Track.Title}"/>
-                    <syncfusion:GridTextColumn HeaderText="Length" MappingName="Length"
+                    <!--<syncfusion:GridTextColumn HeaderText="Type" MappingName="Type" Width="100"
+                                               DisplayBinding="{Binding Path=Track.Type}"/>-->
+                    <syncfusion:GridTextColumn HeaderText="Item Details" MappingName="Title" ColumnSizer="Star"
+                                               DisplayBinding="{Binding Path=ItemDetails}"/>
+                    <syncfusion:GridTextColumn HeaderText="Length" MappingName="Length" Width="75"
                                                DisplayBinding="{Binding Path=Length, Converter={StaticResource DoubleToFormattedTimeSpanConverter}}" />
                 </syncfusion:SfDataGrid.Columns>
                 <syncfusion:SfDataGrid.ContextMenu>

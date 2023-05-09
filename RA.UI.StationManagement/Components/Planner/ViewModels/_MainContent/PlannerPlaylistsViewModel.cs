@@ -5,6 +5,7 @@ using RA.DTO;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.Planner.ViewModels._MainContent.Models;
+using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Models;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Playlists;
 using System;
 using System.Collections.Generic;
@@ -20,24 +21,39 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private readonly IWindowService windowService;
         private readonly IPlaylistsService playlistsService;
 
+        #region Properties
         public ObservableCollection<PlaylistListingDTO> PlaylistsToAir { get; set; } = new();
+
+        [ObservableProperty]
+        private PlaylistListingDTO? selectedPlaylistToAir;
 
         [ObservableProperty]
         private DateTime selectedDate = DateTime.Now.Date;
 
-        partial void OnSelectedDateChanged(DateTime value)
-        {
-            _ = LoadPlaylistsByHour(value);
-        }
-
         public ObservableCollection<PlaylistByHourModel> PlaylistsByHour { get; set; } = new();
 
+        public ObservableCollection<PlaylistItemModel> SelectedPlaylistItems { get; set; } = new();
+
+        #endregion
+
+        #region Constructor
         public PlannerPlaylistsViewModel(IWindowService windowService, IPlaylistsService playlistsService)
         {
             this.windowService = windowService;
             this.playlistsService = playlistsService;
             _ = LoadPlaylistsToAir();
             _ = LoadPlaylistsByHour(SelectedDate);
+        }
+        #endregion
+
+        partial void OnSelectedDateChanged(DateTime value)
+        {
+            _ = LoadPlaylistsByHour(value);
+        }
+
+        partial void OnSelectedPlaylistToAirChanged(PlaylistListingDTO? value)
+        {
+            _ = LoadSelectedPlaylistItems();
         }
 
         #region Data fetching
@@ -62,6 +78,27 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                 foreach (var item in data)
                 {
                     PlaylistsByHour.Add(item);
+                }
+            });
+        }
+
+        private async Task LoadSelectedPlaylistItems()
+        {
+            if (SelectedPlaylistToAir == null) return;
+            await Task.Run(() =>
+            {
+                SelectedPlaylistItems.Clear();
+                var data = playlistsService.GetPlaylistItems(SelectedPlaylistToAir.Id);
+                foreach (var item in data)
+                {
+                    if (item.GetType() == typeof(PlaylistItemTrackDTO))
+                    {
+                        var plTrackItem = item as PlaylistItemTrackDTO;
+                        if (plTrackItem != null)
+                        {
+                            SelectedPlaylistItems.Add(PlaylistItemModel.FromDTO(plTrackItem));
+                        }
+                    }
                 }
             });
         }
