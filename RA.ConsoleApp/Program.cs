@@ -59,9 +59,22 @@ namespace RA.ConsoleApp
 
             //var s = schedulesService.GetScheduleByDate(DateTime.Now.Date.AddDays(10));
 
-            TestPlaylistGen();
+            //TestPlaylistGen();
+            PlByHour();
         }
 
+
+        static void PlByHour()
+        {
+            var db = dbFactory.CreateDbContext();
+            IPlaylistsService plService = new PlaylistsService(dbFactory);
+
+            var pl = plService.GetPlaylistsByHour(DateTime.Now.Date);
+            foreach(var itm in pl)
+            {
+                Console.WriteLine($"[{itm.PlaylistId}]{itm.Hour} - {itm.Length}");
+            }
+        }
         static void TestPlaylistGen()
         {
             var db = dbFactory.CreateDbContext();
