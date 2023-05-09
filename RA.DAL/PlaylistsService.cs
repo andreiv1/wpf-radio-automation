@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RA.Database;
 using RA.DTO;
+using RA.DTO.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,5 +75,24 @@ namespace RA.DAL
             }
 
         }
+
+        public IEnumerable<PlaylistItemBaseDTO> GetPlaylistItems(int playlistId)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+
+            var items = dbContext.PlaylistItems
+                .Include(pi => pi.Track)
+                .ThenInclude(pi => pi.TrackArtists)
+                .ThenInclude(ta => ta.Artist)
+                .Where(pi => pi.PlaylistId == playlistId)
+                .Select(pi => PlaylistItemTrackDTO.FromEntity(pi));
+
+            foreach(var item in items)
+            {
+                yield return item;
+            }
+        }
+
+
     }
 }

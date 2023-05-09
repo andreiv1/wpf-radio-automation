@@ -37,6 +37,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             this.windowService = windowService;
             this.playlistsService = playlistsService;
             _ = LoadPlaylistsToAir();
+            _ = LoadPlaylistsByHour(SelectedDate);
         }
 
         #region Data fetching

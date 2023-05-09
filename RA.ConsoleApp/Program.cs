@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using RA.DAL;
 using RA.Database;
 using RA.Database.Models;
+using RA.DTO;
 using RA.Logic.PlanningLogic;
 using RA.Logic.TrackFileLogic;
 using RA.Logic.TrackFileLogic.Models;
@@ -60,10 +61,25 @@ namespace RA.ConsoleApp
             //var s = schedulesService.GetScheduleByDate(DateTime.Now.Date.AddDays(10));
 
             //TestPlaylistGen();
-            PlByHour();
+            //PlByHour();
+            PlItems(4);
         }
 
+        static void PlItems(int plId)
+        {
+            IPlaylistsService plService = new PlaylistsService(dbFactory);
 
+            var items = plService.GetPlaylistItems(plId);
+            foreach(var itm in items)
+            {
+                if(itm.GetType() == typeof(PlaylistItemTrackDTO))
+                {
+                    var plTrack = (PlaylistItemTrackDTO)itm;
+                    Console.WriteLine($"[{plTrack.ETA.ToString("HH:mm")}], *{plTrack.Track.Type}* {plTrack.Track.Artists} - {plTrack.Track.Title}, Length={plTrack.Length}, TrackId={plTrack.Track.Id}");
+                }
+               
+            }
+        }
         static void PlByHour()
         {
             var db = dbFactory.CreateDbContext();

@@ -10,11 +10,9 @@ namespace RA.DTO
     public class TrackListingDTO
     {
         public int Id { get; set; }
-
         public string? Artists { get; set; }
         public string? Title { get; set; }
         public string? Type { get; set; }
-
         public string? FilePath { get; set; }
         public double Duration { get; set; }
         public DateTime? ReleaseDate { get; set; }

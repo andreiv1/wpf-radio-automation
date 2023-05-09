@@ -39,7 +39,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
                 var topTime = new TimeSpan(newStartTime.Hour + 1, 0, 0);
                 newStartTime = newStartTime + topTime.Subtract(new TimeSpan(newStartTime.Hour, time.Minutes, 0));
             }
-            startTime = newStartTime;
+            StartTime = newStartTime;
         }
 
         [ObservableProperty]
@@ -62,7 +62,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
                 var topTime = new TimeSpan(newEndTime.Hour + 1, 0, 0);
                 newEndTime = newEndTime + topTime.Subtract(new TimeSpan(newEndTime.Hour, time.Minutes, 0));
             }
-            endTime = newEndTime;
+            EndTime = newEndTime;
         }
 
         [ObservableProperty]

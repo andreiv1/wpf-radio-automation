@@ -40,12 +40,12 @@ namespace RA.Logic.PlanningLogic
                 .Select(it => (PlaylistItemTrackDTO)it).ToList();
 
             List<int> recentlyPlayedTrackIds = lastTracks.Where(i => i.ETA > item.ETA.AddMinutes(-trackSeparation))
-                .Select(it => it.TrackId)
+                .Select(it => it.Track.Id)
                 .ToList();
 
             var track = tracksService.GetRandomTrack(categoryId, recentlyPlayedTrackIds).Result;
             Console.WriteLine($"[{item.ETA}] {track.Id} - {track.Artists} - {track.Title}");
-            item.TrackId = track.Id;
+
             item.Length = track.Duration;
 
             playlist?.Items?.Add(item);
