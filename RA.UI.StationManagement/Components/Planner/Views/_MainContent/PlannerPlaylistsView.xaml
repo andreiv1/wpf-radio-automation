@@ -205,7 +205,7 @@
                        ColumnSizer="Auto"
                        ItemsSource="{Binding SelectedPlaylistItems}"
                        SelectionUnit="Row" NavigationMode="Row"
-                       RowHeight="30"
+                       RowHeight="30" AllowSorting="False"
                        AllowResizingColumns="True"
                        AutoGenerateColumns="False">
                 <syncfusion:SfDataGrid.Columns>

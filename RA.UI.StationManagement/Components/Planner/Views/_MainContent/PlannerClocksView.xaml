@@ -157,9 +157,8 @@
                        ItemsSource="{Binding ClockItemsForSelectedClock}"
                        SelectedItem="{Binding SelectedClockItem}"
                        SelectedIndex="{Binding LastSelectedClockItemIndex}"
-                       SelectionUnit="Row"
-                       NavigationMode="Row"
-                       SelectionMode="Multiple"
+                       SelectionUnit="Row" NavigationMode="Row"
+                       SelectionMode="Multiple" AllowSorting="False"
                        AllowDraggingRows="True"
                        AllowDrop="True"
                        AutoGenerateColumns="False">
