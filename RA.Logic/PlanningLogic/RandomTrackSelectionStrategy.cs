@@ -47,7 +47,7 @@ namespace RA.Logic.PlanningLogic
             Console.WriteLine($"[{item.ETA}] {track.Id} - {track.Artists} - {track.Title}");
 
             item.Length = track.Duration;
-
+            item.Track = track;
             playlist?.Items?.Add(item);
             return item;
         }

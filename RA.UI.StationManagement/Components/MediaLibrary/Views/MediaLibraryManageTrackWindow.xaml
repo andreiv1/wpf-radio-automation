@@ -215,7 +215,8 @@
                                 <syncfusion:SfDatePicker Grid.Row="2" Grid.Column="1" 
                                      Height="24" Margin="5"
                                      VerticalAlignment="Center"
-                                     Value="{Binding Track.ReleaseDate}"/>
+                                     AllowNull="True" AllowInlineEditing="True"
+                                     Value="{Binding Track.ReleaseDate, Mode=TwoWay}"/>
 
                                 <!-- Album -->
                                 <Label Grid.Row="3" 

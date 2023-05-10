@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="PlanningLogic\Old\PlaylistGenerator.cs" />
     <None Include="TrackFileLogic\Obsolet\TrackFilesImporter.cs" />
     <None Include="TrackFileLogic\Obsolet\TrackFilesProcessor.cs" />
   </ItemGroup>
