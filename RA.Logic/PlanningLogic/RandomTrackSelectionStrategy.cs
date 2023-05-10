@@ -25,6 +25,7 @@ namespace RA.Logic.PlanningLogic
 
         public override PlaylistItemTrackDTO SelectTrack(PlaylistDTO playlist)
         {
+            if (playlist == null) throw new ArgumentNullException($"{nameof(playlist)} must be initialised.");
             var lastItem = playlist.Items?.LastOrDefault();
             PlaylistItemTrackDTO item = new();
             if (lastItem == null)
@@ -35,11 +36,11 @@ namespace RA.Logic.PlanningLogic
                 item.ETA = lastItem.ETA + TimeSpan.FromSeconds(lastItem.Length);
             }
 
-            var lastTracks = playlist!.Items!
+            var lastTracks = playlist.Items?
                 .Where(it => it.GetType() == typeof(PlaylistItemTrackDTO))
                 .Select(it => (PlaylistItemTrackDTO)it).ToList();
 
-            List<int> recentlyPlayedTrackIds = lastTracks.Where(i => i.ETA > item.ETA.AddMinutes(-trackSeparation))
+            List<int>? recentlyPlayedTrackIds = lastTracks?.Where(i => i.ETA > item.ETA.AddMinutes(-trackSeparation))
                 .Select(it => it.Track.Id)
                 .ToList();
 
