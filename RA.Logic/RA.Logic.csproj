@@ -32,4 +32,10 @@
     <Folder Include="PlanningLogic\Exceptions\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="WPFSoundVisualizationLib">
+      <HintPath>..\RA.UI.Playout\WPFSoundVisualizationLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

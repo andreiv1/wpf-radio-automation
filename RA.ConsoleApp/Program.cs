@@ -62,7 +62,14 @@ namespace RA.ConsoleApp
 
             //TestPlaylistGen();
             //PlByHour();
-            PlItems(4);
+            //PlItems(4);
+            IPlaylistsService plService = new PlaylistsService(dbFactory);
+
+            var query = plService.GetPlaylistItemsByDateTime(DateTime.Now,1);
+            foreach(var itm in query)
+            {
+                Console.WriteLine($"{itm.Id} - {itm.ETA}");
+            }
         }
 
         static void PlItems(int plId)

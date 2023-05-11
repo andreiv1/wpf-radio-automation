@@ -6,8 +6,9 @@
              xmlns:component="clr-namespace:RA.UI.Playout.Views.Components"         
              xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:svl="clr-namespace:WPFSoundVisualizationLib;assembly=WPFSoundVisualizationLib"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="800">
+             d:DesignHeight="200" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80"/>
@@ -15,8 +16,8 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         <!-- Current song album art-->
         <Image Grid.Column="0" 
@@ -84,7 +85,7 @@
         <!--<ProgressBar Grid.Row="1" Grid.ColumnSpan="3"
                                      uihelpers:ProgressBarSmoother.SmoothValue="{Binding ElapsedNow, FallbackValue=0, Converter={StaticResource TimeSpanToIntSecondsConverter}}"
                                      Maximum="{Binding DurationNow, FallbackValue=1, Converter={StaticResource TimeSpanToIntSecondsConverter}}"/>-->
-        <StackPanel Height="9" Grid.Row="1" Grid.ColumnSpan="3">
+        <!--<StackPanel Height="9" Grid.Row="1" Grid.ColumnSpan="3">
             <syncfusion:SfLinearProgressBar 
                     x:Name="DeterminateBar"
                     IsIndeterminate="False"
@@ -92,6 +93,11 @@
                     ProgressColor="#005fb8"
                     Progress="{Binding Path=ElapsedNow, FallbackValue=0, Converter={StaticResource TimeSpanToIntSecondsConverter}}"
                     Maximum="{Binding DurationNow, FallbackValue=1, Converter={StaticResource TimeSpanToIntSecondsConverter}}"/>
-        </StackPanel>
+        </StackPanel>-->
+        <StackPanel  Grid.Row="1" Grid.ColumnSpan="3" Height="100">
+        <svl:WaveformTimeline x:Name="waveformTimeline" Height="100"
+                                  BorderThickness="1"
+                                 />
+    </StackPanel>
     </Grid>
 </uicore:RAUserControl>

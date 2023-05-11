@@ -7,8 +7,10 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/RA.UI.Core;component/Resources/Icons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/RA.UI.Core;component/Converters/Converters.xaml" />
+                
+                <!--<ResourceDictionary Source="pack://application:,,,/RA.UI.Playout;component/Resources/SoundVisualizationTheme.xaml" />-->
 
-
+                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -3,12 +3,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MySqlConnector;
 using RA.Database;
+using RA.Logic.AudioPlayer;
+using RA.Logic.AudioPlayer.Interfaces;
 using RA.UI.Core.Factories;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.Themes;
 using RA.UI.Playout.ViewModels;
+using RA.UI.Playout.ViewModels.Components;
 using RA.UI.Playout.Views;
+using RA.UI.Playout.Views.Components;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -42,6 +46,9 @@ namespace RA.UI.Playout
                     services.AddSingleton<IMessageBoxService, MessageBoxService>();
                     services.AddSingleton<IDispatcherService, WpfDispatcherService>();
 
+                    services.AddSingleton<IAudioPlayer, AudioPlayer>();
+                    services.AddSingleton<IPlaybackQueue, PlaybackQueue>();
+
                     #region Register window factory
                     Dictionary<Type, Type> viewModelToSingletonWindowMap = new();
                     Dictionary<Type, Type> viewModelToTransientWindowMap = new();
@@ -57,6 +64,11 @@ namespace RA.UI.Playout
 
                     #region Singleton viewModel <=> View
                     viewModelToSingletonWindowMap.Add(typeof(MainViewModel), typeof(MainWindow));
+
+                    viewModelToSingletonWindowMap.Add(typeof(MediaItemsViewModel), typeof(MediaItemsView));
+                    viewModelToSingletonWindowMap.Add(typeof(NowPlayingViewModel), typeof(NowPlayingView));
+                    viewModelToSingletonWindowMap.Add(typeof(PlaylistViewModel), typeof(PlaylistView));
+  
                     //Register the viewmodel&view
                     foreach (KeyValuePair<Type, Type> vmAndView in viewModelToSingletonWindowMap)
                     {

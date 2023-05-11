@@ -61,7 +61,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         {
             await Task.Run(() =>
             {
-                foreach (var playlist in playlistsService.GetPlaylistsToAir())
+                foreach (var playlist in playlistsService.GetPlaylistsToAirAfterDate())
                 {
                     PlaylistsToAir.Add(playlist);
                 }

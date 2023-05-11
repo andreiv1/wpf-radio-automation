@@ -81,7 +81,7 @@ namespace RA.Logic.AudioPlayer
         {
             if (isUpdatingETAs)
             {
-                etaTimer.Stop();
+                etaTimer?.Stop();
                 etaTimer.Dispose();
                 isUpdatingETAs = false;
             }
@@ -198,7 +198,7 @@ namespace RA.Logic.AudioPlayer
             list.Insert(index, item);
             UpdateETAs(null);
         }
-        public IPlayerItem GetNextItem()
+        public IPlayerItem? GetNextItem()
         {
             return list.Count > 0 ? list.ElementAt(0) : null;
         }

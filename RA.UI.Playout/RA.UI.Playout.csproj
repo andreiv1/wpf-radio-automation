@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Remove="Resources\SoundVisualizationTheme.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
@@ -40,12 +44,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="WPFSoundVisualizationLib">
+      <HintPath>WPFSoundVisualizationLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Resources\playout_icon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\playout_icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\SoundVisualizationTheme.xaml" />
   </ItemGroup>
 
   <ItemGroup>

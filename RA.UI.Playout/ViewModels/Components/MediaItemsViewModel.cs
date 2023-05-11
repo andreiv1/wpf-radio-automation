@@ -9,5 +9,6 @@ namespace RA.UI.Playout.ViewModels.Components
 {
     public partial class MediaItemsViewModel : ViewModelBase
     {
+        public MainViewModel MainVm { get; set; }
     }
 }
