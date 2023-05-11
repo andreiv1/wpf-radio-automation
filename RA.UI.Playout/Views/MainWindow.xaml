@@ -26,9 +26,9 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0" Width="60" Margin="0,5,5,0" Orientation="Vertical">
-                    <syncfusion:ButtonAdv Label="Next" SizeMode="Large" Height="150" IconWidth="48" IconHeight="48"
+                    <syncfusion:ButtonAdv Label="Next" SizeMode="Large" Height="130" IconWidth="48" IconHeight="48"
                                           LargeIcon="{StaticResource EjectIcon}"/>
-                    <Button Content="Fade next" Margin="0,5,0,0" Height="24"/>
+                    <Button Content="Fade next" Margin="0,5,0,0" Height="40"/>
                 </StackPanel>
 
                 <!-- Column 1 : Current playing details -->

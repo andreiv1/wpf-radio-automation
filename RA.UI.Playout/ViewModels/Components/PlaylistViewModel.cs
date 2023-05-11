@@ -2,6 +2,7 @@
 using RA.DTO;
 using RA.Logic;
 using RA.Logic.AudioPlayer.Interfaces;
+using RA.UI.Core.Services;
 using RA.UI.Core.ViewModels;
 using RA.UI.Playout.ViewModels.Components.Models;
 using System;
@@ -15,6 +16,7 @@ namespace RA.UI.Playout.ViewModels.Components
 {
     public partial class PlaylistViewModel : ViewModelBase
     {
+        private readonly IDispatcherService dispatcherService;
         private readonly IPlaybackQueue playbackQueue;
         private readonly IPlaylistsService playlistsService;
         private IPlayerItem? playerItemNow;
@@ -23,29 +25,32 @@ namespace RA.UI.Playout.ViewModels.Components
         public ObservableCollection<IPlayerItem> PlayerItems { get; } = new();
 
         #region Constructor
-        public PlaylistViewModel(IPlaybackQueue playbackQueue, IPlaylistsService playlistsService)
+        public PlaylistViewModel(IDispatcherService dispatcherService, IPlaybackQueue playbackQueue, IPlaylistsService playlistsService)
         {
+            this.dispatcherService = dispatcherService;
             this.playbackQueue = playbackQueue;
             this.playlistsService = playlistsService;
 
-            LoadPlaylist(DateTime.Now,1);
+            _ = LoadPlaylist(DateTime.Now,1);
         }
 
         #endregion
 
         #region Data fetching
-        private void LoadPlaylist(DateTime date, int maxHours = 1)
+        private async Task LoadPlaylist(DateTime date, int maxHours = 1)
         {
-            var playlistItems = playlistsService.GetPlaylistItemsByDateTime(date, maxHours).ToList();
-            foreach (var item in playlistItems)
-            {
-                if (item?.GetType() == typeof(PlaylistItemTrackDTO))
+            await Task.Run(() => {
+                var playlistItems = playlistsService.GetPlaylistItemsByDateTime(date, maxHours);
+                foreach (var item in playlistItems)
                 {
-                    var trackDto = (PlaylistItemTrackDTO)item;
-                    PlaybackAddItem(new TrackPlayerItem(trackDto));
-                }
+                    if (item?.GetType() == typeof(PlaylistItemTrackDTO))
+                    {
+                        var trackDto = (PlaylistItemTrackDTO)item;
+                        PlaybackAddItem(new TrackPlayerItem(trackDto));
+                    }
 
-            }
+                }
+            });
         }
 
         #endregion
@@ -54,7 +59,8 @@ namespace RA.UI.Playout.ViewModels.Components
         public void PlaybackAddItem(IPlayerItem playerItem)
         {
             playbackQueue.AddItem(playerItem);
-            PlayerItems.Add(playerItem);
+            dispatcherService.InvokeOnUIThread(() => PlayerItems.Add(playerItem));
+
             if (MainVm is not null)
             {
                 playbackQueue.UpdateETAs(MainVm.NowPlayingVm?.RemainingNow ?? null);

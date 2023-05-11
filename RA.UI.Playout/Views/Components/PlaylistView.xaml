@@ -58,6 +58,8 @@
             </DataTemplate>
         </Grid.Resources>
         <ListBox ItemTemplate="{StaticResource PlaylistItemTemplate}"
-                 ItemsSource="{Binding PlayerItems}"/>
+                 ItemsSource="{Binding PlayerItems}"
+                 ScrollViewer.VerticalScrollBarVisibility="Visible"
+                 />
     </Grid>
 </uicore:RAUserControl>
