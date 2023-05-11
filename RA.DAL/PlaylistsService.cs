@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using RA.Database;
 using RA.DTO;
 using RA.DTO.Abstract;
@@ -31,12 +32,14 @@ namespace RA.DAL
             await dbContext.SaveChangesAsync();
         }
 
-        public IEnumerable<PlaylistListingDTO> GetPlaylistsToAir(DateTime? date = null)
+        public IEnumerable<PlaylistListingDTO> GetPlaylistsToAirAfterDate(DateTime? date = null)
         {
             if (date == null) date = DateTime.Now.Date;
             using var dbContext = dbContextFactory.CreateDbContext();
             var query = dbContext.Playlists.Where(p => p.AirDate >= date)
+                .OrderBy(p => p.AirDate)
                 .Select(p => PlaylistListingDTO.FromEntity(p));
+
 
             foreach (var item in query)
             {
@@ -80,17 +83,49 @@ namespace RA.DAL
         {
             using var dbContext = dbContextFactory.CreateDbContext();
 
-            var items = dbContext.PlaylistItems
+            var query = dbContext.PlaylistItems
                 .Include(pi => pi.Track)
                 .ThenInclude(pi => pi.TrackArtists)
                 .ThenInclude(ta => ta.Artist)
                 .Where(pi => pi.PlaylistId == playlistId)
                 .Select(pi => PlaylistItemTrackDTO.FromEntity(pi));
 
-            foreach(var item in items)
+            foreach(var item in query)
             {
                 yield return item;
             }
+        }
+
+        public IEnumerable<PlaylistItemBaseDTO> GetPlaylistItemsByDateTime(DateTime dateTimeStart, int maxHours = 1)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var activePlaylist = GetPlaylistsToAirAfterDate(dateTimeStart.Date).FirstOrDefault();
+            
+            if(activePlaylist != null)
+            {
+                dateTimeStart = new DateTime(dateTimeStart.Year, dateTimeStart.Month, dateTimeStart.Day, dateTimeStart.Hour,dateTimeStart.Minute,0);
+                DateTime dateTimeEnd = dateTimeStart.AddHours(maxHours);
+
+                var query = dbContext.PlaylistItems
+                     .Include(pi => pi.Track)
+                     .ThenInclude(pi => pi.TrackArtists)
+                     .ThenInclude(ta => ta.Artist)
+                     .Where(pi => pi.PlaylistId == activePlaylist.Id)
+                     .Where(pi => pi.ETA >= dateTimeStart)
+                     .Where(pi => pi.ETA <= dateTimeEnd)
+                     .Select(pi => PlaylistItemTrackDTO.FromEntity(pi));
+
+
+                foreach(var item in query)
+                {
+                    yield return item;
+                }
+            } else
+            {
+                yield return null;
+            }
+
+           
         }
 
 
