@@ -57,6 +57,7 @@
                 </Grid>
             </DataTemplate>
         </Grid.Resources>
-        <ListBox ItemTemplate="{StaticResource PlaylistItemTemplate}"/>
+        <ListBox ItemTemplate="{StaticResource PlaylistItemTemplate}"
+                 ItemsSource="{Binding PlayerItems}"/>
     </Grid>
 </uicore:RAUserControl>

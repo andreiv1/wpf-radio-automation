@@ -100,7 +100,7 @@ namespace RA.DAL
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             var activePlaylist = GetPlaylistsToAirAfterDate(dateTimeStart.Date).FirstOrDefault();
-            
+            var pl = GetPlaylistsToAirAfterDate(dateTimeStart).ToList();
             if(activePlaylist != null)
             {
                 dateTimeStart = new DateTime(dateTimeStart.Year, dateTimeStart.Month, dateTimeStart.Day, dateTimeStart.Hour,dateTimeStart.Minute,0);

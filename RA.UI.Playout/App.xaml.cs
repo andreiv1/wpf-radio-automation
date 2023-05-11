@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MySqlConnector;
+using RA.DAL;
 using RA.Database;
 using RA.Logic.AudioPlayer;
 using RA.Logic.AudioPlayer.Interfaces;
@@ -36,9 +37,9 @@ namespace RA.UI.Playout
                 {
                     services.AddDbContextFactory<AppDbContext>(options =>
                     {
-                        String connString = "server=192.168.200.113;Port=3306;database=rasoftware;user=root;password=andrewyw1412";
+                        String connString = "server=localhost;Port=3306;database=ratest;user=root;password=";
                         options.UseMySql(connString, ServerVersion.AutoDetect(connString))
-                            .EnableSensitiveDataLogging(false);
+                            .EnableSensitiveDataLogging(true);
                     });
 
                     services.AddSingleton<IWindowService, WindowService>();
@@ -46,9 +47,15 @@ namespace RA.UI.Playout
                     services.AddSingleton<IMessageBoxService, MessageBoxService>();
                     services.AddSingleton<IDispatcherService, WpfDispatcherService>();
 
+                    #region Logic services
                     services.AddSingleton<IAudioPlayer, AudioPlayer>();
                     services.AddSingleton<IPlaybackQueue, PlaybackQueue>();
+                    #endregion
 
+                    #region DAL services
+                    services.AddTransient<IPlaylistsService,PlaylistsService>();
+
+                    #endregion
                     #region Register window factory
                     Dictionary<Type, Type> viewModelToSingletonWindowMap = new();
                     Dictionary<Type, Type> viewModelToTransientWindowMap = new();

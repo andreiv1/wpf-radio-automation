@@ -101,8 +101,8 @@
                     <ColumnDefinition Width="120"/>
                 </Grid.ColumnDefinitions>
 
-                <component:PlaylistView Grid.Column="0" 
-                                        Background="Red"/>
+                <component:PlaylistView Grid.Column="0"
+                                        DataContext="{Binding PlaylistVm}"/>
             </Grid>
         </Grid>
     </Grid>

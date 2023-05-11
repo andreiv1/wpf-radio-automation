@@ -65,7 +65,7 @@ namespace RA.ConsoleApp
             //PlItems(4);
             IPlaylistsService plService = new PlaylistsService(dbFactory);
 
-            var query = plService.GetPlaylistItemsByDateTime(DateTime.Now,1);
+            var query = plService.GetPlaylistItemsByDateTime(DateTime.Now,1).ToList();
             foreach(var itm in query)
             {
                 Console.WriteLine($"{itm.Id} - {itm.ETA}");
