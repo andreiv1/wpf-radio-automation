@@ -99,6 +99,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
                     Model.Messages.Add("Started the process of importing...");
                 });
 
+                //TODO: put it in settings
                 TrackMetadataReader.ImagePath = @"C:\Users\Andrei\Desktop\images";
                 TrackFilesProcessorOptions options = new TrackFilesProcessorOptionsBuilder(Model.FolderPath, Model.SelectedCategory.Id)
                     .SetReadMetadata(Model.ReadItemsMetadata)

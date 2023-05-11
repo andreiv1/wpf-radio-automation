@@ -80,6 +80,9 @@
     
     <BitmapImage x:Key="InfoIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-info-48.png"/>
     <BitmapImage x:Key="CalendarPlusIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-calendar-plus-48.png"/>
+    
+    <BitmapImage x:Key="EjectIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-eject-48.png"/>
+    <BitmapImage x:Key="ReplayIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-replay-48.png"/>
 
 
 
