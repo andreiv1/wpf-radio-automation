@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS0169: The field 'PlaylistViewModel.playerItemNow' is never used
+dotnet_diagnostic.CS0169.severity = none

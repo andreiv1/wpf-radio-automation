@@ -9,7 +9,7 @@
     <Grid>
         <Grid.Resources>
             <DataTemplate x:Key="PlaylistItemTemplate">
-                <Grid Margin="10">
+                <Grid Margin="10" Height="40">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>

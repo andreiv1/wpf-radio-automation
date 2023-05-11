@@ -25,7 +25,9 @@ namespace RA.UI.Playout.ViewModels.Components
         public ObservableCollection<IPlayerItem> PlayerItems { get; } = new();
 
         #region Constructor
-        public PlaylistViewModel(IDispatcherService dispatcherService, IPlaybackQueue playbackQueue, IPlaylistsService playlistsService)
+        public PlaylistViewModel(IDispatcherService dispatcherService,
+                                 IPlaybackQueue playbackQueue,
+                                 IPlaylistsService playlistsService)
         {
             this.dispatcherService = dispatcherService;
             this.playbackQueue = playbackQueue;
