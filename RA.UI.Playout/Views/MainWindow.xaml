@@ -67,14 +67,14 @@
                         </syncfusion:ButtonAdv.Style>
                     </syncfusion:ButtonAdv>-->
 
-                    <syncfusion:ButtonAdv Grid.Column="1" SizeMode="Large" Label="Loop" Margin="0,0,5,0" Width="60" IsCheckable="True"
+                    <syncfusion:ButtonAdv Grid.Column="0" SizeMode="Large"  Margin="0,0,5,0" Width="60" IsCheckable="True"
                                           IsChecked="{Binding PlaylistVm.IsLooping}" IconWidth="32" IconHeight="60"
                                           LargeIcon="{StaticResource LoopIcon}" IconStretch="None"/>
 
-                    <syncfusion:ButtonAdv Grid.Column="2" SizeMode="Large" Label="Pause" Margin="0,0,5,0" Width="60" IsCheckable="True"
-                                            IconWidth="29" IconHeight="60"
+                    <syncfusion:ButtonAdv Grid.Column="1" SizeMode="Large" Margin="0,0,5,0" Width="60" IsCheckable="True"
+                                            IconWidth="40" IconHeight="60"
                                           LargeIcon="{StaticResource PauseIcon}"/>
-                    <syncfusion:ButtonAdv Grid.Column="3" SizeMode="Large" Label="Restart" Margin="0,0,5,0" Width="60" IsCheckable="True"
+                    <syncfusion:ButtonAdv Grid.Column="2" SizeMode="Large" Label="Restart" Margin="0,0,5,0" Width="60" IsCheckable="True"
                                             IconWidth="29" IconHeight="60"
                                           LargeIcon="{StaticResource ReplayIcon}"/>
                     
