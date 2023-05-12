@@ -48,12 +48,13 @@ namespace RA.UI.Playout
                     services.AddSingleton<IDispatcherService, WpfDispatcherService>();
 
                     #region Logic services
-                    services.AddSingleton<IAudioPlayer, AudioPlayer>();
+                    services.AddSingleton<IAudioPlayer, Player>();
                     services.AddSingleton<IPlaybackQueue, PlaybackQueue>();
                     #endregion
 
                     #region DAL services
                     services.AddTransient<IPlaylistsService,PlaylistsService>();
+                    services.AddTransient<ITracksService, TracksService>();
 
                     #endregion
                     #region Register window factory

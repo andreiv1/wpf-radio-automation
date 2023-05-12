@@ -24,8 +24,8 @@ namespace RA.UI.Playout.Views.Components
         public NowPlayingView()
         {
             InitializeComponent();
-            IWaveformPlayer waveformPlayer = (IWaveformPlayer)App.AppHost!.Services.GetRequiredService<IAudioPlayer>();
-            waveformTimeline.RegisterSoundPlayer(waveformPlayer);
+            //IWaveformPlayer waveformPlayer = (IWaveformPlayer)App.AppHost!.Services.GetRequiredService<IAudioPlayer>();
+            //waveformTimeline.RegisterSoundPlayer(waveformPlayer);
         }
     }
 }

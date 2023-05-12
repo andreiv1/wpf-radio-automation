@@ -1,4 +1,5 @@
-﻿using RA.DAL;
+﻿using CommunityToolkit.Mvvm.Input;
+using RA.DAL;
 using RA.DTO;
 using RA.Logic;
 using RA.Logic.AudioPlayer.Interfaces;
@@ -22,6 +23,8 @@ namespace RA.UI.Playout.ViewModels.Components
         private IPlayerItem? playerItemNow;
         public MainViewModel MainVm { get; set; }
 
+        
+
         public ObservableCollection<IPlayerItem> PlayerItems { get; } = new();
 
         #region Constructor
@@ -32,6 +35,8 @@ namespace RA.UI.Playout.ViewModels.Components
             this.dispatcherService = dispatcherService;
             this.playbackQueue = playbackQueue;
             this.playlistsService = playlistsService;
+
+            playbackQueue.PlaybackStarted += PlaybackQueue_PlaybackStarted;
 
             _ = LoadPlaylist(DateTime.Now,1);
         }
@@ -57,7 +62,7 @@ namespace RA.UI.Playout.ViewModels.Components
 
         #endregion
 
-        #region Playback queue logic
+        #region Playback Queue events & logic 
         public void PlaybackAddItem(IPlayerItem playerItem)
         {
             playbackQueue.AddItem(playerItem);
@@ -65,6 +70,7 @@ namespace RA.UI.Playout.ViewModels.Components
 
             if (MainVm is not null)
             {
+ 
                 playbackQueue.UpdateETAs(MainVm.NowPlayingVm?.RemainingNow ?? null);
             }
             else
@@ -72,6 +78,38 @@ namespace RA.UI.Playout.ViewModels.Components
                 playbackQueue.UpdateETAs(null);
             }
         }
+        private void PlaybackQueue_PlaybackStarted(object? sender, EventArgs e)
+        {
+            if (PlayerItems.ElementAt(0) is not null)
+            {
+                playerItemNow = PlayerItems.ElementAt(0);
+                PlayerItems.RemoveAt(0);
+
+                UpdateNowPlaying();
+            }
+        }
+        #endregion
+
+        private void UpdateNowPlaying()
+        {
+            if (playerItemNow is not null)
+            {
+                MainVm.NowPlayingVm.UpdateNowPlaying(playerItemNow.Artists ?? "", playerItemNow.Title, playerItemNow.Duration);
+            }
+        }
+
+        #region Commands
+        [RelayCommand]
+        private void PlayNext()
+        {
+            MainVm.NowPlayingVm.IsPaused = false;
+            MainVm.NowPlayingVm.IsItemLoaded = true;
+            playbackQueue.Play();
+            //CalculateRemaining();
+
+        }
+
         #endregion
     }
+
 }

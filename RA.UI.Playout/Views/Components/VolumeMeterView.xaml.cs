@@ -1,5 +1,4 @@
 ﻿using RA.UI.Core;
-using RA.UI.Playout.ViewModels.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,17 +16,14 @@ using System.Windows.Shapes;
 
 namespace RA.UI.Playout.Views.Components
 {
-    public partial class MediaItemsView : RAUserControl
+    /// <summary>
+    /// Interaction logic for VolumeMeterView.xaml
+    /// </summary>
+    public partial class VolumeMeterView : RAUserControl
     {
-        public MediaItemsView()
+        public VolumeMeterView()
         {
             InitializeComponent();
-        }
-
-        private void SfDataPager_OnDemandLoading(object sender, Syncfusion.UI.Xaml.Controls.DataPager.OnDemandLoadingEventArgs e)
-        {
-            var vm = DataContext as MediaItemsViewModel;
-            vm?.LoadTracks(e.StartIndex, e.PageSize);
         }
     }
 }
