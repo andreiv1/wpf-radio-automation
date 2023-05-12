@@ -87,7 +87,7 @@
         </Border>
 
         <!-- Main Content -->
-        <Grid Grid.Row="1" Margin="10">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" MinWidth="700"/>
                 <ColumnDefinition Width="auto"/>
@@ -95,15 +95,64 @@
             </Grid.ColumnDefinitions>
 
             <!-- Playlist -->
-            <Grid Grid.Column="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="120"/>
-                </Grid.ColumnDefinitions>
+            
+           
 
-                <component:PlaylistView Grid.Column="0"
-                                        DataContext="{Binding PlaylistVm}"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+                <component:PlaylistView DataContext="{Binding PlaylistVm}"/>
+                <StackPanel Orientation="Vertical" Grid.Row="1">
+                    <Label Content="Loaded playlist duration" Foreground="Gray" FontWeight="Demibold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="HH:MM:SS" Foreground="White" FontSize="13" Margin="0,-5,0,0"
+                           FontWeight="Bold" HorizontalAlignment="center"/>
+                </StackPanel>
             </Grid>
+
+
+            <Grid Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                   
+                </Grid.ColumnDefinitions>
+                <!-- Playlist operation buttons -->
+                <Grid Grid.Column="0" Width="80">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <syncfusion:ButtonAdv SizeMode="Large"
+                                      Label="Add"/>
+
+                    <syncfusion:ButtonAdv Grid.Row="1" Margin="0,4,0,0"
+                                      SizeMode="Large"
+                                      Label="Insert"/>
+                    <syncfusion:ButtonAdv Grid.Row="2" Margin="0,4,0,0"
+                                      SizeMode="Large"
+                                      Label="Replace"/>
+                    <syncfusion:ButtonAdv Grid.Row="3" Margin="0,4,0,0"
+                                      SizeMode="Large"
+                                      Label="Enter"/>
+                    <syncfusion:ButtonAdv Grid.Row="4" Margin="0,4,0,0"
+                                      SizeMode="Large"
+                                      Label="Delete"/>
+
+                    <Button Grid.Row="5" Margin="0,4,0,0"
+                                      Content="Clear"/>
+                </Grid>
+                <component:MediaItemsView Grid.Column="1"
+                                      DataContext="{Binding MediaItemsVm}"/>
+            </Grid>
+            <!-- Media items -->
+            
         </Grid>
     </Grid>
 </uicore:RAWindow>

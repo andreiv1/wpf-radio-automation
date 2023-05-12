@@ -57,9 +57,14 @@
                 </Grid>
             </DataTemplate>
         </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
         <ListBox ItemTemplate="{StaticResource PlaylistItemTemplate}"
                  ItemsSource="{Binding PlayerItems}"
                  ScrollViewer.VerticalScrollBarVisibility="Visible"
                  />
+        
     </Grid>
 </uicore:RAUserControl>

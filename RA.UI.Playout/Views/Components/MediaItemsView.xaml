@@ -4,9 +4,37 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <syncfusion:SfTextBoxExt Height="24" VerticalAlignment="Center"
+                                 Watermark="Search ..."/>
+
+        <syncfusion:SfDataGrid Grid.Row="1" ItemsSource="{Binding Items}" SelectionMode="Single"
+                               SelectedItem="{Binding SelectedTrack}" AutoGenerateColumns="False"
+                               AllowSorting="False" ColumnSizer="AutoLastColumnFill"
+                               >
+            <syncfusion:SfDataGrid.Columns>
+                <syncfusion:GridTextColumn HeaderText="Artists" HorizontalHeaderContentAlignment="Left"
+                                           MappingName="Artists" MinimumWidth="100" ColumnSizer="Star"/>
+                <syncfusion:GridTextColumn HeaderText="Title" HorizontalHeaderContentAlignment="Left"
+                                           MappingName="Title" MinimumWidth="150" ColumnSizer="Star"/>
+                <syncfusion:GridTextColumn HeaderText="Type" Width="60"
+                                           MappingName="Type"/>
+                <syncfusion:GridTextColumn HeaderText="Duration" Width="60"
+                                           MappingName="Duration"
+                                           DisplayBinding="{Binding Path=Duration, Converter={StaticResource DoubleToTimeSpanConverter}, StringFormat={}{0:hh\\:mm\\:ss}}"/>
+                <syncfusion:GridTextColumn HeaderText="Year" Width="50"
+                                           DisplayBinding="{Binding Path=ReleaseDate, StringFormat=yyyy}"/>
+            </syncfusion:SfDataGrid.Columns>
+
+        </syncfusion:SfDataGrid>
     </Grid>
 </uicore:RAUserControl>
