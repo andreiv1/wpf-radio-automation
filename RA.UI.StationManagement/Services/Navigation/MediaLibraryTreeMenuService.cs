@@ -228,6 +228,7 @@ namespace RA.UI.StationManagement.Services
                         Type = MenuItemType.Category,
                         NavigationCommand =  new CategoryNavigationCommand(navigationService, (int)category.Id),
                     };
+                    child.IconKey = child.HasChildNodes ? "FolderTreeIcon" : "MusicFolderIcon"; 
                     dispatcher.InvokeOnUIThread(() =>
                     {
                         menuItem.Children?.Add(child);

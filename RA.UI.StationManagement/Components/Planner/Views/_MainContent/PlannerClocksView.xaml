@@ -160,18 +160,18 @@
                        SelectionUnit="Row" NavigationMode="Row"
                        SelectionMode="Multiple" AllowSorting="False"
                        AllowDraggingRows="True"
-                       AllowDrop="True"
+                       AllowDrop="True" RowHeight="27"
                        AutoGenerateColumns="False">
                     <syncfusion:SfDataGrid.Columns>
                         <syncfusion:GridTextColumn HeaderText="Start Time"
                                    MappingName="StartTime"
                                    DisplayBinding="{Binding Path=StartTime, StringFormat=hh\\:mm\\:ss\\.fff}"
-                                   MinimumWidth="80"
+                                   MinimumWidth="75"
                                    TextAlignment="Center"
                                    />
                         <syncfusion:GridTextColumn HeaderText="Item Details"
                                    MappingName="ItemDetails"
-                                   MinimumWidth="250"
+                                   MinimumWidth="250" ColumnSizer="Star"
                                    TextAlignment="Left"/>
                         <syncfusion:GridTextColumn HeaderText="Duration"
                                    MappingName="Duration"

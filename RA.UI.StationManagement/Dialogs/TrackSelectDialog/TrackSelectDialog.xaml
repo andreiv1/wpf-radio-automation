@@ -82,7 +82,7 @@
         <!-- Tracks data grid (with pagination) -->
         <syncfusion:SfDataGrid Grid.Row="2" Grid.Column="1" Margin="5,0,0,0"
                        ColumnSizer="Auto"
-                       ItemsSource="{Binding Items}"
+                       ItemsSource="{Binding Tracks}"
                        SelectedItem="{Binding SelectedTrack}"
                        SelectionUnit="Row"
                        NavigationMode="Row"
@@ -116,7 +116,7 @@
         </syncfusion:SfDataGrid>
 
 
-        <syncfusion:SfBusyIndicator Grid.Row="1" Grid.Column="2"
+        <syncfusion:SfBusyIndicator Grid.Row="2" Grid.Column="1"
                         IsBusy="{Binding IsMainDataLoading}"
                         d:IsBusy="True"
                         VerticalAlignment="Center"

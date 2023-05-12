@@ -65,27 +65,41 @@
                                           LargeIcon="{StaticResource ReplayIcon}"/>
 
                     <Grid Grid.Column="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="140"/>
+                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <syncfusion:ButtonAdv SizeMode="Normal"
-                                              Label="AUTO PLAY"/>
-                        <syncfusion:ButtonAdv SizeMode="Normal" Grid.Row="1" Margin="0,5,0,0"
-                                              Label="MANUAL"/>
-
-                        
+                        <syncfusion:ButtonAdv SizeMode="Normal" Background="Red"
+                                              SmallIcon="{x:Null}"
+                                              Label="ON AIR" FontSize="24" FontWeight="Bold"/>
+                        <syncfusion:ButtonAdv Grid.Row="1" Margin="0,5,0,0"
+                                              SizeMode="Normal" Background="#01670b"
+                                              SmallIcon="{x:Null}"
+                                              Label="AUTO PLAY" FontSize="22" FontWeight="Bold"/>
                     </Grid>
-
                 </Grid>
                 
                 <!-- Column 3 : Volume Meeter -->
                 <!--<component:VolumeMeterView Grid.Column="3"/>-->
 
                 <!-- Column 4 : Time -->
-                
-                <component:CurrentTimeView Grid.Column="4"/>
+
+                <Grid Grid.Column="4" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <component:CurrentTimeView/>
+
+                    <StackPanel Orientation="Vertical" Grid.Row="1" Height="100">
+                        
+                    </StackPanel>          
+                </Grid>
 
             </Grid>
         </Border>
@@ -129,8 +143,11 @@
                            FontWeight="Bold" HorizontalAlignment="center"/>
                     </StackPanel>
                     <syncfusion:ButtonAdv Label="FORCE RELOAD" Grid.Column="2" Height="45" Margin="0,0,5,0"
+                                          SmallIcon="{x:Null}" FontWeight="Bold"
                                           VerticalAlignment="Center"/>
-                    <syncfusion:ButtonAdv Label="AUTO RELOAD" Grid.Column="3" Height="45" VerticalAlignment="Center"/>
+                    <syncfusion:ButtonAdv Label="AUTO RELOAD" Grid.Column="3" Height="45" 
+                                          SmallIcon="{x:Null}" FontWeight="BOld"
+                                          VerticalAlignment="Center"/>
                 </Grid>
             </Grid>
 
@@ -152,23 +169,23 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <syncfusion:ButtonAdv SizeMode="Large"
+                    <syncfusion:ButtonAdv SizeMode="Large" Background="#002404"
                                       Label="Add"/>
 
-                    <syncfusion:ButtonAdv Grid.Row="1" Margin="0,4,0,0"
-                                      SizeMode="Large"
+                    <syncfusion:ButtonAdv Grid.Row="1" Margin="0,4,0,0" Background="#04960d"
+                                      SizeMode="Large" LargeIcon="{StaticResource InsertIcon}" IconHeight="40" IconWidth="60"
                                       Label="Insert"/>
-                    <syncfusion:ButtonAdv Grid.Row="2" Margin="0,4,0,0"
-                                      SizeMode="Large"
+                    <syncfusion:ButtonAdv Grid.Row="2" Margin="0,4,0,0" Background="#002404"
+                                      SizeMode="Large" LargeIcon="{StaticResource ReplaceIcon}" IconHeight="40" IconWidth="60"
                                       Label="Replace"/>
-                    <syncfusion:ButtonAdv Grid.Row="3" Margin="0,4,0,0"
+                    <syncfusion:ButtonAdv Grid.Row="3" Margin="0,4,0,0" Background="#545454"
                                       SizeMode="Large"
                                       Label="Enter"/>
-                    <syncfusion:ButtonAdv Grid.Row="4" Margin="0,4,0,0"
+                    <syncfusion:ButtonAdv Grid.Row="4" Margin="0,4,0,0" Background="#600505"
                                       SizeMode="Large"
                                       Label="Delete"/>
 
-                    <Button Grid.Row="5" Margin="0,4,0,0"
+                    <Button Grid.Row="5" Margin="0,4,0,0" Background="#600505"
                                       Content="Clear"/>
                 </Grid>
                 <component:MediaItemsView Grid.Column="1"

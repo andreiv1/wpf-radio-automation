@@ -8,16 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Icons\FeatherIcons-MinusCircle.svg" />
-    <None Remove="Resources\Icons\FeatherIcons-PlusCircle.svg" />
     <None Remove="Resources\Icons\FontAwesome-PlusSquareSolid.png" />
-    <None Remove="Resources\Icons\ForkAwesome-ArrowCircleOutlineDown.svg" />
-    <None Remove="Resources\Icons\ForkAwesome-ArrowCircleOutlineUp.svg" />
-    <None Remove="Resources\Icons\ForkAwesome-Clipboard.svg" />
-    <None Remove="Resources\Icons\ForkAwesome-Clone.svg" />
-    <None Remove="Resources\Icons\ForkAwesome-Refresh.svg" />
-    <None Remove="Resources\Icons\ForkAwesome-Search.svg" />
-    <None Remove="Resources\Icons\ForkAwesome-TrashOutline.svg" />
     <None Remove="Resources\Icons\icons8-add-folder-48.png" />
     <None Remove="Resources\Icons\icons8-add-list-48.png" />
     <None Remove="Resources\Icons\icons8-audio-add-file-48.png" />
@@ -35,6 +26,7 @@
     <None Remove="Resources\Icons\icons8-done-48.png" />
     <None Remove="Resources\Icons\icons8-double-down-48.png" />
     <None Remove="Resources\Icons\icons8-double-up-48.png" />
+    <None Remove="Resources\Icons\icons8-downward-arrow-96.png" />
     <None Remove="Resources\Icons\icons8-edit-48.png" />
     <None Remove="Resources\Icons\icons8-edit-file-48.png" />
     <None Remove="Resources\Icons\icons8-eject-48.png" />
@@ -42,6 +34,7 @@
     <None Remove="Resources\Icons\icons8-folder-tree-48.png" />
     <None Remove="Resources\Icons\icons8-forward-48.png" />
     <None Remove="Resources\Icons\icons8-info-48.png" />
+    <None Remove="Resources\Icons\icons8-insert-96.png" />
     <None Remove="Resources\Icons\icons8-music-band-48.png" />
     <None Remove="Resources\Icons\icons8-music-folder-48.png" />
     <None Remove="Resources\Icons\icons8-musical-notes-48.png" />
@@ -67,12 +60,6 @@
     <None Remove="Resources\Icons\icons8-timetable-48.png" />
     <None Remove="Resources\Icons\icons8-voice-recorder-48.png" />
     <None Remove="Resources\Icons\icons8-week-view-48.png" />
-    <None Remove="Resources\Icons\Material-FolderMoveOutline.svg" />
-    <None Remove="Resources\Icons\Material-FolderMusicOutline.svg" />
-    <None Remove="Resources\Icons\Material-FolderRemoveOutline.svg" />
-    <None Remove="Resources\Icons\PicolIcons-Category.svg" />
-    <None Remove="Resources\Icons\Unicons-ClockThree.svg" />
-    <None Remove="Resources\Icons\Unicons-Edit.svg" />
     <None Remove="Resources\Images\splash_blue_antena.png" />
     <None Remove="Resources\Images\splash_dark_antena.png" />
     <None Remove="Resources\Images\splash_dark_library.png" />
@@ -95,33 +82,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Icons\FeatherIcons-MinusCircle.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Icons\FeatherIcons-PlusCircle.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Icons\ForkAwesome-ArrowCircleOutlineDown.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Icons\ForkAwesome-ArrowCircleOutlineUp.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Icons\ForkAwesome-Clipboard.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Icons\ForkAwesome-Clone.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Icons\ForkAwesome-Refresh.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Icons\ForkAwesome-Search.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Icons\ForkAwesome-TrashOutline.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Resources\Icons\icons8-add-folder-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -173,6 +133,9 @@
     <Resource Include="Resources\Icons\icons8-double-up-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Icons\icons8-downward-arrow-96.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Icons\icons8-edit-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -193,6 +156,9 @@
     </Resource>
     <Resource Include="Resources\Icons\icons8-info-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\icons8-insert-96.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\icons8-music-band-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -268,24 +234,6 @@
     </Resource>
     <Resource Include="Resources\Icons\icons8-week-view-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Icons\Material-FolderMoveOutline.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Icons\Material-FolderMusicOutline.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Icons\Material-FolderRemoveOutline.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Icons\PicolIcons-Category.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Icons\Unicons-ClockThree.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Icons\Unicons-Edit.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Images\splash_blue_antena.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

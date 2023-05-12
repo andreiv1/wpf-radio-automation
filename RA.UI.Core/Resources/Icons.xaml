@@ -2,23 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
                     xmlns:system="clr-namespace:System;assembly=System.Runtime">
 
-    <system:Uri x:Key="CategoryIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/PicolIcons-Category.svg</system:Uri>
-    <system:Uri x:Key="ClockIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/Unicons-ClockThree.svg</system:Uri>
-    <system:Uri x:Key="RefreshIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/ForkAwesome-Refresh.svg</system:Uri>
-    <system:Uri x:Key="EditItemIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/Unicons-Edit.svg</system:Uri>
-    <system:Uri x:Key="CopyItemsIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/ForkAwesome-Clone.svg</system:Uri>
-    <system:Uri x:Key="PasteItemsIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/ForkAwesome-Clipboard.svg</system:Uri>
-    <system:Uri x:Key="DeleteItemsIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/ForkAwesome-TrashOutline.svg</system:Uri>
-    <system:Uri x:Key="AudioFileIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/ForkAwesome-FileAudioOutline.svg</system:Uri>
-    <system:Uri x:Key="FolderMoveIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/Material-FolderMoveOutline.svg</system:Uri>
-    <system:Uri x:Key="FolderMusicIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/Material-FolderMusicOutline.svg</system:Uri>
-    <system:Uri x:Key="FolderRemoveIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/Material-FolderRemoveOutline.svg</system:Uri>
-    <system:Uri x:Key="SearchIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/ForkAwesome-Search.svg</system:Uri>
-    <system:Uri x:Key="ArrowCircleOutlineUpIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/ForkAwesome-ArrowCircleOutlineDown.svg</system:Uri>
-    <system:Uri x:Key="ArrowCircleOutlineDownIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/ForkAwesome-ArrowCircleOutlineUp.svg</system:Uri>
-    <system:Uri x:Key="PlusCircleIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/FeatherIcons-PlusCircle.svg</system:Uri>
-    <system:Uri x:Key="MinusCircleIconUri">pack://application:,,,/RA.UI.Core;component/Resources/Icons/FeatherIcons-MinusCircle.svg</system:Uri>
-
     <BitmapImage x:Key="PlusIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-plus-48.png" />
     <BitmapImage x:Key="EditFileIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-edit-file-48.png" />
     <BitmapImage x:Key="FilterIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-conversion-48.png" />
@@ -83,6 +66,9 @@
     
     <BitmapImage x:Key="EjectIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-eject-48.png"/>
     <BitmapImage x:Key="ReplayIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-replay-48.png"/>
+    
+    <BitmapImage x:Key="InsertIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-insert-96.png"/>
+    <BitmapImage x:Key="ReplaceIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-downward-arrow-96.png"/>
 
 
 

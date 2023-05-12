@@ -107,6 +107,9 @@ namespace RA.UI.StationManagement.Dialogs.CategorySelectDialog
                         IconKey = "FolderTreeIcon",
                         CategoryId = category.Id.Value,
                     };
+
+                    child.IconKey = child.HasChild ? "FolderTreeIcon" : "MusicFolderIcon";
+
                     dispatcher.InvokeOnUIThread(() =>
                     {
                         CategoryItems.Add(child);

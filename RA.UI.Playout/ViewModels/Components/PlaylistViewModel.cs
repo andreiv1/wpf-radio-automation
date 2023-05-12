@@ -105,10 +105,36 @@ namespace RA.UI.Playout.ViewModels.Components
             MainVm.NowPlayingVm.IsPaused = false;
             MainVm.NowPlayingVm.IsItemLoaded = true;
             playbackQueue.Play();
-            //CalculateRemaining();
+            CalculateRemaining();
 
         }
 
+        private System.Timers.Timer timer;
+        private void CalculateRemaining()
+        {
+            if (timer != null)
+            {
+                timer.Stop();
+                timer.Dispose();
+            }
+
+            timer = new System.Timers.Timer(1000);
+            timer.Elapsed += Timer_Elapsed;
+            timer.AutoReset = true;
+            timer.Start();
+        }
+
+        private void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (playbackQueue.NowPlaying != playerItemNow)
+            {
+                timer.Stop();
+                timer.Dispose();
+                return;
+            }
+            MainVm.NowPlayingVm.ElapsedNow += TimeSpan.FromSeconds(1);
+            MainVm.NowPlayingVm.RemainingNow = MainVm.NowPlayingVm.DurationNow - MainVm.NowPlayingVm.ElapsedNow;
+        }
         #endregion
     }
 
