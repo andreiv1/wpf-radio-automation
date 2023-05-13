@@ -14,14 +14,14 @@ namespace RA.UI.Core
         {
             if(value is not null)
             {
-                return ((TimeSpan)value).TotalSeconds;
+                return (int)((TimeSpan)value).TotalSeconds;
             }
             return 0;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }

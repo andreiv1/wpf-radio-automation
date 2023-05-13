@@ -69,6 +69,9 @@
     
     <BitmapImage x:Key="InsertIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-insert-96.png"/>
     <BitmapImage x:Key="ReplaceIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-downward-arrow-96.png"/>
+    
+    <BitmapImage x:Key="PlusSquareIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-plus-square-96.png"/>
+    <BitmapImage x:Key="RemoveTrashIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-remove-96.png"/>
 
 
 
