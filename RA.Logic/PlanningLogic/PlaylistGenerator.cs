@@ -19,10 +19,11 @@ namespace RA.Logic.PlanningLogic
         private readonly ITemplatesService templatesService;
         private readonly ISchedulesService schedulesService;
 
-        public PlaylistGenerator(IPlaylistsService playlistsService, ITracksService tracksService,
-            IClocksService clocksService,
-            ITemplatesService templatesService,
-            ISchedulesService schedulesService)
+        public PlaylistGenerator(IPlaylistsService playlistsService,
+                                 ITracksService tracksService,
+                                 IClocksService clocksService,
+                                 ITemplatesService templatesService,
+                                 ISchedulesService schedulesService)
         {
             this.playlistsService = playlistsService;
             this.tracksService = tracksService;
