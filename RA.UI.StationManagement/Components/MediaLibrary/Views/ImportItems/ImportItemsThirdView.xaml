@@ -1,0 +1,155 @@
+﻿<uicore:RAUserControl x:Class="RA.UI.StationManagement.Components.MediaLibrary.Views.ImportItems.ImportItemsThirdView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+                      xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+                      xmlns:converters="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+                      xmlns:localvm="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems"
+                      mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=localvm:ImportItemsThirdViewModel}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:BooleanToCollapsedVisibilityConverter x:Key="BooleanToCollapsedVisibilityConverter"/>
+    </UserControl.Resources>
+    <GroupBox>
+        <GroupBox.Header>
+            <TextBlock Text="Preview and modify items before effective import"
+                           FontSize="25" FontWeight="DemiBold"/>
+        </GroupBox.Header>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+
+            <!-- Preview to import items -->
+            <syncfusion:SfDataGrid x:Name="importItemsGrid" Grid.Row="0" 
+                                   AutoGenerateColumns="False" AllowSorting="False" AllowResizingColumns="True"
+                                   ColumnSizer="AutoWithLastColumnFill"
+                                   SelectionUnit="Row" NavigationMode="Row"
+                                   ItemsSource="{Binding Model.ProcessingTracks}"
+                                   SelectedItem="{Binding Model.SelectedProcessingTrack}"
+                                   RowHeight="26">
+                <syncfusion:SfDataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Exclude from import" Command="{Binding ExcludeSelectedFromImportCommand}">
+                            <MenuItem.Icon>
+                                <Image Source="{StaticResource RemoveIcon}" Width="16" Height="16"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </syncfusion:SfDataGrid.ContextMenu>
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTemplateColumn HeaderText="Status" MinimumWidth="50" MaximumWidth="50"
+                                                   MappingName="Status" Width="50">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Width="16" Height="16">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="{StaticResource OkIcon}"/>
+                                            <!-- Default icon -->
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Status}" Value="WARNING">
+                                                    <Setter Property="Source" Value="{StaticResource WarningIcon}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="FAILED">
+                                                    <Setter Property="Source" Value="{StaticResource FailedIcon}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTextColumn HeaderText="Artists" Width="220"  ColumnSizer="Star"
+                                               MappingName="Artists"/>
+                    <syncfusion:GridTextColumn HeaderText="Title" Width="150" ColumnSizer="Star"
+                                               MappingName="TrackDto.Title"/>
+                    <syncfusion:GridTextColumn HeaderText="Category" Width="120"
+                                               MappingName="Categories"/>
+                    <syncfusion:GridTextColumn HeaderText="File Path"  ColumnSizer="Star"
+                                               MappingName="OriginalPath"/>
+
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="GroupBox">
+                        <Setter Property="Margin" Value="5,0,0,0"/>
+                        <Setter Property="Height" Value="130"/>
+                    </Style>
+                </Grid.Resources>
+                <GroupBox Grid.Column="0" Header="Summary" FontWeight="DemiBold"
+                      Width="170">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="7*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="Label">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Label Grid.Row="0" Grid.Column="0"
+                    Content="Total Items"/>
+
+                        <TextBlock Grid.Row="0" Grid.Column="1" 
+                           Text="{Binding Model.TotalItems,FallbackValue=0}"/>
+
+                        <Label Grid.Row="1" Grid.Column="0"
+                    Content="Valid Items"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" 
+                           Text="{Binding Model.ValidItems,FallbackValue=0}"/>
+
+                        <Label
+                    Grid.Row="2" Grid.Column="0"
+                    Content="Invalid Items"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" 
+                           Text="{Binding Model.InvalidItems,FallbackValue=0}"/>
+                        <Label
+                    Grid.Row="3" Grid.Column="0"
+                    Content="Warnings"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" 
+                           Text="{Binding Model.WarningItems,FallbackValue=0}"/>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Grid.Column="1" Header="Messages" Width="auto">
+                    <ListView ItemsSource="{Binding Model.Messages}" Margin="5">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </GroupBox>
+            </Grid>
+            <ProgressBar Grid.Row="2" x:Name="progressBar"
+                Margin="5" Width="auto"
+                Height="8"
+                Minimum="0" 
+                Maximum="{Binding Model.TotalItems, FallbackValue=0.1}" 
+                Value="{Binding Model.ProcessedItems}"
+                Loaded="ProgressBar_Loaded"/>
+        </Grid>
+    </GroupBox>
+</uicore:RAUserControl>
