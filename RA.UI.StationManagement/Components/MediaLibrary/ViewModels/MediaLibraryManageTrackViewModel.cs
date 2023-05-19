@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
+using RA.Database.Models.Enums;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
@@ -58,9 +59,16 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         {
             var track = await Task.Run(() => tracksService.GetTrack(trackId));
             Track = TrackModel.FromDto(track);
+            
             if (!string.IsNullOrEmpty(Track.ImageName))
+            {
+                //TODO
                 FullImagePath = $"C:\\Users\\Andrei\\Desktop\\images\\{Track.ImageName}";
-            else FullImagePath = "pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png";
+            }
+            else
+            {
+                FullImagePath = "pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png";
+            }
         }
 
         #region Commands

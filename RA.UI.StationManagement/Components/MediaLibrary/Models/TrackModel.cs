@@ -71,6 +71,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
                 return "";
             }
         }
+        public static List<string> TrackTypes => Enum.GetNames(typeof(TrackType)).ToList();
+        public static List<string> TrackStatuses => Enum.GetNames(typeof(TrackStatus)).ToList();
         public static TrackModel FromDto(TrackDTO dto)
         {
             
