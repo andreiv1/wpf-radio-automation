@@ -18,6 +18,7 @@ namespace RA.Database.Models
 
         
         [EnumDataType(typeof(EventType))]
+        [Required]
         public EventType Type { get; set; }
 
         [MaxLength(100)]
