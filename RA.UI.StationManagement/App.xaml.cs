@@ -46,6 +46,7 @@ using RA.Logic.TrackFileLogic;
 using RA.UI.StationManagement.Dialogs.ArtistSelectDialog;
 using RA.UI.StationManagement.Components.Planner.Views.Templates;
 using RA.Logic.PlanningLogic;
+using RA.UI.StationManagement.Components.Planner.Views.Clocks;
 
 namespace RA.UI.StationManagement
 {
@@ -174,6 +175,7 @@ namespace RA.UI.StationManagement
                     viewModelToTransientWindowMap.Add(typeof(PlannerPlaylistsViewModel), typeof(PlannerPlaylistsView));
 
                     viewModelToTransientWindowMap.Add(typeof(PlannerManageClockCategoryRuleViewModel), typeof(PlannerManageClockCategoryRuleDialog));
+                    viewModelToTransientWindowMap.Add(typeof(PlannerManageClockEventRuleViewModel), typeof(PlannerManageClockEventRuleDialog));
                     viewModelToTransientWindowMap.Add(typeof(PlannerManageClockViewModel), typeof(PlannerManageClockDialog));
 
                     viewModelToTransientWindowMap.Add(typeof(PlannerManageTemplateViewModel), typeof(PlannerManageTemplateDialog));
@@ -182,6 +184,8 @@ namespace RA.UI.StationManagement
                     viewModelToTransientWindowMap.Add(typeof(PlannerGeneratePlaylistsViewModel), typeof(PlannerGeneratePlaylistsWindow));
 
                     viewModelToTransientWindowMap.Add(typeof(PlannerTemplateSelectClockViewModel), typeof(PlannerTemplateSelectClockWindow));
+
+                    
                     
                     #endregion
 

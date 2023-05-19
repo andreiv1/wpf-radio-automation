@@ -161,7 +161,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         [RelayCommand]
         private void InsertEventRuleToSelectedClock()
         {
-            throw new NotImplementedException();
+            if (SelectedClock == null) return;
+            var vm = windowService.ShowDialog<PlannerManageClockEventRuleViewModel>();
+            //TODO
         }
         [RelayCommand]
         private void OpenAddClockDialog()

@@ -125,7 +125,8 @@
                                                      Command="{Binding InsertTrackToSelectedClockCommand}"/>
                         <syncfusion:DropDownMenuItem Header="From category" 
                                                      Command="{Binding InsertCategoryRuleToSelectedClockCommand}"/>
-                        <syncfusion:DropDownMenuItem Header="From event"/>
+                        <syncfusion:DropDownMenuItem Header="From event"
+                                                     Command="{Binding InsertEventRuleToSelectedClockCommand}"/>
                     </syncfusion:DropDownMenuGroup>
                 </syncfusion:DropDownButtonAdv>
 
