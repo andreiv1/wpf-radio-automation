@@ -54,7 +54,7 @@ namespace RA.Logic.TrackFileLogic
             track.TrackDto = dto;
             return track;
         }
-        public IEnumerable<ProcessingTrack> ProcessItemsFromDirectory(TrackFilesProcessorOptions options)
+        public async IAsyncEnumerable<ProcessingTrack> ProcessItemsFromDirectoryAsync(TrackFilesProcessorOptions options)
         {
             if(options.DirectoryPath is not null)
             {
@@ -66,10 +66,10 @@ namespace RA.Logic.TrackFileLogic
                 foreach (var file in files)
                 {
                     string fileExtension = Path.GetExtension(file);
-                    var processingTrack = ProcessSingleItem(file, options.ReadMetadata);
+                    ProcessingTrack processingTrack = await ProcessSingleItemAsync(file, options.ReadMetadata);
                     if(processingTrack != null)
                     {
-                        processingTrack.TrackDto.Categories = new()
+                        processingTrack.TrackDto!.Categories = new()
                         {
                             new TrackCategoryDTO()
                             {
@@ -80,7 +80,7 @@ namespace RA.Logic.TrackFileLogic
                         processingTrack.TrackDto.Type = options.TrackType;
                         processingTrack.TrackDto.Status = options.TrackStatus;
                     }
-                    yield return processingTrack;
+                    yield return processingTrack!;
                 }
             }
         }

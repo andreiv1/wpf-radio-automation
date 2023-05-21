@@ -28,14 +28,38 @@
             
             <!-- Preview to import items -->
             <syncfusion:SfDataGrid x:Name="importItemsGrid" Grid.Row="0" Margin="5,5,5,0"
-                                   AutoGenerateColumns="False"
+                                   AutoGenerateColumns="False" AllowSorting="False"
                                    ColumnSizer="AutoWithLastColumnFill"
                                    SelectionUnit="Row" NavigationMode="Row"
                                    ItemsSource="{Binding Model.ProcessingTracks}"
+                                   RowHeight="26"
                                    >
                 <syncfusion:SfDataGrid.Columns>
-                    <syncfusion:GridTextColumn HeaderText="Status"
-                                               MappingName="Status" Width="50"/>
+                    <!--<syncfusion:GridTextColumn HeaderText="Status"
+                                               MappingName="Status" Width="50"/>-->
+                    <syncfusion:GridTemplateColumn HeaderText="Status"
+                                                   MappingName="Status" Width="50">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Width="16" Height="16">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="{StaticResource OkIcon}"/>
+                                            <!-- Default icon -->
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Status}" Value="WARNING">
+                                                    <Setter Property="Source" Value="{StaticResource WarningIcon}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="FAILED">
+                                                    <Setter Property="Source" Value="{StaticResource FailedIcon}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>   
+                                </Image>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
                     <syncfusion:GridTextColumn HeaderText="Artists" Width="130"
                                                MappingName="Artists"/>
                     <syncfusion:GridTextColumn HeaderText="Title" Width="220"

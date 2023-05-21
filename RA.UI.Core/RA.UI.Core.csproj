@@ -41,6 +41,7 @@
     <None Remove="Resources\Icons\icons8-music-band-48.png" />
     <None Remove="Resources\Icons\icons8-music-folder-48.png" />
     <None Remove="Resources\Icons\icons8-musical-notes-48.png" />
+    <None Remove="Resources\Icons\icons8-ok-48.png" />
     <None Remove="Resources\Icons\icons8-opened-folder-48.png" />
     <None Remove="Resources\Icons\icons8-paste-48.png" />
     <None Remove="Resources\Icons\icons8-pause-48.png" />
@@ -64,6 +65,7 @@
     <None Remove="Resources\Icons\icons8-template-48.png" />
     <None Remove="Resources\Icons\icons8-timetable-48.png" />
     <None Remove="Resources\Icons\icons8-voice-recorder-48.png" />
+    <None Remove="Resources\Icons\icons8-warning-48.png" />
     <None Remove="Resources\Icons\icons8-week-view-48.png" />
     <None Remove="Resources\Images\splash_blue_antena.png" />
     <None Remove="Resources\Images\splash_dark_antena.png" />
@@ -115,7 +117,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\icons8-cancel-48.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\icons8-clock-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -186,6 +188,9 @@
     <Resource Include="Resources\Icons\icons8-musical-notes-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Icons\icons8-ok-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Icons\icons8-opened-folder-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -254,6 +259,9 @@
     </Resource>
     <Resource Include="Resources\Icons\icons8-voice-recorder-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\icons8-warning-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\icons8-week-view-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -9,7 +9,7 @@ namespace RA.Logic.TrackFileLogic
 {
     public interface ITrackFilesProcessor
     {
-        IEnumerable<ProcessingTrack> ProcessItemsFromDirectory(TrackFilesProcessorOptions options);
+        IAsyncEnumerable<ProcessingTrack> ProcessItemsFromDirectoryAsync(TrackFilesProcessorOptions options);
         ProcessingTrack ProcessSingleItem(string path, bool readMetadata = false);
         Task<ProcessingTrack> ProcessSingleItemAsync(string path, bool readMetadata = false);
     }

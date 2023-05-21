@@ -107,9 +107,9 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
                     .SetTrackType(Model.SelectedTrackType)
                     .Build();
 
-                await Task.Run(() =>
+                await Task.Run(async () =>
                 {
-                    foreach (var processingTrack in trackFilesProcessor.ProcessItemsFromDirectory(options))
+                    await foreach (var processingTrack in trackFilesProcessor.ProcessItemsFromDirectoryAsync(options))
                     {
                         dispatcherService.InvokeOnUIThread(() =>
                         {

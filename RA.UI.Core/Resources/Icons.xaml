@@ -79,5 +79,8 @@
     <BitmapImage x:Key="DatabaseRestoreIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-database-restore-48.png"/>
     <BitmapImage x:Key="DatabaseViewIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-database-view-48.png"/>
 
+    <BitmapImage x:Key="OkIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-ok-48.png"/>
+    <BitmapImage x:Key="FailedIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-cancel-48.png"/>
+    <BitmapImage x:Key="WarningIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-warning-48.png"/>
 
 </ResourceDictionary>

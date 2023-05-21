@@ -1,10 +1,7 @@
 ﻿using RA.Logic.TrackFileLogic.Enums;
 using RA.Logic.TrackFileLogic.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RA.Logic.TrackFileLogic
 {
@@ -99,14 +96,27 @@ namespace RA.Logic.TrackFileLogic
         {
             if (file.Tag.Pictures.Length > 0 && ImagePath != null)
             {
+                using var md5 = MD5.Create();
                 var picture = file.Tag.Pictures[0];
                 var imageData = picture.Data.Data;
                 var imageFormat = picture.MimeType;
 
-                //Temporary process
-                // Save the track image to disk
-                var guid = Guid.NewGuid().ToString("N");
-                var imageFileName = $"{guid}.jpg";
+
+                // Compute the hash of the imageData
+                byte[] hashBytes = md5.ComputeHash(imageData);
+
+                // Convert the hash bytes to a string representation
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("x2"));
+                }
+
+                // The hash value as a string
+                string hash = sb.ToString();
+
+
+                var imageFileName = $"{hash}.jpg";
                 var imageFilePath = Path.Combine(ImagePath, imageFileName);
                 File.WriteAllBytes(imageFilePath, imageData);
 
