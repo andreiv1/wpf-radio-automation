@@ -89,18 +89,21 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
             {
                 foreach (var item in ScheduleOverview)
                 {
-                    item.GenerationStatus = ScheduleGenerationStatus.Generating;
-                    try
+                    if (item.GenerationStatus != ScheduleGenerationStatus.NoScheduleFound)
                     {
-                        var p = playlistGenerator.GeneratePlaylistForDate(item.Date);
-                        item.GenerationStatus = ScheduleGenerationStatus.Generated;
-                        generatedPlaylists.Add(p);
-                        _ = playlistsService.AddPlaylistAsync(p);
-                    }
-                    catch (Exception ex)
-                    {
-                        item.GenerationStatus = ScheduleGenerationStatus.Error;
-                        item.ErrorMessage = ex.Message;
+                        item.GenerationStatus = ScheduleGenerationStatus.Generating;
+                        try
+                        {
+                            var p = playlistGenerator.GeneratePlaylistForDate(item.Date);
+                            item.GenerationStatus = ScheduleGenerationStatus.Generated;
+                            generatedPlaylists.Add(p);
+                            _ = playlistsService.AddPlaylistAsync(p);
+                        }
+                        catch (Exception ex)
+                        {
+                            item.GenerationStatus = ScheduleGenerationStatus.Error;
+                            item.ErrorMessage = ex.Message;
+                        }
                     }
                 }
 

@@ -75,5 +75,9 @@
 
 
 
+    <BitmapImage x:Key="DatabaseAdministratorIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-database-administrator-48.png"/>
+    <BitmapImage x:Key="DatabaseRestoreIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-database-restore-48.png"/>
+    <BitmapImage x:Key="DatabaseViewIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-database-view-48.png"/>
+
 
 </ResourceDictionary>

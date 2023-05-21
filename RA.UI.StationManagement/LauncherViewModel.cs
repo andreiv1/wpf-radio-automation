@@ -5,6 +5,8 @@ using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent;
 using RA.UI.StationManagement.Components.Planner.ViewModels;
+using RA.UI.StationManagement.Components.Reports.ViewModels;
+using RA.UI.StationManagement.Components.Settings.ViewModels;
 using RA.UI.StationManagement.Services;
 using System;
 using System.Collections.Generic;
@@ -32,6 +34,19 @@ namespace RA.UI.StationManagement
         private void OpenPlannerComponent()
         {
             windowService.ShowWindow<PlannerMainViewModel>();
+        }
+
+
+        [RelayCommand]
+        private void OpenReportsComponent()
+        {
+            windowService.ShowWindow<ReportsMainViewModel>();
+        }
+
+        [RelayCommand]
+        private void OpenSettingsComponent()
+        {
+            windowService.ShowWindow<SettingsMainViewModel>();
         }
     }
 }

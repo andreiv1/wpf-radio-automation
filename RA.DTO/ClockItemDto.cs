@@ -10,12 +10,21 @@ namespace RA.DTO
     public class ClockItemDTO
     {
         public int Id { get; set; }
+        public int OrderIndex { get; set; }
         public int? TrackId { get; set; }
+
+        #region Category
         public int? CategoryId { get; set; }
-        public String CategoryName { get; set; }
+        public String? CategoryName { get; set; }
+
+        public int? ArtistSeparation { get; set; }
+        public int? TitleSeparation { get; set; }
+        public int? TrackSeparation { get; set; }
+
+        #endregion
         public int? ClockId { get; set; }
 
-        public int OrderIndex { get; set; }
+        
 
         public static ClockItemDTO FromEntity(ClockItem clockItem)
         {

@@ -1,4 +1,5 @@
-﻿using RA.DTO.Abstract;
+﻿using RA.DAL.Exceptions;
+using RA.DTO.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +19,10 @@ namespace RA.DAL
             this.schedulesPlannedService = schedulesPlannedService;
         }
 
-        public IScheduleDTO GetScheduleByDate(DateTime date)
+        public IScheduleDTO? GetScheduleByDate(DateTime date)
         {
             var defaultSchedule = schedulesDefaultService.GetDefaultSchedulesOverview(date, date);
             IScheduleDTO? result = defaultSchedule.FirstOrDefault().Value;
-            if(result == null)
-            {
-                throw new Exception($"No schedule found (default / planned) for the given date: {date.ToString("dd/MM/yyyy")}.");
-            }
             return result;
         }
     }

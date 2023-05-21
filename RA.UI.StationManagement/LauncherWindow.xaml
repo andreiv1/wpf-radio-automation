@@ -11,7 +11,6 @@
         mc:Ignorable="d"
         Title="RA | Station Management Launcher"         
         Height="400" Width="500" 
-        
         ShowTitle="True" ShowMaximizeButton="False"
         Icon="/Resources/icon.ico" WindowStartupLocation="CenterScreen">
 
@@ -99,11 +98,13 @@
             <usercontrols:LauncherComponentControl
                         HeaderText="Reports"
                         Description="View your station's performance metrics."
-                        BackgroundColor="#FFD88B38"/>
+                        BackgroundColor="#FFD88B38"
+                        Command="{Binding OpenReportsComponentCommand}"/>
             <usercontrols:LauncherComponentControl
                         HeaderText="Settings"
                         Description="Configure app settings and preferences."
-                        BackgroundColor="#FF9B9B9B"/>
+                        BackgroundColor="#FF9B9B9B"
+                        Command="{Binding OpenSettingsComponentCommand}"/>
 
             <Grid Margin="3,10,3,0">
                 <Grid.ColumnDefinitions>

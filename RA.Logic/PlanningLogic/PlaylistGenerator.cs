@@ -1,4 +1,5 @@
 ﻿using RA.DAL;
+using RA.DAL.Exceptions;
 using RA.Database.Models;
 using RA.DTO;
 using RA.DTO.Abstract;
@@ -35,16 +36,21 @@ namespace RA.Logic.PlanningLogic
         public PlaylistDTO GeneratePlaylistForDate(DateTime date)
         {
             PlaylistDTO playlist = InitialisePlaylist(date);
-            IScheduleDTO schedule = schedulesService.GetScheduleByDate(date);
-            int scheduleTemplateId = schedule.Template?.Id ?? throw new Exception("Template must have an id");
-            var clocksForSchedule = templatesService.GetClocksForTemplate(scheduleTemplateId);
+            IScheduleDTO? schedule = schedulesService.GetScheduleByDate(date);
 
-            foreach(var clock in clocksForSchedule)
+            if (schedule != null)
             {
+                int scheduleTemplateId = schedule.Template?.Id ?? throw new Exception("Template must have an id");
+                var clocksForSchedule = templatesService.GetClocksForTemplate(scheduleTemplateId);
 
-                ProcessClock(clock, playlist);
-               
+                foreach (var clock in clocksForSchedule)
+                {
+
+                    ProcessClock(clock, playlist);
+
+                }
             }
+
             return playlist;
         }
 
@@ -106,12 +112,12 @@ namespace RA.Logic.PlanningLogic
 
             if (clockItem.CategoryId.HasValue)
             {
-                TrackSelectionBaseStrategy selectionStrategy = 
+                TrackSelectionBaseStrategy selectionStrategy =
                     new RandomTrackSelectionStrategy(playlistsService, tracksService, clockItem.CategoryId.Value);
                 selectionStrategy.SelectTrack(playlistDTO);
             }
 
-          
+
         }
     }
 }

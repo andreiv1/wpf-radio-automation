@@ -62,7 +62,6 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             
             foreach (var track in tracks.ToList())
             {
-                DebugHelper.WriteLine(this, $"Fetched {track.Id}");
                 await dispatcherService.InvokeOnUIThreadAsync(() =>
                 {
                     Items.Add(track);

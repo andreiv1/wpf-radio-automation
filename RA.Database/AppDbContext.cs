@@ -14,7 +14,6 @@ namespace RA.Database
         public DbSet<Clock> Clocks { get; set; }
         public DbSet<ClockItem> ClockItems { get; set; }
         public DbSet<ClockTemplate> ClockTemplates { get; set; }
-        public DbSet<Event> Events { get; set; }
         public DbSet<Playlist> Playlists { get; set; }
         public DbSet<PlaylistItem> PlaylistItems { get; set; }
         public DbSet<ScheduleDefault> SchedulesDefault { get; set; }

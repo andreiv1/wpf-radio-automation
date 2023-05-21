@@ -13,5 +13,6 @@ namespace RA.Database.Models
         [MaxLength(100)]
         public String Name { get; set; }
         public ICollection<TagValue> Values { get; set; }
+        public bool IsBuiltIn { get; set; }
     }
 }

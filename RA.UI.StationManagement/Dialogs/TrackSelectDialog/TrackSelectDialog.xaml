@@ -116,14 +116,6 @@
         </syncfusion:SfDataGrid>
 
 
-        <syncfusion:SfBusyIndicator Grid.Row="2" Grid.Column="1"
-                        IsBusy="{Binding IsMainDataLoading}"
-                        d:IsBusy="True"
-                        VerticalAlignment="Center"
-                        AnimationType="Message">
-        </syncfusion:SfBusyIndicator>
-
-
         <StackPanel Grid.Row="4" Grid.ColumnSpan="2"
                     Orientation="Horizontal" HorizontalAlignment="Right">
             <syncfusion:SfDataPager  Grid.Row="2"

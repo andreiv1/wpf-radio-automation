@@ -47,6 +47,11 @@ using RA.UI.StationManagement.Dialogs.ArtistSelectDialog;
 using RA.UI.StationManagement.Components.Planner.Views.Templates;
 using RA.Logic.PlanningLogic;
 using RA.UI.StationManagement.Components.Planner.Views.Clocks;
+using RA.UI.StationManagement.Components.Reports.ViewModels;
+using RA.UI.StationManagement.Components.Reports.Views;
+using RA.UI.StationManagement.Components.Settings.ViewModels;
+using RA.UI.StationManagement.Components.Settings.Views;
+using RA.UI.Core.Shared.DatabaseConfiguration;
 
 namespace RA.UI.StationManagement
 {
@@ -66,7 +71,7 @@ namespace RA.UI.StationManagement
                 {
                     services.AddDbContextFactory<AppDbContext>(options =>
                     {
-                        String connString = "server=localhost;Port=3306;database=ratest;user=root;password=";
+                        String connString = "server=localhost;Port=3306;database=ratest;user=roo;password=";
                         options.UseMySql(connString, ServerVersion.AutoDetect(connString))
                             .EnableSensitiveDataLogging(false);
                     });
@@ -123,7 +128,10 @@ namespace RA.UI.StationManagement
                     #endregion
 
                     #region Singleton viewModel <=> View
+                    viewModelToSingletonWindowMap.Add(typeof(AuthViewModel), typeof(AuthWindow));
                     viewModelToSingletonWindowMap.Add(typeof(LauncherViewModel), typeof(LauncherWindow));
+                    viewModelToSingletonWindowMap.Add(typeof(DatabaseConfigurationViewModel), typeof(DatabaseConfigurationWindow));
+
                     //Register the viewmodel&view
                     foreach (KeyValuePair<Type, Type> vmAndView in viewModelToSingletonWindowMap)
                     {
@@ -142,7 +150,6 @@ namespace RA.UI.StationManagement
                     #endregion
 
                     #region Transient ViewModel <=> View
-
                     #region Media Library
                     viewModelToTransientWindowMap.Add(typeof(MediaLibraryMainViewModel), typeof(MediaLibraryMainWindow));
                     viewModelToTransientWindowMap.Add(typeof(MediaLibraryImportItemsViewModel), typeof(MediaLibraryImportItemsWindow));
@@ -185,10 +192,17 @@ namespace RA.UI.StationManagement
 
                     viewModelToTransientWindowMap.Add(typeof(PlannerTemplateSelectClockViewModel), typeof(PlannerTemplateSelectClockWindow));
 
-                    
-                    
+
+
                     #endregion
 
+                    #region Reports
+                    viewModelToTransientWindowMap.Add(typeof(ReportsMainViewModel), typeof(ReportsMainWindow));
+                    #endregion
+
+                    #region Settings
+                    viewModelToTransientWindowMap.Add(typeof(SettingsMainViewModel), typeof(SettingsMainWindow));
+                    #endregion
                     #region Dialogs
                     viewModelToTransientWindowMap.Add(typeof(CategorySelectViewModel), typeof(CategorySelectDialog));
                     viewModelToTransientWindowMap.Add(typeof(TrackSelectViewModel), typeof(TrackSelectDialog));
@@ -246,7 +260,7 @@ namespace RA.UI.StationManagement
             {
                 dispatcherService.InvokeOnUIThread(() =>
                 {
-                    windowService.ShowWindow<LauncherViewModel>();
+                    windowService.ShowWindow<AuthViewModel>();
                     splashScreen.Hide();
                 });
             });
