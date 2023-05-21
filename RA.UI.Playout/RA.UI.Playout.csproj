@@ -7,7 +7,9 @@
     <UseWPF>true</UseWPF>
 	  <Title>RA | Playout</Title>
 	  <Product>$(AssemblyName)</Product>
-    <AssemblyVersion>0.1</AssemblyVersion>
+	  <AssemblyName>RA - Playout</AssemblyName>
+    <AssemblyVersion>0.2</AssemblyVersion>
+    <ApplicationIcon>Resources\playout_icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,7 +36,7 @@
     <PackageReference Include="Syncfusion.Themes.Windows11Dark.Wpf" Version="21.1.35" />
     <PackageReference Include="Syncfusion.SfSkinManager.Wpf" Version="21.1.35" />
     <PackageReference Include="Syncfusion.Tools.WPF" Version="21.1.35" />
-    <PackageReference Include="Syncfusion.SfGauge.WPF" Version="21.1.35"/>
+    <PackageReference Include="Syncfusion.SfGauge.WPF" Version="21.1.35" />
 </ItemGroup>
 
   <ItemGroup>
@@ -55,7 +57,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\playout_icon.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\SoundVisualizationTheme.xaml" />
   </ItemGroup>

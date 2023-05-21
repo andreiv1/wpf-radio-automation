@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace RA.UI.StationManagement
 {
@@ -47,6 +48,18 @@ namespace RA.UI.StationManagement
         private void OpenSettingsComponent()
         {
             windowService.ShowWindow<SettingsMainViewModel>();
+        }
+
+        [RelayCommand]
+        private void LockSession()
+        {
+            windowService.ShowDialog<AuthViewModel>();
+        }
+
+        [RelayCommand]
+        private void ExitApp()
+        {
+            Application.Current.Shutdown();
         }
     }
 }

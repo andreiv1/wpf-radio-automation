@@ -7,7 +7,8 @@
         xmlns:component="clr-namespace:RA.UI.Playout.Views.Components"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
-        Title="MainWindow" MinHeight="700" MinWidth="1400"
+        Icon="/Resources/playout_icon.ico" WindowStartupLocation="CenterScreen"
+        Title="RA | Playout" MinHeight="700" MinWidth="1400"
                     
 >
     <Grid Margin="0,0,0,5">

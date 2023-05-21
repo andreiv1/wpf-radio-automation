@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         mc:Ignorable="d"
-        Title="SettingsMainWindow" Height="450" Width="800">
+        Title="Settings" Height="450" Width="800">
     <Grid>
         
     </Grid>

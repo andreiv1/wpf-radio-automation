@@ -138,8 +138,10 @@
                 </Grid.Resources>
 
                 <Button Grid.Column="0" Style="{StaticResource ActionStyle}"
-                            Content="Exit app" Foreground="#E53935" />
-                <Button Grid.Column="1" Style="{StaticResource ActionStyle}" Content="Lock session" Foreground="#FFB300" HorizontalAlignment="Right" />
+                            Content="Exit app" Foreground="#E53935"
+                        Command="{Binding ExitAppCommand}"/>
+                <Button Grid.Column="1" Style="{StaticResource ActionStyle}" Content="Lock session" Foreground="#FFB300" HorizontalAlignment="Right" 
+                        Command="{Binding LockSessionCommand}"/>
             </Grid>
         </StackPanel>
     </Grid>
