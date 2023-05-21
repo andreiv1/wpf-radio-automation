@@ -180,22 +180,13 @@
 
                         <!-- Action -->
                         <syncfusion:GridTemplateColumn HeaderText="Action" 
-                                                       Width="130">
+                                                       Width="110">
                             <syncfusion:GridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Horizontal">
-                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Horizontal">
-                                                <!-- ADD BTN -->
-                                                <syncfusion:ButtonAdv Label="Add" SmallIcon="{StaticResource PlusIcon}" Width="60" Margin="0,0,3,0"
-                                                  Command="{Binding DataContext.SelectTemplateForDayCommand, RelativeSource={RelativeSource AncestorType={x:Type syncfusion:SfDataGrid}}}"/>
-                                            
-                                                 <!-- EDIT BTN -->
-
-                                                            <syncfusion:ButtonAdv Label="Edit" SmallIcon="{StaticResource EditIcon}" Width="60"
+                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <syncfusion:ButtonAdv Label="Pick template" SmallIcon="{StaticResource EditIcon}"
                                                   Command="{Binding DataContext.SelectTemplateForDayCommand, RelativeSource={RelativeSource AncestorType={x:Type syncfusion:SfDataGrid}}}"
                                                                  />
-                                        </StackPanel>
-
                                     </StackPanel>
                                 </DataTemplate>
                             </syncfusion:GridTemplateColumn.CellTemplate>
