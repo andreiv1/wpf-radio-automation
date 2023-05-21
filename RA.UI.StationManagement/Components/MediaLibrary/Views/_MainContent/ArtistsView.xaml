@@ -60,9 +60,8 @@
                        NavigationMode="Row"
                        AllowResizingColumns="True"
                        AutoGenerateColumns="False"
-                       
-                               DetailsViewExpanded="artistTracksGrid_DetailsViewExpanded"
-                               DetailsViewCollapsed="artistTracksGrid_DetailsViewCollapsed">
+                       DetailsViewExpanded="artistTracksGrid_DetailsViewExpanded"
+                       DetailsViewCollapsed="artistTracksGrid_DetailsViewCollapsed">
             <syncfusion:SfDataGrid.Columns>
                 <syncfusion:GridTextColumn HeaderText="Artist Name" MappingName="Name" HorizontalHeaderContentAlignment="Left"
                                            AllowResizing="True"
