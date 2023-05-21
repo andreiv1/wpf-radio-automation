@@ -60,10 +60,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             var tracks = await tracksService.GetTrackListAsync(skip, take);
             foreach (var track in tracks.ToList())
             {
-                await dispatcherService.InvokeOnUIThreadAsync(() =>
-                {
-                    Items.Add(track);
-                });
+                Items.Add(track);
             }
         }
 

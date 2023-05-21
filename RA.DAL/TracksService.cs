@@ -103,6 +103,15 @@ namespace RA.DAL
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task<bool> TrackExistsByPath(String filePath)
+        {
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            var query = dbContext.Tracks
+                .Where(t => t.FilePath == filePath)
+                .Select(t => t.FilePath);
+            return await query.AnyAsync();
+        }
+
         private static readonly Random random = new Random();
         public async Task<TrackListingDTO> GetRandomTrack(int categoryId, List<int>? trackIdsToExclude = null)
         {

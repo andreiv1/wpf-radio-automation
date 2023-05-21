@@ -10,13 +10,17 @@ namespace RA.Logic.TrackFileLogic
     {
         public static readonly string[] SupportedTrackFormats = { ".mp3", ".flac", ".ogg", ".wav" };
         private readonly IArtistsService artistsService;
+        private readonly ITracksService tracksService;
         private readonly ICategoriesService categoriesService;
         private static string defaultTitle = "Unknown Title";
         private static string defaultArtist = "Unknown Artist";
 
-        public TrackFilesProcessor(IArtistsService artistsService, ICategoriesService categoriesService)
+        public TrackFilesProcessor(IArtistsService artistsService, 
+            ITracksService tracksService,
+            ICategoriesService categoriesService)
         {
             this.artistsService = artistsService;
+            this.tracksService = tracksService;
             this.categoriesService = categoriesService;
         }
 
@@ -25,6 +29,10 @@ namespace RA.Logic.TrackFileLogic
             ITrackMetadataReader metaReader = new TrackMetadataReader(path);
             ProcessingTrack track = new();
             TrackDTO dto = new();
+            if(await tracksService.TrackExistsByPath(path))
+            {
+                track.Status = ProcessingTrackStatus.WARNING;
+            }
             dto.FilePath = path;
             double duration = (double)(metaReader.GetField(TrackMetadataField.Duration) ?? 0);
             dto.Duration = duration;
