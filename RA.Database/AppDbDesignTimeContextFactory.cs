@@ -12,7 +12,7 @@ namespace RA.Database
     {
         public AppDbContext CreateDbContext(string[] args)
         {
-            string connectionString = "server=localhost;Port=3306;database=ratest;user=root;password=";
+            string connectionString = "server=192.168.200.113;Port=3306;database=rasoftware;user=root;password=andrewyw1412";
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
             optionsBuilder
                 .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))

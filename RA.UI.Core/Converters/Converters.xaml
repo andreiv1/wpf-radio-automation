@@ -19,5 +19,7 @@
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
     <converters:StringIsNullOrEmptyConverter x:Key="StringIsNullOrEmptyConverter"/>
 
+    <converters:HexToColorConverter x:Key="HexToColorConverter"/>
+
 
 </ResourceDictionary>
