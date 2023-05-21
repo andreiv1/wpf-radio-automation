@@ -82,7 +82,7 @@
                                                    MappingName="Type" Width="16" MaximumWidth="16">
                     <syncfusion:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image Width="16" Height="16">
+                            <Image Width="24" Height="20">
                                 <Image.Style>
                                     <Style TargetType="Image">
                                         <Setter Property="Source" Value="{StaticResource OtherTrackIcon}"/>
