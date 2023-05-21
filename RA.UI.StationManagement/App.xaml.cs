@@ -51,6 +51,7 @@ using RA.UI.StationManagement.Components.Reports.ViewModels;
 using RA.UI.StationManagement.Components.Reports.Views;
 using RA.UI.StationManagement.Components.Settings.ViewModels;
 using RA.UI.StationManagement.Components.Settings.Views;
+using RA.Logic.Database;
 
 namespace RA.UI.StationManagement
 {
@@ -70,7 +71,7 @@ namespace RA.UI.StationManagement
                 {
                     services.AddDbContextFactory<AppDbContext>(options =>
                     {
-                        String connString = "server=localhost;Port=3306;database=ratest;user=root;password=";
+                        String connString = DatabaseCredentials.RetrieveConnectionString();
                         options.UseMySql(connString, ServerVersion.AutoDetect(connString))
                             .EnableSensitiveDataLogging(false);
                     });
@@ -238,15 +239,10 @@ namespace RA.UI.StationManagement
             SplashScreenWindow splashScreen = new SplashScreenWindow();
             splashScreen.Show();
 
+            var canConnect = false;
             var testDatabaseTask = Task.Run(() =>
             {
-                if (!CanConnectToDatabase())
-                {
-                    dispatcherService.InvokeOnUIThread(() =>
-                    {
-                        Application.Current.Shutdown();
-                    });
-                }
+                canConnect = CanConnectToDatabase();
             });
 
             var loadComponents = Task.Run(async () =>
@@ -259,8 +255,15 @@ namespace RA.UI.StationManagement
             {
                 dispatcherService.InvokeOnUIThread(() =>
                 {
-                    windowService.ShowWindow<DatabaseSetupViewModel>();
-                    //windowService.ShowWindow<AuthViewModel>();
+                    if (canConnect)
+                    {
+                        windowService.ShowWindow<AuthViewModel>();
+                    }
+                    else
+                    {
+                        windowService.ShowWindow<DatabaseSetupViewModel>();
+                    }
+                    
                     splashScreen.Hide();
                 });
             });
@@ -275,6 +278,7 @@ namespace RA.UI.StationManagement
             {
                 IDbContextFactory<AppDbContext> dbContextFactory = AppHost!.Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
                 var dbContext = dbContextFactory.CreateDbContext();
+                var result = dbContext.Database.ExecuteSqlRaw("SELECT 1 FROM DUAL;");
                 return true;
             }
             catch (MySqlException ex)

@@ -7,7 +7,7 @@
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         mc:Ignorable="d"
-        Title="Radio Automation - Database Setup Utility" Height="400" Width="600"
+        Title="Radio Automation - Database Setup Utility" Height="400" Width="500"
         ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid Margin="15">
         <StackPanel Orientation="Vertical">
@@ -20,7 +20,7 @@
                     </Style>
                 </Grid.Resources>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="250" />
+                    <ColumnDefinition Width="200" />
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -40,19 +40,19 @@
                 <Label Grid.Row="0" Grid.Column="0" Content="Database server:" VerticalAlignment="Center" />
 
                 <syncfusion:SfTextBoxExt Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Height="24"
-                                         Text="{Binding DatabaseCredentials.Host}"/>
+                                         Text="{Binding Server}"/>
 
 
                 <Label Grid.Row="2" Grid.Column="0" Content="Database name:" VerticalAlignment="Center" />
 
                 <syncfusion:SfTextBoxExt Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Height="24"
-                                         Text="{Binding DatabaseCredentials.DatabaseName}"/>
+                                         Text="{Binding DbName}"/>
 
 
                 <Label Grid.Row="4" Grid.Column="0" Content="Database username:" VerticalAlignment="Center" />
 
                 <syncfusion:SfTextBoxExt Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Height="24"
-                                         Text="{Binding DatabaseCredentials.DatabaseUser}"/>
+                                         Text="{Binding DbUser}"/>
 
 
                 <Label Grid.Row="6" Grid.Column="0" Content="Database password:" VerticalAlignment="Center" />
