@@ -61,10 +61,7 @@ namespace RA.UI.StationManagement.Dialogs.TrackSelectDialog
 
             foreach (var track in tracks.ToList())
             {
-                await dispatcherService.InvokeOnUIThreadAsync(() =>
-                {
-                    Tracks.Add(track);
-                });
+                Tracks.Add(track);
             }
             IsMainDataLoading = false;
         }

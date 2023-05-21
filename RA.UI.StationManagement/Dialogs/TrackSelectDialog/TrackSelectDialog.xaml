@@ -6,7 +6,7 @@
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
-        Title="{Binding DialogName}" Height="600" Width="600"
+        Title="{Binding DialogName}" Height="600" Width="800"
                  MinHeight="600" MinWidth="600">
     <Grid Margin="5">
         <Grid.RowDefinitions>
