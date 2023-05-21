@@ -51,7 +51,8 @@
                 <syncfusion:GridTemplateColumn Width="25" HeaderText="">
                     <syncfusion:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Rectangle Fill="{Binding Color, Converter={StaticResource StringToBrushConverter}}"/>
+                            <Rectangle Fill="{Binding Color, Converter={StaticResource StringToBrushConverter}}"
+                                       Height="20" Width="20"/>
                         </DataTemplate>
                     </syncfusion:GridTemplateColumn.CellTemplate>
                 </syncfusion:GridTemplateColumn>

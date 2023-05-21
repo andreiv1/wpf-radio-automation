@@ -56,7 +56,7 @@
                        ColumnSizer="Auto"
                        ItemsSource="{Binding Artists}"
                        SelectedItem="{Binding SelectedArtist}"
-                           
+                       RowHeight="28"
                        SelectionUnit="Row"
                        NavigationMode="Row"
                        AllowResizingColumns="True"

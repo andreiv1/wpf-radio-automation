@@ -75,7 +75,8 @@
                        SelectionUnit="Row"
                        NavigationMode="Row"
                        AllowResizingColumns="True"
-                       AutoGenerateColumns="False">
+                       AutoGenerateColumns="False"
+                       RowHeight="30">
             <syncfusion:SfDataGrid.Columns>
                 <syncfusion:GridTextColumn HeaderText="Artists" MappingName="Artists"
                                            MinimumWidth="200"

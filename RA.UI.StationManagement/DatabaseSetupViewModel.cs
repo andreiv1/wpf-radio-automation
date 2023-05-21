@@ -26,9 +26,8 @@ namespace RA.UI.StationManagement
         private string dbUser = "root";
         [ObservableProperty]
         private string dbPassword = "";
-        private readonly IDbContextFactory<AppDbContext> dbContextFactory;
 
-        public DatabaseSetupViewModel(IDbContextFactory<AppDbContext> dbContextFactory)
+        public DatabaseSetupViewModel()
         {
             var creds = DatabaseCredentials.GetCredentials();
             if (creds.Count > 0)
@@ -45,8 +44,6 @@ namespace RA.UI.StationManagement
                 DbUser = creds["user"];
                 DbPassword = creds["password"];
             }
-
-            this.dbContextFactory = dbContextFactory;
         }
 
         [RelayCommand]
@@ -68,7 +65,11 @@ namespace RA.UI.StationManagement
             creds.Add("password", DbPassword); 
             DatabaseCredentials.StoreCreds(creds);
 
-            var db = dbContextFactory.CreateDbContext();
+            //var dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
+            //    .Options.Use;
+            
+            //var dbContext = new AppDbContext(dbContextOptions);
+            //var result = dbContext.Database.ExecuteSqlRaw("SELECT 1 FROM DUAL;");
 
         }
 

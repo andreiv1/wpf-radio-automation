@@ -24,13 +24,17 @@ namespace RA.Logic.Database
 
         public static void StoreCreds(Dictionary<string, string> credentials)
         {
+            StoreConnectionString(MakeConnectionString(credentials));
+        }
+
+        public static string MakeConnectionString(Dictionary<string, string> credentials)
+        {
             string port = credentials.ContainsKey("port") ? credentials["port"] : "3306";
             string server = credentials["server"];
             string database = credentials["database"];
             string user = credentials["user"];
             string password = credentials.ContainsKey("password") ? credentials["password"] : "";
-            string connString = $"server={server};Port={port};database={database};user={user};password={password}";
-            StoreConnectionString(connString);
+            return $"server={server};Port={port};database={database};user={user};password={password}";
         }
 
         public static string RetrieveConnectionString()

@@ -100,12 +100,14 @@
                        NavigationMode="Row"
                        AllowResizingColumns="True"
                        AutoGenerateColumns="False" AutoGenerateColumnsMode="None"
+                               RowHeight="30"
                             >
             <syncfusion:SfDataGrid.Columns>
                 <syncfusion:GridTemplateColumn Width="25" HeaderText="">
                     <syncfusion:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Rectangle Fill="{Binding Color, Converter={StaticResource StringToBrushConverter}}"/>
+                            <Rectangle Fill="{Binding Color, Converter={StaticResource StringToBrushConverter}}"
+                                       Height="20" Width="20"/>
                         </DataTemplate>
                     </syncfusion:GridTemplateColumn.CellTemplate>
                 </syncfusion:GridTemplateColumn>
@@ -143,7 +145,8 @@
                        SelectionUnit="Row"
                        NavigationMode="Row"
                        AllowResizingColumns="True"
-                       AutoGenerateColumns="False">
+                       AutoGenerateColumns="False"
+                               RowHeight="30">
             <syncfusion:SfDataGrid.Columns>
                 <syncfusion:GridTextColumn HeaderText="Artists" MappingName="Artists"
                                            MinimumWidth="200"

@@ -12,7 +12,6 @@
             <RowDefinition Height="25"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="45"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>

@@ -52,6 +52,7 @@ using RA.UI.StationManagement.Components.Reports.Views;
 using RA.UI.StationManagement.Components.Settings.ViewModels;
 using RA.UI.StationManagement.Components.Settings.Views;
 using RA.Logic.Database;
+using RA.Logic;
 
 namespace RA.UI.StationManagement
 {
@@ -72,8 +73,14 @@ namespace RA.UI.StationManagement
                     services.AddDbContextFactory<AppDbContext>(options =>
                     {
                         String connString = DatabaseCredentials.RetrieveConnectionString();
-                        options.UseMySql(connString, ServerVersion.AutoDetect(connString))
-                            .EnableSensitiveDataLogging(false);
+                        try
+                        {
+                            options.UseMySql(connString, ServerVersion.AutoDetect(connString))
+                                .EnableSensitiveDataLogging(false);
+                        }
+                        catch (Exception ex) {
+                            DebugHelper.WriteLine(this, ex.Message);
+                        }
                     });
 
 
@@ -277,13 +284,16 @@ namespace RA.UI.StationManagement
             try
             {
                 IDbContextFactory<AppDbContext> dbContextFactory = AppHost!.Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
-                var dbContext = dbContextFactory.CreateDbContext();
+                using var dbContext = dbContextFactory.CreateDbContext();
                 var result = dbContext.Database.ExecuteSqlRaw("SELECT 1 FROM DUAL;");
                 return true;
             }
             catch (MySqlException ex)
             {
                 messageBoxService.ShowError($"Failed to connect to the database: {ex.Message}");
+                return false;
+            } catch(Exception ex)
+            {
                 return false;
             }
 

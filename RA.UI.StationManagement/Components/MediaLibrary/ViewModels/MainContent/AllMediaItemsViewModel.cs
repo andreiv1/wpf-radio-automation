@@ -54,12 +54,10 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 
         public async Task LoadTracks(int skip, int take)
         {
-            IsMainDataLoading = true;
             Items.Clear();
             TotalTracks = await tracksService.GetTrackCountAsync();
             Pages = TotalTracks > 0 ? (TotalTracks - 1) / tracksPerPage + 1 : 0;
             var tracks = await tracksService.GetTrackListAsync(skip, take);
-            
             foreach (var track in tracks.ToList())
             {
                 await dispatcherService.InvokeOnUIThreadAsync(() =>
@@ -67,7 +65,6 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
                     Items.Add(track);
                 });
             }
-            IsMainDataLoading = false;
         }
 
         #region Commands
