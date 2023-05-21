@@ -11,6 +11,7 @@ using RA.Logic.Database;
 using RA.UI.Core.Factories;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
+using RA.UI.Core.Shared;
 using RA.UI.Core.Themes;
 using RA.UI.Playout.ViewModels;
 using RA.UI.Playout.ViewModels.Components;
@@ -158,7 +159,8 @@ namespace RA.UI.Playout
                     {
                         windowService.ShowWindow<DatabaseSetupViewModel>();
                     }
-                    splashScreen.Close();
+
+                    splashScreen.Hide();
                 });
             });
 
@@ -172,7 +174,7 @@ namespace RA.UI.Playout
             {
                 IDbContextFactory<AppDbContext> dbContextFactory = AppHost!.Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
                 using var dbContext = dbContextFactory.CreateDbContext();
-                var result = dbContext.Database.ExecuteSqlRaw("SELECT 1 FROM DUAL;");
+                var result = dbContext.Database.ExecuteSqlRaw("SELECT 1 FROM Tracks;");
                 return true;
             }
             catch (MySqlException ex)

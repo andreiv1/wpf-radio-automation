@@ -11,6 +11,18 @@
         ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid Margin="15">
         <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="15">
+                <syncfusion:ButtonAdv Label="Test connection" SizeMode="Large" Margin="0,0,4,0"
+                                          LargeIcon="{StaticResource DatabaseViewIcon}"
+                                      Command="{Binding TestConnectionCommand}"
+                                          />
+                <syncfusion:ButtonAdv Label="Install database" SizeMode="Large" Margin="0,0,4,0"
+                                           LargeIcon="{StaticResource DatabaseAdministratorIcon}"
+                                          Command="{Binding InstallDatabaseCommand}"/>
+                <syncfusion:ButtonAdv Label="Upgrade database" SizeMode="Large" 
+                                           LargeIcon="{StaticResource DatabaseRestoreIcon}"
+                                          Command="{Binding UpgradeDatabaseCommand}"/>
+            </StackPanel>
             <Grid Margin="15">
                 <Grid.Resources>
                     <Style TargetType="Label">
@@ -56,21 +68,13 @@
 
 
                 <Label Grid.Row="6" Grid.Column="0" Content="Database password:" VerticalAlignment="Center" />
-                <PasswordBox x:Name="dbPassword" Height="24"
+                <PasswordBox x:Name="dbPassword" Height="24" PasswordChanged="dbPassword_PasswordChanged"
                             Grid.Row="6" Grid.Column="1" VerticalAlignment="Center"/>
 
             </Grid>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="15">
-                <syncfusion:ButtonAdv Label="Test connection" SizeMode="Large" Margin="0,0,4,0"
-                                          LargeIcon="{StaticResource DatabaseAdministratorIcon}"
-                                          Command="{Binding SaveCredentialsCommand}"/>
-                <syncfusion:ButtonAdv Label="Install database" SizeMode="Large" Margin="0,0,4,0"
-                                           LargeIcon="{StaticResource DatabaseViewIcon}"
-                                          Command="{Binding InstallDatabaseCommand}"/>
-                <syncfusion:ButtonAdv Label="Upgrade database" SizeMode="Large" 
-                                           LargeIcon="{StaticResource DatabaseRestoreIcon}"
-                                          Command="{Binding UpgradeDatabaseCommand}"/>
-            </StackPanel>
+            <syncfusion:ButtonAdv Label="Save credentials" HorizontalAlignment="Right" Margin="0,0,15,0"
+                                  SmallIcon="{StaticResource SaveIcon}" Command="{Binding SaveCredentialsCommand}"/>
+            
         </StackPanel>
 
     </Grid>
