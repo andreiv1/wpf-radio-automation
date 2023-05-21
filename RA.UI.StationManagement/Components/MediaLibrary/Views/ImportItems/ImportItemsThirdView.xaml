@@ -32,8 +32,8 @@
                                    ColumnSizer="AutoWithLastColumnFill"
                                    SelectionUnit="Row" NavigationMode="Row"
                                    ItemsSource="{Binding Model.ProcessingTracks}"
-                                   RowHeight="26"
-                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                   RowHeight="26" 
+                                  ScrollViewer.HorizontalScrollBarVisibility="Visible"
                                    >
                 <syncfusion:SfDataGrid.Columns>
    
@@ -138,7 +138,7 @@
             </Grid>
             <ProgressBar Grid.Row="2" x:Name="progressBar"
                 Margin="5" Width="auto"
-                Height="10"
+                Height="8"
                 Minimum="0" 
                 Maximum="{Binding Model.TotalItems, FallbackValue=0.1}" 
                 Value="{Binding Model.ProcessedItems}"

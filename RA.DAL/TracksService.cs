@@ -85,7 +85,7 @@ namespace RA.DAL
                 .ToListAsync();
         }
 
-        public async Task AddTracks(IEnumerable<TrackDTO> trackDTOs)
+        public async Task<int> AddTracks(IEnumerable<TrackDTO> trackDTOs)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             var tracks = trackDTOs.Select(t => TrackDTO.ToEntity(t)).ToList();
@@ -100,7 +100,7 @@ namespace RA.DAL
 
             }
             dbContext.Tracks.AddRange(tracks);
-            await dbContext.SaveChangesAsync();
+            return await dbContext.SaveChangesAsync();
         }
 
         public async Task<bool> TrackExistsByPath(String filePath)

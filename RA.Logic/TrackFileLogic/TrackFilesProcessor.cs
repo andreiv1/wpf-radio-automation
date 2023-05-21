@@ -121,7 +121,9 @@ namespace RA.Logic.TrackFileLogic
                 {
                     try
                     {
-                        filesCount = Directory.EnumerateFiles(options.DirectoryPath, "*", SearchOption.TopDirectoryOnly).Count();
+                        filesCount = Directory.EnumerateFiles(options.DirectoryPath, "*", SearchOption.TopDirectoryOnly)
+                            .Where(file => SupportedTrackFormats.Contains(Path.GetExtension(file)))
+                            .Count();
                     }
                     catch (UnauthorizedAccessException ex)
                     {

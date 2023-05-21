@@ -34,8 +34,9 @@
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                 ChildPropertyName="Children"
                 IsAnimationEnabled="True"
-                BorderThickness="1"
+                BorderThickness="1" ItemHeight="28"
                 LoadOnDemandCommand="{Binding TreeMenuService.ExecuteOnDemandLoadingCommand}">
+            
             <syncfusion:SfTreeView.ItemTemplate>
                 <DataTemplate>
                     <Grid>

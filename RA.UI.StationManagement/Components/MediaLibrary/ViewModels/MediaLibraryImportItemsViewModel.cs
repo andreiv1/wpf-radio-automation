@@ -25,19 +25,24 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         private readonly IWindowService windowService;
         private readonly IDispatcherService dispatcherService;
         private readonly INavigationService<MediaLibraryImportItemsViewModel> navigationService;
+        private readonly IMessageBoxService messageBoxService;
         private readonly ITrackFilesProcessor trackFilesProcessor;
         private readonly ITrackFilesImporter trackFilesImporter;
 
         [ObservableProperty]
         private ImportItemsModel model = new();
-        public MediaLibraryImportItemsViewModel(IWindowService windowService, IDispatcherService dispatcherService,
-            INavigationService<MediaLibraryImportItemsViewModel> navigationService,
-            ITrackFilesProcessor trackFilesProcessor, ITrackFilesImporter trackFilesImporter) : base(navigationService)
+        public MediaLibraryImportItemsViewModel(IWindowService windowService,
+                                                IDispatcherService dispatcherService,
+                                                INavigationService<MediaLibraryImportItemsViewModel> navigationService,
+                                                IMessageBoxService messageBoxService,
+                                                ITrackFilesProcessor trackFilesProcessor,
+                                                ITrackFilesImporter trackFilesImporter) : base(navigationService)
         {
             PageChanged += MediaLibraryImportItemsViewModel_PageChanged;
             this.windowService = windowService;
             this.dispatcherService = dispatcherService;
             this.navigationService = navigationService;
+            this.messageBoxService = messageBoxService;
             this.trackFilesProcessor = trackFilesProcessor;
             this.trackFilesImporter = trackFilesImporter;
         }
@@ -147,11 +152,22 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         [RelayCommand(CanExecute = nameof(CanExecuteImport))]
         private async Task ExecuteImport()
         {
-            await trackFilesImporter.ImportAsync(Model.ProcessingTracks);
-            dispatcherService.InvokeOnUIThread(() =>
-            {
-                Model.Messages.Add($"Tracks has been imported succesfully into database.");
-            });
+            int result = await trackFilesImporter.ImportAsync(Model.ProcessingTracks);
+            //dispatcherService.InvokeOnUIThread(() =>
+            //{
+            //    Model.Messages.Add($"{result} {(result == 1 ? "track" : "tracks")} has been imported succesfully into database.");
+            //});
+            messageBoxService.ShowYesNoInfo($"{result} {(result == 1 ? "track" : "tracks")} has been imported succesfully into database.\n Do you want to make a new import?",
+                () =>
+                {
+                    //Yes
+                    Page = 0;
+                }, () =>
+                {
+                    //No
+                    windowService.CloseWindow(this);
+                });
+            
 
         }
 

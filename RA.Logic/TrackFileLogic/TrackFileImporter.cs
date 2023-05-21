@@ -23,7 +23,7 @@ namespace RA.Logic.TrackFileLogic
             await ImportAsync(new ProcessingTrack[] { processingTrack });
         }
 
-        public async Task ImportAsync(IEnumerable<ProcessingTrack> processingTracks)
+        public async Task<int> ImportAsync(IEnumerable<ProcessingTrack> processingTracks)
         {
             List<TrackDTO?> toImport = processingTracks
                 .Where(pt => pt.Status == Enums.ProcessingTrackStatus.OK &&
@@ -31,7 +31,7 @@ namespace RA.Logic.TrackFileLogic
                 .Select(pt => pt.TrackDto)
                 .ToList();
             
-            await tracksService.AddTracks(toImport);
+            return await tracksService.AddTracks(toImport);
 
         }
 
