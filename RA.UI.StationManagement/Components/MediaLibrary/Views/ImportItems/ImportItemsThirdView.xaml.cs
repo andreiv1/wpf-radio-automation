@@ -27,6 +27,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Views.ImportItems
         public ImportItemsThirdView()
         {
             InitializeComponent();
+            
         }
 
         private void ProgressBar_Loaded(object sender, RoutedEventArgs e)

@@ -33,8 +33,8 @@ namespace RA.Logic.TrackFileLogic
             {
                 try
                 {
-                    dto.Title = metaReader.GetField(TrackMetadataField.Title) as string ?? defaultTitle;
-                    var artists = await ProcessArtistsAsync(dto, metaReader.GetField(TrackMetadataField.Artists) as string ?? defaultArtist);
+                    dto.Title = metaReader.GetField(TrackMetadataField.Title) as string ?? string.Empty;
+                    var artists = await ProcessArtistsAsync(dto, metaReader.GetField(TrackMetadataField.Artists) as string ?? string.Empty);
                     dto.Artists = artists.ToList();
                     dto.Album = metaReader.GetField(TrackMetadataField.Album) as string ?? string.Empty;
                     int? year = metaReader.GetField(TrackMetadataField.Year) as int?;
@@ -51,6 +51,20 @@ namespace RA.Logic.TrackFileLogic
                     track.Status = ProcessingTrackStatus.FAILED;
                 }
             }
+            if (string.IsNullOrEmpty(dto.Title) || dto.Artists?.Count == 0)
+            {
+                var titleAndArtist = TrackMetadataReader.GetTitleAndArtistFromPath(path);
+                if (titleAndArtist.Artist is not null)
+                {
+                    var artists = titleAndArtist.Artist;
+                    var processedArtists = await ProcessArtistsAsync(dto, metaReader.GetField(TrackMetadataField.Artists) as string ?? defaultArtist);
+                    dto.Artists = processedArtists.ToList();
+                
+                }
+                dto.Title = titleAndArtist.Title;
+            }
+
+            
             track.TrackDto = dto;
             return track;
         }

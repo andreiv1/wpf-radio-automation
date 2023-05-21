@@ -1,5 +1,6 @@
 ﻿using RA.Logic.TrackFileLogic.Enums;
 using RA.Logic.TrackFileLogic.Exceptions;
+using RA.Logic.TrackFileLogic.Models;
 using System.Security.Cryptography;
 using System.Text;
 

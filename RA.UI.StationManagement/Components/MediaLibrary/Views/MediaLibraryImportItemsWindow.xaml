@@ -11,7 +11,7 @@
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=localvm:MediaLibraryImportItemsViewModel}"
-        Title="MediaLibraryImportItemsWindow"
+        Title="Media Library | Import items"
         Height="600" Width="700"
         MinHeight="600" MinWidth="700" ResizeBorderThickness="0"
         CornerRadius="0">

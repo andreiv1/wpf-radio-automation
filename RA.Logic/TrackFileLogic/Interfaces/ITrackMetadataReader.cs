@@ -7,11 +7,7 @@ using System.Threading.Tasks;
 
 namespace RA.Logic.TrackFileLogic
 {
-    public class ArtistTitleData
-    {
-        public String? Artist { get; set; }
-        public String? Title { get; set; }
-    }
+    
     public interface ITrackMetadataReader
     {
         public object? GetField(TrackMetadataField field);
