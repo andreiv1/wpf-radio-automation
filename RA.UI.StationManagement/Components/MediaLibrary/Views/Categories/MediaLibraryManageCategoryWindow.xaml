@@ -82,7 +82,8 @@ Please add a name, a suggestive description if you need and a color for easily d
                                      Text="{Binding Category.Description}"/>
 
             <Label Grid.Row="4" Content="Color" FontWeight="DemiBold"/>
-            <syncfusion:ColorPicker Grid.Row="4" Grid.Column="1" Color="{Binding Category.Color, Converter={StaticResource HexToColorConverter}}"
+            <syncfusion:ColorPicker Grid.Row="4" Grid.Column="1" Color="{Binding Category.Color, 
+                Converter={StaticResource HexToColorConverter},  Mode=TwoWay}"
                                     />
 
             <StackPanel Grid.Row="6" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
