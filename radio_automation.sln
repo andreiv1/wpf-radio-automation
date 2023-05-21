@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RA.Database", "RA.Database\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RA.Logic", "RA.Logic\RA.Logic.csproj", "{95C2B635-D5A0-412A-950F-00E2800EC657}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RA.UI.DatabaseConfiguration", "RA.UI.DatabaseConfiguration\RA.UI.DatabaseConfiguration.csproj", "{392A4911-1F7D-49F2-8A40-FA382D6590E0}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DC4ADB31-CF44-474E-A23B-141DBC4AB2CC}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -52,14 +50,6 @@ Global
 		{95C2B635-D5A0-412A-950F-00E2800EC657}.Release|Any CPU.Build.0 = Release|Any CPU
 		{95C2B635-D5A0-412A-950F-00E2800EC657}.Release|x64.ActiveCfg = Release|Any CPU
 		{95C2B635-D5A0-412A-950F-00E2800EC657}.Release|x64.Build.0 = Release|Any CPU
-		{392A4911-1F7D-49F2-8A40-FA382D6590E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{392A4911-1F7D-49F2-8A40-FA382D6590E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{392A4911-1F7D-49F2-8A40-FA382D6590E0}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{392A4911-1F7D-49F2-8A40-FA382D6590E0}.Debug|x64.Build.0 = Debug|Any CPU
-		{392A4911-1F7D-49F2-8A40-FA382D6590E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{392A4911-1F7D-49F2-8A40-FA382D6590E0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{392A4911-1F7D-49F2-8A40-FA382D6590E0}.Release|x64.ActiveCfg = Release|Any CPU
-		{392A4911-1F7D-49F2-8A40-FA382D6590E0}.Release|x64.Build.0 = Release|Any CPU
 		{B7143DE1-0DC1-4B39-B3FC-C075B423F262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B7143DE1-0DC1-4B39-B3FC-C075B423F262}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7143DE1-0DC1-4B39-B3FC-C075B423F262}.Debug|x64.ActiveCfg = Debug|Any CPU

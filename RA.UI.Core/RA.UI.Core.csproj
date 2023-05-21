@@ -21,6 +21,9 @@
     <None Remove="Resources\Icons\icons8-close-48.png" />
     <None Remove="Resources\Icons\icons8-conversion-48.png" />
     <None Remove="Resources\Icons\icons8-copy-48.png" />
+    <None Remove="Resources\Icons\icons8-database-administrator-48.png" />
+    <None Remove="Resources\Icons\icons8-database-restore-48.png" />
+    <None Remove="Resources\Icons\icons8-database-view-48.png" />
     <None Remove="Resources\Icons\icons8-date-span-48.png" />
     <None Remove="Resources\Icons\icons8-day-view-48.png" />
     <None Remove="Resources\Icons\icons8-done-48.png" />
@@ -66,6 +69,12 @@
     <None Remove="Resources\Images\splash_dark_antena.png" />
     <None Remove="Resources\Images\splash_dark_library.png" />
     <None Remove="Resources\Images\track_default_image.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Icons\icons8-database-view-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -119,6 +128,12 @@
     </Resource>
     <Resource Include="Resources\Icons\icons8-copy-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\icons8-database-administrator-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\icons8-database-restore-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\icons8-date-span-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

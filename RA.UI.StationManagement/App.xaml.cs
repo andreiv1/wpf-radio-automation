@@ -51,7 +51,6 @@ using RA.UI.StationManagement.Components.Reports.ViewModels;
 using RA.UI.StationManagement.Components.Reports.Views;
 using RA.UI.StationManagement.Components.Settings.ViewModels;
 using RA.UI.StationManagement.Components.Settings.Views;
-using RA.UI.Core.Shared.DatabaseConfiguration;
 
 namespace RA.UI.StationManagement
 {
@@ -71,7 +70,7 @@ namespace RA.UI.StationManagement
                 {
                     services.AddDbContextFactory<AppDbContext>(options =>
                     {
-                        String connString = "server=localhost;Port=3306;database=ratest;user=roo;password=";
+                        String connString = "server=localhost;Port=3306;database=ratest;user=root;password=";
                         options.UseMySql(connString, ServerVersion.AutoDetect(connString))
                             .EnableSensitiveDataLogging(false);
                     });
@@ -130,7 +129,7 @@ namespace RA.UI.StationManagement
                     #region Singleton viewModel <=> View
                     viewModelToSingletonWindowMap.Add(typeof(AuthViewModel), typeof(AuthWindow));
                     viewModelToSingletonWindowMap.Add(typeof(LauncherViewModel), typeof(LauncherWindow));
-                    viewModelToSingletonWindowMap.Add(typeof(DatabaseConfigurationViewModel), typeof(DatabaseConfigurationWindow));
+                    viewModelToSingletonWindowMap.Add(typeof(DatabaseSetupViewModel), typeof(DatabaseSetupWindow));
 
                     //Register the viewmodel&view
                     foreach (KeyValuePair<Type, Type> vmAndView in viewModelToSingletonWindowMap)
@@ -260,7 +259,8 @@ namespace RA.UI.StationManagement
             {
                 dispatcherService.InvokeOnUIThread(() =>
                 {
-                    windowService.ShowWindow<AuthViewModel>();
+                    windowService.ShowWindow<DatabaseSetupViewModel>();
+                    //windowService.ShowWindow<AuthViewModel>();
                     splashScreen.Hide();
                 });
             });
