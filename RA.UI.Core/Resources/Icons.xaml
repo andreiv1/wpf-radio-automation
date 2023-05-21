@@ -83,4 +83,10 @@
     <BitmapImage x:Key="FailedIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-cancel-48.png"/>
     <BitmapImage x:Key="WarningIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-warning-48.png"/>
 
+    <BitmapImage x:Key="JingleIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-bell-48.png"/>
+    <BitmapImage x:Key="CommercialIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-commercial-48.png"/>
+    <BitmapImage x:Key="CommercialPaidIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-us-dollar-circled-48.png"/>
+    <BitmapImage x:Key="SongIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-music-48.png"/>
+    <BitmapImage x:Key="OtherTrackIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-question-mark-48.png"/>
+    <BitmapImage x:Key="VoiceOverIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-voice-48.png"/>
 </ResourceDictionary>

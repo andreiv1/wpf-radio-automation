@@ -28,7 +28,7 @@
             
             <!-- Preview to import items -->
             <syncfusion:SfDataGrid x:Name="importItemsGrid" Grid.Row="0" Margin="5,5,5,0"
-                                   AutoGenerateColumns="False" AllowSorting="False"
+                                   AutoGenerateColumns="False" AllowSorting="False" AllowResizingColumns="True"
                                    ColumnSizer="AutoWithLastColumnFill"
                                    SelectionUnit="Row" NavigationMode="Row"
                                    ItemsSource="{Binding Model.ProcessingTracks}"
@@ -38,7 +38,7 @@
                 <syncfusion:SfDataGrid.Columns>
                     <!--<syncfusion:GridTextColumn HeaderText="Status"
                                                MappingName="Status" Width="50"/>-->
-                    <syncfusion:GridTemplateColumn HeaderText="Status"
+                    <syncfusion:GridTemplateColumn HeaderText="Status" MinimumWidth="50"
                                                    MappingName="Status" Width="50">
                         <syncfusion:GridTemplateColumn.CellTemplate>
                             <DataTemplate>

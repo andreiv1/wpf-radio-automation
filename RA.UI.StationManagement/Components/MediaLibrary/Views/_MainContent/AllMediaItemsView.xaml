@@ -78,6 +78,35 @@
                        AutoGenerateColumns="False"
                        RowHeight="30">
             <syncfusion:SfDataGrid.Columns>
+                <syncfusion:GridTemplateColumn MinimumWidth="50" HeaderText=" "
+                                                   MappingName="Type" Width="16" MaximumWidth="16">
+                    <syncfusion:GridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Width="16" Height="16">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Source" Value="{StaticResource OtherTrackIcon}"/>
+                                        <!-- Default icon -->
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Type}" Value="Jingle">
+                                                <Setter Property="Source" Value="{StaticResource JingleIcon}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="Song">
+                                                <Setter Property="Source" Value="{StaticResource SongIcon}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="Commercial">
+                                                <Setter Property="Source" Value="{StaticResource CommercialPaidIcon}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="Voiceover">
+                                                <Setter Property="Source" Value="{StaticResource VoiceOverIcon}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DataTemplate>
+                    </syncfusion:GridTemplateColumn.CellTemplate>
+                </syncfusion:GridTemplateColumn>
                 <syncfusion:GridTextColumn HeaderText="Artists" MappingName="Artists"
                                            MinimumWidth="200"
                                            AllowResizing="True"
