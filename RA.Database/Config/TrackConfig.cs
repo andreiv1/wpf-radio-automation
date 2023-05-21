@@ -15,6 +15,7 @@ namespace RA.Database.Config
     {
         public void Configure(EntityTypeBuilder<Track> builder)
         {
+            builder.HasIndex(t => t.FilePath);
             builder.HasMany(t => t.Categories)
                 .WithMany(c => c.Tracks)
                 .UsingEntity<Dictionary<string, object>>(

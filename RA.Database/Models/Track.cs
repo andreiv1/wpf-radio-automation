@@ -1,4 +1,5 @@
-﻿using RA.Database.Models.Abstract;
+﻿using Microsoft.EntityFrameworkCore;
+using RA.Database.Models.Abstract;
 using RA.Database.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -32,6 +33,8 @@ namespace RA.Database.Models
 
         [MaxLength(2000)]
         public String Lyrics { get; set; }
+
+        [MaxLength(500)]
         public String FilePath { get; set; }
 
         [MaxLength(50)]

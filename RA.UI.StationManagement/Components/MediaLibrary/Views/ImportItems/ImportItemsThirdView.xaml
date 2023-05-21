@@ -33,7 +33,7 @@
                                    SelectionUnit="Row" NavigationMode="Row"
                                    ItemsSource="{Binding Model.ProcessingTracks}"
                                    RowHeight="26"
-                                  
+                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                    >
                 <syncfusion:SfDataGrid.Columns>
                     <!--<syncfusion:GridTextColumn HeaderText="Status"
