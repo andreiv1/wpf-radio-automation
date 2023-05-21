@@ -12,7 +12,7 @@ namespace RA.UI.Core.Services
         void ShowError(string message);
         void ShowWarning(string message);
         void ShowInfo(string message);
-        void ShowYesNoInfo(string message, Action actionYes, Action actionNo);
+        void ShowYesNoInfo(string message, string title, Action actionYes, Action actionNo);
     }
     public class MessageBoxService : IMessageBoxService
     {
@@ -31,9 +31,9 @@ namespace RA.UI.Core.Services
             MessageBox.Show(message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        public void ShowYesNoInfo(string message, Action actionYes, Action actionNo)
+        public void ShowYesNoInfo(string message, string title, Action actionYes, Action actionNo)
         {
-            var result = MessageBox.Show(message, "Information", MessageBoxButton.YesNo);
+            var result = MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Question);
             if(result == MessageBoxResult.Yes)
             {
                 actionYes();

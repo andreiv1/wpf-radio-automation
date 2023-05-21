@@ -78,9 +78,9 @@ namespace RA.DAL
             return await dbContext.GetTracks()
                 .Skip(skip).Take(take)
                 .Where(t => t.Categories.Contains(new Category()
-                    {
-                        Id = categoryId,
-                    }))
+                {
+                    Id = categoryId,
+                }))
                 .Select(t => TrackListingDTO.FromEntity(t))
                 .ToListAsync();
         }

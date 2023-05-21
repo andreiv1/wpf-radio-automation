@@ -25,14 +25,19 @@ namespace RA.Logic.TrackFileLogic
 
         public async Task<int> ImportAsync(IEnumerable<ProcessingTrack> processingTracks)
         {
-            List<TrackDTO?> toImport = processingTracks
-                .Where(pt => pt.Status == Enums.ProcessingTrackStatus.OK &&
-                 pt.TrackDto != null)
-                .Select(pt => pt.TrackDto)
-                .ToList();
-            
-            return await tracksService.AddTracks(toImport);
+            try
+            {
+                List<TrackDTO?> toImport = processingTracks
+                    .Where(pt => pt.Status == Enums.ProcessingTrackStatus.OK &&
+                     pt.TrackDto != null)
+                    .Select(pt => pt.TrackDto)
+                    .ToList();
 
+                return await tracksService.AddTracks(toImport);
+            } catch (Exception ex)
+            {
+                return 0;
+            }
         }
 
     }

@@ -59,7 +59,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             var tracks = await tracksService.GetTrackListByCategoryAsync(categoryId, 0, 100);
             HasTracks = tracks.Any();
             CategoryTracks.Clear();
-            foreach(var track in tracks)
+            foreach(var track in tracks.ToList())
             {
                 CategoryTracks.Add(track);
             }

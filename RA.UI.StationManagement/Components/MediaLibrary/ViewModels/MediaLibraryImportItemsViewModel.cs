@@ -153,11 +153,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         private async Task ExecuteImport()
         {
             int result = await trackFilesImporter.ImportAsync(Model.ProcessingTracks);
-            //dispatcherService.InvokeOnUIThread(() =>
-            //{
-            //    Model.Messages.Add($"{result} {(result == 1 ? "track" : "tracks")} has been imported succesfully into database.");
-            //});
             messageBoxService.ShowYesNoInfo($"{result} {(result == 1 ? "track" : "tracks")} has been imported succesfully into database.\n Do you want to make a new import?",
+                "Pick an option",
                 () =>
                 {
                     //Yes

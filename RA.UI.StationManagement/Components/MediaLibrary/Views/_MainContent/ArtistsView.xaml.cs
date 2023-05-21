@@ -1,6 +1,7 @@
 ﻿using RA.UI.Core;
 using RA.UI.StationManagement.Components.MediaLibrary.Models;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent;
+using Syncfusion.UI.Xaml.Grid;
 using System.Windows.Input;
 
 namespace RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent
@@ -19,8 +20,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent
 
         private void artistTracksGrid_DetailsViewCollapsed(object sender, Syncfusion.UI.Xaml.Grid.GridDetailsViewCollapsedEventArgs e)
         {
-            var artist = e.Record as ArtistModel;
-            artist?.Tracks?.Clear();
+            //var artist = e.Record as ArtistModel;
+            //artist?.Tracks?.Clear();
             
         }
 
@@ -28,11 +29,15 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent
         {
             var vm = DataContext as ArtistsViewModel;
             var artist = e.Record as ArtistModel;
-            e.DetailsViewItemsSource.Clear();
-            if (artist != null)
+            
+            if (vm != null && artist != null)
             {
-                await vm?.LoadTracksForArtist(artist);
+                await vm.LoadTracksForArtist(artist);
+                e.DetailsViewItemsSource.Clear();
                 e.DetailsViewItemsSource.Add("Tracks", artist.Tracks);
+                var recordIndex = artistTracksGrid.ResolveToRecordIndex(artistTracksGrid.ResolveToRowIndex(e.Record));
+                artistTracksGrid.CollapseDetailsViewAt(recordIndex);
+                artistTracksGrid.ExpandDetailsViewAt(recordIndex);
             }
         }
     }
