@@ -99,21 +99,43 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
                     Model.Messages.Add("Started the process of importing...");
                 });
 
-                //TODO: put it in settings
+                //TODO: ImagePath from Settings
                 TrackMetadataReader.ImagePath = @"C:\Users\Andrei\Desktop\images";
                 TrackFilesProcessorOptions options = new TrackFilesProcessorOptionsBuilder(Model.FolderPath, Model.SelectedCategory.Id)
                     .SetReadMetadata(Model.ReadItemsMetadata)
                     .SetTrackStatus(Model.SelectedTrackStatus)
                     .SetTrackType(Model.SelectedTrackType)
                     .Build();
-
+                Model.ValidItems = 0;
+                Model.InvalidItems = 0;
+                Model.WarningItems = 0;
+                Model.ProcessedItems = 0;
+                Model.TotalItems = await trackFilesProcessor.CountItemsInDirectoryAsync(options);
                 await Task.Run(async () =>
                 {
                     await foreach (var processingTrack in trackFilesProcessor.ProcessItemsFromDirectoryAsync(options))
                     {
                         dispatcherService.InvokeOnUIThread(() =>
                         {
+  
+                            switch (processingTrack.Status)
+                            {
+                                case Logic.TrackFileLogic.Enums.ProcessingTrackStatus.OK:
+                                    Model.ValidItems++;
+                                    break;
+                                case Logic.TrackFileLogic.Enums.ProcessingTrackStatus.FAILED:
+                                    Model.InvalidItems++;
+                                    break;
+                                case Logic.TrackFileLogic.Enums.ProcessingTrackStatus.WARNING:
+                                    Model.WarningItems++;
+                                    break;
+                            }
+                            Model.ProcessedItems++;
                             Model.ProcessingTracks.Add(processingTrack);
+                            if(!string.IsNullOrEmpty(processingTrack.Message))
+                            {
+                                Model.Messages.Add($"{processingTrack.Message}");
+                            }
                         });
                         
                     }

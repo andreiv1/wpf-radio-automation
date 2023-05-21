@@ -13,6 +13,8 @@ namespace RA.Logic.TrackFileLogic.Models
         public TrackDTO? TrackDto { get; set; }
         public ProcessingTrackStatus Status { get; set; }
 
+        public string Message { get; set; } = string.Empty;
+
         public string? Categories => TrackDto?.Categories?.Count > 0 ?
             string.Join("; ", TrackDto.Categories.Select(c => c.CategoryName)) : null;
 

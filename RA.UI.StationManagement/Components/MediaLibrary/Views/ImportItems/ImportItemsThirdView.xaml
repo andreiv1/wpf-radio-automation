@@ -36,9 +36,8 @@
                                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                    >
                 <syncfusion:SfDataGrid.Columns>
-                    <!--<syncfusion:GridTextColumn HeaderText="Status"
-                                               MappingName="Status" Width="50"/>-->
-                    <syncfusion:GridTemplateColumn HeaderText="Status" MinimumWidth="50"
+   
+                    <syncfusion:GridTemplateColumn HeaderText="Status" MinimumWidth="50" MaximumWidth="50"
                                                    MappingName="Status" Width="50">
                         <syncfusion:GridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -61,13 +60,13 @@
                             </DataTemplate>
                         </syncfusion:GridTemplateColumn.CellTemplate>
                     </syncfusion:GridTemplateColumn>
-                    <syncfusion:GridTextColumn HeaderText="Artists" Width="130"
+                    <syncfusion:GridTextColumn HeaderText="Artists" Width="220"  ColumnSizer="Star"
                                                MappingName="Artists"/>
-                    <syncfusion:GridTextColumn HeaderText="Title" Width="220"
+                    <syncfusion:GridTextColumn HeaderText="Title" Width="150" ColumnSizer="Star"
                                                MappingName="TrackDto.Title"/>
                     <syncfusion:GridTextColumn HeaderText="Category" Width="120"
                                                MappingName="Categories"/>
-                    <syncfusion:GridTextColumn HeaderText="File Path"
+                    <syncfusion:GridTextColumn HeaderText="File Path"  ColumnSizer="Star"
                                                MappingName="TrackDto.FilePath"/>
                 </syncfusion:SfDataGrid.Columns>
             </syncfusion:SfDataGrid>
@@ -83,7 +82,7 @@
                         <Setter Property="Height" Value="130"/>
                     </Style>
                 </Grid.Resources>
-                <GroupBox Grid.Column="0" Header="Summary" 
+                <GroupBox Grid.Column="0" Header="Summary" FontWeight="DemiBold"
                       Width="170">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -142,7 +141,7 @@
                 Height="10"
                 Minimum="0" 
                 Maximum="{Binding Model.TotalItems, FallbackValue=0.1}" 
-                Value="{Binding Model.ValidItems, FallbackValue=0}"
+                Value="{Binding Model.ProcessedItems}"
                 Loaded="ProgressBar_Loaded"/>
         </Grid>
     </GroupBox>

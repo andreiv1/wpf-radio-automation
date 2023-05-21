@@ -29,10 +29,13 @@ namespace RA.Logic.TrackFileLogic
             ITrackMetadataReader metaReader = new TrackMetadataReader(path);
             ProcessingTrack track = new();
             TrackDTO dto = new();
-            if(await tracksService.TrackExistsByPath(path))
+
+            if (await tracksService.TrackExistsByPath(path))
             {
                 track.Status = ProcessingTrackStatus.WARNING;
+                track.Message = $"Found duplicate at path: {path}";
             }
+
             dto.FilePath = path;
             double duration = (double)(metaReader.GetField(TrackMetadataField.Duration) ?? 0);
             dto.Duration = duration;
@@ -73,6 +76,7 @@ namespace RA.Logic.TrackFileLogic
             }
 
             
+
             track.TrackDto = dto;
             return track;
         }
@@ -105,6 +109,33 @@ namespace RA.Logic.TrackFileLogic
                     yield return processingTrack!;
                 }
             }
+        }
+
+        public async Task<int> CountItemsInDirectoryAsync(TrackFilesProcessorOptions options)
+        {
+            int count = await Task.Run(() =>
+            {
+                int filesCount = 0;
+                // Without traversing subfolders
+                if (options.DirectoryPath is not null)
+                {
+                    try
+                    {
+                        filesCount = Directory.EnumerateFiles(options.DirectoryPath, "*", SearchOption.TopDirectoryOnly).Count();
+                    }
+                    catch (UnauthorizedAccessException ex)
+                    {
+                        Console.WriteLine("Access to directory denied: " + ex.Message);
+                    }
+                    catch (DirectoryNotFoundException ex)
+                    {
+                        Console.WriteLine("Directory not found: " + ex.Message);
+                    }
+                }
+                return filesCount;
+            });
+
+            return count;
         }
         private async Task<IEnumerable<TrackArtistDTO>> ProcessArtistsAsync(TrackDTO trackDto, String inputArtists)
         {

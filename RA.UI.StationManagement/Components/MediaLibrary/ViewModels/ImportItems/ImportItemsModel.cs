@@ -130,13 +130,16 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Models
         public ObservableCollection<string> Messages { get; set; } = new();
 
         [ObservableProperty]
-        private int totalItems = 1;
+        private int totalItems = 0;
         [ObservableProperty]
         private int validItems = 0;
         [ObservableProperty]
         private int invalidItems = 0;
         [ObservableProperty]
         private int warningItems = 0;
+
+        [ObservableProperty]
+        private int processedItems = 0;
         #endregion
     }
 }
