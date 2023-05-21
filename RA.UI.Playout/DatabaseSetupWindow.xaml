@@ -1,9 +1,8 @@
-﻿<uicore:RAWindow x:Class="RA.UI.StationManagement.DatabaseSetupWindow"
+﻿<uicore:RAWindow x:Class="RA.UI.Playout.DatabaseSetupWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RA.UI.StationManagement"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         mc:Ignorable="d"
@@ -74,7 +73,7 @@
             </Grid>
             <syncfusion:ButtonAdv Label="Save credentials" HorizontalAlignment="Right" Margin="0,0,15,0"
                                   SmallIcon="{StaticResource SaveIcon}" Command="{Binding SaveCredentialsCommand}"/>
-            
+
         </StackPanel>
 
     </Grid>

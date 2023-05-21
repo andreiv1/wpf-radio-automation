@@ -53,6 +53,7 @@ using RA.UI.StationManagement.Components.Settings.ViewModels;
 using RA.UI.StationManagement.Components.Settings.Views;
 using RA.Logic.Database;
 using RA.Logic;
+using RA.UI.Core.Shared;
 
 namespace RA.UI.StationManagement
 {
@@ -285,7 +286,7 @@ namespace RA.UI.StationManagement
             {
                 IDbContextFactory<AppDbContext> dbContextFactory = AppHost!.Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
                 using var dbContext = dbContextFactory.CreateDbContext();
-                var result = dbContext.Database.ExecuteSqlRaw("SELECT 1 FROM DUAL;");
+                var result = dbContext.Database.ExecuteSqlRaw("SELECT 1 FROM Tracks;");
                 return true;
             }
             catch (MySqlException ex)

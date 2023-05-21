@@ -4,11 +4,14 @@ using Microsoft.Extensions.Hosting;
 using MySqlConnector;
 using RA.DAL;
 using RA.Database;
+using RA.Logic;
 using RA.Logic.AudioPlayer;
 using RA.Logic.AudioPlayer.Interfaces;
+using RA.Logic.Database;
 using RA.UI.Core.Factories;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
+using RA.UI.Core.Shared;
 using RA.UI.Core.Themes;
 using RA.UI.Playout.ViewModels;
 using RA.UI.Playout.ViewModels.Components;
@@ -37,9 +40,16 @@ namespace RA.UI.Playout
                 {
                     services.AddDbContextFactory<AppDbContext>(options =>
                     {
-                        String connString = "server=localhost;Port=3306;database=ratest;user=root;password=";
-                        options.UseMySql(connString, ServerVersion.AutoDetect(connString))
-                            .EnableSensitiveDataLogging(true);
+                        String connString = DatabaseCredentials.RetrieveConnectionString();
+                        try
+                        {
+                            options.UseMySql(connString, ServerVersion.AutoDetect(connString))
+                                .EnableSensitiveDataLogging(false);
+                        }
+                        catch (Exception ex)
+                        {
+                            DebugHelper.WriteLine(this, ex.Message);
+                        }
                     });
 
                     services.AddSingleton<IWindowService, WindowService>();
@@ -124,15 +134,10 @@ namespace RA.UI.Playout
             SplashScreenWindow splashScreen = new SplashScreenWindow();
             splashScreen.Show();
 
+            var canConnect = false;
             var testDatabaseTask = Task.Run(() =>
             {
-                if (!CanConnectToDatabase())
-                {
-                    dispatcherService.InvokeOnUIThread(() =>
-                    {
-                        Application.Current.Shutdown();
-                    });
-                }
+                canConnect = CanConnectToDatabase();
             });
 
             var loadComponents = Task.Run(async () =>
@@ -146,8 +151,16 @@ namespace RA.UI.Playout
             {
                 dispatcherService.InvokeOnUIThread(() =>
                 {
-                    windowService.ShowWindow<MainViewModel>();
-                    splashScreen.Close();
+                    if (canConnect)
+                    {
+                        windowService.ShowWindow<MainViewModel>();
+                    }
+                    else
+                    {
+                        windowService.ShowWindow<DatabaseSetupViewModel>();
+                    }
+
+                    splashScreen.Hide();
                 });
             });
 
@@ -160,12 +173,17 @@ namespace RA.UI.Playout
             try
             {
                 IDbContextFactory<AppDbContext> dbContextFactory = AppHost!.Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
-                var dbContext = dbContextFactory.CreateDbContext();
+                using var dbContext = dbContextFactory.CreateDbContext();
+                var result = dbContext.Database.ExecuteSqlRaw("SELECT 1 FROM Tracks;");
                 return true;
             }
             catch (MySqlException ex)
             {
                 messageBoxService.ShowError($"Failed to connect to the database: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
                 return false;
             }
 

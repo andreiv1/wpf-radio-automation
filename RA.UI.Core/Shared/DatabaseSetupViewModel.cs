@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using MySqlConnector;
 using RA.Database;
-using RA.Logic;
 using RA.Logic.Database;
+using RA.UI.Core.Services;
 using RA.UI.Core.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,9 +12,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
+using System.Xml.Linq;
 
-namespace RA.UI.StationManagement
+namespace RA.UI.Core.Shared
 {
     public partial class DatabaseSetupViewModel : ViewModelBase
     {
@@ -26,8 +26,9 @@ namespace RA.UI.StationManagement
         private string dbUser = "root";
         [ObservableProperty]
         private string dbPassword = "";
+        private readonly IMessageBoxService messageBoxService;
 
-        public DatabaseSetupViewModel()
+        public DatabaseSetupViewModel(IMessageBoxService messageBoxService)
         {
             var creds = DatabaseCredentials.GetCredentials();
             if (creds.Count > 0)
@@ -44,6 +45,8 @@ namespace RA.UI.StationManagement
                 DbUser = creds["user"];
                 DbPassword = creds["password"];
             }
+
+            this.messageBoxService = messageBoxService;
         }
 
         [RelayCommand]
@@ -62,27 +65,56 @@ namespace RA.UI.StationManagement
             }
             creds.Add("database", DbName);
             creds.Add("user", DbUser);
-            creds.Add("password", DbPassword); 
+            creds.Add("password", DbPassword);
             DatabaseCredentials.StoreCreds(creds);
+        }
 
-            //var dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
-            //    .Options.Use;
-            
-            //var dbContext = new AppDbContext(dbContextOptions);
-            //var result = dbContext.Database.ExecuteSqlRaw("SELECT 1 FROM DUAL;");
+        [RelayCommand]
+        private void TestConnection()
+        {
+            try
+            {
+                var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+                string connString = DatabaseCredentials.RetrieveConnectionString();
 
+                optionsBuilder.UseMySql(connString, ServerVersion.AutoDetect(connString))
+                    .EnableSensitiveDataLogging(false);
+
+                using var dbContext = new AppDbContext(optionsBuilder.Options);
+                var result = dbContext.Database.ExecuteSqlRaw("SELECT 1 FROM DUAL;");
+                messageBoxService.ShowInfo($"Connected succesfully!");
+            }
+            catch (MySqlException e)
+            {
+                messageBoxService.ShowError($"Mysql error: {e.Message}");
+            }
         }
 
         [RelayCommand]
         private void InstallDatabase()
         {
+            try
+            {
+                var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+                string connString = DatabaseCredentials.RetrieveConnectionString();
 
+                optionsBuilder.UseMySql(connString, ServerVersion.AutoDetect(connString))
+                    .EnableSensitiveDataLogging(false);
+
+                using var dbContext = new AppDbContext(optionsBuilder.Options);
+                dbContext.Database.EnsureCreated();
+                messageBoxService.ShowInfo($"Database created succesfully.");
+            }
+            catch (MySqlException e)
+            {
+                messageBoxService.ShowError($"Mysql error: {e.Message}");
+            }
         }
 
         [RelayCommand]
         private void UpgradeDatabase()
         {
-
+            messageBoxService.ShowWarning($"To do.");
         }
     }
 }
