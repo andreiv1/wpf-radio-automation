@@ -55,13 +55,14 @@
     <PackageReference Include="Syncfusion.SfSkinManager.Wpf" Version="21.1.35" />
     <PackageReference Include="Syncfusion.SfTextInputLayout.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.Themes.FluentLight.Wpf" Version="21.1.35" />
-    <PackageReference Include="Syncfusion.SfTreeNavigator.WPF" Version="21.1.35"/>
+    <PackageReference Include="Syncfusion.SfTreeNavigator.WPF" Version="21.1.35" />
 </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\RA.DAL\RA.DAL.csproj" />
       <ProjectReference Include="..\RA.Database\RA.Database.csproj" />
       <ProjectReference Include="..\RA.Dto\RA.DTO.csproj" />
+      <ProjectReference Include="..\RA.UI.Components\RA.UI.Components.csproj" />
       <ProjectReference Include="..\RA.UI.Core\RA.UI.Core.csproj" />
     </ItemGroup>
 

@@ -24,5 +24,16 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Views
         {
             InitializeComponent();
         }
+
+
+        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            soundwaveComponent.Play();
+        }
+
+        private void StopButton_Click(object sender, RoutedEventArgs e)
+        {
+            soundwaveComponent.Pause();
+        }
     }
 }

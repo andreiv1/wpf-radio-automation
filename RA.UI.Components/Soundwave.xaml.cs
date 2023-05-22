@@ -43,6 +43,8 @@ namespace RA.UI.Components
             var options = new CoreWebView2EnvironmentOptions("--disable-web-security");
             var environment = await CoreWebView2Environment.CreateAsync(null, null, options);
             await webView.EnsureCoreWebView2Async(environment);
+            webView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
+            webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
         }
 
         private void CloseWebView()
@@ -82,12 +84,19 @@ namespace RA.UI.Components
             var jsFuncCallStr = $"loadFile('{path}')";
             control.webView.NavigationCompleted += (s, e) =>
             {
-                //control.ExecuteJs($"console.log('Loading file path={path}')");
-                //control.ExecuteJs(jsFuncCallStr);
                 control.ExecuteJs("console.log('Test path')");
-                //control.ExecuteJs(@"loadFile('C:/Users/Andrei/Music/FakeRadio/Music/B-list/Anne-Marie - 2002.mp3')");
                 control.ExecuteJs(jsFuncCallStr);
             };
+        }
+
+        public void Play()
+        {
+            ExecuteJs("play()");
+        }
+
+        public void Pause()
+        {
+            ExecuteJs("pause()");
         }
 
     }

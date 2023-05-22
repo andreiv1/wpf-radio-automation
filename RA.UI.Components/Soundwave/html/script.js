@@ -5,6 +5,7 @@ const pauseButton = document.getElementById('pause-button')
 // Initialize WaveSurfer
 const wavesurfer = WaveSurfer.create({
     container: waveformContainer,
+    height: 100,
     plugins: [
         WaveSurfer.timeline.create({
             container: "#wave-timeline"
