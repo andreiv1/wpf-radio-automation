@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
-             mc:Ignorable="d" 
+             xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core" xmlns:components="clr-namespace:RA.UI.Playout.ViewModels.Components" d:DataContext="{d:DesignInstance Type=components:PlaylistViewModel}"
+                      mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.Resources>
@@ -23,9 +23,31 @@
                                    VerticalAlignment="Center"
                                    Margin="0,0,10,0"/>
 
-                    <Image Grid.Column="1" 
+                    <Image Width="24" Height="20" Grid.Column="1" Margin="0,0,10,0">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Setter Property="Source" Value="{StaticResource OtherTrackIcon}"/>
+                                <!-- Default icon -->
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding TrackType}" Value="Jingle">
+                                        <Setter Property="Source" Value="{StaticResource JingleIcon}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding TrackType}" Value="Song">
+                                        <Setter Property="Source" Value="{StaticResource SongIcon}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding TrackType}" Value="Commercial">
+                                        <Setter Property="Source" Value="{StaticResource CommercialPaidIcon}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding TrackType}" Value="Voiceover">
+                                        <Setter Property="Source" Value="{StaticResource VoiceOverIcon}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                    <!--<Image Grid.Column="1" 
                        VerticalAlignment="Center" Height="30" Width="30" Margin="0,0,10,0"
-                       Source="pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png" />
+                       Source="pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png" />-->
 
                     <DockPanel Grid.Column="2">
                         <TextBlock DockPanel.Dock="Top" Text="{Binding Artists}" VerticalAlignment="Center">

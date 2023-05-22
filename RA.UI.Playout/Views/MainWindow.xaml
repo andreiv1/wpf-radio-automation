@@ -6,10 +6,11 @@
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         xmlns:component="clr-namespace:RA.UI.Playout.Views.Components"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf" 
-                 xmlns:viewmodels="clr-namespace:RA.UI.Playout.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
-                 mc:Ignorable="d"
+        xmlns:viewmodels="clr-namespace:RA.UI.Playout.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+        mc:Ignorable="d" Closing="RAWindow_Closing"
         Icon="/Resources/playout_icon.ico" WindowStartupLocation="CenterScreen"
         Title="RA | Playout" MinHeight="700" MinWidth="1400"
+        KeyboardNavigation.TabNavigation="None"
                     
 >
     <Grid Margin="0,0,0,5">
@@ -108,7 +109,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center"
                                 Grid.Column="1">
-                        <Label Content="Loaded playlist duration" Margin="0,-5,0,0"
+                        <Label Content="Playlist duration" Margin="0,-5,0,0"
                                Foreground="Gray" FontWeight="Demibold" HorizontalAlignment="Center"/>
                         <TextBlock Text="HH:MM:SS" Foreground="White" FontSize="13" 
                            FontWeight="Bold" HorizontalAlignment="center"/>

@@ -14,6 +14,8 @@ namespace RA.DTO
         public string? Title { get; set; }
         public string? Type { get; set; }
         public string? FilePath { get; set; }
+
+        public string? ImageName { get; set; }
         public double Duration { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public DateTime DateAdded { get; set; }
@@ -29,6 +31,7 @@ namespace RA.DTO
                 Title = track.Title,
                 Type = track.Type.ToString(),
                 FilePath = track.FilePath,
+                ImageName = track.ImageName,
                 Duration = track.Duration,
                 ReleaseDate = track.ReleaseDate,
                 DateAdded = track.DateAdded,

@@ -93,7 +93,8 @@ namespace RA.UI.Playout.ViewModels.Components
         {
             if (playerItemNow is not null)
             {
-                MainVm.NowPlayingVm.UpdateNowPlaying(playerItemNow.Artists ?? "", playerItemNow.Title, playerItemNow.Duration);
+                MainVm.NowPlayingVm.UpdateNowPlaying(playerItemNow.Artists ?? "", playerItemNow.Title, playerItemNow.Duration, 
+                    playerItemNow.ImagePath);
             }
         }
 
@@ -130,6 +131,7 @@ namespace RA.UI.Playout.ViewModels.Components
         {
             MainVm.NowPlayingVm.IsPaused = false;
             MainVm.NowPlayingVm.IsItemLoaded = true;
+            playbackQueue.Stop();
             playbackQueue.Play();
             CalculateRemaining();
 

@@ -24,7 +24,7 @@
 
             <Image Grid.Column="0" 
                VerticalAlignment="Center" Height="80" Width="80"
-               Source="pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png" />
+               Source="{Binding Image}" />
             
             <!-- Song info -->
             <Grid Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center">
@@ -120,21 +120,22 @@
                     </Style>
                 </ResourceDictionary>
             </Grid.Resources>
-            <syncfusion:SfRangeSlider Margin="3,0,0,0"
+            <syncfusion:SfRangeSlider Margin="3,0,0,0" 
                 Value="{Binding ElapsedNow, FallbackValue=0, Converter={StaticResource TimeSpanToIntSecondsConverter}}"
                 Minimum="0"
-                Maximum="{Binding DurationNow, FallbackValue=60, Converter={StaticResource TimeSpanToIntSecondsConverter}}"
-                TickFrequency="40"
+                Maximum="{Binding DurationNow, FallbackValue=0, Converter={StaticResource TimeSpanToIntSecondsConverter}}"
+                TickFrequency="{Binding ProgressTickFreq,Mode=TwoWay}"
                 TickPlacement="Inline"
                 ThumbToolTipPlacement="None"
-                ShowValueLabels="True"
                 ValuePlacement="BottomRight"
-                TickStrokeThickness="2"
-                TickLength="8"
+                TickStrokeThickness="1.5"
+                TickLength="10"
                 ActiveTrackStyle="{StaticResource ActiveTrackStyle}"                     
                 ThumbStyle="{StaticResource ThumbStyle}"
                 CustomLabels="{Binding ProgressLabels}"
-               
+                ShowCustomLabels="True"
+                LabelPlacement="BottomRight"
+                
                                       >
   
                 <syncfusion:SfRangeSlider.Style>
