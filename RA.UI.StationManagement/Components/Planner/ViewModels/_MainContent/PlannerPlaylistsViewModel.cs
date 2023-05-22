@@ -59,6 +59,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         #region Data fetching
         private async Task LoadPlaylistsToAir()
         {
+            PlaylistsToAir.Clear();
             await Task.Run(() =>
             {
                 foreach (var playlist in playlistsService.GetPlaylistsToAirAfterDate())
