@@ -108,6 +108,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private void OpenGeneratePlaylists()
         {
             windowService.ShowDialog<PlannerGeneratePlaylistsViewModel>();
+            _ = LoadPlaylistsToAir();
         }
 
         [RelayCommand]

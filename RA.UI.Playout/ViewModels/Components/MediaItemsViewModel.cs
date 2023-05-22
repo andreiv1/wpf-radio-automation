@@ -48,7 +48,6 @@ namespace RA.UI.Playout.ViewModels.Components
         #region Data fetching
         public async Task LoadTracks(int skip, int take)
         {
-            IsMainDataLoading = true;
             Tracks.Clear();
             TotalTracks = await tracksService.GetTrackCountAsync();
             Pages = TotalTracks > 0 ? (TotalTracks - 1) / tracksPerPage + 1 : 0;
@@ -56,12 +55,9 @@ namespace RA.UI.Playout.ViewModels.Components
 
             foreach (var track in tracks.ToList())
             {
-                await dispatcherService.InvokeOnUIThreadAsync(() =>
-                {
-                    Tracks.Add(track);
-                });
+                Tracks.Add(track);
             }
-            IsMainDataLoading = false;
+
         }
         #endregion
     }

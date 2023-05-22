@@ -24,6 +24,7 @@ namespace RA.UI.StationManagement
         public DatabaseSetupWindow()
         {
             InitializeComponent();
+            
         }
 
         private void dbPassword_PasswordChanged(object sender, RoutedEventArgs e)

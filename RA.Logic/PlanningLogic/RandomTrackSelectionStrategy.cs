@@ -45,11 +45,15 @@ namespace RA.Logic.PlanningLogic
                 .ToList();
 
             var track = tracksService.GetRandomTrack(categoryId, recentlyPlayedTrackIds).Result;
-            Console.WriteLine($"[{item.ETA}] {track.Id} - {track.Artists} - {track.Title}");
+            //DebugHelper.WriteLine(this,($"[{item.ETA}] {track.Id} - {track.Artists} - {track.Title}"));
 
-            item.Length = track.Duration;
-            item.Track = track;
-            playlist?.Items?.Add(item);
+            //TODO: bug aici
+            if (track != null)
+            {
+                playlist?.Items?.Add(item);
+                item.Length = track.Duration;
+                item.Track = track;
+            }
             return item;
         }
     }

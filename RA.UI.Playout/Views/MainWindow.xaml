@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         xmlns:component="clr-namespace:RA.UI.Playout.Views.Components"
-        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-        mc:Ignorable="d"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf" 
+                 xmlns:viewmodels="clr-namespace:RA.UI.Playout.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+                 mc:Ignorable="d"
         Icon="/Resources/playout_icon.ico" WindowStartupLocation="CenterScreen"
         Title="RA | Playout" MinHeight="700" MinWidth="1400"
                     
@@ -140,21 +141,26 @@
                     </Grid.RowDefinitions>
 
                     <syncfusion:ButtonAdv SizeMode="Large"
-                                      Label="Add" LargeIcon="{StaticResource PlusIcon}"/>
+                                      Label="Add" LargeIcon="{StaticResource PlusIcon}"
+                                      Command="{Binding PlaylistVm.AddTrackCommand}"/>
 
                     <syncfusion:ButtonAdv Grid.Row="1" Margin="0,4,0,0"
                                       SizeMode="Large" LargeIcon="{StaticResource InsertIcon}"
-                                      Label="Insert"/>
+                                      Label="Insert"
+                                      Command="{Binding PlaylistVm.InsertTrackCommand}"/>
                     <syncfusion:ButtonAdv Grid.Row="2" Margin="0,4,0,0"
                                       SizeMode="Large" LargeIcon="{StaticResource ReplaceIcon}"
-                                      Label="Replace"/>
+                                      Label="Replace"
+                                      Command="{Binding PlaylistVm.ReplaceTrackCommand}"/>
           
                     <syncfusion:ButtonAdv Grid.Row="3" Margin="0,4,0,0"
                                       SizeMode="Large"
-                                      Label="Delete" LargeIcon="{StaticResource RemoveTrashIcon}"/>
+                                      Label="Delete" LargeIcon="{StaticResource RemoveTrashIcon}"
+                                          Command="{Binding PlaylistVm.DeleteTrackCommand}"/>
 
                     <Button Grid.Row="4" Margin="0,4,0,0"
-                                      Content="Clear"/>
+                                      Content="Clear"
+                            Command="{Binding PlaylistVm.ClearAllTracksCommand}"/>
                 </Grid>
                 <component:MediaItemsView Grid.Column="1"
                                       DataContext="{Binding MediaItemsVm}"/>

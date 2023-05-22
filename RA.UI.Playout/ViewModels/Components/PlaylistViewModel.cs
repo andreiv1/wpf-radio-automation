@@ -23,8 +23,6 @@ namespace RA.UI.Playout.ViewModels.Components
         private IPlayerItem? playerItemNow;
         public MainViewModel MainVm { get; set; }
 
-        
-
         public ObservableCollection<IPlayerItem> PlayerItems { get; } = new();
 
         #region Constructor
@@ -99,17 +97,6 @@ namespace RA.UI.Playout.ViewModels.Components
             }
         }
 
-        #region Commands
-        [RelayCommand]
-        private void PlayNext()
-        {
-            MainVm.NowPlayingVm.IsPaused = false;
-            MainVm.NowPlayingVm.IsItemLoaded = true;
-            playbackQueue.Play();
-            CalculateRemaining();
-
-        }
-
         private System.Timers.Timer timer;
         private void CalculateRemaining()
         {
@@ -136,6 +123,49 @@ namespace RA.UI.Playout.ViewModels.Components
             MainVm.NowPlayingVm.ElapsedNow += TimeSpan.FromSeconds(1);
             MainVm.NowPlayingVm.RemainingNow = MainVm.NowPlayingVm.DurationNow - MainVm.NowPlayingVm.ElapsedNow;
         }
+
+        #region Commands
+        [RelayCommand]
+        private void PlayNext()
+        {
+            MainVm.NowPlayingVm.IsPaused = false;
+            MainVm.NowPlayingVm.IsItemLoaded = true;
+            playbackQueue.Play();
+            CalculateRemaining();
+
+        }
+
+        [RelayCommand]
+        private void AddTrack()
+        {
+            DebugHelper.WriteLine(this, $"Add to playlist: Id={MainVm.MediaItemsVm.SelectedTrack?.Id}, " +
+                $"{MainVm.MediaItemsVm.SelectedTrack?.Artists} - {MainVm.MediaItemsVm.SelectedTrack?.Title}");
+        }
+
+        [RelayCommand]
+        private void InsertTrack()
+        {
+            
+        }
+
+        [RelayCommand]
+        private void ReplaceTrack()
+        {
+
+        }
+
+        [RelayCommand]
+        private void DeleteTrack()
+        {
+
+        }
+
+        [RelayCommand]
+        private void ClearAllTracks()
+        {
+
+        }
+       
         #endregion
     }
 
