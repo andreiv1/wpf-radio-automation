@@ -87,7 +87,7 @@
                                 <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
                                                       SmallIcon="{StaticResource CloseIcon}"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Grid.Row="1" >
+                            <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
                                 <TextBlock Text="Dur." Margin="3,0,0,0"
                                    Foreground="#7cfc00" FontWeight="DemiBold"
                                    Grid.Column="3"/>
