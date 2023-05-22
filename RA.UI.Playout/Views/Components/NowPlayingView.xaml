@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:component="clr-namespace:RA.UI.Playout.Views.Components"         
              xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
-             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-             mc:Ignorable="d" 
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:components="clr-namespace:RA.UI.Playout.ViewModels.Components" d:DataContext="{d:DesignInstance Type=components:NowPlayingViewModel}"
+                      mc:Ignorable="d" 
              d:DesignHeight="120" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -88,21 +88,64 @@
             </Grid>
         </Grid>
         <!-- Progress bar -->
-        <Grid Grid.Row="1" Margin="0,0,10,0">
+        <Grid Grid.Row="1" Margin="0,8,10,0">
+            <Grid.Resources>
+                <ResourceDictionary>
+                    <Style x:Key="ActiveTrackStyle" TargetType="Rectangle">
+                        <Setter Property="Fill" Value="#2196f3" />
+                    </Style>
+                    <Style x:Key="ThumbStyle" TargetType="Thumb">
+                        <Setter Property="Width" Value="5" />
+                        <Setter Property="Height" Value="13" />
+                        <Setter Property="Background" Value="Red" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Thumb">
+                                    <Grid>
+                                        <!--<Canvas Background="#2196f3">
+                                            --><!-- Place the TextBlock on the Canvas to overlay the Thumb --><!--
+                                            <TextBlock Text="00:32" FontWeight="Bold" Margin="-35,0,0,0" Canvas.Left="0" Canvas.Top="0" />
+                                        </Canvas>-->
+                                        <Border Grid.Column="1"
+                                            x:Name="ThumbBorder"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}">    
+
+                                        </Border>
+                                    </Grid>
+                                    
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ResourceDictionary>
+            </Grid.Resources>
             <syncfusion:SfRangeSlider Margin="3,0,0,0"
                 Value="{Binding ElapsedNow, FallbackValue=0, Converter={StaticResource TimeSpanToIntSecondsConverter}}"
                 Minimum="0"
                 Maximum="{Binding DurationNow, FallbackValue=60, Converter={StaticResource TimeSpanToIntSecondsConverter}}"
                 TickFrequency="40"
                 TickPlacement="Inline"
-                TickStroke="White"
                 ThumbToolTipPlacement="None"
                 ShowValueLabels="True"
                 ValuePlacement="BottomRight"
                 TickStrokeThickness="2"
                 TickLength="8"
-          
-        />
+                ActiveTrackStyle="{StaticResource ActiveTrackStyle}"                     
+                ThumbStyle="{StaticResource ThumbStyle}"
+                CustomLabels="{Binding ProgressLabels}"
+               
+                                      >
+  
+                <syncfusion:SfRangeSlider.Style>
+                    <Style TargetType="syncfusion:SfRangeSlider">
+                        
+                        <!-- Set the background color of the bar to green -->
+                        
+                    </Style>
+                </syncfusion:SfRangeSlider.Style>
+                    
+            </syncfusion:SfRangeSlider>
         </Grid>
     </Grid>
 </uicore:RAUserControl>
