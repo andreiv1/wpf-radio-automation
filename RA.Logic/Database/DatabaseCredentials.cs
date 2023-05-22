@@ -17,7 +17,7 @@ namespace RA.Logic.Database
                 cred.Target = target;
                 cred.Password = connectionString;
                 cred.Type = CredentialType.Generic;
-
+                cred.PersistanceType = PersistanceType.LocalComputer;
                 cred.Save();
             }
         }

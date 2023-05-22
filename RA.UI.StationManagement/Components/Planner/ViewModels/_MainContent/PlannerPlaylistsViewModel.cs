@@ -88,7 +88,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             await Task.Run(() =>
             {
                 SelectedPlaylistItems.Clear();
-                var data = playlistsService.GetPlaylistItems(SelectedPlaylistToAir.Id);
+                var data = playlistsService.GetPlaylistItems(SelectedPlaylistToAir.Id).ToList();
                 foreach (var item in data)
                 {
                     if (item.GetType() == typeof(PlaylistItemTrackDTO))
