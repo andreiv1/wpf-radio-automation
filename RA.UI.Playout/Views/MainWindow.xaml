@@ -101,22 +101,16 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                        <Label Content="Playlist items" Margin="0,-5,0,0"
-                               Foreground="Gray" FontWeight="Demibold" HorizontalAlignment="Center"/>
-                        <TextBlock Text="1" Foreground="White" FontSize="13" 
-                           FontWeight="Bold" HorizontalAlignment="center"/>
-                    </StackPanel>
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center"
-                                Grid.Column="1">
-                        <Label Content="Playlist duration" Margin="0,-5,0,0"
+                                Grid.Column="0">
+                        <Label Content="Loaded Playlist duration" Margin="0,-5,0,0"
                                Foreground="Gray" FontWeight="Demibold" HorizontalAlignment="Center"/>
                         <TextBlock Text="HH:MM:SS" Foreground="White" FontSize="13" 
                            FontWeight="Bold" HorizontalAlignment="center"/>
                     </StackPanel>
-                    <syncfusion:ButtonAdv Label="FORCE RELOAD" Grid.Column="2" Height="45" Margin="0,0,5,0"
+                    <!--<syncfusion:ButtonAdv Label="FORCE RELOAD" Grid.Column="2" Height="45" Margin="0,0,5,0"
                                           SmallIcon="{x:Null}" FontWeight="Bold"
-                                          VerticalAlignment="Center"/>
+                                          VerticalAlignment="Center"/>-->
                     <syncfusion:ButtonAdv Label="AUTO RELOAD" Grid.Column="3" Height="45" 
                                           SmallIcon="{x:Null}" FontWeight="BOld"
                                           VerticalAlignment="Center"/>

@@ -4,31 +4,37 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core" xmlns:components="clr-namespace:RA.UI.Playout.ViewModels.Components" d:DataContext="{d:DesignInstance Type=components:PlaylistViewModel}"
-                      mc:Ignorable="d" 
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"         
+             mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.Resources>
             <DataTemplate x:Key="PlaylistItemTemplate">
-                <Grid Margin="10" Height="40">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Column="0" Text="{Binding ETA, StringFormat={}{0:HH:mm:ss}}" 
-                                  FontWeight="Bold"
+
+
+                    <Grid Grid.Row="1" Margin="0,5,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding ETA, StringFormat={}{0:HH:mm:ss}}" 
                                    VerticalAlignment="Center"
-                                   Margin="0,0,10,0"/>
-
-                    <Image Width="24" Height="20" Grid.Column="1" Margin="0,0,10,0">
-                        <Image.Style>
+                                   FontWeight="Bold"
+                                   Margin="3,0,5,0"
+                                   Grid.Column="0"/>
+                        <Image Width="32" Height="32" Grid.Column="1" Margin="0,0,10,0">
+                            <Image.Style>
                             <Style TargetType="Image">
-                                <Setter Property="Source" Value="{StaticResource OtherTrackIcon}"/>
-                                <!-- Default icon -->
-                                <Style.Triggers>
+                                    <Setter Property="Source" Value="{StaticResource OtherTrackIcon}"/>
+                                    <Style.Triggers>
                                     <DataTrigger Binding="{Binding TrackType}" Value="Jingle">
                                         <Setter Property="Source" Value="{StaticResource JingleIcon}"/>
                                     </DataTrigger>
@@ -44,41 +50,58 @@
                                 </Style.Triggers>
                             </Style>
                         </Image.Style>
-                    </Image>
-                    <!--<Image Grid.Column="1" 
-                       VerticalAlignment="Center" Height="30" Width="30" Margin="0,0,10,0"
-                       Source="pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png" />-->
+                        </Image>
 
-                    <DockPanel Grid.Column="2">
-                        <TextBlock DockPanel.Dock="Top" Text="{Binding Artists}" VerticalAlignment="Center">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Artists}" Value="">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Title}" VerticalAlignment="Center"/>
-                    </DockPanel>
+                        <DockPanel Grid.Column="2" HorizontalAlignment="Stretch">
+                            <TextBlock DockPanel.Dock="Top" Text="{Binding Artists}" VerticalAlignment="Center"
+                                       Margin="0,0,0,5"
+                                       FontSize="13" FontWeight="DemiBold">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Artists}" Value="">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <TextBlock DockPanel.Dock="Bottom" Text="{Binding Title}" VerticalAlignment="Center"
+                                       FontSize="14" FontWeight="Bold"/>
+                        </DockPanel>
 
-
-                    <TextBlock Grid.Column="3"
-                            HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="13"
-                            Text="{Binding Duration, Converter={StaticResource TimeSpanToFormattedStringConverter}}" Margin="10,0,10,0"
-                             />
-
-                    <!--<Button Grid.Column="4" Style="{StaticResource TransparentButtonStyle}" VerticalAlignment="Center"
-                            Command="{Binding DataContext.RemovePlaylistItemCommand,RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                            CommandParameter="{Binding .}">
-                        <Label Content="✕" FontSize="15" Foreground="Red" Style="{StaticResource LabelStyle}" VerticalAlignment="Center"/>
-                    </Button>-->
-
+                        <Grid Grid.Column="3" HorizontalAlignment="Right">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,5">
+                                <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
+                                                      SmallIcon="{StaticResource DoubleUpIcon}"/>
+                                <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
+                                                      SmallIcon="{StaticResource DoubleDownIcon}"/>
+                                <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
+                                                      SmallIcon="{StaticResource AudioListenIcon}"/>
+                                <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
+                                                      SmallIcon="{StaticResource InfoIcon}"/>
+                                <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
+                                                      SmallIcon="{StaticResource CloseIcon}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="1" >
+                                <TextBlock Text="Dur." Margin="3,0,0,0"
+                                   Foreground="#7cfc00" FontWeight="DemiBold"
+                                   Grid.Column="3"/>
+                                <TextBlock Text="{Binding Duration, Converter={StaticResource TimeSpanToFormattedStringConverter}}" Margin="3,0,0,0"
+                                   Foreground="#7cfc00" FontWeight="Bold"
+                                   Grid.Column="4"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                    </Grid>
                 </Grid>
             </DataTemplate>
         </Grid.Resources>
+      
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
@@ -86,6 +109,7 @@
         <ListBox ItemTemplate="{StaticResource PlaylistItemTemplate}"
                  ItemsSource="{Binding PlayerItems}"
                  ScrollViewer.VerticalScrollBarVisibility="Visible"
+                 HorizontalContentAlignment="Stretch"
                  />
         
     </Grid>
