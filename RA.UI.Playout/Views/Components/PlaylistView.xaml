@@ -77,9 +77,9 @@
                             </Grid.RowDefinitions>
                             <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,5">
                                 <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
-                                                      SmallIcon="{StaticResource DoubleUpIcon}"/>
-                                <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
                                                       SmallIcon="{StaticResource DoubleDownIcon}"/>
+                                <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
+                                                      SmallIcon="{StaticResource DoubleUpIcon}"/>
                                 <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
                                                       SmallIcon="{StaticResource AudioListenIcon}"/>
                                 <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
