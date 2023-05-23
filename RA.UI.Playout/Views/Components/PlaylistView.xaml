@@ -78,15 +78,21 @@
                             </Grid.RowDefinitions>
                             <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,5" KeyboardNavigation.TabNavigation="None">
                                 <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
-                                                      SmallIcon="{StaticResource DoubleDownIcon}"/>
+                                                      SmallIcon="{StaticResource DoubleDownIcon}"
+                                                      Command="{Binding DataContext.MoveTrackDownCommand,RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                      CommandParameter="{Binding .}"/>
                                 <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
-                                                      SmallIcon="{StaticResource DoubleUpIcon}"/>
+                                                      SmallIcon="{StaticResource DoubleUpIcon}"
+                                                      Command="{Binding DataContext.MoveTrackUpCommand,RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                      CommandParameter="{Binding .}"/>
                                 <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
                                                       SmallIcon="{StaticResource AudioListenIcon}"/>
                                 <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
                                                       SmallIcon="{StaticResource InfoIcon}"/>
                                 <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
-                                                      SmallIcon="{StaticResource CloseIcon}"/>
+                                                      SmallIcon="{StaticResource CloseIcon}"
+                                                      Command="{Binding DataContext.DeleteTrackCommand,RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                      CommandParameter="{Binding .}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
                                 <TextBlock Text="Dur." Margin="3,0,0,0"
@@ -109,6 +115,7 @@
         </Grid.RowDefinitions>
         <ListBox ItemTemplate="{StaticResource PlaylistItemTemplate}"
                  ItemsSource="{Binding PlayerItems}"
+                 SelectedItem="{Binding SelectedPlaylistItem}"
                  ScrollViewer.VerticalScrollBarVisibility="Visible"
                  HorizontalContentAlignment="Stretch"
                  KeyboardNavigation.TabNavigation="None"

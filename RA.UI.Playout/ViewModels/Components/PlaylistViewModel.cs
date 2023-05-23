@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DTO;
 using RA.Logic;
@@ -10,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +23,10 @@ namespace RA.UI.Playout.ViewModels.Components
         private readonly IPlaybackQueue playbackQueue;
         private readonly IPlaylistsService playlistsService;
         private IPlayerItem? playerItemNow;
+
+
+        [ObservableProperty]
+        private IPlayerItem? selectedPlaylistItem;
         public MainViewModel MainVm { get; set; }
 
         public ObservableCollection<IPlayerItem> PlayerItems { get; } = new();
@@ -67,7 +73,7 @@ namespace RA.UI.Playout.ViewModels.Components
             playbackQueue.AddItem(playerItem);
             dispatcherService.InvokeOnUIThread(() => PlayerItems.Add(playerItem));
 
-            if (MainVm is not null)
+            if (MainVm != null)
             {
 
                 playbackQueue.UpdateETAs(MainVm.NowPlayingVm?.RemainingNow ?? null);
@@ -82,7 +88,7 @@ namespace RA.UI.Playout.ViewModels.Components
             playbackQueue.AddItem(playerItem, position);
             dispatcherService.InvokeOnUIThread(() => PlayerItems.Insert(position,playerItem));
 
-            if (MainVm is not null)
+            if (MainVm != null)
             {
  
                 playbackQueue.UpdateETAs(MainVm.NowPlayingVm?.RemainingNow ?? null);
@@ -91,6 +97,32 @@ namespace RA.UI.Playout.ViewModels.Components
             {
                 playbackQueue.UpdateETAs(null);
             }
+        }
+
+        public void PlaybackRemoveItem(IPlayerItem playerItem)
+        {
+            playbackQueue.RemoveItem(playerItem);
+            dispatcherService.InvokeOnUIThread(() => PlayerItems.Remove(playerItem));
+
+            if (MainVm != null)
+            {
+
+                playbackQueue.UpdateETAs(MainVm.NowPlayingVm?.RemainingNow ?? null);
+            }
+            else
+            {
+                playbackQueue.UpdateETAs(null);
+            }
+        }
+
+        public void PlaybackMoveItem(IPlayerItem playerItem, int index)
+        {
+            if (index < 0 || index >= PlayerItems.Count) { return; }
+            playbackQueue.MoveItem(playerItem, index);
+            PlayerItems.Remove(playerItem);
+            PlayerItems.Insert(index, playerItem);
+            SelectedPlaylistItem = PlayerItems.ElementAt(index);
+            playbackQueue.UpdateETAs(MainVm.NowPlayingVm.RemainingNow ?? null);
         }
         private void PlaybackQueue_PlaybackStarted(object? sender, EventArgs e)
         {
@@ -182,35 +214,68 @@ namespace RA.UI.Playout.ViewModels.Components
         [RelayCommand]
         private void AddTrackToTop()
         {
-            DebugHelper.WriteLine(this, $"Add to playlist: Id={MainVm.MediaItemsVm.SelectedTrack?.Id}, " +
-                $"{MainVm.MediaItemsVm.SelectedTrack?.Artists} - {MainVm.MediaItemsVm.SelectedTrack?.Title}");
-            if(MainVm.MediaItemsVm.SelectedTrack != null)
-            PlaybackAddItem(new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack), 0);
+            if (MainVm.MediaItemsVm.SelectedTrack == null) return;
+            IPlayerItem newItem = new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack);
+            PlaybackAddItem(newItem, 0);
+            SelectedPlaylistItem = newItem;
         }
 
         [RelayCommand]
         private void AddTrackToBottom()
         {
-            if (MainVm.MediaItemsVm.SelectedTrack != null)
-                PlaybackAddItem(new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack));
+            if (MainVm.MediaItemsVm.SelectedTrack == null) return;
+            IPlayerItem newItem = new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack);
+            PlaybackAddItem(newItem);
+            SelectedPlaylistItem = newItem;
         }
 
         [RelayCommand]
         private void InsertTrack()
         {
-            
+            if(SelectedPlaylistItem == null) return;
+            if (MainVm.MediaItemsVm.SelectedTrack == null) return;
+            int index = PlayerItems.IndexOf(SelectedPlaylistItem) + 1;
+            IPlayerItem newItem = new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack);
+            PlaybackAddItem(newItem, index);
+            SelectedPlaylistItem = newItem;
         }
 
         [RelayCommand]
         private void ReplaceTrack()
         {
-
+            if (SelectedPlaylistItem == null) return;
+            if (MainVm.MediaItemsVm.SelectedTrack == null) return;
+            int originalIndex = PlayerItems.IndexOf(SelectedPlaylistItem);
+            PlaybackRemoveItem(SelectedPlaylistItem);
+            IPlayerItem newItem = new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack);
+            PlaybackAddItem(newItem, originalIndex);
+            SelectedPlaylistItem = newItem;
         }
 
         [RelayCommand]
-        private void DeleteTrack()
+        private void DeleteTrack(object parameter)
         {
+            IPlayerItem? playerItem = parameter as IPlayerItem;
+            if (playerItem == null) return;
+            PlaybackRemoveItem(playerItem);
+        }
 
+        [RelayCommand]
+        private void MoveTrackUp(object parameter)
+        {
+            IPlayerItem? playerItem = parameter as IPlayerItem;
+            if (playerItem == null) return;
+            int index = PlayerItems.IndexOf(playerItem);
+            PlaybackMoveItem(playerItem, --index);
+        }
+
+        [RelayCommand]
+        private void MoveTrackDown(object parameter)
+        {
+            IPlayerItem? playerItem = parameter as IPlayerItem;
+            if (playerItem == null) return;
+            int index = PlayerItems.IndexOf(playerItem);
+            PlaybackMoveItem(playerItem, ++index);
         }
 
         [RelayCommand]
