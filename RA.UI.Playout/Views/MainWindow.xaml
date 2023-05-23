@@ -59,13 +59,14 @@
                                           Label="Loop" IsCheckable="True" 
                                           LargeIcon="{StaticResource LoopIcon}"/>
                     <syncfusion:ButtonAdv Grid.Column="1" SizeMode="Large" Margin="0,0,5,0"
-                                          Label="Pause" IsCheckable="True"
+                                          Label="Pause"
                                           LargeIcon="{StaticResource PauseIcon}"/>
                     <syncfusion:ButtonAdv Grid.Column="2" SizeMode="Large" Margin="0,0,5,0"
-                                          Label="Stop" IsCheckable="True"
-                                          LargeIcon="{StaticResource StopIcon}"/>
+                                          Label="Stop" 
+                                          LargeIcon="{StaticResource StopIcon}"
+                                          Command="{Binding PlaylistVm.StopCommand}"/>
                     <syncfusion:ButtonAdv Grid.Column="3" SizeMode="Large" Margin="0,0,5,0"
-                                          Label="Restart" IsCheckable="True" 
+                                          Label="Restart" 
                                           LargeIcon="{StaticResource ReplayIcon}"/>
                 </Grid>
                 
@@ -117,7 +118,7 @@
                 </Grid>
             </Grid>
 
-
+            <!-- Media items -->
             <Grid Grid.Column="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100"/>
@@ -137,7 +138,7 @@
 
                     <syncfusion:ButtonAdv SizeMode="Large"
                                       Label="Add Top" LargeIcon="{StaticResource PlusIcon}"
-                                      Command="{Binding PlaylistVm.AddTrackCommand}"/>
+                                      Command="{Binding PlaylistVm.AddTrackToTopCommand}"/>
 
                     <syncfusion:ButtonAdv Grid.Row="1" Margin="0,4,0,0"
                                       SizeMode="Large" LargeIcon="{StaticResource InsertIcon}"
@@ -155,12 +156,12 @@
 
                     <syncfusion:ButtonAdv SizeMode="Large" Grid.Row="4" Margin="0,4,0,0"
                                       Label="Add Bottom" LargeIcon="{StaticResource PlusIcon}"
-                                      Command="{Binding PlaylistVm.AddTrackCommand}"/>
+                                      Command="{Binding PlaylistVm.AddTrackToBottomCommand}"/>
                 </Grid>
                 <component:MediaItemsView Grid.Column="1"
                                       DataContext="{Binding MediaItemsVm}"/>
             </Grid>
-            <!-- Media items -->
+            
             
         </Grid>
     </Grid>

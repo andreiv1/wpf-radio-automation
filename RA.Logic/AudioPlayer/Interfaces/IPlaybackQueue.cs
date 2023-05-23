@@ -34,5 +34,6 @@ namespace RA.Logic.AudioPlayer.Interfaces
         public void ClearQueue();
 
         public void UpdateETAs(TimeSpan? initOffset);
+        void AddItem(IPlayerItem item, int position = 0);
     }
 }

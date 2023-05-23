@@ -181,6 +181,11 @@ namespace RA.Logic.AudioPlayer
         public void AddItem(IPlayerItem item)
         {
             list.Add(item);
+            UpdateETAs(null);
+        }
+        public void AddItem(IPlayerItem item, int position = 0)
+        {
+            list.Insert(position, item);
             UpdateETAs(null); // Update ETAs after adding an item.
         }
 

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RA.UI.Playout.ViewModels.Components.Models
 {
-    public class TrackPlayerItem : ObservableObject, IPlayerItem
+    public class TrackPlaylistPlayerItem : ObservableObject, IPlayerItem
     {
         private readonly PlaylistItemTrackDTO playlistItemTrackDTO;
 
@@ -43,7 +43,7 @@ namespace RA.UI.Playout.ViewModels.Components.Models
             }
         }
 
-        public TrackPlayerItem(PlaylistItemTrackDTO playlistItemTrackDTO)
+        public TrackPlaylistPlayerItem(PlaylistItemTrackDTO playlistItemTrackDTO)
         {
             this.playlistItemTrackDTO = playlistItemTrackDTO;
         }

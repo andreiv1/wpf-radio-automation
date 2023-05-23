@@ -34,8 +34,14 @@ namespace RA.UI.Playout.ViewModels.Components
         {
             ProgressLabels.Clear();
             int totalSeconds = (int)newValue.TotalSeconds;
-            ProgressTickFreq = 30;
 
+            //TODO:
+            //if (totalSeconds <= 30)
+            //{
+            //    ProgressTickFreq = 30;
+
+            //}
+            ProgressTickFreq = 30;
             for (int i = ProgressTickFreq; i < totalSeconds; i += ProgressTickFreq)
             {
                 TimeSpan labelTime = TimeSpan.FromSeconds(i);

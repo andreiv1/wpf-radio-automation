@@ -34,7 +34,7 @@ namespace RA.UI.Playout.ViewModels.Components
             this.playbackQueue = playbackQueue;
             this.playlistsService = playlistsService;
 
-            playbackQueue.Mode = PlaybackMode.Auto;
+            playbackQueue.Mode = PlaybackMode.Manual;
             playbackQueue.PlaybackStarted += PlaybackQueue_PlaybackStarted;
 
             _ = LoadPlaylist(DateTime.Now,1);
@@ -52,7 +52,7 @@ namespace RA.UI.Playout.ViewModels.Components
                     if (item?.GetType() == typeof(PlaylistItemTrackDTO))
                     {
                         var trackDto = (PlaylistItemTrackDTO)item;
-                        PlaybackAddItem(new TrackPlayerItem(trackDto));
+                        PlaybackAddItem(new TrackPlaylistPlayerItem(trackDto));
                     }
 
                 }
@@ -66,6 +66,21 @@ namespace RA.UI.Playout.ViewModels.Components
         {
             playbackQueue.AddItem(playerItem);
             dispatcherService.InvokeOnUIThread(() => PlayerItems.Add(playerItem));
+
+            if (MainVm is not null)
+            {
+
+                playbackQueue.UpdateETAs(MainVm.NowPlayingVm?.RemainingNow ?? null);
+            }
+            else
+            {
+                playbackQueue.UpdateETAs(null);
+            }
+        }
+        public void PlaybackAddItem(IPlayerItem playerItem, int position)
+        {
+            playbackQueue.AddItem(playerItem, position);
+            dispatcherService.InvokeOnUIThread(() => PlayerItems.Insert(position,playerItem));
 
             if (MainVm is not null)
             {
@@ -133,15 +148,51 @@ namespace RA.UI.Playout.ViewModels.Components
             MainVm.NowPlayingVm.IsItemLoaded = true;
             playbackQueue.Stop();
             playbackQueue.Play();
+            
             CalculateRemaining();
 
         }
 
         [RelayCommand]
-        private void AddTrack()
+        private void Loop()
+        {
+
+        }
+
+        [RelayCommand]
+        private void Pause()
+        {
+            playbackQueue.Pause();
+            CalculateRemaining();
+        }
+
+        [RelayCommand]
+        private void Stop()
+        {
+            playbackQueue.Stop();
+            CalculateRemaining();
+        }
+
+        [RelayCommand]
+        private void Restart()
+        {
+
+        }
+
+        [RelayCommand]
+        private void AddTrackToTop()
         {
             DebugHelper.WriteLine(this, $"Add to playlist: Id={MainVm.MediaItemsVm.SelectedTrack?.Id}, " +
                 $"{MainVm.MediaItemsVm.SelectedTrack?.Artists} - {MainVm.MediaItemsVm.SelectedTrack?.Title}");
+            if(MainVm.MediaItemsVm.SelectedTrack != null)
+            PlaybackAddItem(new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack), 0);
+        }
+
+        [RelayCommand]
+        private void AddTrackToBottom()
+        {
+            if (MainVm.MediaItemsVm.SelectedTrack != null)
+                PlaybackAddItem(new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack));
         }
 
         [RelayCommand]
