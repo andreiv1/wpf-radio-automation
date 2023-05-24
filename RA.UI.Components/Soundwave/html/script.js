@@ -1,28 +1,51 @@
 const waveformContainer = document.getElementById('waveform');
-const audioFileInput = document.getElementById('audio-file-input');
-const playButton = document.getElementById('play-button')
-const pauseButton = document.getElementById('pause-button')
-// Initialize WaveSurfer
+
+
 const wavesurfer = WaveSurfer.create({
     container: waveformContainer,
     height: 100,
     plugins: [
         WaveSurfer.timeline.create({
             container: "#wave-timeline"
-        })
+        }),
+        WaveSurfer.markers.create({})
     ]
 });
 
 
-playButton.addEventListener('click', function () {
-    wavesurfer.play();
-});
+function addStartCue(time) {
+    wavesurfer.addMarker({
+        time: time,
+        label: "START",
+        color: '#4caf50',
+        draggable: true,
+        position: 'top'
+    })
+}
 
+function addNextCue(time) {
+    wavesurfer.addMarker({
+        time: time,
+        label: "NEXT",
+        color: '#ff990a',
+        draggable: true
+    })
+}
 
-pauseButton.addEventListener('click', function () {
-    wavesurfer.pause();
-});
+function addEndCue(time) {
+    wavesurfer.addMarker({
+        time: time,
+        label: "END",
+        color: '#f44336',
+        draggable: true,
+        position: 'top'
+    })
+}
 
+function getMarkersTime() {
+    console.log(wavesurfer.markers.markers)
+    //TODO
+}
 
 function loadFile(path) {
     console.log('Load file from: ' + path);

@@ -53,6 +53,30 @@ namespace RA.DAL
                 .FirstAsync();
         }
 
+        public async Task UpdateTrack(TrackDTO trackDTO)
+        {
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            Track track = TrackDTO.ToEntity(trackDTO);
+
+            var existingCategories = await dbContext
+                .Tracks.Where(t => t.Id == track.Id)
+                .SelectMany(t => t.Categories)
+                .ToListAsync();
+
+            foreach(var category in existingCategories)
+            {
+                var toRemove = track.Categories.Where(c => c.Id == category.Id).FirstOrDefault();
+                if (toRemove != null)
+                {
+                    track.Categories.Remove(toRemove);
+                }
+            }
+
+            dbContext.Tracks.Update(track);
+            
+            await dbContext.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<TrackListingDTO>> GetTrackListByArtistAsync(int artistId, int skip, int take)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
@@ -141,6 +165,8 @@ namespace RA.DAL
                 .FirstOrDefaultAsync();
             return track;
         }
+
+        
 
         
     }

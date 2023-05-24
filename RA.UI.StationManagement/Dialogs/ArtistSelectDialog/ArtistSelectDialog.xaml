@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
-        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-        mc:Ignorable="d"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:artistselectdialog="clr-namespace:RA.UI.StationManagement.Dialogs.ArtistSelectDialog" d:DataContext="{d:DesignInstance Type=artistselectdialog:ArtistSelectViewModel}"
+                 mc:Ignorable="d"
         Title="{Binding DialogName}" Height="450" Width="400" ResizeMode="NoResize">
     <Grid Margin="5">
         <Grid.RowDefinitions>
@@ -22,14 +22,14 @@
 
         <syncfusion:SfDataGrid Grid.Row="2" Grid.Column="1" Margin="5,0,0,0"
                        ColumnSizer="Auto"
-                       ItemsSource="{Binding Items}"
-                       SelectedItem="{Binding SelectedTrack}"
+                       ItemsSource="{Binding Artists}"
+                       SelectedItem="{Binding SelectedArtist}"
                        SelectionUnit="Row"
                        NavigationMode="Row"
                        AllowResizingColumns="True"
                        AutoGenerateColumns="False">
             <syncfusion:SfDataGrid.Columns>
-                <syncfusion:GridTextColumn HeaderText="Artist" MappingName="Artist"
+                <syncfusion:GridTextColumn HeaderText="Artist" MappingName="Name"
                                            MinimumWidth="200"
                                            AllowResizing="True"
                                            ColumnSizer="Star"/>

@@ -30,15 +30,7 @@ namespace RA.Database
         public DbSet<UserRule> UserRules { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            // This constructor is typically used by the Entity Framework Core infrastructure
-            // to create an instance of your DbContext with the options that it has configured.
-        }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //optionsBuilder
-            //    .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-            //    .EnableSensitiveDataLogging(true);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

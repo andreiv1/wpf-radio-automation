@@ -23,6 +23,16 @@ namespace RA.Database.Models
 
         [Column(TypeName= "double(11,5)")]
         public double Duration { get; set; }
+
+        [Column(TypeName = "double(11,5)")]
+        public double? StartCue { get; set; }
+
+        [Column(TypeName = "double(11,5)")]
+        public double? NextCue { get; set; }
+
+        [Column(TypeName = "double(11,5)")]
+        public double? EndCue { get; set; }
+
         public DateTime? ReleaseDate { get; set; }
 
         [MaxLength(200)]

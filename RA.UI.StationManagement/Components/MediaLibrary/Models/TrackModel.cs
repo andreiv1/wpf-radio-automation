@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace RA.UI.StationManagement.Components.MediaLibrary.Models
 {
@@ -25,6 +26,15 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
 
         [ObservableProperty]
         private double duration = 0;
+
+        [ObservableProperty]
+        private double startCue = 0;
+
+        [ObservableProperty]
+        private double endCue;
+
+        [ObservableProperty]
+        private double nextCue;
 
         [ObservableProperty]
         private DateTime? releaseDate;
@@ -73,6 +83,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
         }
         public static List<string> TrackTypes => Enum.GetNames(typeof(TrackType)).ToList();
         public static List<string> TrackStatuses => Enum.GetNames(typeof(TrackStatus)).ToList();
+
         public static TrackModel FromDto(TrackDTO dto)
         {
             
@@ -83,6 +94,9 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
                 Status = dto.Status,
                 Title = dto.Title ?? "",
                 Duration = dto.Duration,
+                StartCue = dto.StartCue ?? 0,
+                NextCue = dto.NextCue ?? dto.Duration,
+                EndCue = dto.EndCue ?? dto.Duration,
                 ReleaseDate = dto.ReleaseDate,
                 Album = dto.Album ?? "",
                 Comments = dto.Comments ?? "",
@@ -96,6 +110,31 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
                 DateDeleted = dto.DateDeleted,
                 Artists = dto.Artists != null ? new ObservableCollection<TrackArtistDTO>(dto.Artists) : null,
                 Categories = dto.Categories != null ? new ObservableCollection<TrackCategoryDTO>(dto.Categories) : null,
+            };
+        }
+
+        public static TrackDTO ToDto(TrackModel model)
+        {
+            return new TrackDTO
+            {
+                Id = model.Id,
+                Type = model.Type,
+                Status = model.Status,
+                Title = model.Title,
+                Duration = model.Duration,
+                StartCue = model.StartCue,
+                NextCue = model.NextCue,
+                EndCue = model.EndCue,
+                ReleaseDate = model.ReleaseDate,
+                Album = model.Album,
+                Comments = model.Comments,
+                Lyrics = model.Lyrics,
+                FilePath = model.FilePath,
+                ImageName = model.ImageName,
+                Bpm = model.Bpm,
+                ISRC = model.ISRC,
+                Artists = model.Artists?.ToList(),
+                Categories = model?.Categories?.ToList(),
             };
         }
     }

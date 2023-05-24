@@ -25,7 +25,8 @@ namespace RA.DTO
         {
             return new Category()
             {
-                Id = dto.CategoryId
+                Id = dto.CategoryId,
+                Name = dto.CategoryName,
             };
         }
     }

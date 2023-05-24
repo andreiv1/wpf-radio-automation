@@ -21,7 +21,7 @@ namespace RA.UI.Components
     /// <summary>
     /// Interaction logic for Soundwave.xaml
     /// </summary>
-    public partial class Soundwave : UserControl
+    public partial class Soundwave : UserControl, IDisposable
     {
         public Soundwave()
         {
@@ -43,8 +43,8 @@ namespace RA.UI.Components
             var options = new CoreWebView2EnvironmentOptions("--disable-web-security");
             var environment = await CoreWebView2Environment.CreateAsync(null, null, options);
             await webView.EnsureCoreWebView2Async(environment);
-            webView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
-            webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
+            //webView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
+            //webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
         }
 
         private void CloseWebView()
@@ -60,6 +60,66 @@ namespace RA.UI.Components
         public static readonly DependencyProperty FilePathProperty =
         DependencyProperty.Register("FilePath", typeof(string), typeof(Soundwave),
             new PropertyMetadata(null, OnFilePathChanged));
+
+        public static readonly DependencyProperty StartCueProperty =
+            DependencyProperty.Register("StartCue", typeof(double), typeof(Soundwave),
+                new PropertyMetadata(0.0, OnStartCueChanged));
+
+
+        public static readonly DependencyProperty NextCueProperty =
+            DependencyProperty.Register("NextCue", typeof(double), typeof(Soundwave),
+                new PropertyMetadata(0.0, OnNextCueChanged));
+
+        public static readonly DependencyProperty EndCueProperty =
+            DependencyProperty.Register("EndCue", typeof(double), typeof(Soundwave),
+                new PropertyMetadata(0.0, OnEndCueChanged));
+
+        public static readonly DependencyProperty DurationProperty =
+            DependencyProperty.Register("Duration", typeof(double), typeof(Soundwave),
+                new PropertyMetadata(0.0, OnDurationChanged));
+
+        public double Duration
+        {
+            get { return (double)GetValue(DurationProperty); }
+            set { SetValue(DurationProperty, value); }
+        }
+
+        public double StartCue
+        {
+            get { return (double)GetValue(StartCueProperty); }
+            set { SetValue(StartCueProperty, value); }
+        }
+
+        public double NextCue
+        {
+            get { return (double)GetValue(NextCueProperty); }
+            set { SetValue(NextCueProperty, value);}
+        }
+
+        public double EndCue
+        {
+            get { return (double)GetValue(EndCueProperty); }
+            set { SetValue(EndCueProperty, value); }
+        }
+
+        private static void OnDurationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (Soundwave)d;
+        }
+
+        private static void OnStartCueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (Soundwave)d;
+        }
+        private static void OnNextCueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (Soundwave)d;
+        }
+
+        private static void OnEndCueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (Soundwave)d;
+        }
 
         public string FilePath
         {
@@ -86,6 +146,10 @@ namespace RA.UI.Components
             {
                 control.ExecuteJs("console.log('Test path')");
                 control.ExecuteJs(jsFuncCallStr);
+                
+                control.ExecuteJs($"addStartCue({control.StartCue})");
+                control.ExecuteJs($"addEndCue({control.EndCue})");
+                control.ExecuteJs($"addNextCue({control.NextCue})");
             };
         }
 
@@ -99,5 +163,9 @@ namespace RA.UI.Components
             ExecuteJs("pause()");
         }
 
+        public void Dispose()
+        {
+            Loaded -= null;
+        }
     }
 }

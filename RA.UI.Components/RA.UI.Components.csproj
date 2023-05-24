@@ -9,8 +9,8 @@
   <ItemGroup>
     <None Remove="Soundwave\html\index.html" />
     <None Remove="Soundwave\html\script.js" />
-    <None Remove="Soundwave\html\style.css" />
     <None Remove="Soundwave\html\wavesurfer\wavesurfer.js" />
+    <None Remove="Soundwave\html\wavesurfer\wavesurfer.markers.js" />
     <None Remove="Soundwave\html\wavesurfer\wavesurfer.timeline.js" />
   </ItemGroup>
 
@@ -21,10 +21,10 @@
     <EmbeddedResource Include="Soundwave\html\script.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Soundwave\html\style.css">
+    <EmbeddedResource Include="Soundwave\html\wavesurfer\wavesurfer.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Soundwave\html\wavesurfer\wavesurfer.js">
+    <EmbeddedResource Include="Soundwave\html\wavesurfer\wavesurfer.markers.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Soundwave\html\wavesurfer\wavesurfer.timeline.js">

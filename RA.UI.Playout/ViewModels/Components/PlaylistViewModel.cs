@@ -24,7 +24,6 @@ namespace RA.UI.Playout.ViewModels.Components
         private readonly IPlaylistsService playlistsService;
         private IPlayerItem? playerItemNow;
 
-
         [ObservableProperty]
         private IPlayerItem? selectedPlaylistItem;
         public MainViewModel MainVm { get; set; }
@@ -114,7 +113,6 @@ namespace RA.UI.Playout.ViewModels.Components
                 playbackQueue.UpdateETAs(null);
             }
         }
-
         public void PlaybackMoveItem(IPlayerItem playerItem, int index)
         {
             if (index < 0 || index >= PlayerItems.Count) { return; }
@@ -123,6 +121,12 @@ namespace RA.UI.Playout.ViewModels.Components
             PlayerItems.Insert(index, playerItem);
             SelectedPlaylistItem = PlayerItems.ElementAt(index);
             playbackQueue.UpdateETAs(MainVm.NowPlayingVm.RemainingNow ?? null);
+        }
+
+        public void PlaybackClearItems()
+        {
+            PlayerItems.Clear();
+            playbackQueue.ClearQueue();
         }
         private void PlaybackQueue_PlaybackStarted(object? sender, EventArgs e)
         {
@@ -279,9 +283,9 @@ namespace RA.UI.Playout.ViewModels.Components
         }
 
         [RelayCommand]
-        private void ClearAllTracks()
+        private void ClearPlaylist()
         {
-
+            PlaybackClearItems();
         }
        
         #endregion

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.Database.Models.Enums;
+using RA.DTO;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
@@ -27,6 +28,12 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         [ObservableProperty]
         private TrackModel? track;
 
+        [ObservableProperty]
+        private TrackArtistDTO? selectedTrackArtist;
+
+        [ObservableProperty]
+        private TrackCategoryDTO? selectedCategory;
+
         private string? fullImagePath;
         public string? FullImagePath
         {
@@ -35,16 +42,21 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         }
 
         #region Constructor
-        public MediaLibraryManageTrackViewModel(IWindowService windowService, IFileBrowserDialogService fileBrowserDialogService,
-            IMessageBoxService messageBoxService, ITracksService tracksService) : base(windowService)
+        public MediaLibraryManageTrackViewModel(IWindowService windowService,
+                                                IFileBrowserDialogService fileBrowserDialogService,
+                                                IMessageBoxService messageBoxService,
+                                                ITracksService tracksService) : base(windowService)
         {
             this.tracksService = tracksService;
             this.fileBrowserDialogService = fileBrowserDialogService;
             this.messageBoxService = messageBoxService;
             Track = new();
         }
-        public MediaLibraryManageTrackViewModel(IWindowService windowService, IFileBrowserDialogService fileBrowserDialogService,
-            IMessageBoxService messageBoxService, ITracksService tracksService, int trackId) : base(windowService) 
+        public MediaLibraryManageTrackViewModel(IWindowService windowService,
+                                                IFileBrowserDialogService fileBrowserDialogService,
+                                                IMessageBoxService messageBoxService,
+                                                ITracksService tracksService,
+                                                int trackId) : base(windowService) 
         {
             this.trackId = trackId;
             this.tracksService = tracksService;
@@ -99,11 +111,22 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         private void AddCategory()
         {
             var vm = windowService.ShowDialog<CategorySelectViewModel>();
-            if(vm.SelectedCategory is null)
+            if (vm.SelectedCategory == null) return;
+            if (Track!.Categories.Where(c => c.CategoryId == vm.SelectedCategory.CategoryId).Any()) return;
+
+            Track!.Categories?.Add(new TrackCategoryDTO()
             {
-                return;
-            }
-            messageBoxService.ShowInfo($"Selected {vm.SelectedCategory.CategoryId}");
+                CategoryId = vm.SelectedCategory.CategoryId,
+                CategoryName = vm.SelectedCategory.Name,
+            });
+            //messageBoxService.ShowInfo($"Selected {vm.SelectedCategory.CategoryId}");
+        }
+
+        [RelayCommand]
+        private void RemoveSelectedCategory()
+        {
+            if (SelectedCategory == null) return; 
+            Track!.Categories?.Remove(SelectedCategory);
         }
 
         [RelayCommand]
@@ -116,11 +139,12 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         [RelayCommand]
         private void SaveTrack()
         {
-            messageBoxService.ShowInfo("Fake save!");
+            //messageBoxService.ShowInfo("Fake save!");
+            if(Track != null)
+            tracksService.UpdateTrack(TrackModel.ToDto(Track));
         }
 
         #endregion
-
 
     }
 }

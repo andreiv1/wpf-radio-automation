@@ -15,6 +15,10 @@ namespace RA.DTO
         public TrackStatus Status { get; set; }
         public string? Title { get; set; }
         public double Duration { get; set; }
+
+        public double? StartCue { get; set; }
+        public double? NextCue { get; set; }
+        public double? EndCue { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public string? Album { get; set; }
         public string? Comments { get; set; }
@@ -38,6 +42,9 @@ namespace RA.DTO
                 Status = track.Status,
                 Title = track.Title,
                 Duration = track.Duration,
+                StartCue = track.StartCue,
+                NextCue = track.NextCue,
+                EndCue = track.EndCue,
                 ReleaseDate = track.ReleaseDate,
                 Album = track.Album,
                 Comments = track.Comments,

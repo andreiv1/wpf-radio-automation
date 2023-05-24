@@ -286,7 +286,9 @@
                                                        ItemsSource="{Binding Track.Artists}"
                                                        AutoGenerateColumns="False"
                                                        AllowSorting="False"  SelectionUnit="Row" NavigationMode="Row"
-                                                       ColumnSizer="AutoLastColumnFill">
+                                                       ColumnSizer="AutoLastColumnFill"
+                                                       SelectedItem="{Binding SelectedTrackArtist}"
+                                                       >
                                     <syncfusion:SfDataGrid.Columns>
                                         <syncfusion:GridTextColumn HeaderText="Artist" MappingName="ArtistName"/>
                                     </syncfusion:SfDataGrid.Columns>
@@ -360,7 +362,8 @@
                                                        ItemsSource="{Binding Track.Categories}"
                                                        AutoGenerateColumns="False"
                                                        AllowSorting="False" SelectionUnit="Row" NavigationMode="Row"
-                                                       ColumnSizer="AutoLastColumnFill">
+                                                       ColumnSizer="AutoLastColumnFill"
+                                                       SelectedItem="{Binding SelectedCategory}">
                                     <syncfusion:SfDataGrid.Columns>
                                         <syncfusion:GridTextColumn HeaderText="Category" MappingName="CategoryName"/>
                                     </syncfusion:SfDataGrid.Columns>
@@ -372,7 +375,7 @@
                                         SmallIcon="{StaticResource PlusIcon}"
                                         Label="Add"/>
                                     <syncfusion:ButtonAdv Margin="0,0,2,0"
-                                        Command="{Binding }"
+                                        Command="{Binding RemoveSelectedCategoryCommand}"
                                         SmallIcon="{StaticResource RemoveIcon}"
                                         Label="Remove"/>
 
@@ -387,8 +390,11 @@
                     <!-- Sound Wave -->
 
                     <components:Soundwave x:Name="soundwaveComponent"
-                        Grid.Row="2"
-                        Height="160" FilePath="{Binding Track.FilePath}" />
+                        Grid.Row="2" Margin="-7"
+                        Height="160" FilePath="{Binding Track.FilePath}"
+                                     StartCue="{Binding Track.StartCue}" 
+                                     NextCue="{Binding Track.NextCue}" 
+                                     EndCue="{Binding Track.EndCue}"/>
 
                     <!-- Player Buttons -->
                     <StackPanel Grid.Row="3" Margin="0,2,0,0"
