@@ -39,10 +39,10 @@ namespace RA.UI.StationManagement.Dialogs.ArtistSelectDialog
         }
         #endregion
 
-        protected override void FinishDialog()
+        protected override void CancelDialog()
         {
             SelectedArtist = null;
-            base.FinishDialog();
+            base.CancelDialog();
         }
         protected override bool CanFinishDialog()
         {

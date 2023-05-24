@@ -133,7 +133,33 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         private void AddArtist()
         {
             var vm = windowService.ShowDialog<ArtistSelectViewModel>();
-            
+            if(vm.SelectedArtist == null) return;
+            if (Track.Artists.Where(a => a.ArtistId == vm.SelectedArtist.Id).Any()) return;
+            int orderIndex = 0;
+            if (Track.Artists.Any())
+            {
+                orderIndex = Track.Artists
+                    .OrderBy(a => a.OrderIndex)
+                    .Last().OrderIndex;
+                orderIndex++;
+            }
+            Track.Artists.Add(new TrackArtistDTO()
+            {
+                ArtistId = vm.SelectedArtist.Id,
+                ArtistName = vm.SelectedArtist.Name,
+                OrderIndex = orderIndex,
+            });
+        }
+
+        [RelayCommand]
+        private void RemoveArtist()
+        {
+            if (SelectedTrackArtist == null) return;
+            Track.Artists.Remove(SelectedTrackArtist);
+            for(int i = 0; i < Track.Artists.Count; i++)
+            {
+                Track.Artists.ElementAt(i).OrderIndex = i;
+            }
         }
 
         [RelayCommand]
