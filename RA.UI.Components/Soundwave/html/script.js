@@ -43,8 +43,14 @@ function addEndCue(time) {
 }
 
 function getMarkersTime() {
-    console.log(wavesurfer.markers.markers)
-    //TODO
+    let markers = wavesurfer.markers.markers;
+    let start = markers[0].time;
+    let next = markers[1].time;
+    let end = markers[2].time;
+    //let result = "start=${start};next=${next};stop=${end}"
+    let result = "start=" + start + ";next=" + next + ";stop=" + end;
+    console.log(result)
+    return result;
 }
 
 function loadFile(path) {

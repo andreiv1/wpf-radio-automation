@@ -390,8 +390,8 @@
                     <!-- Sound Wave -->
 
                     <components:Soundwave x:Name="soundwaveComponent"
-                        Grid.Row="2" 
-                        Height="160" FilePath="{Binding Track.FilePath}"
+                        Grid.Row="2" Height="160" 
+                                     FilePath="{Binding Track.FilePath}"
                                      StartCue="{Binding Track.StartCue}" 
                                      NextCue="{Binding Track.NextCue}" 
                                      EndCue="{Binding Track.EndCue}"/>
@@ -435,8 +435,9 @@
                   Label="Cancel"/>
 
             <syncfusion:ButtonAdv Height="30"
+                  x:Name="saveButton"
+                  Click="saveButton_Click"
                   SmallIcon="{StaticResource SaveIcon}"
-                  Command="{Binding SaveTrackCommand}"
                   Label="Save"/>
         </StackPanel>
     </Grid>

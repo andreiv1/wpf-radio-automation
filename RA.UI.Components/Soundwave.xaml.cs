@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -161,6 +162,23 @@ namespace RA.UI.Components
         public void Pause()
         {
             ExecuteJs("pause()");
+        }
+
+        public async Task<List<double>> GetMarkers()
+        {
+            var markers = new List<double>();
+            string markersString = await webView.ExecuteScriptAsync("getMarkersTime()");
+            markersString = markersString.Replace("\\", "").Replace("\"", "").Replace("\"","");
+            Debug.WriteLine($"Markers: {markersString}");
+            string[] tokens = markersString.Split(";");
+            foreach(var token in tokens)
+            {
+                var split = token.Split('=');
+                markers.Add(Convert.ToDouble(split[1], CultureInfo.InvariantCulture));
+
+                
+            }
+            return markers;
         }
 
         public void Dispose()

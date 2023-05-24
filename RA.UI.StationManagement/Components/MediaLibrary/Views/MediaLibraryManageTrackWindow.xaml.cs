@@ -1,4 +1,5 @@
 ﻿using RA.UI.Core;
+using RA.UI.StationManagement.Components.MediaLibrary.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,18 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Views
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
             soundwaveComponent.Pause();
+        }
+
+        private async void saveButton_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as MediaLibraryManageTrackViewModel;
+            if (vm == null) return;
+            var markers = await soundwaveComponent.GetMarkers();
+            vm.Track!.StartCue = markers[0];
+            vm.Track!.NextCue = markers[1];
+            vm.Track!.EndCue = markers[2];
+
+            vm.SaveTrackCommand.Execute(null);
         }
     }
 }
