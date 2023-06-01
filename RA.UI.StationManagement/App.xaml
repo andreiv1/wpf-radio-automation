@@ -8,8 +8,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/RA.UI.Core;component/Resources/Icons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/RA.UI.Core;component/Converters/Converters.xaml" />
+                <ResourceDictionary Source="Resources/Language/StringResources.xaml"/>
 
-                
             </ResourceDictionary.MergedDictionaries>
 
             <!--<ControlTemplate x:Key="LauncherTitleBar">

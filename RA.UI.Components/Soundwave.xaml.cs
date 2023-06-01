@@ -44,8 +44,8 @@ namespace RA.UI.Components
             var options = new CoreWebView2EnvironmentOptions("--disable-web-security");
             var environment = await CoreWebView2Environment.CreateAsync(null, null, options);
             await webView.EnsureCoreWebView2Async(environment);
-            //webView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
-            //webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
+            webView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
+            webView.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
         }
 
         private void CloseWebView()
@@ -149,8 +149,9 @@ namespace RA.UI.Components
                 control.ExecuteJs(jsFuncCallStr);
                 
                 control.ExecuteJs($"addStartCue({control.StartCue})");
-                control.ExecuteJs($"addEndCue({control.EndCue})");
                 control.ExecuteJs($"addNextCue({control.NextCue})");
+                control.ExecuteJs($"addEndCue({control.EndCue})");
+                
             };
         }
 

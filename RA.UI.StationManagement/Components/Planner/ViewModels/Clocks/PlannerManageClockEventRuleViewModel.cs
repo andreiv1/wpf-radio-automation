@@ -1,4 +1,5 @@
-﻿using RA.Database.Models.Enums;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using RA.Database.Models.Enums;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using System;
@@ -12,6 +13,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
     public partial class PlannerManageClockEventRuleViewModel : DialogViewModelBase
     {
         public static List<string> Events => Enum.GetNames(typeof(EventType)).ToList();
+
+        [ObservableProperty]
+        public string selectedEvent;
         public PlannerManageClockEventRuleViewModel(IWindowService windowService) : base(windowService)
         {
         }

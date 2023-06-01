@@ -2,25 +2,19 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
                     xmlns:system="clr-namespace:System;assembly=System.Runtime">
    
-    <system:String x:Key="Artists">Artists</system:String>
-    <system:String x:Key="Title">Title</system:String>
-    <system:String x:Key="TrackType">Type</system:String>
-    <system:String x:Key="TrackDuration">Duration</system:String>
-    <system:String x:Key="Categories">Categories</system:String>
-    <system:String x:Key="Year">Year</system:String>
-    <system:String x:Key="DateAdded">Date Added</system:String>
-    <system:String x:Key="DateModified">Date Modified</system:String>
+    <system:String x:Key="MediaLibraryTitleString">Media Library</system:String>
+    <system:String x:Key="MediaLibraryDescriptionString">Manage your station's media files</system:String>
 
-    <system:String x:Key="MediaLibraryTitle">Media Library</system:String>
-    <system:String x:Key="MediaLibraryDescription">Manage your station's media files</system:String>
+    <system:String x:Key="EventDynamicBreakDescriptionString">
+        A dynamic break is a break that can occur at any point during the music playing process, and its start time is not fixed. Instead, the dynamic break will occur when the current song has finished playing, and there is a gap in the playlist or queue. For example, if there are two songs playing, and the dynamic break is set to occur after 30 minutes, but a third song starts playing at the 29-minute mark, the dynamic break will begin immediately after the third song has finished playing.
+    </system:String>
 
-    <system:String x:Key="AddBtn">Add</system:String>
-    <system:String x:Key="EditBtn">Edit</system:String>
-    <system:String x:Key="DeleteBtn">Delete</system:String>
-    <system:String x:Key="FilterBtn">Filter</system:String>
-    <system:String x:Key="ImportItemsBtn">Import Items</system:String>
+    <system:String x:Key="EventFixedBreakDescriptionString">
+        A fixed break is a break that is scheduled to occur at a specific time during the music playing process, and its start time is fixed. The fixed break will interrupt the current track or playlist at the scheduled time, and resume playing the next track or playlist after the break has ended. For example, if there are two songs playing, and the fixed break is scheduled to occur at the 30-minute mark, the break will begin immediately when the clock reaches 30 minutes, regardless of whether a song is currently playing or not.
+    </system:String>
 
-    <system:String x:Key="SearchLabel">Search</system:String>
+    <system:String x:Key="EventMarkerDescriptionString">
+        A marker is a special element in the playlist that doesn't play any audio but displays a label to inform the presenter about something, for example a live news journal or a discussion.
+    </system:String>
 
-    <system:String x:Key="Artist">Artist</system:String>
 </ResourceDictionary>

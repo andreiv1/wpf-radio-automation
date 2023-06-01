@@ -20,7 +20,7 @@
     </Window.Resources>
     <Grid Margin="15" KeyboardNavigation.TabNavigation="None">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
         </Grid.RowDefinitions>
@@ -28,7 +28,7 @@
         <!-- Item overview details -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50"></ColumnDefinition>
+                <ColumnDefinition Width="70"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
@@ -39,10 +39,10 @@
                    d:Source="pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png">
             </Image>
             <!-- Item essential info -->
-            <Grid Grid.Column="1" Margin="10,5,0,0">
+            <Grid Grid.Column="1" Margin="10,5,0,0" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="{Binding Track.ArtistsText, Converter={StaticResource GridHeightConverter}}"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="{Binding Track.ArtistsText}" d:Text="ARTISTS" FontWeight="Bold" FontSize="16">
                     <TextBlock.Style>
@@ -73,10 +73,14 @@
 
         <!-- TABS -->
         <TabControl Grid.Row="1"
-                    Margin="0,10,0,10">
+                    Margin="0,10,0,10"
+                    KeyboardNavigation.TabNavigation="None">
             <!-- Details TAB -->
-            <TabItem Header="Details">
-                <Grid Margin="5,5,5,5">
+            <TabItem>
+                <TabItem.Header>
+                    <Label FontWeight="Bold" Content="Details"/>
+                </TabItem.Header>
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
@@ -406,7 +410,6 @@
 
                         <syncfusion:ButtonAdv x:Name="StopButton"
                             SizeMode="Large" Label="Stop" Margin="0,0,5,0"   
-                            Command="{Binding StopCommand}" 
                             LargeIcon="{StaticResource StopIcon}"
                             Grid.Column="1"
                             Height="68" Width="78"
@@ -424,6 +427,34 @@
                     </StackPanel>-->
 
                 </Grid>
+            </TabItem>
+            
+            <!-- Properties TAB -->
+            <TabItem>
+                <TabItem.Header>
+                    <Label FontWeight="Bold" Content="Properties"/>
+                </TabItem.Header>
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <Label FontWeight="Bold" Content="Image"/>
+                </TabItem.Header>
+
+                <Grid>
+                    <syncfusion:SfImageEditor ImageSource="{Binding FullImagePath}">
+                        <syncfusion:SfImageEditor.ToolbarSettings>
+                            <syncfusion:ToolbarSettings IsToolbarVisiblity="True"/>
+                        </syncfusion:SfImageEditor.ToolbarSettings>
+                    </syncfusion:SfImageEditor>
+                </Grid>
+            </TabItem>
+
+            <!-- Statistics TAB -->
+            <TabItem>
+                <TabItem.Header>
+                    <Label FontWeight="Bold" Content="Statistics"/>
+                </TabItem.Header>
             </TabItem>
         </TabControl>
 

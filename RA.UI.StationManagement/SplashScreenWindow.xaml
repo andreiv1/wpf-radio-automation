@@ -99,5 +99,6 @@
         <!-- Preload controls -->
         <syncfusion:SfMaskedEdit Visibility="Hidden"/>
         <syncfusion:ComboBoxAdv Visibility="Hidden"/>
+        <syncfusion:TimeSpanEdit Visibility="Hidden"/>
     </Grid>
 </uicore:RAWindow>
