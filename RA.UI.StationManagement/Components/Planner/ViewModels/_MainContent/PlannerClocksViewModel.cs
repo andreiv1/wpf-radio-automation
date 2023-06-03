@@ -38,9 +38,14 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
         [ObservableProperty]
         private ClockItemModel? selectedClockItem = null;
+
+        //TODO: NU ma prind de ce nu se face bind
+        public ObservableCollection<ClockItemModel> SelectedClockItems { get; set; } = new();
         partial void OnSelectedClockChanged(ClockDTO? value)
         {
             _ = LoadClockItemsForSelectedClock();
+            SelectedClockItem = null;
+            SelectedClockItems.Clear();
         }
         [ObservableProperty]
         private TimeSpan totalDuration;
@@ -183,6 +188,21 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                 _ = LoadClockItemsForSelectedClock();
             }
             
+        }
+
+        [RelayCommand]
+        private void RemoveSelectedItemsInSelectedClock()
+        {
+            DebugHelper.WriteLine(this, $"Selected clock items to remove: {SelectedClockItems.Count}");
+            //TODO: nu ma prind de ce nu se face bind!!!
+            if (SelectedClockItems.Count == 0) return;
+
+            foreach(var item in SelectedClockItems)
+            {
+                clocksService.DeleteClockItem(item.Id);
+            }
+
+            _ = LoadClockItemsForSelectedClock();
         }
 
         [RelayCommand]

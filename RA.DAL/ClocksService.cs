@@ -194,12 +194,6 @@ namespace RA.DAL
             
         }
 
-        public async Task RemoveClockItem(ClockItemBaseDTO clockItemDto)
-        {
-            using var dbContext = dbContextFactory.CreateDbContext();
-            var entity = ClockItemBaseDTO.ToEntity(clockItemDto);
-            dbContext.Remove(entity);
-            await dbContext.SaveChangesAsync();
-        }
+        
     }
 }

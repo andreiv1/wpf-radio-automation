@@ -142,7 +142,7 @@
                                       SmallIcon="{StaticResource PasteIcon}"/>
 
                 <syncfusion:ButtonAdv Label="Delete item(s)" Height="25" Margin="0,0,3,0"
-                                      Command="{Binding DeleteItemsInSelectedClockCommand}"
+                                      Command="{Binding RemoveSelectedItemsInSelectedClockCommand}"
                                       SmallIcon="{StaticResource RemoveIcon}"/>
             </StackPanel>
             <!--SelectionChanged="selectedClockItemsDataGrid_SelectionChanged"-->
@@ -157,6 +157,7 @@
                        Grid.Row="2"
                        ItemsSource="{Binding ClockItemsForSelectedClock}"
                        SelectedItem="{Binding SelectedClockItem}"
+                       SelectedItems="{Binding SelectedClockItems}"
                        SelectedIndex="{Binding LastSelectedClockItemIndex}"
                        SelectionUnit="Row" NavigationMode="Row"
                        SelectionMode="Multiple" AllowSorting="False"
@@ -351,9 +352,11 @@
                                    DisplayBinding="{Binding Path=Duration, StringFormat=hh\\:mm\\:ss}"
                                    TextAlignment="Center"/>
                     </syncfusion:SfDataGrid.Columns>
+                    
+                    <!-- Context menu -->
                     <syncfusion:SfDataGrid.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Delete item(s)" Command="{Binding DeleteItemsInSelectedClockCommand}">
+                            <MenuItem Header="Delete item(s)" Command="{Binding RemoveSelectedItemsInSelectedClockCommand}">
                                 <MenuItem.Icon>
                                     <Image Source="{StaticResource RemoveIcon}" Width="16" Height="16" />
                                 </MenuItem.Icon>
