@@ -96,7 +96,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
                     var model = new ClockItemModel(clockItemDto);
                     //TODO: Here treat multiple Clock Items type to display String clockItemDto details
-                    
+                    //TODO: add duration
                     if(clockItemDto is ClockItemCategoryDTO category)
                     {
                         if(category.CategoryId.HasValue)
