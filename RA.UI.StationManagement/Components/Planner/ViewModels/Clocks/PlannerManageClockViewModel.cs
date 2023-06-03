@@ -63,11 +63,11 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
         {
             if (ManagedClock?.Id != null)
             {
-                var dto = await clocksService.GetClock(ManagedClock.Id.GetValueOrDefault());
+                var dto = await clocksService.GetClock(ManagedClock.Id);
                 ManagedClock = ClockModel.FromDto(dto);
                 if (duplicate)
                 {
-                    ManagedClock.Id = null;
+                    ManagedClock.Id = 0;
                     ManagedClock.Name += " (COPY)";
                 }
 

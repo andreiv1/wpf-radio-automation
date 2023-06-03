@@ -11,7 +11,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
 {
     public partial class ClockModel : ObservableValidator
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         private string name = "";
 
@@ -34,7 +34,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
         {
             return new ClockModel()
             {
-                Id = dto.Id.GetValueOrDefault(),
+                Id = dto.Id,
                 Name = dto.Name
             };
         }
@@ -43,7 +43,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
         {
             return new ClockDTO()
             {
-                Id = model.Id.GetValueOrDefault(),
+                Id = model.Id,
                 Name = model.Name
             };
         }

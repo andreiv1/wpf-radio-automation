@@ -9,7 +9,7 @@ namespace RA.Database.Models
 {
     public class ClockItemTrack : ClockItemBase
     {
-        public int? TrackId { get; set; }
+        public int TrackId { get; set; }
         public Track Track { get; set; }
     }
 }

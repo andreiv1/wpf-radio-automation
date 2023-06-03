@@ -12,7 +12,24 @@ namespace RA.DTO.Abstract
     {
         public int Id { get; set; }
         public int OrderIndex { get; set; }
-        public int? ClockId { get; set; }
-        public Clock Clock { get; set; }
+        public int ClockId { get; set; }
+
+        public static ClockItemBase ToEntity(ClockItemBaseDTO dto)
+        {
+            if(dto is ClockItemTrackDTO itemTrack)
+            {
+                return ClockItemTrackDTO.ToEntity(itemTrack);
+            }
+            else if(dto is ClockItemCategoryDTO itemCategory)
+            {
+                return ClockItemCategoryDTO.ToEntity(itemCategory);
+            }
+            else if(dto is ClockItemEventDTO itemEvent)
+            {
+                return ClockItemEventDTO.ToEntity(itemEvent);
+            }
+
+            throw new Exception("Unrecognised clock item type.");
+        }
     }
 }

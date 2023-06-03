@@ -20,14 +20,28 @@ namespace RA.DTO
         {
             return new ClockItemCategoryDTO
             {
+                Id = entity.Id,
                 OrderIndex = entity.OrderIndex,
                 ClockId = entity.ClockId,
-                Clock = entity.Clock,
                 CategoryId = entity.CategoryId,
                 CategoryName = entity.Category?.Name,
                 ArtistSeparation = entity.ArtistSeparation,
                 TitleSeparation = entity.TitleSeparation,
                 TrackSeparation = entity.TrackSeparation
+            };
+        }
+
+        public static ClockItemCategory ToEntity(ClockItemCategoryDTO dto)
+        {
+            return new ClockItemCategory
+            {
+                Id = dto.Id,
+                OrderIndex = dto.OrderIndex,
+                ClockId = dto.ClockId,
+                CategoryId = dto.CategoryId,
+                ArtistSeparation= dto.ArtistSeparation,
+                TitleSeparation= dto.TitleSeparation,
+                TrackSeparation= dto.TrackSeparation
             };
         }
     }

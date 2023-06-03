@@ -39,14 +39,8 @@ namespace RA.DAL
         public async Task<IEnumerable<ClockItemBaseDTO>> GetClockItemsAsync(int clockId)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            //return await dbContext.ClockItems
-            //    .Where(cl => cl.ClockId == clockId)
-            //    .Include(c => c.Category)
-            //    .OrderBy(ci => ci.OrderIndex)
-            //    .Select(ci => ClockItemDTO.FromEntity(ci))
-            //    .ToListAsync();
-
             var result = new List<ClockItemBaseDTO>();
+
             var clockItems = await dbContext.ClockItems
                 .Where(ci => ci.ClockId == clockId)
                 .OrderBy(ci => ci.OrderIndex)
@@ -72,8 +66,6 @@ namespace RA.DAL
             }
            
             return result;
-
-
         }
         public IEnumerable<ClockDTO> GetClocks()
         {
@@ -89,54 +81,54 @@ namespace RA.DAL
         public async Task<Dictionary<int, TimeSpan>> CalculateAverageDurationsForCategoriesInClockWithId(int clockId)
         {
             Dictionary<int, TimeSpan> result = new Dictionary<int, TimeSpan>();
-            //using (var dbContext = dbContextFactory.CreateDbContext())
-            //{
-            //    // Get unique ids for current clockItemDto items
-            //    var categoryIds = await dbContext.ClockItems
-            //        .Where(ci => ci.ClockId == clockId)
-            //        .Select(ci => ci.CategoryId)
-            //        .Distinct().ToListAsync();
+            using (var dbContext = dbContextFactory.CreateDbContext())
+            {
+                // Get unique ids for current clockItemDto items
+                var categoryIds = await dbContext.ClockItemsCategories
+                    .Where(ci => ci.ClockId == clockId)
+                    .Select(ci => ci.CategoryId)
+                    .Distinct().ToListAsync();
 
-            //    if (categoryIds.Count > 0)
-            //    {
-            //        var categoryAvgDurations = dbContext.Categories
-            //            .Where(c => categoryIds.Contains(c.Id) || categoryIds.Contains(c.ParentId))
-            //            .Select(c => new
-            //            {
-            //                CategoryId = c.Id,
-            //                ParentId = c.ParentId,
-            //                AvgDuration = c.Tracks.Average(t => (double?)t.Duration)
-            //            })
-            //            .ToList();
+                if (categoryIds.Count > 0)
+                {
+                    var categoryAvgDurations = dbContext.Categories
+                        .Where(c => categoryIds.Contains(c.Id) || categoryIds.Contains(c.ParentId))
+                        .Select(c => new
+                        {
+                            CategoryId = c.Id,
+                            ParentId = c.ParentId,
+                            AvgDuration = c.Tracks.Average(t => (double?)t.Duration)
+                        })
+                        .ToList();
 
-            //        foreach (var item in categoryAvgDurations)
-            //        {
-            //            TimeSpan avgDuration = TimeSpan.Zero;
-            //            if (item.AvgDuration.HasValue)
-            //            {
-            //                avgDuration = TimeSpan.FromSeconds(item.AvgDuration.Value);
-            //            }
+                    foreach (var item in categoryAvgDurations)
+                    {
+                        TimeSpan avgDuration = TimeSpan.Zero;
+                        if (item.AvgDuration.HasValue)
+                        {
+                            avgDuration = TimeSpan.FromSeconds(item.AvgDuration.Value);
+                        }
 
-            //            if (item.ParentId == null)
-            //            {
-            //                // If the category is a parent, calculate the average duration of its subcategories.
-            //                var subCategories = categoryAvgDurations.Where(x => x.ParentId == item.CategoryId).ToList();
-            //                TimeSpan totalDuration = avgDuration;
-            //                int count = 1; // 1 to include the parent itself
+                        if (item.ParentId == null)
+                        {
+                            // If the category is a parent, calculate the average duration of its subcategories.
+                            var subCategories = categoryAvgDurations.Where(x => x.ParentId == item.CategoryId).ToList();
+                            TimeSpan totalDuration = avgDuration;
+                            int count = 1; // 1 to include the parent itself
 
-            //                foreach (var subItem in subCategories)
-            //                {
-            //                    totalDuration += TimeSpan.FromSeconds(subItem.AvgDuration ?? 0);
-            //                    count++;
-            //                }
-            //                avgDuration = totalDuration / count;
-            //            }
+                            foreach (var subItem in subCategories)
+                            {
+                                totalDuration += TimeSpan.FromSeconds(subItem.AvgDuration ?? 0);
+                                count++;
+                            }
+                            avgDuration = totalDuration / count;
+                        }
 
-            //            result.Add(item.CategoryId, avgDuration);
-            //        }
+                        result.Add(item.CategoryId, avgDuration);
+                    }
 
-            //    }
-            //}
+                }
+            }
             return result;
         }
         public async Task AddClock(ClockDTO clockDto)
@@ -158,16 +150,16 @@ namespace RA.DAL
         public async Task AddClockItem(ClockItemBaseDTO clockItemDto)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            //var entity = ClockItemDTO.ToEntity(clockItemDto);
-            //dbContext.Add(entity);
+            var entity = ClockItemBaseDTO.ToEntity(clockItemDto);
+            dbContext.Add(entity);
             await dbContext.SaveChangesAsync();
         }
 
         public async Task RemoveClockItem(ClockItemBaseDTO clockItemDto)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            //var entity = ClockItemDTO.ToEntity(clockItemDto);
-            //dbContext.Remove(entity);
+            var entity = ClockItemBaseDTO.ToEntity(clockItemDto);
+            dbContext.Remove(entity);
             await dbContext.SaveChangesAsync();
         }
     }

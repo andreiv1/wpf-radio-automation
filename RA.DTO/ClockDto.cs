@@ -9,7 +9,7 @@ namespace RA.DTO
 {
     public class ClockDTO
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public String Name { get; set; }
 
         public ClockDTO()
@@ -29,7 +29,7 @@ namespace RA.DTO
 
         public static Clock ToEntity(ClockDTO dto)
         {
-            return new Clock { Id = dto.Id.GetValueOrDefault(), Name = dto.Name, };
+            return new Clock { Id = dto.Id, Name = dto.Name, };
         }
     }
 }

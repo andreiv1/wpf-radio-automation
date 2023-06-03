@@ -77,17 +77,25 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         {
             if (SelectedClock != null)
             {
-                var clockItems = await Task.Run(() => clocksService.GetClockItemsAsync(SelectedClock.Id.GetValueOrDefault()));
+                var clockItems = await Task.Run(() => clocksService.GetClockItemsAsync(SelectedClock.Id));
                 ClockItemsForSelectedClock.Clear();
 
-                var categoryAvgDurations = await Task.Run(() => clocksService.CalculateAverageDurationsForCategoriesInClockWithId(SelectedClock.Id.GetValueOrDefault()));
+                var categoryAvgDurations = await Task.Run(() => clocksService.CalculateAverageDurationsForCategoriesInClockWithId(SelectedClock.Id));
 
                 foreach (var clockItemDto in clockItems)
                 {
-                    ClockItemModel clockItemModel = ClockItemModel.FromDto(clockItemDto);
 
+                    var model = new ClockItemModel(clockItemDto);
                     //TODO: Here treat multiple Clock Items type to display String clockItemDto details
                     
+                    if(clockItemDto is ClockItemCategoryDTO category)
+                    {
+                        if(category.CategoryId.HasValue)
+                        {
+                            model.Duration = categoryAvgDurations[category.CategoryId.Value];
+                        }
+                        
+                    }
                     //if (clockItemDto.CategoryId.HasValue)
                     //{
                     //    clockItemModel.Duration = categoryAvgDurations[clockItemDto.CategoryId.Value];
@@ -102,7 +110,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                     //}
                     dispatcherService.InvokeOnUIThread(() =>
                     {
-                        ClockItemsForSelectedClock.Add(clockItemModel);
+                        ClockItemsForSelectedClock.Add(model);
                     });
                 }
             }
@@ -125,7 +133,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             int totalSeconds = 0;
             foreach (var clock in ClockItemsForSelectedClock)
             {
-                ClockItemsPieChart.Add(new ClockPieChartModel(clock.CategoryName, (int)clock.Duration.TotalSeconds));
+                ClockItemsPieChart.Add(new ClockPieChartModel(clock.Display, (int)clock.Duration.TotalSeconds));
                 totalSeconds += (int)clock.Duration.TotalSeconds;
             }
             if (totalSeconds < 3600)
@@ -196,7 +204,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private void EditClockDialog()
         {
             if (SelectedClock == null) return;
-            var result = windowService.ShowDialog<PlannerManageClockViewModel>(SelectedClock.Id ?? throw new ArgumentException("Id cannot be empty."));
+            var result = windowService.ShowDialog<PlannerManageClockViewModel>(SelectedClock.Id);
             var dto = ClockModel.ToDto(result.ManagedClock);
             clocksService.UpdateClock(dto);
             _ = LoadClocks();
@@ -207,7 +215,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private void DuplicateClockDialog()
         {
             if (SelectedClock == null) return;
-            windowService.ShowDialog<PlannerManageClockViewModel>(SelectedClock.Id ?? throw new ArgumentException("Id cannot be empty."),
+            windowService.ShowDialog<PlannerManageClockViewModel>(SelectedClock.Id,
                true);
         }
 

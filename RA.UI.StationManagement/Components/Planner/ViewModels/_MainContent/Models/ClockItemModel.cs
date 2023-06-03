@@ -15,36 +15,43 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
     public partial class ClockItemModel : ObservableObject
     {
         public int Id { get; private set; }
-        public int? TrackId { get; set; }
-        public int? CategoryId { get; set; }
-        public String CategoryName { get; set; } = String.Empty;
-        public int? ClockId { get; set; }
-        public int OrderIndex { get; set; }
-        public EventType? EventType { get; set; }
-        public string? EventLabel { get; set; }
-        public TimeSpan? EstimatedEventDuration { get; set; }
+        
+        public ClockItemBaseDTO Item { get; private set; }
         public String ItemDetails
         {
             get
             {
-                if (CategoryId.HasValue)
+                if (Item is ClockItemCategoryDTO category)
                 {
-                    return $"From category: {CategoryName}";
+                    return $"From category: {category.CategoryName}";
                 }
+                //if (CategoryId.HasValue)
+                //{
+                //    return $"From category: {CategoryName}";
+                //}
 
-                if (TrackId.HasValue)
-                {
-                    return $"Track: Id={TrackId}";
-                }
+                //if (TrackId.HasValue)
+                //{
+                //    return $"Track: Id={TrackId}";
+                //}
 
-                if (EventType.HasValue)
-                {
-                    return $"[{EventType.ToString()}] {EventLabel}";
-                }
+                //if (EventType.HasValue)
+                //{
+                //    return $"[{EventType.ToString()}] {EventLabel}";
+                //}
 
                 return $"Unknown item";
             }
         }
+
+        public String Display
+        {
+            get
+            {
+                return "Test";
+            }
+        }
+
 
         [ObservableProperty]
         private TimeSpan startTime;
@@ -58,29 +65,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
         [ObservableProperty]
         private SolidColorBrush backgroundColor = new SolidColorBrush(Color.FromRgb(51, 51, 51));
 
-        public static ClockItemModel FromDto(ClockItemBaseDTO dto)
+        public ClockItemModel(ClockItemBaseDTO item)
         {
-            var model = new ClockItemModel()
-            {
-                Id = dto.Id,
-                ClockId = dto.ClockId,
-                OrderIndex = dto.OrderIndex,
-            };
-
-            return model;
-        }
-
-        public static ClockItemBaseDTO ToDto(ClockItemModel model)
-        {
-            throw new NotImplementedException();
-            //return new ClockItemDTO()
-            //{
-            //    Id = model.Id,
-            //    TrackId = model.TrackId,
-            //    CategoryId = model.CategoryId,
-            //    ClockId = model.ClockId,
-            //    OrderIndex = model.OrderIndex,
-            //};
+            Item = item;
         }
     }
 }
