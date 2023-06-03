@@ -72,15 +72,15 @@
         </Grid>
 
         <!-- TABS -->
-        <TabControl Grid.Row="1"
-                    Margin="0,10,0,10"
+        <syncfusion:TabControlExt Grid.Row="1"
+                    Margin="0,10,0,0" AllowDragDrop="False" ShowTabItemContextMenu="False" ShowTabListContextMenu="False" CloseButtonType="Hide"
                     KeyboardNavigation.TabNavigation="None">
             <!-- Details TAB -->
-            <TabItem>
-                <TabItem.Header>
+            <syncfusion:TabItemExt>
+                <syncfusion:TabItemExt.Header>
                     <Label FontWeight="Bold" Content="Details"/>
-                </TabItem.Header>
-                <Grid>
+                </syncfusion:TabItemExt.Header>
+                <Grid Margin="0,2,0,2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
@@ -90,7 +90,7 @@
                     <!-- Essential options -->
                     <Border Grid.Row="0"
                         VerticalAlignment="Top"
-                        Margin="1,0,10,0"
+                        Margin="10,0,10,0"
                         CornerRadius="5"
                         Padding="10"
                         BorderBrush="#d5dfe5" BorderThickness="0.5">
@@ -155,7 +155,7 @@
                     </Border>
 
                     <!-- Columns for fields -->
-                    <Grid Margin="0,10,0,0" Grid.Row="1">
+                    <Grid Margin="10,0,10,0" Grid.Row="1">
                         <Grid.Resources>
                             <Style TargetType="{x:Type GroupBox}">
                                 <Setter Property="Margin" Value="0,0,10,0"/>
@@ -401,7 +401,7 @@
                                      EndCue="{Binding Track.EndCue}"/>
 
                     <!-- Player Buttons -->
-                    <StackPanel Grid.Row="3" Margin="0,2,0,0"
+                    <StackPanel Grid.Row="3" Margin="10,2,0,0"
                         Orientation="Horizontal">
                         <syncfusion:ButtonAdv x:Name="PlayButton"
                                               Grid.Column="0" SizeMode="Large" Margin="0,0,5,0" Height="68" Width="78"
@@ -409,12 +409,62 @@
                                               Click="PlayButton_Click"/>
 
                         <syncfusion:ButtonAdv x:Name="StopButton"
-                            SizeMode="Large" Label="Stop" Margin="0,0,5,0"   
+                            SizeMode="Large" Label="Stop" Margin="0,0,20,0"   
                             LargeIcon="{StaticResource StopIcon}"
                             Grid.Column="1"
                             Height="68" Width="78"
                             Click="StopButton_Click"/>
-        
+
+                        <Grid Margin="0,3,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Content="Player Volume"/>
+                            <syncfusion:SfRangeSlider Grid.Column="0" Grid.Row="1"
+                                                      Width="90"/>
+                            <Label Grid.Column="1" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Content="Duration"/>
+  
+                            <syncfusion:TimeSpanEdit Grid.Row="1" Grid.Column="1" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                     Height="24" ShowArrowButtons="False" IsReadOnly="True"
+                                                     Format="hh:mm:ss"
+                                                     />
+
+                            <Label Grid.Column="2" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Content="BPM"/>
+                            <TextBox Grid.Row="1" Grid.Column="2" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               Height="24" IsReadOnly="True"
+                                     Text="{Binding Track.Bpm}"
+                                    />
+
+                            <Label Grid.Column="3" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Content="Bitrate (kbps)"/>
+                            <TextBox Grid.Row="1" Grid.Column="3" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               Height="24" IsReadOnly="True"/>
+                            <Label Grid.Column="4" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Content="Frequency (Hz)"/>
+                            <TextBox Grid.Row="1" Grid.Column="4" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               Height="24" IsReadOnly="True"/>
+                            <Label Grid.Column="5" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Content="Format"/>
+                            <TextBox Grid.Row="1" Grid.Column="5" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               Height="24" IsReadOnly="True"/>
+                            <Label Grid.Column="6" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Content="Detect"/>
+                            <syncfusion:ButtonAdv Grid.Row="1" Grid.Column="6" Width="95" SmallIcon="{x:Null}"
+                                Label="Cue points"/>
+                        </Grid>
 
                     </StackPanel>
 
@@ -427,19 +477,52 @@
                     </StackPanel>-->
 
                 </Grid>
-            </TabItem>
+            </syncfusion:TabItemExt>
             
             <!-- Properties TAB -->
-            <TabItem>
-                <TabItem.Header>
+            <syncfusion:TabItemExt>
+                <syncfusion:TabItemExt.Header>
                     <Label FontWeight="Bold" Content="Properties"/>
-                </TabItem.Header>
-            </TabItem>
+                </syncfusion:TabItemExt.Header>
+                <Grid Grid.Row="3" Margin="0,10,0,0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
 
-            <TabItem>
-                <TabItem.Header>
+                    <Label Grid.Row="0"
+                Content="Genre(s):" FontWeight="DemiBold"/>
+                    <syncfusion:ComboBoxAdv Grid.Row="1" VerticalAlignment="Center" MinHeight="50"
+                                    SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
+                                    ItemsSource="{Binding Genres}" DefaultText="Any genre"
+                                    DisplayMemberPath="Name"
+                                    />
+                    <Label Grid.Row="2" VerticalAlignment="Center"
+                Content="Language(s):" FontWeight="DemiBold"/>
+                    <syncfusion:ComboBoxAdv Grid.Row="3" VerticalAlignment="Center" MinHeight="50"
+                                    SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
+                                    ItemsSource="{Binding Languages}" DefaultText="Any language"
+                                    DisplayMemberPath="Name"
+                                    />
+
+                    <Label Grid.Row="4" VerticalAlignment="Center"
+                Content="Mood(s):" FontWeight="DemiBold"/>
+                    <syncfusion:ComboBoxAdv Grid.Row="5" VerticalAlignment="Center" MinHeight="50"
+                                    SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
+                                    ItemsSource="{Binding Moods}" DefaultText="Any mood" 
+                                    DisplayMemberPath="Name"
+                                    />
+                </Grid>
+            </syncfusion:TabItemExt>
+
+            <syncfusion:TabItemExt>
+                <syncfusion:TabItemExt.Header>
                     <Label FontWeight="Bold" Content="Image"/>
-                </TabItem.Header>
+                </syncfusion:TabItemExt.Header>
 
                 <Grid>
                     <syncfusion:SfImageEditor ImageSource="{Binding FullImagePath}">
@@ -448,15 +531,15 @@
                         </syncfusion:SfImageEditor.ToolbarSettings>
                     </syncfusion:SfImageEditor>
                 </Grid>
-            </TabItem>
+            </syncfusion:TabItemExt>
 
             <!-- Statistics TAB -->
-            <TabItem>
-                <TabItem.Header>
+            <syncfusion:TabItemExt>
+                <syncfusion:TabItemExt.Header>
                     <Label FontWeight="Bold" Content="Statistics"/>
-                </TabItem.Header>
-            </TabItem>
-        </TabControl>
+                </syncfusion:TabItemExt.Header>
+            </syncfusion:TabItemExt>
+        </syncfusion:TabControlExt>
 
         <StackPanel Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal">
             <syncfusion:ButtonAdv

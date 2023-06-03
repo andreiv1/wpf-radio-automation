@@ -199,8 +199,11 @@
 
         <StackPanel Grid.Row="4" Margin="0,0,0,5" VerticalAlignment="Bottom">
             <CheckBox Content="Use this rule as filler when no other rules can apply" Margin="0,0,0,5"/>
-            <TextBlock Text="There are X tracks in the category Y matching the filters."
-                       FontWeight="Bold"/>
+            <TextBlock FontWeight="Bold">
+                <Run Text="There are "/>
+                <Run Text="{Binding NoOfTracksMatchingConditions}"/>
+                <Run Text=" tracks in the category Y matching the filters."/>
+            </TextBlock>
         </StackPanel>
         
         <StackPanel Grid.Row="5" HorizontalAlignment="Right" Orientation="Horizontal">

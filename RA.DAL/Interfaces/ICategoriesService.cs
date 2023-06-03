@@ -15,6 +15,7 @@ namespace RA.DAL
         Task<IEnumerable<CategoryDTO>> GetChildrenCategoriesAsync(int parentCategoryId);
         Task<IEnumerable<CategoryDTO>> GetRootCategoriesAsync();
         Task<bool> HasCategoryChildren(int categoryId);
+        Task<int> NoOfTracksMatchingConditions(int categoryId);
         Task UpdateCategory(CategoryDTO category);
     }
 }

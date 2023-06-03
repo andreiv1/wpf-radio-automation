@@ -12,7 +12,7 @@
     </UserControl.Resources>
     <Grid KeyboardNavigation.TabNavigation="None">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="240"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 

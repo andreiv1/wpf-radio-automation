@@ -27,10 +27,16 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
-            var db = dbFactory.CreateDbContext();
-            var items = db.ClockItems.ToList();
-            IClocksService clocksService = new ClocksService(dbFactory);
-            var ci = clocksService.GetClockItems(1);
+            TestTracks();
+
+            Console.ReadLine();
+        }
+
+        static async void TestTracks()
+        {
+            ICategoriesService categoriesService = new CategoriesService(dbFactory);
+            var result = await categoriesService.NoOfTracksMatchingConditions(1);
+            Console.WriteLine(result);
             Console.ReadKey();
         }
         

@@ -84,11 +84,15 @@ namespace RA.DAL
             return result;
         }
 
-        public async Task<int> CountTracks(int categoryId)
+        public async Task<int> NoOfTracksMatchingConditions(int categoryId)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-
-            return await dbContext.Tracks.CountAsync();
+            //TODO: search also in subcategories
+            return await dbContext.Categories
+                .Where(c => c.Id == categoryId)
+                .Include(c => c.Tracks)
+                .Select(c => c.Tracks.Count())
+                .FirstOrDefaultAsync();
         }
 
     }

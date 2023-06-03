@@ -33,6 +33,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
         [ObservableProperty]
         private TimeSpan trackSeparation;
 
+        [ObservableProperty]
+        private int noOfTracksMatchingConditions = 0;
+
         public ObservableCollection<TagValueDTO> Genres { get; set; } = new();
         public ObservableCollection<TagValueDTO> Languages { get; set; } = new();
         public ObservableCollection<TagValueDTO> Moods { get; set; } = new();
@@ -79,6 +82,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
             if(vm.SelectedCategory != null)
             {
                 SelectedCategory = await categoriesService.GetCategoryHierarchy(vm.SelectedCategory.CategoryId);
+                NoOfTracksMatchingConditions = await categoriesService.NoOfTracksMatchingConditions(vm.SelectedCategory.CategoryId);
             }
         }
         #endregion
