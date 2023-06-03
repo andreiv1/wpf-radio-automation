@@ -24,6 +24,8 @@ namespace RA.UI.Core.ViewModels
     {
         public String DialogName { get; protected set; } = "";
 
+        public RADialogResult Result { get; protected set; } = RADialogResult.None;
+
         protected readonly IWindowService windowService;
         protected DialogViewModelBase(IWindowService windowService)
         {
@@ -34,6 +36,7 @@ namespace RA.UI.Core.ViewModels
         [RelayCommand]
         protected virtual void CancelDialog()
         {
+            Result = RADialogResult.Cancel;
             windowService.CloseDialog();
         }
 

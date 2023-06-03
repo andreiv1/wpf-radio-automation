@@ -43,7 +43,7 @@ namespace RA.ConsoleApp
         static async void TestClocks()
         {
             IClocksService clService = new ClocksService(dbFactory);
-            var result = await clService.GetClockItemAsync(62);
+            await clService.DeleteClockItem(91);
         }
         
     }

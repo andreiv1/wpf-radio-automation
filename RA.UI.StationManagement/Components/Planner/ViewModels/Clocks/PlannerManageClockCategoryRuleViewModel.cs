@@ -68,7 +68,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
         public async Task AddClockItem(int orderIndex)
         {
             if (SelectedCategory == null) return;
-
+            if (Result == RADialogResult.Cancel) return;
             var newClockItem = new ClockItemCategoryDTO()
             {
                 OrderIndex = orderIndex,
@@ -105,6 +105,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
         protected override bool CanFinishDialog()
         {
             return SelectedCategory != null;
+        }
+
+        protected override void CancelDialog()
+        {
+            SelectedCategory = null;
+            base.CancelDialog();
         }
 
         #region Data fetch

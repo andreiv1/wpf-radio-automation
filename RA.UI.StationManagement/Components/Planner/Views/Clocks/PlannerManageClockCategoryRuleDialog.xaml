@@ -6,9 +6,10 @@
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         xmlns:local="clr-namespace:RA.UI.StationManagement.Components.Planner.View.Clocks"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:clocks="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.Clocks" d:DataContext="{d:DesignInstance Type=clocks:PlannerManageClockCategoryRuleViewModel}"
-                 mc:Ignorable="d"
-        Title="Insert rule from category" Height="700" Width="450" ResizeMode="NoResize"
-                 WindowStartupLocation="CenterScreen">
+        mc:Ignorable="d"
+        Title="Insert rule from category" Height="700" Width="450" ResizeMode="NoResize" 
+        WindowStartupLocation="CenterScreen"
+        >
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

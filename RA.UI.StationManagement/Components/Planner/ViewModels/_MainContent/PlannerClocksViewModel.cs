@@ -179,6 +179,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             if(SelectedClockItem.Item is ClockItemCategoryDTO itemCategory)
             {
                 var vm = windowService.ShowDialog<PlannerManageClockCategoryRuleViewModel>(SelectedClock.Id, itemCategory.Id);
+
+                _ = LoadClockItemsForSelectedClock();
             }
             
         }

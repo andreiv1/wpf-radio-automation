@@ -157,6 +157,30 @@ namespace RA.DAL
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task DeleteClockItem(int clockItemId)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var entity = await dbContext.ClockItems.FindAsync(clockItemId);
+            if (entity != null)
+            {
+                dbContext.Remove(entity);
+                await dbContext.SaveChangesAsync();
+
+                var otherItems = await dbContext.ClockItems
+                    .Where(ci => ci.ClockId == entity.ClockId)
+                    .OrderBy(ci => ci.OrderIndex)
+                    .ToListAsync();
+                for (int i = 0; i < otherItems.Count(); i++)
+                {
+                    var itm = otherItems.ElementAt(i);
+                    itm.OrderIndex = i;
+                    dbContext.Update(itm);
+                }
+
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
         public async Task<ClockItemBaseDTO> GetClockItemAsync(int clockItemId)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
