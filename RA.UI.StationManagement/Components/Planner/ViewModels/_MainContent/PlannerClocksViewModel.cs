@@ -174,7 +174,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         [RelayCommand]
         private void EditSelectedItemInSelectedClock()
         {
-            if(SelectedClock == null && SelectedClockItem == null) return;
+            if(SelectedClock == null || SelectedClockItem == null) return;
             if(SelectedClockItem!.Item == null) return;
             if(SelectedClockItem.Item is ClockItemCategoryDTO itemCategory)
             {
