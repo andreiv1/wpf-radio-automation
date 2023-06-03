@@ -91,6 +91,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                     {
                         clockItemModel.Duration = categoryAvgDurations[clockItemDto.CategoryId.Value];
                     }
+                    else if (clockItemDto.EventType.HasValue)
+                    {
+                        clockItemModel.Duration = clockItemModel.EstimatedEventDuration.Value;
+                    }
                     else
                     {
                         clockItemModel.Duration = TimeSpan.Zero;
@@ -146,12 +150,25 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             {
                 DebugHelper.WriteLine(this, $"To add clock rule - {vm.SelectedCategory.Id}");
                 int latestIndex = ClockItemsForSelectedClock.Count;
-                clocksService.AddClockItem(new ClockItemDTO()
+                var newClockItem = new ClockItemDTO()
                 {
                     OrderIndex = latestIndex,
                     CategoryId = vm.SelectedCategory.Id,
                     ClockId = SelectedClock.Id,
-                });
+                };
+                if (vm.ArtistSeparation.TotalMinutes > 0)
+                {
+                    newClockItem.ArtistSeparation = (int?)vm.ArtistSeparation.TotalMinutes;
+                }
+                if (vm.TitleSeparation.TotalMinutes > 0)
+                {
+                    newClockItem.TitleSeparation = (int?)vm.TitleSeparation.TotalMinutes;
+                }
+                if(vm.TrackSeparation.TotalMinutes > 0)
+                {
+                    newClockItem.TrackSeparation = (int?)vm.TrackSeparation.TotalMinutes;
+                }
+                clocksService.AddClockItem(newClockItem);
 
                 //Reload clocks from db
                 _ = LoadClockItemsForSelectedClock();

@@ -29,7 +29,18 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
+            IClocksService clocksService = new ClocksService(dbFactory);
 
+            clocksService.AddClockItem(new ClockItemDTO()
+            {
+                OrderIndex = 23,
+                EventType = Database.Models.Enums.EventType.Marker,
+                EstimatedEventDuration = new TimeSpan(0,2,0),
+                EventLabel = "DJ Talk",
+                ClockId = 1
+            });
+
+            Console.ReadKey();
         }
         
     }

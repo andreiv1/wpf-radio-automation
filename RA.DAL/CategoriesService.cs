@@ -84,5 +84,12 @@ namespace RA.DAL
             return result;
         }
 
+        public async Task<int> CountTracks(int categoryId)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+
+            return await dbContext.Tracks.CountAsync();
+        }
+
     }
 }

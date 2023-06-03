@@ -91,4 +91,9 @@
     <BitmapImage x:Key="VoiceOverIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-voice-48.png"/>
     
     <BitmapImage x:Key="AudioListenIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-audio-listen-48.png"/>
+
+    <BitmapImage x:Key="MediaLibraryIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-music-library-48.png"/>
+    <BitmapImage x:Key="HistoryIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-history-48.png"/>
+    <BitmapImage x:Key="InternetIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-internet-48.png"/>
+    <BitmapImage x:Key="PlayRedIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-play-button-circled-48.png"/>
 </ResourceDictionary>

@@ -31,5 +31,12 @@ namespace RA.Database.Models
 
         [EnumDataType(typeof(SchedulePlannedFrequency))]
         public SchedulePlannedFrequency? Frequency { get; set; }
+        public Boolean IsMonday { get; set; }
+        public Boolean IsTuesday { get; set; }
+        public Boolean IsWednesday { get; set; }
+        public Boolean IsThursday { get; set; }
+        public Boolean IsFriday { get; set; }
+        public Boolean IsSaturday { get; set; }
+        public Boolean IsSunday { get; set; } 
     }
 }

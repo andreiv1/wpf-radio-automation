@@ -5,15 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         xmlns:local="clr-namespace:RA.UI.StationManagement.Components.Planner.View.Clocks"
-        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-        mc:Ignorable="d"
-        Title="Insert rule from category" Height="300" Width="450" 
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:clocks="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.Clocks" d:DataContext="{d:DesignInstance Type=clocks:PlannerManageClockCategoryRuleViewModel}"
+                 mc:Ignorable="d"
+        Title="Insert rule from category" Height="500" Width="450" 
                  WindowStartupLocation="CenterScreen">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
-            <RowDefinition/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+  
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -31,7 +34,7 @@
                                   Command="{Binding OpenPickCategoryCommand}"/>
 
         </Grid>
-
+       
         <Grid Grid.Row="1" Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -41,6 +44,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="24"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Label Content="Artist separation:" Grid.Column="0"
                    FontWeight="DemiBold"/>
@@ -49,16 +53,58 @@
             <Label Content="Track separation:" Grid.Column="2"
                    FontWeight="DemiBold"/>
             <syncfusion:TimeSpanEdit Grid.Row="1" Grid.Column="0" Margin="0,0,3,0"
-                                     MinValue="0:0:0"
+                                     MinValue="0:0:0" Value="{Binding ArtistSeparation, Mode=TwoWay}"
                                      Format="h 'hours' m 'min'"/>
             <syncfusion:TimeSpanEdit Grid.Row="1" Grid.Column="1" Margin="0,0,3,0"
-                                     MinValue="0:0:0"
+                                     MinValue="0:0:0" Value="{Binding TitleSeparation, Mode=TwoWay}"
                                      Format="h 'hours' m 'min'"/>
             <syncfusion:TimeSpanEdit Grid.Row="1" Grid.Column="2" 
-                                     MinValue="0:0:0"
+                                     MinValue="0:0:0" Value="{Binding TrackSeparation, Mode=TwoWay}"
                                      Format="h 'hours' m 'min'"/>
+            
+            <!-- Separation description -->
+            <!--<TextBlock Grid.Row="2" Grid.ColumnSpan="3" TextWrapping="Wrap" Margin="4,5,0,0" Height="auto"
+                   Text="{StaticResource TrackAllSeparationString}"/>-->
         </Grid>
-        <StackPanel Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal">
+
+        <Grid Grid.Row="2" Margin="0,10,0,0" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0"
+                Content="Genre(s):" FontWeight="DemiBold"/>
+            <syncfusion:ComboBoxAdv Grid.Row="1" VerticalAlignment="Center" MinHeight="50"
+                                    SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
+                                    ItemsSource="{Binding Genres}" 
+                                    DisplayMemberPath="Name"
+                                    />
+            <Label Grid.Row="2" VerticalAlignment="Center"
+                Content="Language(s):" FontWeight="DemiBold"/>
+            <syncfusion:ComboBoxAdv Grid.Row="3" VerticalAlignment="Center" MinHeight="50"
+                                    SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
+                                    ItemsSource="{Binding Languages}" 
+                                    DisplayMemberPath="Name"
+                                    />
+
+            <Label Grid.Row="4" VerticalAlignment="Center"
+                Content="Mood(s):" FontWeight="DemiBold"/>
+            <syncfusion:ComboBoxAdv Grid.Row="5" VerticalAlignment="Center" MinHeight="50"
+                                    SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
+                                    ItemsSource="{Binding Moods}" 
+                                    DisplayMemberPath="Name"
+                                    />
+        </Grid>
+
+
+        <TextBlock Grid.Row="3" Text="There are X tracks in the category Y matching the rules." 
+                   Margin="0,0,0,5" VerticalAlignment="Bottom"/>
+        <StackPanel Grid.Row="4" HorizontalAlignment="Right" Orientation="Horizontal">
             <syncfusion:ButtonAdv Label="Cancel" Margin="0,0,5,0"
                                   SmallIcon="{StaticResource CloseIcon}"
                                   Command="{Binding CancelDialogCommand}" IsCancel="True"/>

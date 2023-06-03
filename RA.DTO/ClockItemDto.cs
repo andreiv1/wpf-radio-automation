@@ -1,4 +1,5 @@
 ﻿using RA.Database.Models;
+using RA.Database.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,13 @@ namespace RA.DTO
         public int? TrackSeparation { get; set; }
 
         #endregion
+
+        #region Event
+        public EventType? EventType { get; set; }
+        public string? EventLabel { get; set; }
+        public TimeSpan? EstimatedEventDuration { get; set; }
+
+        #endregion
         public int? ClockId { get; set; }
 
         
@@ -34,6 +42,12 @@ namespace RA.DTO
                 TrackId = clockItem.TrackId,
                 CategoryId = clockItem.CategoryId,
                 CategoryName = clockItem.Category?.Name ?? String.Empty,
+                ArtistSeparation = clockItem.ArtistSeparation,
+                TitleSeparation = clockItem.TitleSeparation,
+                TrackSeparation = clockItem.TrackSeparation,
+                EventType = clockItem.EventType,
+                EventLabel = clockItem.EventLabel,
+                EstimatedEventDuration = clockItem.EstimatedEventDuration,
                 ClockId = clockItem.ClockId,
                 OrderIndex = clockItem.OrderIndex,
             };
@@ -46,7 +60,13 @@ namespace RA.DTO
                 TrackId = clockItemDto.TrackId,
                 CategoryId = clockItemDto.CategoryId,
                 ClockId = clockItemDto?.ClockId,
-                OrderIndex = clockItemDto.OrderIndex
+                OrderIndex = clockItemDto.OrderIndex,
+                ArtistSeparation = clockItemDto.ArtistSeparation,
+                TitleSeparation = clockItemDto.TitleSeparation,
+                TrackSeparation = clockItemDto.TrackSeparation,
+                EventType= clockItemDto.EventType,
+                EventLabel = clockItemDto.EventLabel,
+                EstimatedEventDuration= clockItemDto.EstimatedEventDuration,
             };
         }
     }

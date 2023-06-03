@@ -7,7 +7,7 @@
         xmlns:localconverters="clr-namespace:RA.UI.StationManagement.Converters"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
-        Title="PlannerManageScheduleItemDialog" Height="400" Width="500"
+        Title="Add planned schedule" Height="440" Width="500"
         ResizeMode="NoResize">
     <Window.Resources>
         <!-- Temporary card -->
@@ -56,61 +56,187 @@
                 <Image Source="{StaticResource InfoIcon}" VerticalAlignment="Center" HorizontalAlignment="Left"
                                Height="24" Width="24" Margin="5,0,5,0"/>
                 <TextBlock Grid.Column="1" VerticalAlignment="Center" Width="auto" 
-                            Text="This schedule will override any existing default schedule." 
+                            Text="This planned schedule will override any existing default schedule." 
                                    TextWrapping="WrapWithOverflow"/>
             </Grid>
 
 
         </Expander>
         <!-- Fields -->
-        <Grid Grid.Row="1" Margin="40,30,30,30">
+        <Grid Grid.Row="1" Margin="40,20,20,30">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="250"/>
             </Grid.ColumnDefinitions>
-
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
-
-                <!-- spacer -->
-                <RowDefinition Height="10"/>
-                <RowDefinition Height="24"/>
-
-                <!-- spacer -->
-                <RowDefinition Height="10"/>
-                <RowDefinition Height="24"/>
-
-                <!-- spacer -->
-                <RowDefinition Height="10"/>
-                <RowDefinition Height="24"/>
-
-                <!-- spacer -->
-                <RowDefinition Height="10"/>
-                <RowDefinition Height="24"/>
-
-                <!-- spacer -->
-                <RowDefinition Height="10"/>
-                <RowDefinition Height="24"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <!-- 1. Schedule Type: One time, Recurrent -->
 
             <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
-                   Content="Schedule type" FontWeight="DemiBold"
+                   Content="Name:" FontWeight="DemiBold"
                    />
-
-            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+                     Height="24"/>
+            <!-- Schedule type -->
+            <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
+                   Content="Schedule type:" FontWeight="DemiBold"
+                   />
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <RadioButton Content="One time" Margin="0,0,15,0" HorizontalAlignment="Center"
                              IsChecked="{Binding ScheduleType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=OneTime}"/>
                 <RadioButton Content="Recurrent" HorizontalAlignment="Center"
-                             IsChecked="{Binding ScheduleType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Recurrent}"/>
+                             IsChecked="{Binding ScheduleType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Recurrent}"
+                             d:IsChecked="True"/>
             </StackPanel>
 
-            <!-- 2. Frequency (only for recurrent, else disable) -->
-            <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
-                   Content="Frequency" FontWeight="DemiBold" IsEnabled="{Binding ScheduleType, 
+            <!-- ONE TIME FORM -->
+            <Grid Grid.Row="2" Grid.ColumnSpan="2">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ScheduleType}" Value="OneTime">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="250"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
+                   Content="Template:" FontWeight="DemiBold"/>
+
+                <syncfusion:ComboBoxAdv Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Height="24" Margin="0,10,0,0"
+                                    ItemsSource="{Binding Templates}" AutoCompleteMode="Suggest" DisplayMemberPath="Name"/>
+
+                <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
+                   Content="Date:" FontWeight="DemiBold"
+                   />
+                <syncfusion:DateTimeEdit Grid.Row="1" Grid.Column="1" Margin="0,10,0,0"
+                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)"/>
+            </Grid>
+                
+            <!-- RECURRENT FORM -->
+            <Grid Grid.Row="2" Grid.ColumnSpan="2" d:Visibility="Visible">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ScheduleType}" Value="Recurrent">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="250"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
+                   Content="Frequency:" FontWeight="DemiBold" IsEnabled="{Binding ScheduleType, 
                             Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Recurrent}" />
-            <syncfusion:ComboBoxAdv Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Height="20"
+                <syncfusion:ComboBoxAdv Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Height="24" Margin="0,10,0,0"
+                                    ItemsSource="{Binding ScheduleFrequencies}">
+                    <syncfusion:ComboBoxAdv.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource PlannedScheduleFrequencyConverter}}"/>
+                        </DataTemplate>
+                    </syncfusion:ComboBoxAdv.ItemTemplate>
+                </syncfusion:ComboBoxAdv>
+
+                <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
+                   Content="Template:" FontWeight="DemiBold"/>
+
+                <syncfusion:ComboBoxAdv Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Height="24" Margin="0,10,0,0"
+                                    ItemsSource="{Binding Templates}" AutoCompleteMode="Suggest" DisplayMemberPath="Name"/>
+
+                <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
+                   Content="Start Date:" FontWeight="DemiBold"
+                   />
+                <syncfusion:DateTimeEdit Grid.Row="2" Grid.Column="1"  Height="24" VerticalAlignment="Center" Margin="0,10,0,0"
+                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)"/>
+
+                <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
+                   Content="End Date:" FontWeight="DemiBold"
+             
+                   />
+                <syncfusion:DateTimeEdit Grid.Row="3" Grid.Column="1" Margin="0,10,0,0" 
+                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)"
+                       />
+
+                <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="0,15,0,0" 
+                   Content="Recurrence Days:" FontWeight="DemiBold"/>
+                <Grid Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <!-- Mon -->
+                        <ColumnDefinition Width="35"/>
+                        <!-- Tue -->
+                        <ColumnDefinition Width="35"/>
+                        <!-- Wed -->
+                        <ColumnDefinition Width="35"/>
+                        <!-- Thu -->
+                        <ColumnDefinition Width="35"/>
+                        <!-- Fri -->
+                        <ColumnDefinition Width="35"/>
+                        <!-- Sat -->
+                        <ColumnDefinition Width="35"/>
+                        <!-- Sun -->
+                        <ColumnDefinition Width="35"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Mon" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"
+                           FontWeight="DemiBold"/>
+                    <CheckBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center"/>
+                    <Label Content="Tue" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"
+                           FontWeight="DemiBold"/>
+                    <CheckBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"/>
+                    <Label Content="Wed" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center"
+                           FontWeight="DemiBold"/>
+                    <CheckBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center"/>
+                    <Label Content="Thu" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center"
+                           FontWeight="DemiBold"/>
+                    <CheckBox Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center"/>
+                    <Label Content="Fri" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center"
+                           FontWeight="DemiBold"/>
+                    <CheckBox Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center"/>
+                    <Label Content="Sat" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Center"
+                           FontWeight="DemiBold"/>
+                    <CheckBox Grid.Row="1" Grid.Column="5" HorizontalAlignment="Center"/>
+                    <Label Content="Sun" Grid.Row="0" Grid.Column="6" HorizontalAlignment="Center"
+                           FontWeight="DemiBold"/>
+                    <CheckBox Grid.Row="1" Grid.Column="6" HorizontalAlignment="Center"/>
+                </Grid>
+
+            </Grid>
+
+            <!-- 2. Frequency (only for recurrent, else disable) -->
+            <!--<Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,5,0,0"
+                   Content="Frequency:" FontWeight="DemiBold" IsEnabled="{Binding ScheduleType, 
+                            Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Recurrent}" />
+            <syncfusion:ComboBoxAdv Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Height="24" Margin="0,10,0,0"
                                     ItemsSource="{Binding ScheduleFrequencies}" 
                                     IsEnabled="{Binding ScheduleType, Converter={StaticResource EnumToBooleanConverter}, 
                                         ConverterParameter=Recurrent}">
@@ -121,29 +247,32 @@
                 </syncfusion:ComboBoxAdv.ItemTemplate>
             </syncfusion:ComboBoxAdv>
 
-            <!-- 3. Select template -->
-            <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"
+            --><!-- 3. Select template --><!--
+            <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
                    Content="Template" FontWeight="DemiBold"/>
 
-            <syncfusion:ComboBoxAdv Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Height="20"
+            <syncfusion:ComboBoxAdv Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Height="24" Margin="0,10,0,0"
                                     ItemsSource="{Binding Templates}" AutoCompleteMode="Suggest" DisplayMemberPath="Name"/>
-
-            <!-- 4. Start Date -->
-            <Label Grid.Row="6" Grid.Column="0" VerticalAlignment="Center"
+                
+            --><!-- 4. Days (only for recurrent, else disable) --><!--
+            <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
+                   Content="Recurrence Days" FontWeight="DemiBold"/>
+            
+            --><!-- 5. Start Date --><!--
+            <Label Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0" 
                    Content="Start Date" FontWeight="DemiBold"
                    />
-            <syncfusion:DateTimeEdit Grid.Row="6" Grid.Column="1" 
+            <syncfusion:DateTimeEdit Grid.Row="5" Grid.Column="1" Height="24"
                         Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)"/>
-
-
-            <!-- 5. End Date (only for recurrent, else disable) -->
-            <Label Grid.Row="8" Grid.Column="0" VerticalAlignment="Center"
+                
+            --><!-- 6. End Date --><!--
+            <Label Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
                    Content="End Date" FontWeight="DemiBold"
                    IsEnabled="{Binding ScheduleType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Recurrent}"
                    />
-            <syncfusion:DateTimeEdit Grid.Row="8" Grid.Column="1" 
+            <syncfusion:DateTimeEdit Grid.Row="6" Grid.Column="1" Margin="0,10,0,0" Height="24"
                         Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)"
-                        IsEnabled="{Binding ScheduleType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Recurrent}"/>
+                        IsEnabled="{Binding ScheduleType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Recurrent}"/>-->
         </Grid>
 
         <!-- Dialogs buttons -->

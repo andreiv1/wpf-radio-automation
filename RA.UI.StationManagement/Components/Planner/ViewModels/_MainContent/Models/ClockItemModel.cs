@@ -1,10 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using RA.Database.Models.Enums;
 using RA.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Models
@@ -17,6 +19,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
         public String CategoryName { get; set; } = String.Empty;
         public int? ClockId { get; set; }
         public int OrderIndex { get; set; }
+        public EventType? EventType { get; set; }
+        public string? EventLabel { get; set; }
+        public TimeSpan? EstimatedEventDuration { get; set; }
         public String ItemDetails
         {
             get
@@ -31,6 +36,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
                     return $"Track: Id={TrackId}";
                 }
 
+                if (EventType.HasValue)
+                {
+                    return $"[{EventType.ToString()}] {EventLabel}";
+                }
 
                 return $"Unknown item";
             }
@@ -56,6 +65,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
                 TrackId = dto.TrackId,
                 CategoryId = dto.CategoryId,
                 CategoryName = dto.CategoryName,
+                EventType = dto.EventType,
+                EventLabel = dto.EventLabel,
+                EstimatedEventDuration = dto.EstimatedEventDuration,
                 ClockId = dto.ClockId,
                 OrderIndex = dto.OrderIndex,
             };

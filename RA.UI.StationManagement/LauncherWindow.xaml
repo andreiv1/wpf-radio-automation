@@ -83,16 +83,16 @@
         </StackPanel>
         <StackPanel Grid.Row="1">
             <usercontrols:LauncherComponentControl
-                        HeaderText="Media Library"
-                        Description="Manage your station's media files."
+                        HeaderText="{StaticResource MediaLibraryTitleString}"
+                        Description="{StaticResource MediaLibraryDescriptionString}"
                         d:HeaderText="Media Library"
                         d:Description="Manage your station's media files."
                         BackgroundColor="#FF5356B3"
                         Command="{Binding OpenMediaLibraryComponentCommand}"
                     />
             <usercontrols:LauncherComponentControl
-                        HeaderText="Planner"
-                        Description="Manage your station's program."
+                        HeaderText="{StaticResource PlannerTitleString}"
+                        Description="{StaticResource PlannerDescriptionString}"
                         BackgroundColor="#FF37A55B"
                         Command="{Binding OpenPlannerComponentCommand}"/>
             <usercontrols:LauncherComponentControl

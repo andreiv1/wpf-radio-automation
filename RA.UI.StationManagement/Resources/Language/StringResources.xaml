@@ -3,7 +3,13 @@
                     xmlns:system="clr-namespace:System;assembly=System.Runtime">
    
     <system:String x:Key="MediaLibraryTitleString">Media Library</system:String>
-    <system:String x:Key="MediaLibraryDescriptionString">Manage your station's media files</system:String>
+    <system:String x:Key="MediaLibraryDescriptionString">Manage the station's media files.</system:String>
+
+    <system:String x:Key="PlannerTitleString">Planner</system:String>
+    <system:String x:Key="PlannerDescriptionString">Manage the station's program and playlists.</system:String>
+
+    <system:String x:Key="ReportsTitleString">.</system:String>
+    <system:String x:Key="ReportsDescriptionString">.</system:String>
 
     <system:String x:Key="EventDynamicBreakDescriptionString">
         A dynamic break is a break that can occur at any point during the music playing process, and its start time is not fixed. Instead, the dynamic break will occur when the current song has finished playing, and there is a gap in the playlist or queue. For example, if there are two songs playing, and the dynamic break is set to occur after 30 minutes, but a third song starts playing at the 29-minute mark, the dynamic break will begin immediately after the third song has finished playing.
@@ -15,6 +21,10 @@
 
     <system:String x:Key="EventMarkerDescriptionString">
         A marker is a special element in the playlist that doesn't play any audio but displays a label to inform the presenter about something, for example a live news journal or a discussion.
+    </system:String>
+
+    <system:String x:Key="TrackAllSeparationString">
+        The separation rules prevents from selecting a track with the same artist, title or the same track in least than above defined minimum time. If set to 0 hours and 0 minutes, it will use the default separation rules.
     </system:String>
 
 </ResourceDictionary>

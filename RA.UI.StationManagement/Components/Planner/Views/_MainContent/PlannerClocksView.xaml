@@ -161,7 +161,7 @@
                        SelectionUnit="Row" NavigationMode="Row"
                        SelectionMode="Multiple" AllowSorting="False"
                        AllowDraggingRows="True"
-                       AllowDrop="True" RowHeight="27"
+                       AllowDrop="True" RowHeight="29"
                        AutoGenerateColumns="False">
                     <syncfusion:SfDataGrid.Columns>
                         <syncfusion:GridTextColumn HeaderText="Start Time"
@@ -170,7 +170,36 @@
                                    MinimumWidth="75"
                                    TextAlignment="Center"
                                    />
-                        <syncfusion:GridTextColumn HeaderText="Item Details"
+                        <syncfusion:GridTemplateColumn MinimumWidth="50" HeaderText="Item"
+                                                   MappingName="Type" Width="16" MaximumWidth="16">
+                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Width="24" Height="20">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Source" Value="{StaticResource OtherTrackIcon}"/>
+                                                <!-- Default icon -->
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding EventType}" Value="Marker">
+                                                        <Setter Property="Source" Value="{StaticResource JingleIcon}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding CategoryId.HasValue}" Value="True">
+                                                        <Setter Property="Source" Value="{StaticResource SongIcon}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Type}" Value="Commercial">
+                                                        <Setter Property="Source" Value="{StaticResource CommercialPaidIcon}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Type}" Value="Voiceover">
+                                                        <Setter Property="Source" Value="{StaticResource VoiceOverIcon}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                </DataTemplate>
+                            </syncfusion:GridTemplateColumn.CellTemplate>
+                        </syncfusion:GridTemplateColumn>
+                        <syncfusion:GridTextColumn HeaderText="Details"
                                    MappingName="ItemDetails"
                                    MinimumWidth="250" ColumnSizer="Star"
                                    TextAlignment="Left"/>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RA.Database;
+using RA.Database.Models;
 using RA.DTO;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,16 @@ namespace RA.DAL
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             return await dbContext.TagValues
                 .Where(tv => tv.TagCategoryId == tagCategoryId)
+                .Select(tv => TagValueDTO.FromEntity(tv))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<TagValueDTO>> GetTagValuesByCategoryNameAsync(string name)
+        {
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            return await dbContext.TagValues
+                .Include(tv => tv.TagCategory)
+                .Where(tv => tv.TagCategory.Name == name)
                 .Select(tv => TagValueDTO.FromEntity(tv))
                 .ToListAsync();
         }

@@ -123,48 +123,105 @@
             </Grid>
 
             <!-- Media items -->
-            <Grid Grid.Column="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="*"/>
-                   
-                </Grid.ColumnDefinitions>
-                <!-- Playlist operation buttons -->
-                <Grid Grid.Column="0" Width="80">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="2*"/>
-                        <RowDefinition Height="3*"/>
-                        <RowDefinition Height="2*"/>
-                        <RowDefinition Height="2*"/>
-                        <RowDefinition Height="2*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+            <syncfusion:TabControlExt Grid.Column="2" AllowDragDrop="False" ShowTabItemContextMenu="False" ShowTabListContextMenu="False" CloseButtonType="Hide">
+                <syncfusion:TabItemExt>
+                    <syncfusion:TabItemExt.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{StaticResource MediaLibraryIcon}" Width="16" Height="16" VerticalAlignment="Center"/>
+                            <Label Grid.Column="1" VerticalAlignment="Center"
+                                Content="Media Library" FontWeight="Bold"/>
+                        </Grid>
+                    </syncfusion:TabItemExt.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
 
-                    <syncfusion:ButtonAdv SizeMode="Large"
+                        </Grid.ColumnDefinitions>
+                        <!-- Playlist operation buttons -->
+                        <Grid Grid.Column="0" Width="80">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <syncfusion:ButtonAdv SizeMode="Large"
                                       Label="Add Top" LargeIcon="{StaticResource PlusIcon}"
                                       Command="{Binding PlaylistVm.AddTrackToTopCommand}"/>
 
-                    <syncfusion:ButtonAdv Grid.Row="1" Margin="0,4,0,0"
+                            <syncfusion:ButtonAdv Grid.Row="1" Margin="0,4,0,0"
                                       SizeMode="Large" LargeIcon="{StaticResource InsertIcon}"
                                       Label="Insert"
                                       Command="{Binding PlaylistVm.InsertTrackCommand}"/>
-                    <syncfusion:ButtonAdv Grid.Row="2" Margin="0,4,0,0"
+                            <syncfusion:ButtonAdv Grid.Row="2" Margin="0,4,0,0"
                                       SizeMode="Large" LargeIcon="{StaticResource ReplaceIcon}"
                                       Label="Replace"
                                       Command="{Binding PlaylistVm.ReplaceTrackCommand}"/>
-          
-                    <syncfusion:ButtonAdv Grid.Row="3" Margin="0,4,0,0"
+
+                            <syncfusion:ButtonAdv Grid.Row="3" Margin="0,4,0,0"
                                       SizeMode="Large"
                                       Label="Clear" LargeIcon="{StaticResource RemoveTrashIcon}"
                                           Command="{Binding PlaylistVm.ClearPlaylistCommand}"/>
 
-                    <syncfusion:ButtonAdv SizeMode="Large" Grid.Row="4" Margin="0,4,0,0"
+                            <syncfusion:ButtonAdv SizeMode="Large" Grid.Row="4" Margin="0,4,0,0"
                                       Label="Add Bottom" LargeIcon="{StaticResource PlusIcon}"
                                       Command="{Binding PlaylistVm.AddTrackToBottomCommand}"/>
-                </Grid>
-                <component:MediaItemsView Grid.Column="1"
+                        </Grid>
+                        <component:MediaItemsView Grid.Column="1"
                                       DataContext="{Binding MediaItemsVm}"/>
-            </Grid>
+                    </Grid>
+                </syncfusion:TabItemExt>
+
+                <syncfusion:TabItemExt>
+                    <syncfusion:TabItemExt.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{StaticResource HistoryIcon}" Width="32" Height="20" VerticalAlignment="Center"/>
+                            <Label Grid.Column="1" VerticalAlignment="Center"
+                                Content="History" FontWeight="Bold"/>
+                        </Grid>
+                    </syncfusion:TabItemExt.Header>
+                </syncfusion:TabItemExt>
+
+                <syncfusion:TabItemExt>
+                    <syncfusion:TabItemExt.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{StaticResource PlayRedIcon}" Width="32" Height="20" VerticalAlignment="Center"/>
+                            <Label Grid.Column="1" VerticalAlignment="Center"
+                                Content="Auxiliary Players" FontWeight="Bold"/>
+                        </Grid>
+                    </syncfusion:TabItemExt.Header>
+                </syncfusion:TabItemExt>
+
+                <syncfusion:TabItemExt>
+                    <syncfusion:TabItemExt.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{StaticResource InternetIcon}" Width="32" Height="20" VerticalAlignment="Center"/>
+                            <Label Grid.Column="1" VerticalAlignment="Center"
+                                Content="Web Browser" FontWeight="Bold"/>
+                        </Grid>
+                    </syncfusion:TabItemExt.Header>
+                </syncfusion:TabItemExt>
+            </syncfusion:TabControlExt>
             
             
         </Grid>
