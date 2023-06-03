@@ -20,5 +20,6 @@ namespace RA.DAL
         Task UpdateClock(ClockDTO clockDto);
         Task AddClockItem(ClockItemBaseDTO clockItemDto);
         Task RemoveClockItem(ClockItemBaseDTO clockItemDto);
+        Task<ClockItemBaseDTO> GetClockItemAsync(int clockItemId);
     }
 }

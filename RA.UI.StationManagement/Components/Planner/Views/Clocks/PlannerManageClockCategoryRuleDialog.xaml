@@ -90,13 +90,13 @@
                         HorizontalAlignment="Left">
                 <TextBlock Text="from" VerticalAlignment="Center" Margin="0,0,5,0"/>
 
-                <syncfusion:UpDown Height="24" Width="110"
-                                   VerticalAlignment="Center" NumberDecimalDigits="0" 
+                <syncfusion:IntegerTextBox Height="24" Width="110"
+                                   VerticalAlignment="Center" MinValue="0"
                                    Value="{Binding ManageModel.MinBpm}"/>
 
                 <TextBlock Text="to" VerticalAlignment="Center" Margin="5,0,5,0"/>
-                <syncfusion:UpDown Height="24" Width="110"
-                                   VerticalAlignment="Center" NumberDecimalDigits="0"
+                <syncfusion:IntegerTextBox Height="24" Width="110"
+                                   VerticalAlignment="Center" MinValue="0"
                                    Value="{Binding ManageModel.MaxBpm}"/>
             </StackPanel>
             <CheckBox  Grid.Row="4" Grid.Column="1" Margin="0,5,0,0"
@@ -121,6 +121,7 @@
                 <syncfusion:TimeSpanEdit 
                     Grid.Row="0" Grid.Column="1"
                                      MinValue="0:0:0" Value="{Binding ManageModel.MinDuration}"
+                   
                                      Format="m 'min' s 'sec'"/>
 
                 <Label Grid.Row="1" Grid.Column="0" Margin="0,5,0,0"

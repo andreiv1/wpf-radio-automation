@@ -27,8 +27,8 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
-            TestTracks();
-
+            //TestTracks();
+            TestClocks();
             Console.ReadLine();
         }
 
@@ -38,6 +38,12 @@ namespace RA.ConsoleApp
             var result = await categoriesService.NoOfTracksMatchingConditions(1);
             Console.WriteLine(result);
             Console.ReadKey();
+        }
+
+        static async void TestClocks()
+        {
+            IClocksService clService = new ClocksService(dbFactory);
+            var result = await clService.GetClockItemAsync(62);
         }
         
     }

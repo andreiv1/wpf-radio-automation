@@ -157,6 +157,19 @@ namespace RA.DAL
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task<ClockItemBaseDTO> GetClockItemAsync(int clockItemId)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var entity = await dbContext.ClockItems.Where(ci => ci.Id == clockItemId)
+                .FirstOrDefaultAsync();
+            if(entity == null)
+            {
+                throw new NotFoundException($"Clock item with id {clockItemId} does not exist!");
+            }
+            return ClockItemBaseDTO.FromEntity(entity);
+            
+        }
+
         public async Task RemoveClockItem(ClockItemBaseDTO clockItemDto)
         {
             using var dbContext = dbContextFactory.CreateDbContext();

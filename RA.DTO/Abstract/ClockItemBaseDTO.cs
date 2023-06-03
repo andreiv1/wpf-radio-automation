@@ -31,5 +31,15 @@ namespace RA.DTO.Abstract
 
             throw new Exception("Unrecognised clock item type.");
         }
+
+        public static ClockItemBaseDTO FromEntity(ClockItemBase entity)
+        {
+            if(entity is ClockItemCategory itemCategory)
+            {
+                return ClockItemCategoryDTO.FromEntity(itemCategory);
+            }
+            //TODO: other types
+            throw new Exception("TO DO other types");
+        }
     }
 }

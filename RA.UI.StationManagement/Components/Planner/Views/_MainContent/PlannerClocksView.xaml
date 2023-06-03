@@ -131,7 +131,7 @@
                 </syncfusion:DropDownButtonAdv>
 
                 <syncfusion:ButtonAdv Label="Edit item" Height="25" Margin="0,0,3,0"
-                                      Command="{Binding EditItemInSelectedClockCommand}"
+                                      Command="{Binding EditSelectedItemInSelectedClockCommand}"
                                       SmallIcon="{StaticResource EditIcon}"/>
                 <syncfusion:ButtonAdv Label="Copy item(s)" Height="25" Margin="0,0,3,0"
                                       Command="{Binding CopyItemsInSelectedClockCommand}"

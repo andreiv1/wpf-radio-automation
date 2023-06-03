@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DTO;
+using RA.Logic;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Clocks.Models;
@@ -56,15 +57,15 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
                                                        int clockId, int clockItemId) : base(windowService)
         {
             this.categoriesService = categoriesService;
+            this.clocksService = clocksService;
             this.tagsService = tagsService;
             this.clockId = clockId;
-            //TODO
-            throw new NotImplementedException();
-            //ManageModel = new ManageClockCategoryModel();
+
+            _ = LoadModel(clockItemId);
             _ = FetchTags();
         }
 
-        public void AddClockItem(int orderIndex)
+        public async Task AddClockItem(int orderIndex)
         {
             if (SelectedCategory == null) return;
 
@@ -99,7 +100,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
 
             
 
-            clocksService.AddClockItem(newClockItem);
+            await clocksService.AddClockItem(newClockItem);
         }
         protected override bool CanFinishDialog()
         {
@@ -123,6 +124,15 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
             {
                 Moods.Add(mood);
             }
+        }
+
+        private async Task LoadModel(int clockItemId)
+        {
+            ClockItemCategoryDTO? dto = await clocksService.GetClockItemAsync(clockItemId) as ClockItemCategoryDTO;
+            if (dto == null) throw new NullReferenceException($"Clock item must not be null.");
+            DebugHelper.WriteLine(this, $"Loaded category clock item {clockItemId}");
+            SelectedCategory = await categoriesService.GetCategoryHierarchy(dto.CategoryId.GetValueOrDefault());
+            ManageModel = ManageClockCategoryModel.FromDto(dto);
         }
         #endregion
 

@@ -35,6 +35,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
         [ObservableProperty]
         private ClockDTO? selectedClock = null;
+
+        [ObservableProperty]
+        private ClockItemModel? selectedClockItem = null;
         partial void OnSelectedClockChanged(ClockDTO? value)
         {
             _ = LoadClockItemsForSelectedClock();
@@ -152,7 +155,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         }
 
         [RelayCommand]
-        private void InsertCategoryRuleToSelectedClock()
+        private async void InsertCategoryRuleToSelectedClock()
         {
             if (SelectedClock == null) return;
             var vm = windowService.ShowDialog<PlannerManageClockCategoryRuleViewModel>(SelectedClock.Id);
@@ -160,11 +163,24 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             {
                 DebugHelper.WriteLine(this, $"To add clock rule - {vm.SelectedCategory.Id}");
                 int latestIndex = ClockItemsForSelectedClock.Count;
-                vm.AddClockItem(latestIndex);
+                
+                await vm.AddClockItem(latestIndex);
 
                 //Reload clocks from db
                 _ = LoadClockItemsForSelectedClock();
             }
+        }
+
+        [RelayCommand]
+        private void EditSelectedItemInSelectedClock()
+        {
+            if(SelectedClock == null && SelectedClockItem == null) return;
+            if(SelectedClockItem!.Item == null) return;
+            if(SelectedClockItem.Item is ClockItemCategoryDTO itemCategory)
+            {
+                var vm = windowService.ShowDialog<PlannerManageClockCategoryRuleViewModel>(SelectedClock.Id, itemCategory.Id);
+            }
+            
         }
 
         [RelayCommand]
