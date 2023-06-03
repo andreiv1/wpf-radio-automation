@@ -27,7 +27,7 @@ namespace RA.DTO
             };
         }
 
-        public static Category FromDto(CategoryDTO dto)
+        public static Category ToEntity(CategoryDTO dto)
         {
             return new Category
             {

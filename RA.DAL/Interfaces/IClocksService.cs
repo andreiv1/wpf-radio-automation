@@ -1,4 +1,5 @@
 ﻿using RA.DTO;
+using RA.DTO.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +12,13 @@ namespace RA.DAL
     {
         IEnumerable<ClockDTO> GetClocks();
         Task<IEnumerable<ClockDTO>> GetClocksAsync();
-        IEnumerable<ClockItemDTO> GetClockItems(int clockId);
-        Task<IEnumerable<ClockItemDTO>> GetClockItemsAsync(int clockId);
+        IEnumerable<ClockItemBaseDTO> GetClockItems(int clockId);
+        Task<IEnumerable<ClockItemBaseDTO>> GetClockItemsAsync(int clockId);
         Task<Dictionary<int, TimeSpan>> CalculateAverageDurationsForCategoriesInClockWithId(int clockId);
         Task AddClock(ClockDTO clockDto);
         Task<ClockDTO> GetClock(int id);
         Task UpdateClock(ClockDTO clockDto);
-        Task AddClockItem(ClockItemDTO clockItemDto);
-        Task RemoveClockItem(ClockItemDTO clockItemDto);
+        Task AddClockItem(ClockItemBaseDTO clockItemDto);
+        Task RemoveClockItem(ClockItemBaseDTO clockItemDto);
     }
 }

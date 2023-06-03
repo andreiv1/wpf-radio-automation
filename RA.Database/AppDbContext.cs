@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RA.Database.Models;
 using RA.Database.Config;
-
+using RA.Database.Models.Abstract;
 
 namespace RA.Database
 {
@@ -12,7 +12,10 @@ namespace RA.Database
         public DbSet<Category> Categories { get; set; }
         public DbSet<CategoryHierarchy> CategoriesHierarchy { get; set; }
         public DbSet<Clock> Clocks { get; set; }
-        public DbSet<ClockItem> ClockItems { get; set; }
+        public DbSet<ClockItemBase> ClockItems { get; set; }
+        public DbSet<ClockItemCategory> ClockItemsCategories { get; set; }
+        public DbSet<ClockItemEvent> ClockItemsEvents { get; set; }
+        public DbSet<ClockItemTrack> ClockItemsTracks { get; set; }
         public DbSet<ClockTemplate> ClockTemplates { get; set; }
         public DbSet<Playlist> Playlists { get; set; }
         public DbSet<PlaylistItem> PlaylistItems { get; set; }
@@ -44,7 +47,7 @@ namespace RA.Database
             modelBuilder.ApplyConfiguration(new UserRuleConfig());
             modelBuilder.ApplyConfiguration(new TrackTagConfig());
             modelBuilder.ApplyConfiguration(new PlaylistConfig());
-
+            modelBuilder.ApplyConfiguration(new ClockItemConfig());
             modelBuilder.Entity<CategoryHierarchy>(entity =>
             {
                 entity.HasNoKey();

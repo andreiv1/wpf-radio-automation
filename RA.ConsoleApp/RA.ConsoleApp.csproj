@@ -11,7 +11,6 @@
     <ProjectReference Include="..\RA.DAL\RA.DAL.csproj" />
     <ProjectReference Include="..\RA.Database\RA.Database.csproj" />
     <ProjectReference Include="..\RA.Dto\RA.DTO.csproj" />
-    <ProjectReference Include="..\RA.Logic\RA.Logic.csproj" />
   </ItemGroup>
 
 </Project>

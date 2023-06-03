@@ -31,7 +31,7 @@ namespace RA.DAL
         public async Task AddCategory(CategoryDTO category)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            var entity = CategoryDTO.FromDto(category);
+            var entity = CategoryDTO.ToEntity(category);
             dbContext.Categories.Add(entity);
             await dbContext.SaveChangesAsync(); 
         }
@@ -39,7 +39,7 @@ namespace RA.DAL
         public async Task UpdateCategory(CategoryDTO category)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            var entity = CategoryDTO.FromDto(category);
+            var entity = CategoryDTO.ToEntity(category);
             dbContext.Categories.Update(entity);
             await dbContext.SaveChangesAsync();
         }

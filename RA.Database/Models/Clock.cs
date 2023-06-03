@@ -16,7 +16,7 @@ namespace RA.Database.Models
         [MaxLength(100)]
         public String Name { get; set; }
 
-        public ICollection<ClockItem> ClockItems { get; set; }
+        public ICollection<ClockItemBase> ClockItems { get; set; }
 
         public ICollection<ClockTemplate> ClockTemplates { get; set; }
     }

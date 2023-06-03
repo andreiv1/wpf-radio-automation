@@ -77,7 +77,7 @@ namespace RA.Logic.PlanningLogic
             Console.WriteLine($"ClockId={clock.ClockId},ClockStart={clockStart},ClockEnd={clockEnd}");
             Console.WriteLine($"Generating playlist for {clock.ClockSpan} consecutive hours");
 
-            List<ClockItemDTO> clockItems = clocksService.GetClockItems(clock.ClockId).ToList();
+            List<ClockItemBaseDTO> clockItems = clocksService.GetClockItems(clock.ClockId).ToList();
             Console.WriteLine($"Current clock has {clockItems.Count()} items");
 
             int h = 0;
@@ -85,7 +85,7 @@ namespace RA.Logic.PlanningLogic
             {
                 Console.WriteLine($"Generating for hour {h++}");
 
-                foreach (ClockItemDTO clockItem in clockItems)
+                foreach (ClockItemBaseDTO clockItem in clockItems)
                 {
                     ProcessClockItem(clockItem, playlistDTO);
                 }
@@ -98,24 +98,24 @@ namespace RA.Logic.PlanningLogic
         /// Handle processing a single item from a clock
         /// </summary>
         /// <param name="clockItem"></param>
-        private void ProcessClockItem(ClockItemDTO clockItem, PlaylistDTO playlistDTO)
+        private void ProcessClockItem(ClockItemBaseDTO clockItem, PlaylistDTO playlistDTO)
         {
-            Console.WriteLine($"Id={clockItem.Id},CategoryId={clockItem.CategoryId}");
-            if (clockItem.TrackId.HasValue)
-            {
-                //TODO: Specific element from library
-                //no selection to made
+            //Console.WriteLine($"Id={clockItem.Id},CategoryId={clockItem.CategoryId}");
+            //if (clockItem.TrackId.HasValue)
+            //{
+            //    //TODO: Specific element from library
+            //    //no selection to made
 
-            }
+            //}
 
-            //TODO: Event 
+            ////TODO: Event 
 
-            if (clockItem.CategoryId.HasValue)
-            {
-                TrackSelectionBaseStrategy selectionStrategy =
-                    new RandomTrackSelectionStrategy(playlistsService, tracksService, clockItem.CategoryId.Value);
-                selectionStrategy.SelectTrack(playlistDTO);
-            }
+            //if (clockItem.CategoryId.HasValue)
+            //{
+            //    TrackSelectionBaseStrategy selectionStrategy =
+            //        new RandomTrackSelectionStrategy(playlistsService, tracksService, clockItem.CategoryId.Value);
+            //    selectionStrategy.SelectTrack(playlistDTO);
+            //}
 
 
         }

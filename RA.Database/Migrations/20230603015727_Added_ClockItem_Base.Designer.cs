@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RA.Database;
 
@@ -10,9 +11,11 @@ using RA.Database;
 namespace RA.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230603015727_Added_ClockItem_Base")]
+    partial class Added_ClockItem_Base
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace RA.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ClockId")
+                    b.Property<int?>("ClockId")
                         .HasColumnType("int");
 
                     b.Property<int>("ClockItemType")
@@ -635,9 +638,6 @@ namespace RA.Database.Migrations
                     b.Property<TimeSpan?>("EstimatedEventDuration")
                         .HasColumnType("time(6)");
 
-                    b.Property<TimeSpan>("EstimatedEventStart")
-                        .HasColumnType("time(6)");
-
                     b.Property<string>("EventLabel")
                         .HasColumnType("longtext");
 
@@ -684,9 +684,7 @@ namespace RA.Database.Migrations
                 {
                     b.HasOne("RA.Database.Models.Clock", "Clock")
                         .WithMany("ClockItems")
-                        .HasForeignKey("ClockId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClockId");
 
                     b.Navigation("Clock");
                 });

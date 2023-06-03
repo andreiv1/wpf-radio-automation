@@ -4,9 +4,7 @@ using RA.DAL;
 using RA.Database;
 using RA.Database.Models;
 using RA.DTO;
-using RA.Logic.PlanningLogic;
-using RA.Logic.TrackFileLogic;
-using RA.Logic.TrackFileLogic.Models;
+
 
 namespace RA.ConsoleApp
 {
@@ -29,17 +27,10 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
+            var db = dbFactory.CreateDbContext();
+            var items = db.ClockItems.ToList();
             IClocksService clocksService = new ClocksService(dbFactory);
-
-            clocksService.AddClockItem(new ClockItemDTO()
-            {
-                OrderIndex = 23,
-                EventType = Database.Models.Enums.EventType.Marker,
-                EstimatedEventDuration = new TimeSpan(0,2,0),
-                EventLabel = "DJ Talk",
-                ClockId = 1
-            });
-
+            var ci = clocksService.GetClockItems(1);
             Console.ReadKey();
         }
         

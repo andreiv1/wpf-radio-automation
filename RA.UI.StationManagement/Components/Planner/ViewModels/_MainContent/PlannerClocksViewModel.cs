@@ -87,18 +87,19 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                     ClockItemModel clockItemModel = ClockItemModel.FromDto(clockItemDto);
 
                     //TODO: Here treat multiple Clock Items type to display String clockItemDto details
-                    if (clockItemDto.CategoryId.HasValue)
-                    {
-                        clockItemModel.Duration = categoryAvgDurations[clockItemDto.CategoryId.Value];
-                    }
-                    else if (clockItemDto.EventType.HasValue)
-                    {
-                        clockItemModel.Duration = clockItemModel.EstimatedEventDuration.Value;
-                    }
-                    else
-                    {
-                        clockItemModel.Duration = TimeSpan.Zero;
-                    }
+                    
+                    //if (clockItemDto.CategoryId.HasValue)
+                    //{
+                    //    clockItemModel.Duration = categoryAvgDurations[clockItemDto.CategoryId.Value];
+                    //}
+                    //else if (clockItemDto.EventType.HasValue)
+                    //{
+                    //    clockItemModel.Duration = clockItemModel.EstimatedEventDuration.Value;
+                    //}
+                    //else
+                    //{
+                    //    clockItemModel.Duration = TimeSpan.Zero;
+                    //}
                     dispatcherService.InvokeOnUIThread(() =>
                     {
                         ClockItemsForSelectedClock.Add(clockItemModel);
@@ -150,7 +151,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             {
                 DebugHelper.WriteLine(this, $"To add clock rule - {vm.SelectedCategory.Id}");
                 int latestIndex = ClockItemsForSelectedClock.Count;
-                var newClockItem = new ClockItemDTO()
+                var newClockItem = new ClockItemCategoryDTO()
                 {
                     OrderIndex = latestIndex,
                     CategoryId = vm.SelectedCategory.Id,
