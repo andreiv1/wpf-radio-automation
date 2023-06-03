@@ -57,6 +57,7 @@
     <PackageReference Include="Syncfusion.Themes.FluentLight.Wpf" Version="21.1.35" />
     <PackageReference Include="Syncfusion.SfTreeNavigator.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.SfImageEditor.WPF" Version="21.1.35"/>
+    <PackageReference Include="Syncfusion.SfRichTextBoxAdv.WPF" Version="21.1.35"/>
 </ItemGroup>
 
     <ItemGroup>

@@ -37,11 +37,7 @@ namespace RA.Database.Models
 
         [MaxLength(200)]
         public String Album { get; set; }
-
-        [MaxLength(2000)]
         public String Comments { get; set; }
-
-        [MaxLength(2000)]
         public String Lyrics { get; set; }
 
         [MaxLength(500)]

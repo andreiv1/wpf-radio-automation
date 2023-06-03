@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+        xmlns:localuc="clr-namespace:RA.UI.StationManagement.UserControls"
         xmlns:components="clr-namespace:RA.UI.Components;assembly=RA.UI.Components"
         xmlns:vm="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.ViewModels"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
@@ -451,15 +452,18 @@
                             <Label Grid.Column="3" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"
                                 Content="Bitrate (kbps)"/>
                             <TextBox Grid.Row="1" Grid.Column="3" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                               Height="24" IsReadOnly="True"/>
+                                               Height="24" IsReadOnly="True"
+                                     Text="{Binding AudioFileBitrate}"/>
                             <Label Grid.Column="4" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"
                                 Content="Frequency (Hz)"/>
                             <TextBox Grid.Row="1" Grid.Column="4" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                               Height="24" IsReadOnly="True"/>
+                                               Height="24" IsReadOnly="True"
+                                     Text="{Binding AudioFileFrequency}"/>
                             <Label Grid.Column="5" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"
                                 Content="Format"/>
                             <TextBox Grid.Row="1" Grid.Column="5" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                               Height="24" IsReadOnly="True"/>
+                                               Height="24" IsReadOnly="True"
+                                     Text="{Binding AudioFileFormat}"/>
                             <Label Grid.Column="6" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"
                                 Content="Detect"/>
                             <syncfusion:ButtonAdv Grid.Row="1" Grid.Column="6" Width="95" SmallIcon="{x:Null}"
@@ -484,39 +488,66 @@
                 <syncfusion:TabItemExt.Header>
                     <Label FontWeight="Bold" Content="Properties"/>
                 </syncfusion:TabItemExt.Header>
-                <Grid Grid.Row="3" Margin="0,10,0,0" >
+
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0"
+                    <GroupBox Grid.Row="0">
+                        <GroupBox.Header>
+                            <Label Content="Comments" FontSize="15" FontWeight="bold"/>
+                        </GroupBox.Header>
+                        <localuc:SfRichTextBoxAdvExtension LayoutType="Continuous" EnableMiniToolBar="False"
+                                                           HtmlText="{Binding Track.Comments, Mode=TwoWay}"/>
+                    </GroupBox>
+
+
+                    <GroupBox Grid.Row="1" Grid.ColumnSpan="3">
+                        <GroupBox.Header>
+                            <Label Content="Tags" FontSize="15" FontWeight="bold"/>
+                        </GroupBox.Header>
+                        <Grid Margin="0,10,0,0" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0"
                 Content="Genre(s):" FontWeight="DemiBold"/>
-                    <syncfusion:ComboBoxAdv Grid.Row="1" VerticalAlignment="Center" MinHeight="50"
+                            <syncfusion:ComboBoxAdv Grid.Row="1" VerticalAlignment="Center" MinHeight="45"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
                                     ItemsSource="{Binding Genres}" DefaultText="Any genre"
                                     DisplayMemberPath="Name"
                                     />
-                    <Label Grid.Row="2" VerticalAlignment="Center"
+                            <Label Grid.Row="2" VerticalAlignment="Center"
                 Content="Language(s):" FontWeight="DemiBold"/>
-                    <syncfusion:ComboBoxAdv Grid.Row="3" VerticalAlignment="Center" MinHeight="50"
+                            <syncfusion:ComboBoxAdv Grid.Row="3" VerticalAlignment="Center" MinHeight="45"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
                                     ItemsSource="{Binding Languages}" DefaultText="Any language"
                                     DisplayMemberPath="Name"
                                     />
 
-                    <Label Grid.Row="4" VerticalAlignment="Center"
+                            <Label Grid.Row="4" VerticalAlignment="Center"
                 Content="Mood(s):" FontWeight="DemiBold"/>
-                    <syncfusion:ComboBoxAdv Grid.Row="5" VerticalAlignment="Center" MinHeight="50"
+                            <syncfusion:ComboBoxAdv Grid.Row="5" VerticalAlignment="Center" MinHeight="45"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
                                     ItemsSource="{Binding Moods}" DefaultText="Any mood" 
                                     DisplayMemberPath="Name"
                                     />
+                        </Grid>
+                    </GroupBox>
                 </Grid>
+                
             </syncfusion:TabItemExt>
 
             <syncfusion:TabItemExt>

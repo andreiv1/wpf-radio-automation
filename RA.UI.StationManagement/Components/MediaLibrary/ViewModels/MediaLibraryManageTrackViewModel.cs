@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.Database.Models.Enums;
 using RA.DTO;
+using RA.Logic.TrackFileLogic;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
@@ -33,6 +34,15 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
 
         [ObservableProperty]
         private TrackCategoryDTO? selectedCategory;
+
+        [ObservableProperty]
+        private String audioFileFormat;
+
+        [ObservableProperty]
+        private String audioFileBitrate;
+
+        [ObservableProperty]
+        private String audioFileFrequency;
 
         private string? fullImagePath;
         public string? FullImagePath
@@ -80,6 +90,15 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             else
             {
                 FullImagePath = "pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png";
+            }
+
+            //Load audio file metadata
+            if (track.FilePath != null)
+            {
+                var metadata = TrackMetadataReader.GetAudioFileInfo(track.FilePath);
+                AudioFileBitrate = metadata["Bitrate"];
+                AudioFileFormat = metadata["FileType"];
+                AudioFileFrequency = metadata["Frequency"];
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using RA.Logic.TrackFileLogic.Enums;
+﻿using NAudio.Wave;
+using RA.Logic.TrackFileLogic.Enums;
 using RA.Logic.TrackFileLogic.Exceptions;
 using RA.Logic.TrackFileLogic.Models;
 using System.Security.Cryptography;
@@ -158,6 +159,27 @@ namespace RA.Logic.TrackFileLogic
             return artistTile;
         }
 
-        
+
+        public static Dictionary<string, string> GetAudioFileInfo(string audioFilePath)
+        {
+            Dictionary<string, string> fileInfo = new Dictionary<string, string>();
+
+            try {
+                using var file = TagLib.File.Create(audioFilePath);
+                fileInfo.Add("Bitrate", file.Properties.AudioBitrate.ToString());
+                fileInfo.Add("FileType", file.MimeType);
+                fileInfo.Add("Frequency", file.Properties.AudioSampleRate.ToString());
+
+            }
+            catch(Exception)
+            {
+
+            }
+
+            return fileInfo;
+        }
+
+
+
     }
 }

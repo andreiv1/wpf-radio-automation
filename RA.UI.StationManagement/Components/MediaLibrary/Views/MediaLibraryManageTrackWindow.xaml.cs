@@ -1,8 +1,11 @@
 ﻿using RA.UI.Core;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels;
+using Syncfusion.Windows.Controls.RichTextBoxAdv;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,7 +27,9 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Views
         public MediaLibraryManageTrackWindow()
         {
             InitializeComponent();
+ 
         }
+
 
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
@@ -48,5 +53,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Views
 
             vm.SaveTrackCommand.Execute(null);
         }
+
+     
     }
 }
