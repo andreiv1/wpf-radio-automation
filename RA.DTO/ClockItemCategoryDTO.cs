@@ -17,6 +17,14 @@ namespace RA.DTO
         public int? TitleSeparation { get; set; }
         public int? TrackSeparation { get; set; }
 
+        public int? MinBpm { get; set; }
+        public int? MaxBpm { get; set; }
+        public TimeSpan? MinDuration { get; set; }
+        public TimeSpan? MaxDuration { get; set; }
+        public DateTime? MinReleaseDate { get; set; }
+        public DateTime? MaxReleaseDate { get; set; }
+        public Boolean IsFiller { get; set; } = false;
+
         public static ClockItemCategoryDTO FromEntity(ClockItemCategory entity)
         {
             return new ClockItemCategoryDTO
@@ -29,7 +37,14 @@ namespace RA.DTO
                 CategoryColor = entity.Category?.Color,
                 ArtistSeparation = entity.ArtistSeparation,
                 TitleSeparation = entity.TitleSeparation,
-                TrackSeparation = entity.TrackSeparation
+                TrackSeparation = entity.TrackSeparation,
+                MinBpm = entity.MinBpm,
+                MaxBpm = entity.MaxBpm,
+                MinDuration = entity.MinDuration,
+                MaxDuration = entity.MaxDuration,
+                MinReleaseDate = entity.MinReleaseDate,
+                MaxReleaseDate = entity.MaxReleaseDate,
+                IsFiller = entity.IsFiller,
             };
         }
 
@@ -43,7 +58,15 @@ namespace RA.DTO
                 CategoryId = dto.CategoryId,
                 ArtistSeparation= dto.ArtistSeparation,
                 TitleSeparation= dto.TitleSeparation,
-                TrackSeparation= dto.TrackSeparation
+                TrackSeparation= dto.TrackSeparation,
+                MinBpm= dto.MinBpm,
+                MaxBpm= dto.MaxBpm,
+                MinDuration = dto.MinDuration,
+                MaxDuration = dto.MaxDuration,
+                MinReleaseDate = dto.MinReleaseDate,
+                MaxReleaseDate = dto.MaxReleaseDate,
+                IsFiller = dto.IsFiller,
+
             };
         }
     }

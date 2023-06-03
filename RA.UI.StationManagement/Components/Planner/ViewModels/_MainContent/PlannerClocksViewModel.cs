@@ -43,8 +43,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private TimeSpan totalDuration;
 
         #region Constructor
-        public PlannerClocksViewModel(IWindowService windowService, IDispatcherService dispatcherService,
-            IClocksService clocksService)
+        public PlannerClocksViewModel(IWindowService windowService,
+                                      IDispatcherService dispatcherService,
+                                      IClocksService clocksService)
         {
             this.windowService = windowService;
             this.dispatcherService = dispatcherService;
@@ -159,25 +160,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             {
                 DebugHelper.WriteLine(this, $"To add clock rule - {vm.SelectedCategory.Id}");
                 int latestIndex = ClockItemsForSelectedClock.Count;
-                var newClockItem = new ClockItemCategoryDTO()
-                {
-                    OrderIndex = latestIndex,
-                    CategoryId = vm.SelectedCategory.Id,
-                    ClockId = SelectedClock.Id,
-                };
-                if (vm.ArtistSeparation.TotalMinutes > 0)
-                {
-                    newClockItem.ArtistSeparation = (int?)vm.ArtistSeparation.TotalMinutes;
-                }
-                if (vm.TitleSeparation.TotalMinutes > 0)
-                {
-                    newClockItem.TitleSeparation = (int?)vm.TitleSeparation.TotalMinutes;
-                }
-                if(vm.TrackSeparation.TotalMinutes > 0)
-                {
-                    newClockItem.TrackSeparation = (int?)vm.TrackSeparation.TotalMinutes;
-                }
-                clocksService.AddClockItem(newClockItem);
+                vm.AddClockItem(latestIndex);
 
                 //Reload clocks from db
                 _ = LoadClockItemsForSelectedClock();

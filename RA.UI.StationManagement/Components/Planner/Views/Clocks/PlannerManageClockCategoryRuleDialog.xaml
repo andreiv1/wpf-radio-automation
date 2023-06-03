@@ -68,16 +68,19 @@
                                      Height="24" Width="110"
                                      VerticalAlignment="Center" HorizontalContentAlignment="Center"
                                      AllowNull="True" AllowInlineEditing="True"
+                                     Value="{Binding ManageModel.FromReleaseDate, Mode=TwoWay}"
                                      />
                 <TextBlock Text="to" VerticalAlignment="Center" Margin="5,0,5,0"/>
                 <syncfusion:SfDatePicker 
                                      Height="24" Width="110" 
                                      VerticalAlignment="Center" HorizontalContentAlignment="Center"
                                      AllowNull="True" AllowInlineEditing="True"
+                                     Value="{Binding ManageModel.ToReleaseDate, Mode=TwoWay}"
                                      />
             </StackPanel>
             <CheckBox  Grid.Row="1" Grid.Column="1" Margin="0,5,0,0"
-                VerticalAlignment="Center" Content='exclude items without "Release date" specified'/>
+                VerticalAlignment="Center" Content='exclude items without "Release date" specified'
+                IsChecked="{Binding ManageModel.ExcludeWithoutReleaseDate}"/>
             
             <!-- BPM -->
             <Label Grid.Row="3" Grid.Column="0" Margin="0,10,0,0"
@@ -86,18 +89,19 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left">
                 <TextBlock Text="from" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                <!--Value="{Binding Track.ReleaseDate, Mode=TwoWay}"-->
+
                 <syncfusion:UpDown Height="24" Width="110"
-                                   VerticalAlignment="Center"
-                    NumberDecimalDigits="0" />
+                                   VerticalAlignment="Center" NumberDecimalDigits="0" 
+                                   Value="{Binding ManageModel.MinBpm}"/>
 
                 <TextBlock Text="to" VerticalAlignment="Center" Margin="5,0,5,0"/>
                 <syncfusion:UpDown Height="24" Width="110"
-                                   VerticalAlignment="Center"
-                    NumberDecimalDigits="0" />
+                                   VerticalAlignment="Center" NumberDecimalDigits="0"
+                                   Value="{Binding ManageModel.MaxBpm}"/>
             </StackPanel>
             <CheckBox  Grid.Row="4" Grid.Column="1" Margin="0,5,0,0"
-                VerticalAlignment="Center" Content='exclude items without "BPM" specified'/>
+                VerticalAlignment="Center" Content='exclude items without "BPM" specified'
+                IsChecked="{Binding ManageModel.ExcludeWithoutBpm}"/>
             <!-- DURATION -->
             <Label Grid.Row="5" Grid.Column="0" Margin="0,10,0,0"
                 Content="Duration:" FontWeight="DemiBold"/>
@@ -116,18 +120,19 @@
                        Content="at least" />
                 <syncfusion:TimeSpanEdit 
                     Grid.Row="0" Grid.Column="1"
-                                     MinValue="0:0:0" IsEnabled="False"
+                                     MinValue="0:0:0" Value="{Binding ManageModel.MinDuration}"
                                      Format="m 'min' s 'sec'"/>
 
                 <Label Grid.Row="1" Grid.Column="0" Margin="0,5,0,0"
                        Content="no more than" />
                 <syncfusion:TimeSpanEdit 
                     Grid.Row="1" Grid.Column="1" Margin="0,5,0,0"
-                                     MinValue="0:0:0" IsEnabled="False"
+                                     MinValue="0:0:0" Value="{Binding ManageModel.MaxDuration}"
                                      Format="m 'min' s 'sec'"/>
 
                 <CheckBox Grid.Row="2" Grid.ColumnSpan="2" Margin="0,5,0,0"
-                          Content="enforce duration limits"/>
+                          Content="enforce duration limits"
+                          IsChecked="{Binding ManageModel.EnforceDurationLimits}"/>
             </Grid>
 
         </Grid>
@@ -149,13 +154,13 @@
             <Label Content="Track separation:" Grid.Column="2"
                    FontWeight="DemiBold"/>
             <syncfusion:TimeSpanEdit Grid.Row="1" Grid.Column="0" Margin="0,0,3,0"
-                                     MinValue="0:0:0" Value="{Binding ArtistSeparation, Mode=TwoWay}"
+                                     MinValue="0:0:0" Value="{Binding ManageModel.ArtistSeparation, Mode=TwoWay}"
                                      Format="h 'hours' m 'min'"/>
             <syncfusion:TimeSpanEdit Grid.Row="1" Grid.Column="1" Margin="0,0,3,0"
-                                     MinValue="0:0:0" Value="{Binding TitleSeparation, Mode=TwoWay}"
+                                     MinValue="0:0:0" Value="{Binding ManageModel.TitleSeparation, Mode=TwoWay}"
                                      Format="h 'hours' m 'min'"/>
             <syncfusion:TimeSpanEdit Grid.Row="1" Grid.Column="2" 
-                                     MinValue="0:0:0" Value="{Binding TrackSeparation, Mode=TwoWay}"
+                                     MinValue="0:0:0" Value="{Binding ManageModel.TrackSeparation, Mode=TwoWay}"
                                      Format="h 'hours' m 'min'"/>
             
             <!-- Separation description -->
@@ -200,9 +205,9 @@
         <StackPanel Grid.Row="4" Margin="0,0,0,5" VerticalAlignment="Bottom">
             <CheckBox Content="Use this rule as filler when no other rules can apply" Margin="0,0,0,5"/>
             <TextBlock FontWeight="Bold">
-                <Run Text="There are "/>
+                <Run Text="There are"/>
                 <Run Text="{Binding NoOfTracksMatchingConditions}"/>
-                <Run Text=" tracks in the category Y matching the filters."/>
+                <Run Text="tracks in the selected category."/>
             </TextBlock>
         </StackPanel>
         
