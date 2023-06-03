@@ -11,7 +11,8 @@ namespace RA.DTO
     public class ClockItemCategoryDTO : ClockItemBaseDTO
     {
         public int? CategoryId { get; set; }
-        public String? CategoryName { get; set; }
+        public String? CategoryName { get; private set; }
+        public String? CategoryColor { get; private set; }
         public int? ArtistSeparation { get; set; }
         public int? TitleSeparation { get; set; }
         public int? TrackSeparation { get; set; }
@@ -25,6 +26,7 @@ namespace RA.DTO
                 ClockId = entity.ClockId,
                 CategoryId = entity.CategoryId,
                 CategoryName = entity.Category?.Name,
+                CategoryColor = entity.Category?.Color,
                 ArtistSeparation = entity.ArtistSeparation,
                 TitleSeparation = entity.TitleSeparation,
                 TrackSeparation = entity.TrackSeparation

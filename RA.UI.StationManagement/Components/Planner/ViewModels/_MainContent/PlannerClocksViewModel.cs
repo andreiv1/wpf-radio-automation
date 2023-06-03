@@ -133,7 +133,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             int totalSeconds = 0;
             foreach (var clock in ClockItemsForSelectedClock)
             {
-                ClockItemsPieChart.Add(new ClockPieChartModel(clock.Display, (int)clock.Duration.TotalSeconds));
+                ClockItemsPieChart.Add(new ClockPieChartModel(clock.DisplayName, (int)clock.Duration.TotalSeconds));
                 totalSeconds += (int)clock.Duration.TotalSeconds;
             }
             if (totalSeconds < 3600)

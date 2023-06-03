@@ -17,38 +17,83 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
         public int Id { get; private set; }
         
         public ClockItemBaseDTO Item { get; private set; }
+
         public String ItemDetails
         {
             get
             {
                 if (Item is ClockItemCategoryDTO category)
                 {
-                    return $"From category: {category.CategoryName}";
+                    return $"{category.CategoryName}";
                 }
-                //if (CategoryId.HasValue)
-                //{
-                //    return $"From category: {CategoryName}";
-                //}
 
-                //if (TrackId.HasValue)
-                //{
-                //    return $"Track: Id={TrackId}";
-                //}
+                if (Item is ClockItemEventDTO eventItem){
+                    return eventItem.EventLabel;
+                }
 
-                //if (EventType.HasValue)
-                //{
-                //    return $"[{EventType.ToString()}] {EventLabel}";
-                //}
+                if(Item is ClockItemTrackDTO trackItem)
+                {
+                    string result = trackItem.Artists ?? "";
+                    if(result == string.Empty)
+                    {
+                        result = trackItem.Title ?? "-";
+                    }
+                    else
+                    {
+                        result += $" - {trackItem.Title}";
+                    }
+                    return result;
+                }
 
-                return $"Unknown item";
+                return $"Unknown";
             }
         }
-
-        public String Display
+        public String DisplayName
         {
             get
             {
                 return "Test";
+            }
+        }
+        public String ItemType
+        {
+            get
+            {
+                if(Item is ClockItemCategoryDTO itemCategory)
+                {
+                    return "Category";
+                }
+                if(Item is ClockItemEventDTO itemEvent)
+                {
+                    switch (itemEvent.EventType)
+                    {
+                        case EventType.Marker:
+                            return "EventMarker";
+                        case EventType.FixedBreak:
+                            return "EventFixedBreak";
+                        case EventType.DynamicBreak:
+                            return "EventDynamicBreak";
+                        default:
+                            return "EventDefault";
+                    }
+                }
+                if(Item is ClockItemTrackDTO itemTrack)
+                {
+                    return itemTrack.TrackType.ToString();
+                }
+                return "Unknown";
+            }
+        }
+
+        public Brush? ItemColor
+        {
+            get
+            {
+                if (Item is ClockItemCategoryDTO itemCategory && itemCategory.CategoryColor != null)
+                {
+                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString(itemCategory.CategoryColor));
+                }
+                return new SolidColorBrush(Color.FromRgb(0, 0, 0));
             }
         }
 
@@ -58,13 +103,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
 
         [ObservableProperty]
         private TimeSpan duration;
-
-        [ObservableProperty]
-        private SolidColorBrush foregroundColor = new SolidColorBrush(Color.FromRgb(51, 51, 51));
-
-        [ObservableProperty]
-        private SolidColorBrush backgroundColor = new SolidColorBrush(Color.FromRgb(51, 51, 51));
-
         public ClockItemModel(ClockItemBaseDTO item)
         {
             Item = item;

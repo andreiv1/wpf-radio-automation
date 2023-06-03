@@ -1,4 +1,5 @@
 ﻿using RA.Database.Models;
+using RA.Database.Models.Enums;
 using RA.DTO.Abstract;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,11 @@ namespace RA.DTO
     public class ClockItemTrackDTO : ClockItemBaseDTO
     {
         public int TrackId { get; set; }
-        public String Title { get; set; }
+
+        public String? Artists { get; set; }
+        public String? Title { get; set; }
+
+        public TrackType TrackType { get; set; }
 
         public static ClockItemTrackDTO FromEntity(ClockItemTrack entity)
         {
@@ -22,7 +27,10 @@ namespace RA.DTO
                 OrderIndex = entity.OrderIndex,
 
                 TrackId = entity.TrackId,
+                Artists = entity.Track.TrackArtists != null ? string.Join(" / ", 
+                    entity.Track.TrackArtists.Select(ta => ta.Artist.Name)) : null,
                 Title = entity.Track.Title,
+                TrackType = entity.Track.Type,
             };
         }
 

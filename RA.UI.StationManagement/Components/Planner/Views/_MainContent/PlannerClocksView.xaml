@@ -161,49 +161,192 @@
                        SelectionUnit="Row" NavigationMode="Row"
                        SelectionMode="Multiple" AllowSorting="False"
                        AllowDraggingRows="True"
-                       AllowDrop="True" RowHeight="29"
+                       AllowDrop="True" RowHeight="29" AllowResizingColumns="True"
                        AutoGenerateColumns="False">
                     <syncfusion:SfDataGrid.Columns>
+                        <!--Estimated Start Time-->
                         <syncfusion:GridTextColumn HeaderText="Start Time"
                                    MappingName="StartTime"
                                    DisplayBinding="{Binding Path=StartTime, StringFormat=hh\\:mm\\:ss\\.fff}"
+                                   Width="75"
                                    MinimumWidth="75"
-                                   TextAlignment="Center"
+                                   TextAlignment="Center" 
                                    />
+                        <!--Item Icon & Type-->
                         <syncfusion:GridTemplateColumn MinimumWidth="50" HeaderText="Item"
-                                                   MappingName="Type" Width="16" MaximumWidth="16">
+                                                   MappingName="Type" Width="120">
                             <syncfusion:GridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Image Width="24" Height="20">
-                                        <Image.Style>
-                                            <Style TargetType="Image">
-                                                <Setter Property="Source" Value="{StaticResource OtherTrackIcon}"/>
-                                                <!-- Default icon -->
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding EventType}" Value="Marker">
-                                                        <Setter Property="Source" Value="{StaticResource JingleIcon}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding CategoryId.HasValue}" Value="True">
-                                                        <Setter Property="Source" Value="{StaticResource SongIcon}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Type}" Value="Commercial">
-                                                        <Setter Property="Source" Value="{StaticResource CommercialPaidIcon}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Type}" Value="Voiceover">
-                                                        <Setter Property="Source" Value="{StaticResource VoiceOverIcon}"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Image.Style>
-                                    </Image>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="32"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Width="16" Height="16" Grid.Column="0">
+                                            <Image.Style>
+                                                <Style TargetType="Image">
+                                                    <Setter Property="Source" Value="{StaticResource OtherTrackIcon}"/>
+                                                    <!-- Default icon -->
+                                                    <Style.Triggers>
+                                                        <!-- Category -->
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="Category">
+                                                            <Setter Property="Source" Value="{StaticResource MusicFolderIcon}"/>
+                                                        </DataTrigger>
+                                                        
+                                                        <!-- Track -->
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="Jingle">
+                                                            <Setter Property="Source" Value="{StaticResource JingleIcon}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="Song">
+                                                            <Setter Property="Source" Value="{StaticResource SongIcon}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="Commercial">
+                                                            <Setter Property="Source" Value="{StaticResource CommercialPaidIcon}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="Voiceover">
+                                                            <Setter Property="Source" Value="{StaticResource VoiceOverIcon}"/>
+                                                        </DataTrigger>
+                                                        
+                                                        <!-- Event -->
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="EventMarker">
+                                                            <Setter Property="Source" Value="{StaticResource PinIcon}"/>
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="EventFixedBreak">
+                                                            <Setter Property="Source" Value="{StaticResource FixedBreakEventIcon}"/>
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="EventDynamicBreak">
+                                                            <Setter Property="Source" Value="{StaticResource DynamicBreakEventIcon}"/>
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="EventDefault">
+                                                            <Setter Property="Source" Value="{StaticResource FlashIcon}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                        </Image>
+                                        <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                    <Style.Triggers>
+                                                        <!-- Category -->
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="Category">
+                                                            <Setter Property="Text" Value="Category"/>
+                                                            <Setter Property="Foreground" Value="{Binding ItemColor}"/>
+                                                        </DataTrigger>
+
+                                                        <!-- Track -->
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="Song">
+                                                            <Setter Property="Text" Value="Song"/>
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="Jingle">
+                                                            <Setter Property="Text" Value="Jingle"/>
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="Commercial">
+                                                            <Setter Property="Text" Value="Commercial"/>
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="Other">
+                                                            <Setter Property="Text" Value="Other"/>
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="Voiceover">
+                                                            <Setter Property="Text" Value="Voiceover"/>
+                                                        </DataTrigger>
+                                                        <!-- Event -->
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="EventMarker">
+                                                            <Setter Property="Text" Value="Marker"/>
+                                                        </DataTrigger>
+   
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="EventFixedBreak">
+                                                            <Setter Property="Text" Value="Fixed break"/>
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="EventDynamicBreak">
+                                                            <Setter Property="Text" Value="Dynamic break"/>
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding ItemType}" Value="EventDefault">
+                                                            <Setter Property="Text" Value="Event"/>
+                                                        </DataTrigger>
+                                                        
+                                                      
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Grid>
+                                    
                                 </DataTemplate>
                             </syncfusion:GridTemplateColumn.CellTemplate>
                         </syncfusion:GridTemplateColumn>
-                        <syncfusion:GridTextColumn HeaderText="Details"
+                        
+                        <!-- Item Details -->
+                        <syncfusion:GridTemplateColumn HeaderText="Details"
                                    MappingName="ItemDetails"
                                    MinimumWidth="250" ColumnSizer="Star"
-                                   TextAlignment="Left"/>
+                                   TextAlignment="Left">
+                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" 
+                                               FontWeight="DemiBold"
+                                               Margin="5,0,0,0"
+                                               Text="{Binding ItemDetails}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ItemType}" Value="Category">
+                                                        <Setter Property="Foreground" Value="{Binding ItemColor}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ItemType}" Value="Song">
+                                                        <Setter Property="FontStyle" Value="Italic"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ItemType}" Value="Jingle">
+                                                        <Setter Property="FontStyle" Value="Italic"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ItemType}" Value="Other">
+                                                        <Setter Property="FontStyle" Value="Italic"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ItemType}" Value="Commercial">
+                                                        <Setter Property="FontStyle" Value="Italic"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ItemType}" Value="Voiceover">
+                                                        <Setter Property="FontStyle" Value="Italic"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ItemType}" Value="EventMarker">
+                                                        <Setter Property="FontWeight" Value="Bold"/>
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding ItemType}" Value="EventFixedBreak">
+                                                        <Setter Property="FontWeight" Value="Bold"/>
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding ItemType}" Value="EventDynamicBreak">
+                                                        <Setter Property="FontWeight" Value="Bold"/>
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding ItemType}" Value="EventDefault">
+                                                        <Setter Property="FontWeight" Value="Bold"/>
+                                                    </DataTrigger>
+
+
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </syncfusion:GridTemplateColumn.CellTemplate>
+                        </syncfusion:GridTemplateColumn>
+                        <!-- Estimated Duration -->
                         <syncfusion:GridTextColumn HeaderText="Duration"
+                                   Width="70"
+                                   MinimumWidth="70"
                                    MappingName="Duration"
                                    DisplayBinding="{Binding Path=Duration, StringFormat=hh\\:mm\\:ss}"
                                    TextAlignment="Center"/>

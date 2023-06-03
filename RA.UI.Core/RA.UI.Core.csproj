@@ -37,6 +37,8 @@
     <None Remove="Resources\Icons\icons8-edit-file-48.png" />
     <None Remove="Resources\Icons\icons8-eject-48.png" />
     <None Remove="Resources\Icons\icons8-error-48.png" />
+    <None Remove="Resources\Icons\icons8-expired-48.png" />
+    <None Remove="Resources\Icons\icons8-flash-on-48.png" />
     <None Remove="Resources\Icons\icons8-folder-tree-48.png" />
     <None Remove="Resources\Icons\icons8-forward-48.png" />
     <None Remove="Resources\Icons\icons8-history-48.png" />
@@ -52,12 +54,14 @@
     <None Remove="Resources\Icons\icons8-opened-folder-48.png" />
     <None Remove="Resources\Icons\icons8-paste-48.png" />
     <None Remove="Resources\Icons\icons8-pause-48.png" />
+    <None Remove="Resources\Icons\icons8-pin-48.png" />
     <None Remove="Resources\Icons\icons8-play-48.png" />
     <None Remove="Resources\Icons\icons8-play-button-circled-48.png" />
     <None Remove="Resources\Icons\icons8-playlist-48.png" />
     <None Remove="Resources\Icons\icons8-plus-48.png" />
     <None Remove="Resources\Icons\icons8-plus-square-96.png" />
     <None Remove="Resources\Icons\icons8-question-mark-48.png" />
+    <None Remove="Resources\Icons\icons8-realtime-48.png" />
     <None Remove="Resources\Icons\icons8-refresh-48.png" />
     <None Remove="Resources\Icons\icons8-remove-96.png" />
     <None Remove="Resources\Icons\icons8-replay-48.png" />
@@ -82,6 +86,15 @@
     <None Remove="Resources\Images\splash_dark_antena.png" />
     <None Remove="Resources\Images\splash_dark_library.png" />
     <None Remove="Resources\Images\track_default_image.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Icons\icons8-expired-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\icons8-realtime-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -187,6 +200,9 @@
     <Resource Include="Resources\Icons\icons8-error-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Icons\icons8-flash-on-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Icons\icons8-folder-tree-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -231,6 +247,9 @@
     </Resource>
     <Resource Include="Resources\Icons\icons8-pause-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\icons8-pin-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\icons8-play-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

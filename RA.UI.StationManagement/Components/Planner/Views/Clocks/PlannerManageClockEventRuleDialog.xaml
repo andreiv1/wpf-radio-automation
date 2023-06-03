@@ -37,7 +37,48 @@
                 Content="Type:" FontWeight="DemiBold"/>
             <syncfusion:ComboBoxAdv Grid.Row="0" Grid.Column="1"
                                     ItemsSource="{Binding Events}"
-                                    SelectedItem="{Binding SelectedEvent}"/>
+                                    SelectedItem="{Binding SelectedEvent}">
+                <syncfusion:ComboBoxAdv.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="16" Height="16" Margin="0,0,5,0">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding .}" Value="Marker">
+                                                <Setter Property="Source" Value="{StaticResource PinIcon}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding .}" Value="FixedBreak">
+                                                <Setter Property="Source" Value="{StaticResource FixedBreakEventIcon}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding .}" Value="DynamicBreak">
+                                                <Setter Property="Source" Value="{StaticResource DynamicBreakEventIcon}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                            <TextBlock>
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding .}" Value="Marker">
+                                                <Setter Property="Text" Value="Marker"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding .}" Value="FixedBreak">
+                                                <Setter Property="Text" Value="Fixed break"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding .}" Value="DynamicBreak">
+                                                <Setter Property="Text" Value="Dynamic break"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </syncfusion:ComboBoxAdv.ItemTemplate>
+            </syncfusion:ComboBoxAdv>
 
             <Label Grid.Row="2" Grid.Column="0"
                    Content="Label:" FontWeight="DemiBold"/>

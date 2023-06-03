@@ -14,6 +14,7 @@ namespace RA.Database
         public DbSet<Clock> Clocks { get; set; }
         public DbSet<ClockItemBase> ClockItems { get; set; }
         public DbSet<ClockItemCategory> ClockItemsCategories { get; set; }
+        public DbSet<ClockItemCategoryTag> ClockItemCategoryTags { get; set; }
         public DbSet<ClockItemEvent> ClockItemsEvents { get; set; }
         public DbSet<ClockItemTrack> ClockItemsTracks { get; set; }
         public DbSet<ClockTemplate> ClockTemplates { get; set; }
@@ -48,6 +49,7 @@ namespace RA.Database
             modelBuilder.ApplyConfiguration(new TrackTagConfig());
             modelBuilder.ApplyConfiguration(new PlaylistConfig());
             modelBuilder.ApplyConfiguration(new ClockItemConfig());
+            modelBuilder.ApplyConfiguration(new ClockItemCategoryTagConfig());
             modelBuilder.Entity<CategoryHierarchy>(entity =>
             {
                 entity.HasNoKey();

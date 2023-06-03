@@ -16,5 +16,7 @@ namespace RA.Database.Models
         public TagCategory TagCategory { get; set; }
 
         public ICollection<TrackTag> TrackTags { get; set; }
+
+        public ICollection<ClockItemCategoryTag> ClockItemsCategoryTags { get; set; }
     }
 }

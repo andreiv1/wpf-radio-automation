@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:RA.UI.StationManagement.Components.Planner.View.Clocks"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:clocks="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.Clocks" d:DataContext="{d:DesignInstance Type=clocks:PlannerManageClockCategoryRuleViewModel}"
                  mc:Ignorable="d"
-        Title="Insert rule from category" Height="500" Width="450" 
+        Title="Insert rule from category" Height="700" Width="450" ResizeMode="NoResize"
                  WindowStartupLocation="CenterScreen">
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -15,6 +15,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
   
         </Grid.RowDefinitions>
@@ -24,18 +25,113 @@
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="108"/>
             </Grid.ColumnDefinitions>
-
-            <syncfusion:SfTextBoxExt Grid.Column="0" Watermark="No category selected" IsReadOnly="True" Height="25"
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Content="Source:" Grid.Column="0"
+                   FontWeight="DemiBold"/>
+            <syncfusion:SfTextBoxExt Grid.Column="0" Grid.Row="1"
+                                     Watermark="No category selected" IsReadOnly="True" Height="25"
                                    Text="{Binding SelectedCategory.PathName}"
                                    VerticalAlignment="Center"/>
-            <syncfusion:ButtonAdv Grid.Column="1" VerticalAlignment="Center" Height="25" Margin="3,0,0,0"
+            <syncfusion:ButtonAdv Grid.Column="1" Grid.Row="1"
+                                  VerticalAlignment="Center" Height="25" Margin="3,0,0,0"
                                   Label="Pick category"
                                   SmallIcon="{StaticResource FolderTreeIcon}"
                                   Command="{Binding OpenPickCategoryCommand}"/>
 
         </Grid>
-       
         <Grid Grid.Row="1" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+                
+            <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
+                Content="Release date:" FontWeight="DemiBold"/>
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" 
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left">
+                <TextBlock Text="from" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                <!--Value="{Binding Track.ReleaseDate, Mode=TwoWay}"-->
+                <syncfusion:SfDatePicker 
+                                     Height="24" Width="110"
+                                     VerticalAlignment="Center" HorizontalContentAlignment="Center"
+                                     AllowNull="True" AllowInlineEditing="True"
+                                     />
+                <TextBlock Text="to" VerticalAlignment="Center" Margin="5,0,5,0"/>
+                <syncfusion:SfDatePicker 
+                                     Height="24" Width="110" 
+                                     VerticalAlignment="Center" HorizontalContentAlignment="Center"
+                                     AllowNull="True" AllowInlineEditing="True"
+                                     />
+            </StackPanel>
+            <CheckBox  Grid.Row="1" Grid.Column="1" Margin="0,5,0,0"
+                VerticalAlignment="Center" Content='exclude items without "Release date" specified'/>
+            
+            <!-- BPM -->
+            <Label Grid.Row="3" Grid.Column="0" Margin="0,10,0,0"
+                Content="BPM:" FontWeight="DemiBold"/>
+            <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,10,0,0" Orientation="Horizontal"  
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left">
+                <TextBlock Text="from" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                <!--Value="{Binding Track.ReleaseDate, Mode=TwoWay}"-->
+                <syncfusion:UpDown Height="24" Width="110"
+                                   VerticalAlignment="Center"
+                    NumberDecimalDigits="0" />
+
+                <TextBlock Text="to" VerticalAlignment="Center" Margin="5,0,5,0"/>
+                <syncfusion:UpDown Height="24" Width="110"
+                                   VerticalAlignment="Center"
+                    NumberDecimalDigits="0" />
+            </StackPanel>
+            <CheckBox  Grid.Row="4" Grid.Column="1" Margin="0,5,0,0"
+                VerticalAlignment="Center" Content='exclude items without "BPM" specified'/>
+            <!-- DURATION -->
+            <Label Grid.Row="5" Grid.Column="0" Margin="0,10,0,0"
+                Content="Duration:" FontWeight="DemiBold"/>
+            <Grid Grid.Row="5" Grid.Column="1" Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left"
+                       Content="at least" />
+                <syncfusion:TimeSpanEdit 
+                    Grid.Row="0" Grid.Column="1"
+                                     MinValue="0:0:0" IsEnabled="False"
+                                     Format="m 'min' s 'sec'"/>
+
+                <Label Grid.Row="1" Grid.Column="0" Margin="0,5,0,0"
+                       Content="no more than" />
+                <syncfusion:TimeSpanEdit 
+                    Grid.Row="1" Grid.Column="1" Margin="0,5,0,0"
+                                     MinValue="0:0:0" IsEnabled="False"
+                                     Format="m 'min' s 'sec'"/>
+
+                <CheckBox Grid.Row="2" Grid.ColumnSpan="2" Margin="0,5,0,0"
+                          Content="enforce duration limits"/>
+            </Grid>
+
+        </Grid>
+        <Grid Grid.Row="2" Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -67,7 +163,7 @@
                    Text="{StaticResource TrackAllSeparationString}"/>-->
         </Grid>
 
-        <Grid Grid.Row="2" Margin="0,10,0,0" >
+        <Grid Grid.Row="3" Margin="0,10,0,0" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -81,14 +177,14 @@
                 Content="Genre(s):" FontWeight="DemiBold"/>
             <syncfusion:ComboBoxAdv Grid.Row="1" VerticalAlignment="Center" MinHeight="50"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
-                                    ItemsSource="{Binding Genres}" 
+                                    ItemsSource="{Binding Genres}" DefaultText="Any genre"
                                     DisplayMemberPath="Name"
                                     />
             <Label Grid.Row="2" VerticalAlignment="Center"
                 Content="Language(s):" FontWeight="DemiBold"/>
             <syncfusion:ComboBoxAdv Grid.Row="3" VerticalAlignment="Center" MinHeight="50"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
-                                    ItemsSource="{Binding Languages}" 
+                                    ItemsSource="{Binding Languages}" DefaultText="Any language"
                                     DisplayMemberPath="Name"
                                     />
 
@@ -96,15 +192,18 @@
                 Content="Mood(s):" FontWeight="DemiBold"/>
             <syncfusion:ComboBoxAdv Grid.Row="5" VerticalAlignment="Center" MinHeight="50"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
-                                    ItemsSource="{Binding Moods}" 
+                                    ItemsSource="{Binding Moods}" DefaultText="Any mood" 
                                     DisplayMemberPath="Name"
                                     />
         </Grid>
 
-
-        <TextBlock Grid.Row="3" Text="There are X tracks in the category Y matching the rules." 
-                   Margin="0,0,0,5" VerticalAlignment="Bottom"/>
-        <StackPanel Grid.Row="4" HorizontalAlignment="Right" Orientation="Horizontal">
+        <StackPanel Grid.Row="4" Margin="0,0,0,5" VerticalAlignment="Bottom">
+            <CheckBox Content="Use this rule as filler when no other rules can apply" Margin="0,0,0,5"/>
+            <TextBlock Text="There are X tracks in the category Y matching the filters."
+                       FontWeight="Bold"/>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="5" HorizontalAlignment="Right" Orientation="Horizontal">
             <syncfusion:ButtonAdv Label="Cancel" Margin="0,0,5,0"
                                   SmallIcon="{StaticResource CloseIcon}"
                                   Command="{Binding CancelDialogCommand}" IsCancel="True"/>

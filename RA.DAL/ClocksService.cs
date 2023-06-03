@@ -46,6 +46,8 @@ namespace RA.DAL
                 .OrderBy(ci => ci.OrderIndex)
                 .Include(ci => ((ClockItemCategory)ci).Category)
                 .Include(ci => ((ClockItemTrack)ci).Track)
+                .ThenInclude(ci => ci.TrackArtists)
+                .ThenInclude(ta => ta.Artist)
                 .ToListAsync()
                 ;
 
