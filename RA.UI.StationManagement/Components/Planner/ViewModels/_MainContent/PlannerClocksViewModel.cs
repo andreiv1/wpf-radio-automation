@@ -169,17 +169,21 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
             await vm.AddClockItem(latestIndex);
 
-            //Reload clocks from db
+            //Reload
             _ = LoadClockItemsForSelectedClock();
         }
 
         [RelayCommand]
-        private void InsertEventRuleToSelectedClock()
+        private async void InsertEventRuleToSelectedClock()
         {
             if (SelectedClock == null) return;
-            var vm = windowService.ShowDialog<PlannerManageClockEventRuleViewModel>();
-            
-            //TODO
+            var vm = windowService.ShowDialog<PlannerManageClockEventRuleViewModel>(SelectedClock.Id);
+            if (vm.SelectedEvent == null) return;
+
+            await vm.AddClockItem();
+
+            //Reload
+            _ = LoadClockItemsForSelectedClock();
         }
 
         [RelayCommand]
