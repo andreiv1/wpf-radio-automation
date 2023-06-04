@@ -14,8 +14,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
 {
     public partial class ClockItemModel : ObservableObject
     {
-        public int Id { get; private set; }
-        
         public ClockItemBaseDTO Item { get; private set; }
 
         public String ItemDetails

@@ -1,15 +1,9 @@
-﻿using Castle.Core.Smtp;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RA.DAL.Exceptions;
 using RA.Database;
 using RA.Database.Models;
 using RA.DTO;
 using RA.DTO.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RA.DAL
 {
@@ -26,7 +20,7 @@ namespace RA.DAL
             var result = await dbContext.Clocks.Where(c => c.Id == id)
                 .Select(c => ClockDTO.FromEntity(c))
                 .FirstOrDefaultAsync();
-            if(result == null)
+            if (result == null)
             {
                 throw new NotFoundException($"Clock with id {id} not found");
             }
@@ -51,22 +45,23 @@ namespace RA.DAL
                 .ToListAsync()
                 ;
 
-           foreach(var item in clockItems)
+            foreach (var item in clockItems)
             {
-                if(item is ClockItemCategory itemCategory)
+                if (item is ClockItemCategory itemCategory)
                 {
                     result.Add(ClockItemCategoryDTO.FromEntity(itemCategory));
-                } else if(item is ClockItemTrack itemTrack)
+                }
+                else if (item is ClockItemTrack itemTrack)
                 {
                     result.Add(ClockItemTrackDTO.FromEntity(itemTrack));
                 }
-                else if(item is ClockItemEvent itemEvent)
+                else if (item is ClockItemEvent itemEvent)
                 {
                     result.Add(ClockItemEventDTO.FromEntity(itemEvent));
                 }
 
             }
-           
+
             return result;
         }
         public IEnumerable<ClockDTO> GetClocks()
@@ -186,14 +181,14 @@ namespace RA.DAL
             using var dbContext = dbContextFactory.CreateDbContext();
             var entity = await dbContext.ClockItems.Where(ci => ci.Id == clockItemId)
                 .FirstOrDefaultAsync();
-            if(entity == null)
+            if (entity == null)
             {
                 throw new NotFoundException($"Clock item with id {clockItemId} does not exist!");
             }
             return ClockItemBaseDTO.FromEntity(entity);
-            
+
         }
 
-        
+
     }
 }

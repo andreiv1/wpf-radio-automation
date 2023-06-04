@@ -38,13 +38,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
         [ObservableProperty]
         private ClockItemModel? selectedClockItem = null;
-
-        //TODO: NU ma prind de ce nu se face bind
-        public ObservableCollection<ClockItemModel> SelectedClockItems { get; set; } = new();
+        public ObservableCollection<object> SelectedClockItems { get; set; } = new();
         partial void OnSelectedClockChanged(ClockDTO? value)
         {
             _ = LoadClockItemsForSelectedClock();
             SelectedClockItem = null;
+            ClockItemsForSelectedClock.Clear();
             SelectedClockItems.Clear();
         }
         [ObservableProperty]
@@ -95,8 +94,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                 {
 
                     var model = new ClockItemModel(clockItemDto);
-                    //TODO: Here treat multiple Clock Items type to display String clockItemDto details
-                    //TODO: add duration
                     if(clockItemDto is ClockItemCategoryDTO category)
                     {
                         if(category.CategoryId.HasValue)
@@ -191,20 +188,38 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         }
 
         [RelayCommand]
-        private void RemoveSelectedItemsInSelectedClock()
+        private async void RemoveSelectedItemsInSelectedClock()
         {
             DebugHelper.WriteLine(this, $"Selected clock items to remove: {SelectedClockItems.Count}");
-            //TODO: nu ma prind de ce nu se face bind!!!
+
             if (SelectedClockItems.Count == 0) return;
 
             foreach(var item in SelectedClockItems)
             {
-                clocksService.DeleteClockItem(item.Id);
+                if(item is ClockItemModel clockItem)
+                {
+                    DebugHelper.WriteLine(this, $"Selected clock item to remove: {clockItem.DisplayName}");
+                    await clocksService.DeleteClockItem(clockItem.Item.Id);
+                }
+     
             }
 
             _ = LoadClockItemsForSelectedClock();
         }
 
+        [RelayCommand]
+        private void CopySelectedItemsInSelectedClock()
+        {
+            throw new NotImplementedException();
+        }
+
+        [RelayCommand]
+        private void PasteSelectedItemsInSelectedClock()
+        {
+            throw new NotImplementedException();
+        }
+
+ 
         [RelayCommand]
         private void InsertEventRuleToSelectedClock()
         {
@@ -247,6 +262,11 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         }
         #endregion
 
+        public override void Dispose()
+        {
+            ClockItemsForSelectedClock.CollectionChanged -= ClockItemsForSelectedClock_CollectionChanged;
+            base.Dispose();
+        }
 
     }
 }
