@@ -99,15 +99,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                         model.Duration = categoryAvgDurations[category.CategoryId.Value];
                     }
                    
-                    else if(clockItemDto is ClockItemTrackDTO track)
+                    else if(clockItemDto is ClockItemTrackDTO trackItem)
                     {
                         //TODO: fixed duration temp
                         model.Duration = TimeSpan.FromMinutes(2);
-                    }
-                   
-                    else
-                    {
-                        model.Duration = TimeSpan.Zero;
                     }
                    
                     dispatcherService.InvokeOnUIThread(() =>
@@ -116,12 +111,25 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                     });
                 }
 
-                foreach(var clockItemDto in clockItems.Where(ci => ci.OrderIndex == -1))
+                foreach (var clockItemDto in clockItems.Where(ci => ci.OrderIndex == -1))
                 {
-                      dispatcherService.InvokeOnUIThread(() =>
+                    var model = new ClockItemModel(clockItemDto);
+                    int nearestIndex = 0;
+                    if (clockItemDto is ClockItemEventDTO eventItem)
+                    {
+                       nearestIndex = ClockItemsForSelectedClock
+                            .Where(ci => ci.Item.OrderIndex > -1)
+                            .Where(ci => eventItem.EstimatedEventStart >= ci.StartTime)
+                            .Select(ci => ci.Item.OrderIndex)
+                            .FirstOrDefault();
+
+                        model.StartTime = eventItem.EstimatedEventStart;
+                        model.Duration = eventItem.EstimatedEventDuration ?? TimeSpan.Zero;
+                    }
+                    dispatcherService.InvokeOnUIThread(() =>
                       {
-                        ClockItemsForSelectedClock.Add(new ClockItemModel(clockItemDto));
-                    });
+                          ClockItemsForSelectedClock.Insert(nearestIndex, model);
+                      });
                 }
             }
         }

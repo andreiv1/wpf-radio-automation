@@ -31,8 +31,6 @@
                 <RowDefinition/>
                 <RowDefinition Height="10"/>
                 <RowDefinition/>
-                <RowDefinition Height="10"/>
-                <RowDefinition/>
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0"
@@ -87,19 +85,12 @@
             <TextBox Grid.Row="2" Grid.Column="1" Height="24"
                      Text="{Binding EventLabel}"/>
             <Label Grid.Row="4" Grid.Column="0" 
-                   Content="Start Time (min:sec):" FontWeight="DemiBold"/>
+                   Content="Start Time:" FontWeight="DemiBold"/>
             <syncfusion:TimeSpanEdit Grid.Row="4" Grid.Column="1" 
-                                     MinValue="0:0:0" MaxValue="1:0:0"
-                                     Format="mm:ss"
+                                     MinValue="0:0:0" MaxValue="0:59:59"
+                                     Format="mm 'min' ss 'sec'"
                                      Value="{Binding EventStartTime, Mode=TwoWay}"/>
-            <Label Grid.Row="6" Grid.Column="0" 
-                   Content="Estimated Duration:" FontWeight="DemiBold"/>
-            <syncfusion:TimeSpanEdit Grid.Row="6" Grid.Column="1" 
-                                     MinValue="0:0:0"
-                                     Format="m 'minutes' s 'sec'"
-                                     Value="{Binding EstimatedDuration}"
-                                     IsEnabled="False"/>
-
+          
         </Grid>
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
               Height="auto">

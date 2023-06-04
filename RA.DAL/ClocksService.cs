@@ -162,7 +162,7 @@ namespace RA.DAL
                 await dbContext.SaveChangesAsync();
 
                 var otherItems = await dbContext.ClockItems
-                    .Where(ci => ci.ClockId == entity.ClockId)
+                    .Where(ci => ci.ClockId == entity.ClockId && ci.OrderIndex > -1)
                     .OrderBy(ci => ci.OrderIndex)
                     .ToListAsync();
                 for (int i = 0; i < otherItems.Count(); i++)
