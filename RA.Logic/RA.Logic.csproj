@@ -12,8 +12,7 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="TrackFileLogic\Obsolet\TrackFilesImporter.cs" />
-    <None Include="TrackFileLogic\Obsolet\TrackFilesProcessor.cs" />
+    <None Include="TrackFileLogic\Obsolete\TrackFilesImporter.cs" />
   </ItemGroup>
 
   <ItemGroup>

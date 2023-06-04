@@ -94,13 +94,13 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                 {
 
                     var model = new ClockItemModel(clockItemDto);
-                    if(clockItemDto is ClockItemCategoryDTO category)
+                    if(clockItemDto is ClockItemCategoryDTO category && category.CategoryId.HasValue)
                     {
-                        if(category.CategoryId.HasValue)
-                        {
-                            model.Duration = categoryAvgDurations[category.CategoryId.Value];
-                        }
-                        
+                        model.Duration = categoryAvgDurations[category.CategoryId.Value];
+                    }
+                    else
+                    {
+                        model.Duration = TimeSpan.Zero;
                     }
                     //if (clockItemDto.CategoryId.HasValue)
                     //{
@@ -154,6 +154,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         {
             if (SelectedClock == null) return;
             windowService.ShowDialog<TrackSelectViewModel>();
+            //TODO insert track
         }
 
         [RelayCommand]
@@ -161,16 +162,24 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         {
             if (SelectedClock == null) return;
             var vm = windowService.ShowDialog<PlannerManageClockCategoryRuleViewModel>(SelectedClock.Id);
-            if(vm.SelectedCategory != null)
-            {
-                DebugHelper.WriteLine(this, $"To add clock rule - {vm.SelectedCategory.Id}");
-                int latestIndex = ClockItemsForSelectedClock.Count;
-                
-                await vm.AddClockItem(latestIndex);
+            if (vm.SelectedCategory == null) return;
 
-                //Reload clocks from db
-                _ = LoadClockItemsForSelectedClock();
-            }
+            DebugHelper.WriteLine(this, $"To add clock rule - {vm.SelectedCategory.Id}");
+            int latestIndex = ClockItemsForSelectedClock.Count;
+
+            await vm.AddClockItem(latestIndex);
+
+            //Reload clocks from db
+            _ = LoadClockItemsForSelectedClock();
+        }
+
+        [RelayCommand]
+        private void InsertEventRuleToSelectedClock()
+        {
+            if (SelectedClock == null) return;
+            var vm = windowService.ShowDialog<PlannerManageClockEventRuleViewModel>();
+            
+            //TODO
         }
 
         [RelayCommand]
@@ -219,14 +228,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             throw new NotImplementedException();
         }
 
- 
-        [RelayCommand]
-        private void InsertEventRuleToSelectedClock()
-        {
-            if (SelectedClock == null) return;
-            var vm = windowService.ShowDialog<PlannerManageClockEventRuleViewModel>();
-            //TODO
-        }
         [RelayCommand]
         private void OpenAddClockDialog()
         {
@@ -264,7 +265,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
         public override void Dispose()
         {
-            ClockItemsForSelectedClock.CollectionChanged -= ClockItemsForSelectedClock_CollectionChanged;
+            //ClockItemsForSelectedClock.CollectionChanged -= ClockItemsForSelectedClock_CollectionChanged;
             base.Dispose();
         }
 

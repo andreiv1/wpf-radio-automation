@@ -86,9 +86,9 @@
                    Content="Label:" FontWeight="DemiBold"/>
             <TextBox Grid.Row="2" Grid.Column="1" Height="24"/>
             <Label Grid.Row="4" Grid.Column="0" 
-                   Content="Time (min:second):" FontWeight="DemiBold"/>
+                   Content="Start Time (min:sec):" FontWeight="DemiBold"/>
             <syncfusion:TimeSpanEdit Grid.Row="4" Grid.Column="1" 
-                                     MinValue="0:0:0"
+                                     MinValue="0:0:0" MaxValue="1:0:0"
                                      Format="mm:ss"/>
             <Label Grid.Row="6" Grid.Column="0" 
                    Content="Estimated Duration:" FontWeight="DemiBold"/>

@@ -32,7 +32,7 @@ namespace RA.UI.Playout.ViewModels.Components.Models
             {
                 if (!string.IsNullOrEmpty(playlistItemTrackDTO.Track.ImageName))
                 {
-                    //TODO
+                    //TODO: do not hard code path
                     return $"C:\\Users\\Andrei\\Desktop\\images\\{playlistItemTrackDTO.Track.ImageName}";
                 }
                 else
