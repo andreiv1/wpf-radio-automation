@@ -16,6 +16,7 @@ namespace RA.DTO
         public String? Artists { get; set; }
         public String? Title { get; set; }
 
+     
         public TrackType TrackType { get; set; }
 
         public static ClockItemTrackDTO FromEntity(ClockItemTrack entity)

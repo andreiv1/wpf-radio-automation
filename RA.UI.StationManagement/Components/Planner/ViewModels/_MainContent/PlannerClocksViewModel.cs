@@ -90,7 +90,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
                 var categoryAvgDurations = await Task.Run(() => clocksService.CalculateAverageDurationsForCategoriesInClockWithId(SelectedClock.Id));
 
-                foreach (var clockItemDto in clockItems)
+                foreach (var clockItemDto in clockItems.Where(ci => ci.OrderIndex >= 0))
                 {
 
                     var model = new ClockItemModel(clockItemDto);
@@ -98,25 +98,29 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                     {
                         model.Duration = categoryAvgDurations[category.CategoryId.Value];
                     }
+                   
+                    else if(clockItemDto is ClockItemTrackDTO track)
+                    {
+                        //TODO: fixed duration temp
+                        model.Duration = TimeSpan.FromMinutes(2);
+                    }
+                   
                     else
                     {
                         model.Duration = TimeSpan.Zero;
                     }
-                    //if (clockItemDto.CategoryId.HasValue)
-                    //{
-                    //    clockItemModel.Duration = categoryAvgDurations[clockItemDto.CategoryId.Value];
-                    //}
-                    //else if (clockItemDto.EventType.HasValue)
-                    //{
-                    //    clockItemModel.Duration = clockItemModel.EstimatedEventDuration.Value;
-                    //}
-                    //else
-                    //{
-                    //    clockItemModel.Duration = TimeSpan.Zero;
-                    //}
+                   
                     dispatcherService.InvokeOnUIThread(() =>
                     {
                         ClockItemsForSelectedClock.Add(model);
+                    });
+                }
+
+                foreach(var clockItemDto in clockItems.Where(ci => ci.OrderIndex == -1))
+                {
+                      dispatcherService.InvokeOnUIThread(() =>
+                      {
+                        ClockItemsForSelectedClock.Add(new ClockItemModel(clockItemDto));
                     });
                 }
             }
@@ -127,7 +131,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private void CalculateStartTime()
         {
             TotalDuration = TimeSpan.Zero;
-            foreach (var item in ClockItemsForSelectedClock)
+            foreach (var item in ClockItemsForSelectedClock
+                .Where(ci => ci.Item.GetType() != typeof(ClockItemEventDTO)))
             {
                 item.StartTime = TotalDuration;
                 TotalDuration += item.Duration;
@@ -194,6 +199,11 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             if(SelectedClockItem.Item is ClockItemCategoryDTO itemCategory)
             {
                 var vm = windowService.ShowDialog<PlannerManageClockCategoryRuleViewModel>(SelectedClock.Id, itemCategory.Id);
+
+                _ = LoadClockItemsForSelectedClock();
+            } else if(SelectedClockItem.Item is ClockItemEventDTO itemEvent)
+            {
+                var vm = windowService.ShowDialog<PlannerManageClockEventRuleViewModel>(SelectedClock.Id, itemEvent.Id);
 
                 _ = LoadClockItemsForSelectedClock();
             }

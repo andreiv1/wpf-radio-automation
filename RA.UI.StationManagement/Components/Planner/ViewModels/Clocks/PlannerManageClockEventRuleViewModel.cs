@@ -30,6 +30,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
 
         private readonly IClocksService clocksService;
         private readonly int clockId;
+        private readonly int clockItemId;
 
         public PlannerManageClockEventRuleViewModel(IWindowService windowService,
                                                     IClocksService clocksService,
@@ -39,6 +40,26 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
             this.clockId = clockId;
         }
 
+        public PlannerManageClockEventRuleViewModel(IWindowService windowService,
+                                                    IClocksService clocksService,
+                                                    int clockId, int clockItemId) : base(windowService)
+        {
+            this.clocksService = clocksService;
+            this.clockId = clockId;
+            this.clockItemId = clockItemId;
+
+            _ = LoadItem(clockItemId);
+        }
+
+        private async Task LoadItem(int clockItemId)
+        {
+            var clockItem = await clocksService.GetClockItemAsync(clockItemId) as ClockItemEventDTO;
+            if(clockItem == null) return;
+            SelectedEvent = clockItem.EventType.ToString();
+            EventLabel = clockItem.EventLabel;
+            EventStartTime = clockItem.EstimatedEventStart;
+            EstimatedDuration = clockItem.EstimatedEventDuration;
+        }
         public async Task AddClockItem()
         {
             if (SelectedEvent == null) return;

@@ -8,7 +8,7 @@
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:clocks="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.Clocks" d:DataContext="{d:DesignInstance Type=clocks:PlannerManageClockEventRuleViewModel}"
                  mc:Ignorable="d"
         Title="Insert rule from event" 
-                 MinHeight="400" Height="400" Width="450" 
+                 MinHeight="400" Height="400" Width="450" ResizeMode="NoResize"  
                  WindowStartupLocation="CenterScreen">
     <Grid Margin="20">
         <Grid.RowDefinitions>

@@ -38,7 +38,10 @@ namespace RA.DTO.Abstract
             {
                 return ClockItemCategoryDTO.FromEntity(itemCategory);
             }
-            //TODO: other types
+            else if(entity is ClockItemEvent itemEvent)
+            {
+                return ClockItemEventDTO.FromEntity(itemEvent);
+            }
             throw new Exception("TO DO other types");
         }
     }
