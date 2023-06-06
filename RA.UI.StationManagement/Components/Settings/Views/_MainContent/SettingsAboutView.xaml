@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="RA.UI.StationManagement.Components.Settings.Views.MainContent.SettingsAboutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RA.UI.StationManagement.Components.Settings.Views.MainContent"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Source="pack://application:,,,/RA.UI.Core;component/Resources/Images/splash_dark_antena.png" Width="150" Height="150"/>
+            <Label Grid.Row="1" Content="Radio Automation System" FontWeight="Bold" FontSize="30"/>
+            <Label Grid.Row="2" FontWeight="DemiBold" FontSize="24" HorizontalAlignment="Center"  
+            Content="Station Management"/>
+            <Label Content="Developed by © 2023 Andrei Software" FontSize="20" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+            <TextBlock x:Name="versionTextblock" Text="Version X" FontSize="14" FontWeight="DemiBold"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </StackPanel>
+ 
+    </Grid>
+</UserControl>
