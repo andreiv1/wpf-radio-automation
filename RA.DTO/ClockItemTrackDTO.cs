@@ -15,9 +15,9 @@ namespace RA.DTO
 
         public String? Artists { get; set; }
         public String? Title { get; set; }
-
-     
         public TrackType TrackType { get; set; }
+
+        public TimeSpan TrackDuration { get; set; }
 
         public static ClockItemTrackDTO FromEntity(ClockItemTrack entity)
         {
@@ -32,6 +32,10 @@ namespace RA.DTO
                     entity.Track.TrackArtists.Select(ta => ta.Artist.Name)) : null,
                 Title = entity.Track.Title,
                 TrackType = entity.Track.Type,
+                TrackDuration = TimeSpan.FromSeconds(entity.Track.Duration),
+
+                ClockItemEventId = entity.ClockItemEventId,
+                EventOrderIndex = entity.EventOrderIndex,
             };
         }
 

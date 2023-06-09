@@ -90,46 +90,93 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
                 var categoryAvgDurations = await Task.Run(() => clocksService.CalculateAverageDurationsForCategoriesInClockWithId(SelectedClock.Id));
 
-                foreach (var clockItemDto in clockItems.Where(ci => ci.OrderIndex >= 0))
+                var clockItemsNormal = clockItems.Where(ci => ci.OrderIndex >= 0)
+                    .ToList();
+                foreach (var clockItemDto in clockItemsNormal)
                 {
 
                     var model = new ClockItemModel(clockItemDto);
-                    if(clockItemDto is ClockItemCategoryDTO category && category.CategoryId.HasValue)
+                    if(clockItemDto is ClockItemCategoryDTO category 
+                        && category.CategoryId.HasValue)
                     {
                         model.Duration = categoryAvgDurations[category.CategoryId.Value];
+
+                        
                     }
                    
                     else if(clockItemDto is ClockItemTrackDTO trackItem)
                     {
-                        //TODO: fixed duration temp
-                        model.Duration = TimeSpan.FromMinutes(2);
+                        model.Duration = trackItem.TrackDuration;
                     }
                    
                     dispatcherService.InvokeOnUIThread(() =>
-                    {
-                        ClockItemsForSelectedClock.Add(model);
-                    });
+                        {
+                            ClockItemsForSelectedClock.Add(model);
+                        });
                 }
 
-                foreach (var clockItemDto in clockItems.Where(ci => ci.OrderIndex == -1))
+                var clockItemsEvent = clockItems
+                    .Where(ci => ci.OrderIndex == -1)
+                    .Where(ci => !ci.ClockItemEventId.HasValue)
+                    .ToList();
+
+                foreach (var clockItemDto in clockItemsEvent)
                 {
                     var model = new ClockItemModel(clockItemDto);
                     int nearestIndex = 0;
                     if (clockItemDto is ClockItemEventDTO eventItem)
                     {
-                       nearestIndex = ClockItemsForSelectedClock
+                        var previousItem = ClockItemsForSelectedClock
                             .Where(ci => ci.Item.OrderIndex > -1)
-                            .Where(ci => eventItem.EstimatedEventStart >= ci.StartTime)
-                            .Select(ci => ci.Item.OrderIndex)
-                            .FirstOrDefault();
+                            .Where(ci => ci.StartTime <= eventItem.EstimatedEventStart)
+                            .LastOrDefault();
+
+                        if(previousItem != null)
+                        {
+                            nearestIndex = ClockItemsForSelectedClock.IndexOf(previousItem) + 1;    
+                        }
 
                         model.StartTime = eventItem.EstimatedEventStart;
                         model.Duration = eventItem.EstimatedEventDuration ?? TimeSpan.Zero;
                     }
                     dispatcherService.InvokeOnUIThread(() =>
-                      {
+                    {
                           ClockItemsForSelectedClock.Insert(nearestIndex, model);
-                      });
+                    });
+
+                    var eventChild = clockItems
+                        .Where(ci => ci.OrderIndex == -1)
+                        .Where(ci => ci.ClockItemEventId.HasValue)
+                        .OrderBy(ci => ci.EventOrderIndex)
+                        .ToList();
+
+
+                    foreach (var clockItemChildDto in eventChild)
+                    {
+                        if (clockItemChildDto.EventOrderIndex != null)
+                        {
+                            var childModel = new ClockItemModel(clockItemChildDto);
+                            if (clockItemChildDto is ClockItemCategoryDTO category
+                        && category.CategoryId.HasValue)
+                            {
+                                childModel.Duration = categoryAvgDurations[category.CategoryId.Value];
+
+
+                            }
+
+                            else if (clockItemChildDto is ClockItemTrackDTO trackItem)
+                            {
+                                childModel.Duration = trackItem.TrackDuration;
+                            }
+                            dispatcherService.InvokeOnUIThread(() =>
+                            {
+                                ClockItemsForSelectedClock.Insert(nearestIndex + 1 + clockItemChildDto.EventOrderIndex.Value, 
+                                    childModel);
+                            });
+                        }
+
+                    }
+
                 }
             }
         }
@@ -163,11 +210,25 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
         #region Commands
         [RelayCommand]
-        private void InsertTrackToSelectedClock()
+        private async void InsertTrackToSelectedClock()
         {
             if (SelectedClock == null) return;
-            windowService.ShowDialog<TrackSelectViewModel>();
-            //TODO insert track
+            var vm = windowService.ShowDialog<TrackSelectViewModel>();
+           
+            if(vm.SelectedTrack == null) return;
+            int latestIndex = ClockItemsForSelectedClock.Count;
+
+            ClockItemTrackDTO newClockItem = new ClockItemTrackDTO
+            {
+                ClockId = SelectedClock.Id,
+                OrderIndex = latestIndex,
+                TrackId = vm.SelectedTrack.Id,
+            };
+
+            await clocksService.AddClockItem(newClockItem);
+
+            //Reload
+            _ = LoadClockItemsForSelectedClock();
         }
 
         [RelayCommand]
@@ -274,8 +335,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private void DuplicateClockDialog()
         {
             if (SelectedClock == null) return;
-            windowService.ShowDialog<PlannerManageClockViewModel>(SelectedClock.Id,
-               true);
+            windowService.ShowDialog<PlannerManageClockViewModel>(SelectedClock.Id, true);
         }
 
         [RelayCommand]
@@ -284,12 +344,5 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             _ = LoadClocks();
         }
         #endregion
-
-        public override void Dispose()
-        {
-            //ClockItemsForSelectedClock.CollectionChanged -= ClockItemsForSelectedClock_CollectionChanged;
-            base.Dispose();
-        }
-
     }
 }

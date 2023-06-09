@@ -78,7 +78,7 @@
 
         <StackPanel Grid.Row="0">
             <TextBlock FontSize="20" FontWeight="DemiBold" Margin="5,0,0,5"> 
-                    Welcome, {username}!
+                    Welcome, admin!
             </TextBlock>
         </StackPanel>
         <StackPanel Grid.Row="1">

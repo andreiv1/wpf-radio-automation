@@ -134,11 +134,11 @@
                                       Command="{Binding EditSelectedItemInSelectedClockCommand}"
                                       SmallIcon="{StaticResource EditIcon}"/>
                 <syncfusion:ButtonAdv Label="Copy item(s)" Height="25" Margin="0,0,3,0"
-                                      Command="{Binding CopyItemsInSelectedClockCommand}"
+                                      Command="{Binding CopySelectedItemsInSelectedClockCommand}"
                                       SmallIcon="{StaticResource CopyIcon}"/>
 
                 <syncfusion:ButtonAdv Label="Paste item(s)" Height="25" Margin="0,0,3,0"
-                                      Command="{Binding PasteItemsInSelectedClockCommand}"
+                                      Command="{Binding PasteSelectedItemsInSelectedClockCommand}"
                                       SmallIcon="{StaticResource PasteIcon}"/>
 
                 <syncfusion:ButtonAdv Label="Delete item(s)" Height="25" Margin="0,0,3,0"
@@ -153,6 +153,8 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="2"/>
                 </Grid.RowDefinitions>
+                <!--AllowDraggingRows="True"
+                       AllowDrop="True"-->
                 <syncfusion:SfDataGrid x:Name="selectedClockItemsDataGrid"
                        Grid.Row="2"
                        ItemsSource="{Binding ClockItemsForSelectedClock}"
@@ -161,8 +163,7 @@
                        SelectedIndex="{Binding LastSelectedClockItemIndex}"
                        SelectionUnit="Row" NavigationMode="Row"
                        SelectionMode="Multiple" AllowSorting="False"
-                       AllowDraggingRows="True"
-                       AllowDrop="True" RowHeight="29" AllowResizingColumns="True"
+                        RowHeight="29" AllowResizingColumns="True"
                        AutoGenerateColumns="False">
                     <syncfusion:SfDataGrid.Columns>
                         <!--Estimated Start Time-->

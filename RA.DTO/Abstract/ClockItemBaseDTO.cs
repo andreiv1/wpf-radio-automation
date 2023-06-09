@@ -13,6 +13,8 @@ namespace RA.DTO.Abstract
         public int Id { get; set; }
         public int OrderIndex { get; set; }
         public int ClockId { get; set; }
+        public int? ClockItemEventId { get; set; }
+        public int? EventOrderIndex { get; set; }
 
         public static ClockItemBase ToEntity(ClockItemBaseDTO dto)
         {

@@ -43,6 +43,10 @@ namespace RA.UI.StationManagement.Dialogs.TrackSelectDialog
         public ObservableCollection<TrackListingDTO> Tracks { get; set; } = new();
 
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(FinishDialogCommand))]
+        private TrackListingDTO? selectedTrack;
+
+        [ObservableProperty]
         private int totalTracks = 0;
 
         [ObservableProperty]
@@ -68,7 +72,7 @@ namespace RA.UI.StationManagement.Dialogs.TrackSelectDialog
         #endregion
         protected override bool CanFinishDialog()
         {
-            return false;
+            return SelectedTrack != null;
         }
 
         [RelayCommand(CanExecute = nameof(CanExecuteOnDemandLoading))]

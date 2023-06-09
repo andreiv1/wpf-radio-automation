@@ -45,6 +45,9 @@ namespace RA.DTO
                 MinReleaseDate = entity.MinReleaseDate,
                 MaxReleaseDate = entity.MaxReleaseDate,
                 IsFiller = entity.IsFiller,
+
+                ClockItemEventId = entity.ClockItemEventId,
+                EventOrderIndex = entity.EventOrderIndex,
             };
         }
 

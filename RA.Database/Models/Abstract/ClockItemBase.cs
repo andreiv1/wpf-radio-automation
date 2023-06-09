@@ -13,5 +13,9 @@ namespace RA.Database.Models.Abstract
         public int OrderIndex { get; set; }
         public int ClockId { get; set; }
         public Clock Clock { get; set; }
+
+        public int? ClockItemEventId { get; set; }
+        public ClockItemEvent ClockItemEvent { get; set; }
+        public int? EventOrderIndex { get; set; }
     }
 }

@@ -76,9 +76,6 @@ namespace RA.Logic.TrackFileLogic
                     metadataDictionary.Add(TrackMetadataField.Album, album);
                 }
                 ProcessTrackImage(tagLibFile);
-
-
-
             }
             catch (TagLib.UnsupportedFormatException e)
             {
