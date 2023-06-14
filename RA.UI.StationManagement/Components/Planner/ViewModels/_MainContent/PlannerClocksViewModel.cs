@@ -92,16 +92,19 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
                 var clockItemsNormal = clockItems.Where(ci => ci.OrderIndex >= 0)
                     .ToList();
+                
+                var clockItemsEvent = clockItems
+                    .Where(ci => ci.OrderIndex == -1)
+                    .Where(ci => !ci.ClockItemEventId.HasValue)
+                    .ToList();
+
                 foreach (var clockItemDto in clockItemsNormal)
                 {
-
                     var model = new ClockItemModel(clockItemDto);
                     if(clockItemDto is ClockItemCategoryDTO category 
                         && category.CategoryId.HasValue)
                     {
                         model.Duration = categoryAvgDurations[category.CategoryId.Value];
-
-                        
                     }
                    
                     else if(clockItemDto is ClockItemTrackDTO trackItem)
@@ -110,15 +113,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                     }
                    
                     dispatcherService.InvokeOnUIThread(() =>
-                        {
-                            ClockItemsForSelectedClock.Add(model);
-                        });
+                    {
+                        ClockItemsForSelectedClock.Add(model);
+                    });
                 }
-
-                var clockItemsEvent = clockItems
-                    .Where(ci => ci.OrderIndex == -1)
-                    .Where(ci => !ci.ClockItemEventId.HasValue)
-                    .ToList();
 
                 foreach (var clockItemDto in clockItemsEvent)
                 {
@@ -146,6 +144,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
                     var eventChild = clockItems
                         .Where(ci => ci.OrderIndex == -1)
+                        .Where(ci => ci.ClockItemEventId == clockItemDto.Id)
                         .Where(ci => ci.ClockItemEventId.HasValue)
                         .OrderBy(ci => ci.EventOrderIndex)
                         .ToList();
@@ -157,7 +156,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                         {
                             var childModel = new ClockItemModel(clockItemChildDto);
                             if (clockItemChildDto is ClockItemCategoryDTO category
-                        && category.CategoryId.HasValue)
+                                    && category.CategoryId.HasValue)
                             {
                                 childModel.Duration = categoryAvgDurations[category.CategoryId.Value];
 
@@ -186,11 +185,36 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private void CalculateStartTime()
         {
             TotalDuration = TimeSpan.Zero;
-            foreach (var item in ClockItemsForSelectedClock
-                .Where(ci => ci.Item.GetType() != typeof(ClockItemEventDTO)))
+
+            foreach(var model in ClockItemsForSelectedClock)
             {
-                item.StartTime = TotalDuration;
-                TotalDuration += item.Duration;
+                if(model.Item is ClockItemCategoryDTO categoryItem 
+                    && !model.Item.ClockItemEventId.HasValue)
+                {
+                    model.StartTime = TotalDuration;
+                    TotalDuration += model.Duration;
+                } else if(model.Item is ClockItemTrackDTO trackItem
+                    && !model.Item.ClockItemEventId.HasValue)
+                {
+                    model.StartTime = TotalDuration;
+                    TotalDuration += model.Duration;
+
+                } else if(model.Item is ClockItemEventDTO eventItem)
+                {
+                    model.StartTime = eventItem.EstimatedEventStart;
+                    model.Duration = TimeSpan.Zero;
+                }
+
+                if (model.Item.ClockItemEventId.HasValue)
+                {
+                    var eventItem = ClockItemsForSelectedClock
+                        .Where(ci => ci.Item.Id == model.Item.ClockItemEventId.Value)
+                                   .FirstOrDefault();
+                    if(eventItem != null)
+                    {
+                        eventItem.Duration += model.Duration;
+                    }
+                }
             }
         }
         private void FillPieChart()
@@ -199,10 +223,13 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             int totalSeconds = 0;
             foreach (var clock in ClockItemsForSelectedClock)
             {
-                ClockItemsPieChart.Add(new ClockPieChartModel(clock.DisplayName, (int)clock.Duration.TotalSeconds));
-                totalSeconds += (int)clock.Duration.TotalSeconds;
+                if (!clock.Item.ClockItemEventId.HasValue)
+                {
+                    ClockItemsPieChart.Add(new ClockPieChartModel(clock.DisplayName, (int)clock.Duration.TotalSeconds));
+                    totalSeconds += (int)clock.Duration.TotalSeconds;
+                }
             }
-            if (totalSeconds < 3600)
+            if (totalSeconds <= 3600)
             {
                 ClockItemsPieChart.Add(new ClockPieChartModel("Unfilled clock time", 3600 - totalSeconds));
             }

@@ -11,7 +11,7 @@
         xmlns:contentviews="clr-namespace:RA.UI.StationManagement.Components.Planner.Views.MainContent"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
-        Title="Planner" Height="850" MinWidth="850" Width="900">
+        Title="Planner" Height="850" MinWidth="850" Width="1000">
     <Grid KeyboardNavigation.TabNavigation="None">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>

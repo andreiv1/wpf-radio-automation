@@ -133,13 +133,13 @@
                 <syncfusion:ButtonAdv Label="Edit item" Height="25" Margin="0,0,3,0"
                                       Command="{Binding EditSelectedItemInSelectedClockCommand}"
                                       SmallIcon="{StaticResource EditIcon}"/>
-                <syncfusion:ButtonAdv Label="Copy item(s)" Height="25" Margin="0,0,3,0"
+                <!--<syncfusion:ButtonAdv Label="Copy item(s)" Height="25" Margin="0,0,3,0"
                                       Command="{Binding CopySelectedItemsInSelectedClockCommand}"
                                       SmallIcon="{StaticResource CopyIcon}"/>
 
                 <syncfusion:ButtonAdv Label="Paste item(s)" Height="25" Margin="0,0,3,0"
                                       Command="{Binding PasteSelectedItemsInSelectedClockCommand}"
-                                      SmallIcon="{StaticResource PasteIcon}"/>
+                                      SmallIcon="{StaticResource PasteIcon}"/>-->
 
                 <syncfusion:ButtonAdv Label="Delete item(s)" Height="25" Margin="0,0,3,0"
                                       Command="{Binding RemoveSelectedItemsInSelectedClockCommand}"
@@ -167,13 +167,38 @@
                        AutoGenerateColumns="False">
                     <syncfusion:SfDataGrid.Columns>
                         <!--Estimated Start Time-->
-                        <syncfusion:GridTextColumn HeaderText="Start Time"
-                                   MappingName="StartTime"
-                                   DisplayBinding="{Binding Path=StartTime, StringFormat=hh\\:mm\\:ss\\.fff}"
-                                   Width="75"
-                                   MinimumWidth="75"
-                                   TextAlignment="Center" 
-                                   />
+                        <syncfusion:GridTemplateColumn HeaderText="Start Time"
+                                                       Width="75"
+                                                       MinimumWidth="75">
+                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="DemiBold"
+                                               Text="{Binding Path=StartTime, StringFormat=hh\\:mm\\:ss\\.fff}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ItemType}" Value="EventMarker">
+                                                        <Setter Property="Foreground" Value="Red"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ItemType}" Value="EventFixedBreak">
+                                                        <Setter Property="Foreground" Value="Red"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ItemType}" Value="EventDynamicBreak">
+                                                        <Setter Property="Foreground" Value="Red"/>
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding Item.ClockItemEventId, 
+                                                        Converter={StaticResource NullToBoolConverter}}" 
+                                                                 Value="True">
+                                                        <Setter Property="Visibility" Value="Hidden"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </syncfusion:GridTemplateColumn.CellTemplate>
+                        </syncfusion:GridTemplateColumn>
                         <!--Item Icon & Type-->
                         <syncfusion:GridTemplateColumn MinimumWidth="50" HeaderText="Item"
                                                    MappingName="Type" Width="120">
@@ -181,10 +206,12 @@
                                 <DataTemplate>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
                                             <ColumnDefinition Width="32"/>
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <Image Width="16" Height="16" Grid.Column="0">
+                                        <TextBlock Text="{Binding Item.ClockItemEventId}" Foreground="Transparent" MaxWidth="35"/>
+                                        <Image Width="16" Height="16" Grid.Column="1">
                                             <Image.Style>
                                                 <Style TargetType="Image">
                                                     <Setter Property="Source" Value="{StaticResource OtherTrackIcon}"/>
@@ -229,7 +256,7 @@
                                                 </Style>
                                             </Image.Style>
                                         </Image>
-                                        <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                        <TextBlock Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="FontWeight" Value="Bold"/>
@@ -346,12 +373,36 @@
                             </syncfusion:GridTemplateColumn.CellTemplate>
                         </syncfusion:GridTemplateColumn>
                         <!-- Estimated Duration -->
-                        <syncfusion:GridTextColumn HeaderText="Duration"
-                                   Width="70"
-                                   MinimumWidth="70"
+                        <syncfusion:GridTextColumn HeaderText="Estimated Duration"
+                                   Width="120"
+                                   MinimumWidth="120"
                                    MappingName="Duration"
                                    DisplayBinding="{Binding Path=Duration, StringFormat=hh\\:mm\\:ss}"
                                    TextAlignment="Center"/>
+                        
+                        <!-- Filler -->
+                        <syncfusion:GridTemplateColumn HeaderText="Filler" 
+                                                       Width="60">
+                            <syncfusion:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Item.IsFiller}" Value="True">
+                                                        <Setter Property="Text" Value="Yes"/>
+                                                        <Setter Property="FontWeight" Value="DemiBold"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Item.IsFiller}" Value="False">
+                                                        <Setter Property="Text" Value="No"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </syncfusion:GridTemplateColumn.CellTemplate>
+                        </syncfusion:GridTemplateColumn>
                     </syncfusion:SfDataGrid.Columns>
                     
                     <!-- Context menu -->
@@ -362,16 +413,7 @@
                                     <Image Source="{StaticResource RemoveIcon}" Width="16" Height="16" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Header="Copy item(s)" Command="{Binding CopyItemsInSelectedClockCommand}">
-                                <MenuItem.Icon>
-                                    <Image Source="{StaticResource CopyIcon}" Width="16" Height="16" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Header="Paste item(s)" Command="{Binding PasteItemsInSelectedClockCommand}">
-                                <MenuItem.Icon>
-                                    <Image Source="{StaticResource PasteIcon}" Width="16" Height="16" />
-                                </MenuItem.Icon>
-                            </MenuItem>
+                           
                             <MenuItem Header="Edit item" Command="{Binding EditItemInSelectedClockCommand}">
                                 <MenuItem.Icon>
                                     <Image Source="{StaticResource EditIcon}" Width="16" Height="16" />
@@ -412,7 +454,7 @@
                     <RowDefinition Height="5"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <syncfusion:SfChart Grid.Row="0" >
+                <syncfusion:SfChart Grid.Row="0" Margin="0,25,0,25">
                     <syncfusion:SfChart.Resources>
                         <DataTemplate x:Key="AdornmentTemplate">
                             <StackPanel>
@@ -426,13 +468,12 @@
                                       YBindingPath="TotalSeconds"
                                        LabelPosition="Inside"
                                        StartAngle="-90"
-  
-                                       EndAngle="270"
+                                         EndAngle="270"
                                        Palette="BlueChrome">
                         <syncfusion:PieSeries.AdornmentsInfo>
                             <syncfusion:ChartAdornmentInfo SegmentLabelContent="LabelContentPath"
                                 ShowLabel="True"
-                                LabelPosition="Inner"
+                                LabelPosition="Center"
                                 LabelRotationAngle="0"
                                
                                 HorizontalAlignment="Center"

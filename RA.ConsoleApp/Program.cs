@@ -4,7 +4,7 @@ using RA.DAL;
 using RA.Database;
 using RA.Database.Models;
 using RA.DTO;
-
+using RA.Logic.PlanningLogic;
 
 namespace RA.ConsoleApp
 {
@@ -27,23 +27,20 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
-            //TestTracks();
-            TestClocks();
-            Console.ReadLine();
+            TestPlaylistGenerator();
         }
 
-        static async void TestTracks()
+       static void TestPlaylistGenerator()
         {
-            ICategoriesService categoriesService = new CategoriesService(dbFactory);
-            var result = await categoriesService.NoOfTracksMatchingConditions(1);
-            Console.WriteLine(result);
-            Console.ReadKey();
-        }
+            IPlaylistGenerator playlistGenerator = new PlaylistGenerator(
+                new ClocksService(dbFactory),
+                new TemplatesService(dbFactory),
+                new SchedulesService(new SchedulesDefaultService(dbFactory),
+                new SchedulesPlannedService(dbFactory))
+                );
+                ;
 
-        static async void TestClocks()
-        {
-            IClocksService clService = new ClocksService(dbFactory);
-            await clService.DeleteClockItem(91);
+            playlistGenerator.GeneratePlaylistForDate(new DateTime(2023,6,9));
         }
         
     }

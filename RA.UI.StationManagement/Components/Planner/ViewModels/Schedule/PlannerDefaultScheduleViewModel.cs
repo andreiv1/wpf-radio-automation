@@ -51,8 +51,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         public ObservableCollection<TemplateDTO> Templates { get; private set; } = new();
         #endregion
 
-        
-
         #region Constructor
         public PlannerDefaultScheduleViewModel(IDispatcherService dispatcherService, IWindowService windowService, IMessageBoxService messageBoxService,
             ISchedulesDefaultService defaultSchedulesService, ITemplatesService templatesService)

@@ -39,17 +39,27 @@ namespace RA.DTO
                 Id = dto.Id,
                 AirDate = dto.AirDate,
                 DateAdded = dto.DateAdded,
-                PlaylistItems = dto.Items.Select(x =>
+                PlaylistItems = dto.Items?.Select(x =>
                 {
                     if (x.GetType() == typeof(PlaylistItemTrackDTO))
                     {
                         return PlaylistItemTrackDTO.ToEntity(x as PlaylistItemTrackDTO);
                     }
                     return null;
-                }).ToList()
+                }).ToList() ?? null,
             };
 
             return entity;
+        }
+
+        public static PlaylistDTO Initialise(DateTime date)
+        {
+            var playlist = new PlaylistDTO();
+            playlist.AirDate = date;
+            playlist.DateAdded = DateTime.Now;
+            playlist.Items = new List<PlaylistItemBaseDTO>();
+
+            return playlist;
         }
     }
 }

@@ -50,7 +50,20 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
         {
             get
             {
-                return "Test";
+                if (Item is ClockItemCategoryDTO itemCategory)
+                {
+                    return $"{itemCategory.CategoryName}";
+                }
+                if (Item is ClockItemEventDTO itemEvent)
+                {
+                    return $"{itemEvent.EventLabel}";
+                }
+                if (Item is ClockItemTrackDTO itemTrack)
+                {
+                    return $"{itemTrack.Title}";
+                }
+
+                return "Unknown";
             }
         }
         public String ItemType

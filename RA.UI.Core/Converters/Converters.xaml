@@ -20,6 +20,7 @@
     <converters:StringIsNullOrEmptyConverter x:Key="StringIsNullOrEmptyConverter"/>
 
     <converters:HexToColorConverter x:Key="HexToColorConverter"/>
+    <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
 
 
 </ResourceDictionary>

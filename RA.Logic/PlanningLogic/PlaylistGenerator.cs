@@ -14,20 +14,14 @@ namespace RA.Logic.PlanningLogic
 {
     public class PlaylistGenerator : IPlaylistGenerator
     {
-        private readonly IPlaylistsService playlistsService;
-        private readonly ITracksService tracksService;
         private readonly IClocksService clocksService;
         private readonly ITemplatesService templatesService;
         private readonly ISchedulesService schedulesService;
 
-        public PlaylistGenerator(IPlaylistsService playlistsService,
-                                 ITracksService tracksService,
-                                 IClocksService clocksService,
+        public PlaylistGenerator(IClocksService clocksService,
                                  ITemplatesService templatesService,
                                  ISchedulesService schedulesService)
         {
-            this.playlistsService = playlistsService;
-            this.tracksService = tracksService;
             this.clocksService = clocksService;
             this.templatesService = templatesService;
             this.schedulesService = schedulesService;
@@ -35,89 +29,73 @@ namespace RA.Logic.PlanningLogic
 
         public PlaylistDTO GeneratePlaylistForDate(DateTime date)
         {
-            PlaylistDTO playlist = InitialisePlaylist(date);
+            PlaylistDTO playlist = PlaylistDTO.Initialise(date);
             IScheduleDTO? schedule = schedulesService.GetScheduleByDate(date);
 
-            if (schedule != null)
+            if(schedule != null)
             {
                 int scheduleTemplateId = schedule.Template?.Id ?? throw new Exception("Template must have an id");
                 var clocksForSchedule = templatesService.GetClocksForTemplate(scheduleTemplateId);
 
+                Console.WriteLine($"Trying to generate playlist for {date.ToString("dd/mm/yyyy")} with template: {schedule.Template.Name}");
+
                 foreach (var clock in clocksForSchedule)
                 {
-
-                    ProcessClock(clock, playlist);
-
+                    _ = ProcessClock(clock, playlist);
                 }
+               
             }
 
             return playlist;
         }
 
-        private PlaylistDTO InitialisePlaylist(DateTime date)
-        {
-            var playlist = new PlaylistDTO();
-            playlist.AirDate = date;
-            playlist.DateAdded = DateTime.Now;
-            playlist.Items = new List<PlaylistItemBaseDTO>();
-
-            return playlist;
-        }
-
-        /// <summary>
-        /// Handle processing a clock inside a template
-        /// </summary>
-        /// <param name="clock">The specific clock in the template</param>
-        private void ProcessClock(ClockTemplateDTO clock, PlaylistDTO playlistDTO)
+        private async Task ProcessClock(ClockTemplateDTO clock, PlaylistDTO playlist)
         {
             TimeSpan clockSpan = new TimeSpan(clock.ClockSpan, 0, 0);
             TimeSpan clockStart = clock.StartTime;
             TimeSpan clockEnd = clockStart.Add(clockSpan);
 
-            Console.WriteLine($"ClockId={clock.ClockId},ClockStart={clockStart},ClockEnd={clockEnd}");
-            Console.WriteLine($"Generating playlist for {clock.ClockSpan} consecutive hours");
-
+            Console.WriteLine($"ClockId={clock.ClockId},ClockStart={clockStart},ClockEnd={clockEnd},ConsecutiveHours={clock.ClockSpan}");
             List<ClockItemBaseDTO> clockItems = clocksService.GetClockItems(clock.ClockId).ToList();
-            Console.WriteLine($"Current clock has {clockItems.Count()} items");
+            ShowClockItems(clockItems);
 
             int h = 0;
             for (int i = 1; i <= clock.ClockSpan; i++)
             {
                 Console.WriteLine($"Generating for hour {h++}");
 
-                foreach (ClockItemBaseDTO clockItem in clockItems)
-                {
-                    ProcessClockItem(clockItem, playlistDTO);
-                }
-
-                Console.WriteLine("=======================================");
             }
         }
 
+
         /// <summary>
-        /// Handle processing a single item from a clock
+        /// For debug in console
         /// </summary>
-        /// <param name="clockItem"></param>
-        private void ProcessClockItem(ClockItemBaseDTO clockItem, PlaylistDTO playlistDTO)
+        /// <param name="clockItems"></param>
+        private void ShowClockItems(IEnumerable<ClockItemBaseDTO> clockItems)
         {
-            //Console.WriteLine($"Id={clockItem.Id},CategoryId={clockItem.CategoryId}");
-            //if (clockItem.TrackId.HasValue)
-            //{
-            //    //TODO: Specific element from library
-            //    //no selection to made
+            Console.WriteLine($"Current clock has {clockItems.Count()} items");
 
-            //}
+            var regularClockItems = clockItems.Where(ci => ci.OrderIndex >= 0).ToList();
 
-            ////TODO: Event 
+            //Contain events and sub-items for events that should be played at a specific time
+            var specialClockItems = clockItems.Where(ci => ci.OrderIndex < 0).ToList();
 
-            //if (clockItem.CategoryId.HasValue)
-            //{
-            //    TrackSelectionBaseStrategy selectionStrategy =
-            //        new RandomTrackSelectionStrategy(playlistsService, tracksService, clockItem.CategoryId.Value);
-            //    selectionStrategy.SelectTrack(playlistDTO);
-            //}
-
-
+            Console.WriteLine("Special items (events + event's items): ");
+            foreach (ClockItemBaseDTO clockItem in specialClockItems.Where(ci => !ci.ClockItemEventId.HasValue).ToList())
+            {
+                Console.WriteLine($"Id={clockItem.Id},OrderIndex={clockItem.OrderIndex}");
+                foreach (ClockItemBaseDTO subItem in specialClockItems.Where(ci => ci.ClockItemEventId == clockItem.Id).ToList())
+                {
+                    Console.WriteLine($">>> Id={subItem.Id},OrderIndex={subItem.OrderIndex},EventOrderIndex={subItem.EventOrderIndex}");
+                }
+            }
+            Console.WriteLine("Regular items: ");
+            foreach (ClockItemBaseDTO clockItem in regularClockItems)
+            {
+                Console.WriteLine($"Id={clockItem.Id},OrderIndex={clockItem.OrderIndex}");
+            }
         }
+
     }
 }
