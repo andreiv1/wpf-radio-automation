@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DTO;
 using RA.UI.Core.Services;
@@ -13,23 +14,25 @@ using System.Threading.Tasks;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.Templates
 {
-    public partial class PlannerTemplateSelectClockViewModel : ViewModelBase
+    public partial class PlannerTemplateSelectClockViewModel : DialogViewModelBase
     {
-        private readonly IWindowService windowService;
         private readonly IDispatcherService dispatcherService;
         private readonly IClocksService clocksService;
 
         public ObservableCollection<ClockDTO> Clocks { get; set; } = new();
 
-        public PlannerTemplateSelectClockViewModel(IWindowService windowService, IDispatcherService dispatcherService,
-            IClocksService clocksService)
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(FinishDialogCommand))]
+        private ClockDTO? selectedClock;
+
+        public PlannerTemplateSelectClockViewModel(IWindowService windowService,
+                                                   IDispatcherService dispatcherService,
+                                                   IClocksService clocksService) : base(windowService)
         {
-            this.windowService = windowService;
             this.dispatcherService = dispatcherService;
             this.clocksService = clocksService;
             _ = LoadClocks();
         }
-
 
         private async Task LoadClocks()
         {
@@ -48,12 +51,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Templates
             });
         }
 
-        #region Commands
-        [RelayCommand]
-        private void CancelWindow()
+        protected override bool CanFinishDialog()
         {
-            windowService.CloseWindow(this);
+            return SelectedClock != null;
         }
-        #endregion
     }
 }

@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
-                 xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-        mc:Ignorable="d"
+                 xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:templates="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.Templates" d:DataContext="{d:DesignInstance Type=templates:PlannerTemplateSelectClockViewModel}"
+                 mc:Ignorable="d"
         Title="Clocks" Height="450" Width="400" ResizeMode="NoResize">
     <Grid Margin="5">
         <Grid.RowDefinitions>
@@ -21,11 +21,11 @@
                      Grid.Row="2" Grid.Column="1" Margin="5,0,0,0"
                        ColumnSizer="Auto"
                        ItemsSource="{Binding Clocks}"
-                       SelectedItem="{Binding SelectedTrack}"
+                       SelectedItem="{Binding SelectedClock}"
                        AllowDraggingRows="True"
                        AllowResizingColumns="True"
                        AutoGenerateColumns="False"
-                       SelectionMode="None"
+                       SelectionMode="Single"
                        NavigationMode="Row"
                        >
             <syncfusion:SfDataGrid.Columns>
@@ -41,10 +41,10 @@
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
             <syncfusion:ButtonAdv Label="Cancel" Margin="0,0,5,0"
                                   SmallIcon="{StaticResource CloseIcon}"
-                                  Command="{Binding CancelWindowCommand}"/>
+                                  Command="{Binding CancelDialogCommand}"/>
             <syncfusion:ButtonAdv Label="Select" Margin="0,0,5,0"
                                   SmallIcon="{StaticResource DoneIcon}"
-                                  Command="{Binding CancelWindowCommand}"/>
+                                  Command="{Binding FinishDialogCommand}"/>
         </StackPanel>
     </Grid>
 </uicore:RAWindow>

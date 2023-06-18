@@ -132,6 +132,15 @@
                                 AppointmentEditFlag="Resize"
                                 AppointmentResizing="selectedTemplateScheduler_AppointmentResizing"
                                 >
+                <syncfusion:SfScheduler.Style>
+                    <Style TargetType="syncfusion:SfScheduler" BasedOn="{StaticResource {x:Type syncfusion:SfScheduler}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedTemplate}" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </syncfusion:SfScheduler.Style>
                 <!-- Cell Context !-->
                 <syncfusion:SfScheduler.CellContextMenu>
                     <ContextMenu>

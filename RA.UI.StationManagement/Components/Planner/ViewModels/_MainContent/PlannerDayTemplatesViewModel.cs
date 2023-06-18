@@ -141,12 +141,16 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private void RefreshTemplates()
         {
             _ = LoadTemplates();
+            SelectedTemplate = null;
+            ClocksForSelectedTemplate.Clear();
         }
 
         [RelayCommand]
-        private void InsertClock(SchedulerContextMenuInfo schedulerContextMenuInfo)
+        private async void InsertClock(SchedulerContextMenuInfo schedulerContextMenuInfo)
         {
-            windowService.ShowDialog<PlannerTemplateSelectClockViewModel>();
+            var vm = windowService.ShowDialog<PlannerTemplateSelectClockViewModel>();
+            if(vm.SelectedClock == null || schedulerContextMenuInfo.DateTime == null) return;
+            await AddClockToTemplate(vm.SelectedClock.Id, schedulerContextMenuInfo.DateTime.Value.TimeOfDay, 1);
         }
 
         [RelayCommand]
@@ -156,9 +160,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         }
 
         [RelayCommand]
-        private void DeleteClock(SchedulerContextMenuInfo schedulerContextMenuInfo)
+        private async void DeleteClock(SchedulerContextMenuInfo schedulerContextMenuInfo)
         {
-            
+            var model = schedulerContextMenuInfo.Appointment.Data as TemplateClockItemModel;
+            if (model == null || SelectedTemplate == null) return;
+            await templatesService.DeleteClockInTemplate(SelectedTemplate.Id, model.ClockId, model.StartTime.TimeOfDay);
+            await LoadClocksForSelectedTemplate();
         }
         #endregion
     }

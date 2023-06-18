@@ -11,6 +11,7 @@ namespace RA.DAL
     {
         Task AddClockToTemplate(ClockTemplateDTO clockTemplate);
         Task AddTemplate(TemplateDTO templateDto);
+        Task DeleteClockInTemplate(int templateId, int clockId, TimeSpan startTime);
         IEnumerable<ClockTemplateDTO> GetClocksForTemplate(int templateId);
         Task<IEnumerable<ClockTemplateDTO>> GetClocksForTemplateAsync(int templateId);
         Task<TemplateDTO> GetTemplate(int templateId);

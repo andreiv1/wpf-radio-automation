@@ -106,5 +106,18 @@ namespace RA.DAL
             dbContext.ClockTemplates.Add(updatedEntity);
             await dbContext.SaveChangesAsync();
         }
+
+        public async Task DeleteClockInTemplate(int templateId, int clockId, TimeSpan startTime)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var entity = await dbContext.ClockTemplates
+                .Where(ct => ct.TemplateId == templateId && ct.ClockId == clockId && ct.StartTime == startTime)
+                .FirstOrDefaultAsync();
+            if (entity != null)
+            {
+                dbContext.ClockTemplates.Remove(entity);
+                await dbContext.SaveChangesAsync();
+            }
+        }
     }
 }
