@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-             xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
-             mc:Ignorable="d" 
+             xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core" xmlns:maincontent="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.MainContent" d:DataContext="{d:DesignInstance Type=maincontent:PlannerDayTemplatesViewModel}"
+                      mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid KeyboardNavigation.TabNavigation="None">
@@ -108,20 +108,18 @@
         <Grid Grid.Column="1"
               Margin="5,5,5,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="28"/>
-                <RowDefinition Height="5"/>
                 <RowDefinition/>
 
             </Grid.RowDefinitions>
 
             <!-- Buttons -->
             <StackPanel Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                <syncfusion:ButtonAdv Label="Insert clock" Height="25" Margin="0,0,3,0"
+                <!--<syncfusion:ButtonAdv Label="Insert clock" Height="25" Margin="0,0,3,0"
                                       Command="{Binding InsertClockCommand}"
                                       SmallIcon="{StaticResource ClockIcon}"/>
                 <syncfusion:ButtonAdv Label="Delete clock" Height="25" Margin="0,0,3,0"
                                       
-                                      SmallIcon="{StaticResource RemoveIcon}"/>
+                                      SmallIcon="{StaticResource RemoveIcon}"/>-->
             </StackPanel>
 
             <!-- Template -->
@@ -131,11 +129,57 @@
                                 AllowViewNavigation="False"
                                 ViewType="Day" ShowDatePickerButton="True"
                                 ItemsSource="{Binding ClocksForSelectedTemplate}"
-                                DragOver="selectedTemplateScheduler_DragOver"
-                                AllowDrop="True"
-                                Drop="selectedTemplateScheduler_Drop"
-                                AppointmentDropping="selectedTemplateScheduler_AppointmentDropping"
+                                AppointmentEditFlag="Resize"
+                                AppointmentResizing="selectedTemplateScheduler_AppointmentResizing"
                                 >
+                <!-- Cell Context !-->
+                <syncfusion:SfScheduler.CellContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add clock" 
+                                  Command="{Binding Scheduler.DataContext.InsertClockCommand}"
+                                  CommandParameter="{Binding}"
+                                  CommandTarget="{Binding ElementName=selectedTemplateScheduler}">
+                            <MenuItem.Icon>
+                                <Image
+                                    Width="16"
+                                    Height="16"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                     Source="{StaticResource PlusIcon}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </syncfusion:SfScheduler.CellContextMenu>
+                <syncfusion:SfScheduler.AppointmentContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Edit clock" 
+                                  Command="{Binding Scheduler.DataContext.EditClockCommand}"
+                                  CommandParameter="{Binding .}"
+                                  CommandTarget="{Binding ElementName=selectedTemplateScheduler}">
+                            <MenuItem.Icon>
+                                <Image
+                                    Width="16"
+                                    Height="16"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                     Source="{StaticResource EditIcon}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Delete clock" 
+                                  Command="{Binding Scheduler.DataContext.DeleteClockCommand}"
+                                  CommandParameter="{Binding .}"
+                                  CommandTarget="{Binding ElementName=selectedTemplateScheduler}">
+                            <MenuItem.Icon>
+                                <Image
+                                    Width="16"
+                                    Height="16"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                     Source="{StaticResource RemoveIcon}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </syncfusion:SfScheduler.AppointmentContextMenu>
                 <syncfusion:SfScheduler.AppointmentMapping>
                     <syncfusion:AppointmentMapping
                         Subject="ClockName"
@@ -144,12 +188,13 @@
                         Foreground="ForegroundColor"
                         AppointmentBackground="BackgroundColor"
                         IsAllDay="False"
+                       
                         />
                 </syncfusion:SfScheduler.AppointmentMapping>
                 <syncfusion:SfScheduler.HeaderTemplate>
                     <DataTemplate>
                         <TextBlock Margin="12,0,0,0" FontSize="15">
-                            <Run Text="Template: " FontWeight="DemiBold" />
+                            <Run Text="Selected Template: " FontWeight="DemiBold" />
                             <Run Text="{Binding Path=DataContext.SelectedTemplate.Name,ElementName=clocksListDataGrid}">
                                 <Run.Style>
                                     <Style TargetType="{x:Type Run}">

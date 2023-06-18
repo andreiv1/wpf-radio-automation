@@ -92,11 +92,18 @@ namespace RA.DAL
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateClockInTemplate(ClockTemplateDTO clockTemplate)
+        public async Task UpdateClockInTemplate(TimeSpan oldStart, ClockTemplateDTO clockTemplate)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            var entity = ClockTemplateDTO.ToEntity(clockTemplate);
-            dbContext.ClockTemplates.Update(entity);
+            var oldEntity = await dbContext.ClockTemplates
+                .Where(ct => ct.TemplateId == clockTemplate.TemplateId && ct.StartTime == oldStart)
+                .FirstOrDefaultAsync();
+            if (oldEntity != null)
+            {
+                dbContext.ClockTemplates.Remove(oldEntity);
+            }
+            var updatedEntity = ClockTemplateDTO.ToEntity(clockTemplate);
+            dbContext.ClockTemplates.Add(updatedEntity);
             await dbContext.SaveChangesAsync();
         }
     }

@@ -17,9 +17,6 @@
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" FontWeight="DemiBold"
-            Content="By using drag and drop you can place a clock inside a template."/>
-
         <syncfusion:SfDataGrid x:Name="sfDataGrid"
                      Grid.Row="2" Grid.Column="1" Margin="5,0,0,0"
                        ColumnSizer="Auto"
@@ -44,6 +41,9 @@
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
             <syncfusion:ButtonAdv Label="Cancel" Margin="0,0,5,0"
                                   SmallIcon="{StaticResource CloseIcon}"
+                                  Command="{Binding CancelWindowCommand}"/>
+            <syncfusion:ButtonAdv Label="Select" Margin="0,0,5,0"
+                                  SmallIcon="{StaticResource DoneIcon}"
                                   Command="{Binding CancelWindowCommand}"/>
         </StackPanel>
     </Grid>

@@ -28,8 +28,11 @@ namespace RA.Logic.PlanningLogic.Abstract
         /// </summary>
         protected int titleSeparation;
 
-        public TrackSelectionBaseStrategy(IPlaylistsService playlistsService, ITracksService tracksService,
-            int artistSeparation = 30, int trackSeparation = 60, int titleSeparation = 30)
+        public TrackSelectionBaseStrategy(IPlaylistsService playlistsService,
+                                          ITracksService tracksService,
+                                          int artistSeparation,
+                                          int trackSeparation,
+                                          int titleSeparation)
         {
             this.playlistsService = playlistsService;
             this.tracksService = tracksService;

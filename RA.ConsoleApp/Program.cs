@@ -28,11 +28,14 @@ namespace RA.ConsoleApp
         static void Main(string[] args)
         {
             TestPlaylistGenerator();
+            Console.ReadLine();
         }
 
        static void TestPlaylistGenerator()
         {
             IPlaylistGenerator playlistGenerator = new PlaylistGenerator(
+                new PlaylistsService(dbFactory),
+                new TracksService(dbFactory),
                 new ClocksService(dbFactory),
                 new TemplatesService(dbFactory),
                 new SchedulesService(new SchedulesDefaultService(dbFactory),
@@ -40,7 +43,7 @@ namespace RA.ConsoleApp
                 );
                 ;
 
-            playlistGenerator.GeneratePlaylistForDate(new DateTime(2023,6,9));
+            var playlist = playlistGenerator.GeneratePlaylistForDate(new DateTime(2023,6,9));
         }
         
     }

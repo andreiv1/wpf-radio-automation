@@ -6,18 +6,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RA.Logic.PlanningLogic
 {
     public class RandomTrackSelectionStrategy : TrackSelectionBaseStrategy
     {
         private readonly int categoryId;
-
-        //Generation works only with a fixed sep
-        public RandomTrackSelectionStrategy(IPlaylistsService playlistsService, ITracksService tracksService, 
-            int categoryId,
-            int artistSeparation = 30, int trackSeparation = 60, int titleSeparation = 30) 
+        public RandomTrackSelectionStrategy(IPlaylistsService playlistsService,
+                                            ITracksService tracksService,
+                                            int categoryId,
+                                            int artistSeparation,
+                                            int trackSeparation,
+                                            int titleSeparation) 
             : base(playlistsService, tracksService, artistSeparation, trackSeparation, titleSeparation)
         {
             this.categoryId = categoryId;
@@ -45,9 +45,7 @@ namespace RA.Logic.PlanningLogic
                 .ToList();
 
             var track = tracksService.GetRandomTrack(categoryId, recentlyPlayedTrackIds).Result;
-            //DebugHelper.WriteLine(this,($"[{item.ETA}] {track.Id} - {track.Artists} - {track.Title}"));
-
-            //TODO: bug aici
+            
             if (track != null)
             {
                 playlist?.Items?.Add(item);

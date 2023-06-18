@@ -9,6 +9,7 @@ using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Models;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Templates;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Templates.Models;
+using Syncfusion.UI.Xaml.Scheduler;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -90,6 +91,19 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             _ = LoadClocksForSelectedTemplate();
         }
 
+        public async Task UpdateClockToTemplate(int clockId, DateTime oldStart, DateTime newStart, DateTime newEnd)
+        {
+            if (SelectedTemplate == null) return;
+            var clockTemplate = new ClockTemplateDTO()
+            {
+                ClockId = clockId,
+                StartTime = newStart.TimeOfDay,
+                ClockSpan = (int)newEnd.Subtract(newStart).TotalHours,
+                TemplateId = SelectedTemplate.Id,
+            };
+            await templatesService.UpdateClockInTemplate(oldStart.TimeOfDay, clockTemplate);
+        }
+
         #region Commands
         [RelayCommand]
         private void AddTemplateDialog()
@@ -130,9 +144,21 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         }
 
         [RelayCommand]
-        private void InsertClock()
+        private void InsertClock(SchedulerContextMenuInfo schedulerContextMenuInfo)
         {
-            windowService.ShowWindow<PlannerTemplateSelectClockViewModel>();
+            windowService.ShowDialog<PlannerTemplateSelectClockViewModel>();
+        }
+
+        [RelayCommand]
+        private void EditClock(SchedulerContextMenuInfo schedulerContextMenuInfo)
+        {
+
+        }
+
+        [RelayCommand]
+        private void DeleteClock(SchedulerContextMenuInfo schedulerContextMenuInfo)
+        {
+            
         }
         #endregion
     }
