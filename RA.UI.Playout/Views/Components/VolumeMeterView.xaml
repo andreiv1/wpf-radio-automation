@@ -1,0 +1,62 @@
+﻿<uicore:RAUserControl x:Class="RA.UI.Playout.Views.Components.VolumeMeterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RA.UI.Playout.Views.Components"
+             xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="50">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <syncfusion:SfLinearGauge Orientation="Vertical">
+          
+            <syncfusion:SfLinearGauge.MainScale>
+                
+                <syncfusion:LinearScale TickPosition="Cross" LabelVisibility="Collapsed"  RangePosition="Below"
+                                        
+                       MajorTickSize="20" MinorTickSize="9"
+                       ScaleBarStroke="#F2F2F2" MajorTickStroke="Black" 
+                       MinorTickStroke="Black" LabelStroke="#424242"
+                       ScaleBarSize="15" MinorTicksPerInterval="3" >
+
+                    <syncfusion:LinearScale.Ranges>
+                        <syncfusion:LinearRange StartValue="0" EndValue="40" />
+                        <syncfusion:LinearRange StartValue="40" EndValue="70"/>
+                        <syncfusion:LinearRange StartValue="70" EndValue="100"/>
+                    </syncfusion:LinearScale.Ranges>
+                </syncfusion:LinearScale>
+
+     
+            </syncfusion:SfLinearGauge.MainScale>
+            
+        </syncfusion:SfLinearGauge>
+        
+        <!--<syncfusion:SfLinearProgressBar Grid.Column="0" Progress="100" Width="20"
+                                        >
+         
+            <syncfusion:SfLinearProgressBar.RangeColors>
+                <syncfusion:RangeColorCollection>
+                    <syncfusion:RangeColor Color="#FF00FF00" Start="0" End="60" IsGradient="True"/>
+                    <syncfusion:RangeColor Color="#FFFFFF00" Start="60" End="80" IsGradient="True"/>
+                    <syncfusion:RangeColor Color="#FFFF0000" Start="80" End="100" IsGradient="True"/>
+                </syncfusion:RangeColorCollection>
+            </syncfusion:SfLinearProgressBar.RangeColors>
+        </syncfusion:SfLinearProgressBar>-->
+            
+        <!--<syncfusion:SfLinearProgressBar Grid.Column="2" Progress="0.9">
+            <syncfusion:SfLinearProgressBar.RangeColors>
+                <syncfusion:RangeColorCollection>
+                    <syncfusion:RangeColor Color="#FF00FF00" Start="0" End="0.6" IsGradient="True"/>
+                    <syncfusion:RangeColor Color="#FFFFFF00" Start="0.6" End="0.8" IsGradient="True"/>
+                    <syncfusion:RangeColor Color="#FFFF0000" Start="0.8" End="1" IsGradient="True"/>
+                </syncfusion:RangeColorCollection>
+            </syncfusion:SfLinearProgressBar.RangeColors>
+        </syncfusion:SfLinearProgressBar>-->
+    </Grid>
+</uicore:RAUserControl>

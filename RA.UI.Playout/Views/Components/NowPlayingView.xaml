@@ -1,0 +1,146 @@
+﻿<uicore:RAUserControl x:Class="RA.UI.Playout.Views.Components.NowPlayingView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+                      xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+                      xmlns:components="clr-namespace:RA.UI.Playout.ViewModels.Components"
+                      d:DataContext="{d:DesignInstance Type=components:NowPlayingViewModel}"
+                      mc:Ignorable="d" 
+             d:DesignHeight="120" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+
+        <Grid Margin="2,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0" 
+               VerticalAlignment="Center" Height="80" Width="80"
+               Source="{Binding Image}" />
+            
+            <!-- Song info -->
+            <Grid Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding NowArtist}" 
+                   d:Text="NOW_PLAYING_ARTIST"
+                   FontSize="20"
+                   FontWeight="DemiBold"
+                   Foreground="White">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding NowArtist}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Text="{Binding NowTitle}" Grid.Row="1"
+                   d:Text="NOW_PLAYING_TITLE"
+                                   FontSize="18"
+                                   FontWeight="Bold" Foreground="White"/>
+                <TextBlock Text="{Binding NowInfo}"
+                           d:Text="NOW_INFO" Grid.Row="2"/>
+            </Grid>
+            
+            <!-- Remaining -->
+            <Grid Grid.Column="2" HorizontalAlignment="Right">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                </Grid>
+
+                <TextBlock Text="REMAINING" Grid.Row="0" HorizontalAlignment="Center"
+                                   Foreground="White"
+                                   FontWeight="Bold"/>
+
+                <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                   Margin="0,-5,0,0"
+                          d:Visibility="Collapsed"
+                          Visibility="{Binding IsItemLoaded, Converter={StaticResource BooleanToCollapsedVisibilityConverter}}"
+                           FontSize="40" Text="{Binding RemainingNow, FallbackValue=--:--:--, 
+                            Converter={StaticResource TimeSpanToFormattedStringConverter}}"
+                           d:Text="--:--:--"
+                           Foreground="White"/>
+                <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                   Margin="0,-5,0,0"
+                          Visibility="{Binding IsItemLoaded, Converter={StaticResource BooleanToVisibileVisibilityConverter}}"
+                           FontSize="40" Text="--:--:--"
+                           Foreground="White"/>
+            </Grid>
+        </Grid>
+        <!-- Progress bar -->
+        <Grid Grid.Row="1" Margin="0,8,10,0">
+            <Grid.Resources>
+                <ResourceDictionary>
+                    <Style x:Key="ActiveTrackStyle" TargetType="Rectangle">
+                        <Setter Property="Fill" Value="#2196f3" />
+                    </Style>
+                    <Style x:Key="ThumbStyle" TargetType="Thumb">
+                        <Setter Property="Width" Value="5" />
+                        <Setter Property="Height" Value="13" />
+                        <Setter Property="Background" Value="Red" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Thumb">
+                                    <Grid>
+    
+                                        <Border Grid.Column="1"
+                                            x:Name="ThumbBorder"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}">    
+                                        </Border>
+                                    </Grid>
+                                    
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ResourceDictionary>
+            </Grid.Resources>
+            <syncfusion:SfRangeSlider Margin="3,0,0,0" 
+                Value="{Binding ElapsedNow, FallbackValue=0, Converter={StaticResource TimeSpanToIntSecondsConverter}}"
+                Minimum="0"
+                Maximum="{Binding DurationNow, FallbackValue=0, Converter={StaticResource TimeSpanToIntSecondsConverter}}"
+                TickFrequency="{Binding ProgressTickFreq,Mode=TwoWay}"
+                TickPlacement="Inline"
+                ThumbToolTipPlacement="None"
+                ValuePlacement="BottomRight"
+                TickStrokeThickness="1.5"
+                TickLength="10"
+                ActiveTrackStyle="{StaticResource ActiveTrackStyle}"                     
+                ThumbStyle="{StaticResource ThumbStyle}"
+                CustomLabels="{Binding ProgressLabels}"
+                ShowCustomLabels="True"
+                LabelPlacement="BottomRight"
+                PreviewMouseLeftButtonUp="SfRangeSlider_PreviewMouseLeftButtonUp">
+  
+                <syncfusion:SfRangeSlider.Style>
+                    <Style TargetType="syncfusion:SfRangeSlider">
+                    </Style>
+                </syncfusion:SfRangeSlider.Style>
+                    
+            </syncfusion:SfRangeSlider>
+        </Grid>
+    </Grid>
+</uicore:RAUserControl>

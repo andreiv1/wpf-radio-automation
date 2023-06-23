@@ -1,0 +1,263 @@
+﻿<uicore:RAWindow x:Class="RA.UI.Playout.Views.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+                 xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+                 xmlns:viewmodels="clr-namespace:RA.UI.Playout.ViewModels"
+                 xmlns:component="clr-namespace:RA.UI.Playout.Views.Components"
+                 d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+        mc:Ignorable="d" Closing="RAWindow_Closing"
+        Icon="/Resources/playout_icon.ico" WindowStartupLocation="CenterScreen"
+        Title="RA | Playout" MinHeight="700" MinWidth="1400"
+        KeyboardNavigation.TabNavigation="None">
+
+    <Grid Margin="0,0,0,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#222" Padding="10" Height="150" Margin="0,0,0,5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Column 1 : Next buttons -->
+                <StackPanel Grid.Column="0" Width="65" Margin="0,5,5,0" Orientation="Vertical">
+                    <syncfusion:ButtonAdv Label="Next" SizeMode="Large" Height="95" IconWidth="55" IconHeight="48"
+                                          LargeIcon="{StaticResource EjectIcon}"
+                                          Command="{Binding PlaylistVm.PlayNextCommand}"/>
+                    <Button Content="Fade next" Margin="0,5,0,0" Height="25"/>
+                </StackPanel>
+
+                <!-- Column 2 : Now playing -->
+                <component:NowPlayingView Grid.Column="1" Margin="2,5,5,0"
+                                              DataContext="{Binding NowPlayingVm}"/>
+
+                <!-- Column 3: Buttons -->
+                <Grid Grid.Column="2" Margin="5,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="25"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <syncfusion:ButtonAdv Grid.Column="0" SizeMode="Large" Margin="0,0,5,0"
+                                          Label="Loop" IsCheckable="True" IsChecked="{Binding PlaylistVm.IsLoopable,Mode=TwoWay}" 
+                                          LargeIcon="{StaticResource LoopIcon}"/>
+                    <syncfusion:ButtonAdv Grid.Column="1" SizeMode="Large" Margin="0,0,5,0"
+                                          Label="Pause"
+                                          LargeIcon="{StaticResource PauseIcon}"
+                                          Command="{Binding PlaylistVm.PauseCommand}"/>
+                    <syncfusion:ButtonAdv Grid.Column="2" SizeMode="Large" Margin="0,0,5,0"
+                                          Label="Stop" 
+                                          LargeIcon="{StaticResource StopIcon}"
+                                          Command="{Binding PlaylistVm.StopCommand}"/>
+                    <syncfusion:ButtonAdv Grid.Column="3" SizeMode="Large" Margin="0,0,5,0"
+                                          Label="Restart" 
+                                          LargeIcon="{StaticResource ReplayIcon}"
+                                          Command="{Binding PlaylistVm.RestartCommand}"/>
+                </Grid>
+
+                <!-- Column 4: Time -->
+                <component:CurrentTimeView Grid.Column="3" />
+
+            </Grid>
+
+
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="700"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*" MinWidth="700"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Playlist -->
+
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+                <!-- PLAYLIST COMPONENT -->
+                <component:PlaylistView DataContext="{Binding PlaylistVm}" Margin="0,0,10,0"/>
+                
+                <Grid Grid.Row="1" Margin="0,0,5,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"
+                                Grid.Column="0">
+                        <Label Content="Loaded Playlist duration" Margin="0,-5,0,0"
+                               Foreground="Gray" FontWeight="Demibold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding PlaylistVm.LoadedPlaylistDuration}" Foreground="White" FontSize="13" 
+                                   d:Text="00:00:00"
+                                  
+                           FontWeight="Bold" HorizontalAlignment="center"/>
+                    </StackPanel>
+                    <syncfusion:ButtonAdv Label="RELOAD PLAYLIST" Grid.Column="1" Height="45" Margin="0,0,5,0"
+                                          SmallIcon="{x:Null}" FontWeight="Black"
+                                          VerticalAlignment="Center"
+                                          Command="{Binding PlaylistVm.ReloadPlaylistCommand}"/>
+                    <syncfusion:ButtonAdv Grid.Column="2" Height="45" Margin="0,0,5,0"
+                                          IsCheckable="True" IsChecked="{Binding PlaylistVm.IsAutoReload}"
+                                          SmallIcon="{x:Null}" FontWeight="Black" 
+                                          VerticalAlignment="Center">
+                        <syncfusion:ButtonAdv.Style>
+                            <Style TargetType="syncfusion:ButtonAdv" BasedOn="{StaticResource {x:Type syncfusion:ButtonAdv}}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter Property="Label" Value="AUTO RELOAD" />
+                                    </Trigger>
+                                    <Trigger Property="IsChecked" Value="False">
+                                        <Setter Property="Background" Value="DarkRed" />
+                                        <Setter Property="BorderBrush" Value="DarkRed"/>
+                                        <Setter Property="Label" Value="NO RELOAD" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </syncfusion:ButtonAdv.Style>
+                    </syncfusion:ButtonAdv>
+
+                    <syncfusion:ButtonAdv 
+                        Grid.Column="3" Height="45" IsCheckable="True" IsChecked="{Binding PlaylistVm.IsAutoPlay}"
+                        d:IsChecked="True"
+                      SmallIcon="{x:Null}" FontWeight="Black" VerticalAlignment="Center">
+
+                        <syncfusion:ButtonAdv.Style>
+                            <Style TargetType="syncfusion:ButtonAdv" BasedOn="{StaticResource {x:Type syncfusion:ButtonAdv}}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter Property="Label" Value="AUTO PLAY" />
+                                    </Trigger>
+                                    <Trigger Property="IsChecked" Value="False">
+                                        <Setter Property="Background" Value="DarkRed" />
+                                        <Setter Property="BorderBrush" Value="DarkRed"/>
+                                        <Setter Property="Label" Value="MANUAL" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </syncfusion:ButtonAdv.Style>
+                    </syncfusion:ButtonAdv>
+
+
+
+                </Grid>
+            </Grid>
+
+            <!-- Media items -->
+            <syncfusion:TabControlExt Grid.Column="2" AllowDragDrop="False" ShowTabItemContextMenu="False" ShowTabListContextMenu="False" CloseButtonType="Hide">
+                <syncfusion:TabItemExt>
+                    <syncfusion:TabItemExt.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{StaticResource MediaLibraryIcon}" Width="16" Height="16" VerticalAlignment="Center"/>
+                            <Label Grid.Column="1" VerticalAlignment="Center"
+                                Content="Media Library" FontWeight="Bold"/>
+                        </Grid>
+                    </syncfusion:TabItemExt.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="85*"/>
+                            <ColumnDefinition Width="291*"/>
+
+                        </Grid.ColumnDefinitions>
+                        <!-- Playlist operation buttons -->
+                        <Grid Grid.Column="0" Width="80" Margin="10,0,10,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <syncfusion:ButtonAdv SizeMode="Large"
+                                      Label="Add Top" LargeIcon="{StaticResource PlusIcon}"
+                                      Command="{Binding PlaylistVm.AddTrackToTopCommand}"/>
+
+                            <syncfusion:ButtonAdv Grid.Row="1" Margin="0,4,0,0"
+                                      SizeMode="Large" LargeIcon="{StaticResource InsertIcon}"
+                                      Label="Insert"
+                                      Command="{Binding PlaylistVm.InsertTrackCommand}"/>
+                            <syncfusion:ButtonAdv Grid.Row="2" Margin="0,4,0,0"
+                                      SizeMode="Large" LargeIcon="{StaticResource ReplaceIcon}"
+                                      Label="Replace"
+                                      Command="{Binding PlaylistVm.ReplaceTrackCommand}"/>
+
+                            <syncfusion:ButtonAdv Grid.Row="3" Margin="0,4,0,0"
+                                      SizeMode="Large"
+                                      Label="Clear" LargeIcon="{StaticResource RemoveTrashIcon}"
+                                          Command="{Binding PlaylistVm.ClearPlaylistCommand}"/>
+
+                            <syncfusion:ButtonAdv SizeMode="Large" Grid.Row="4" Margin="0,4,0,0"
+                                      Label="Add Bottom" LargeIcon="{StaticResource PlusIcon}"
+                                      Command="{Binding PlaylistVm.AddTrackToBottomCommand}"/>
+                        </Grid>
+                        <component:MediaItemsView Grid.Column="1"
+                                      DataContext="{Binding MediaItemsVm}" Grid.ColumnSpan="2"/>
+                    </Grid>
+                </syncfusion:TabItemExt>
+
+                <syncfusion:TabItemExt>
+                    <syncfusion:TabItemExt.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{StaticResource HistoryIcon}" Width="32" Height="20" VerticalAlignment="Center"/>
+                            <Label Grid.Column="1" VerticalAlignment="Center"
+                                Content="History" FontWeight="Bold"/>
+                        </Grid>
+                    </syncfusion:TabItemExt.Header>
+
+                    <!-- HISTORY !-->
+                    <component:HistoryView DataContext="{Binding HistoryVm}"/>
+                </syncfusion:TabItemExt>
+
+                <!--<syncfusion:TabItemExt>
+                    <syncfusion:TabItemExt.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{StaticResource PlayRedIcon}" Width="32" Height="20" VerticalAlignment="Center"/>
+                            <Label Grid.Column="1" VerticalAlignment="Center"
+                                Content="Details" FontWeight="Bold"/>
+                        </Grid>
+                    </syncfusion:TabItemExt.Header>
+                </syncfusion:TabItemExt>-->
+
+
+            </syncfusion:TabControlExt>
+
+
+        </Grid>
+    </Grid>
+</uicore:RAWindow>
