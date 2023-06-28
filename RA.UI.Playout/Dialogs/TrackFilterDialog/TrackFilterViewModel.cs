@@ -1,0 +1,277 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using RA.DAL;
+using RA.DAL.Models;
+using RA.Database.Models.Enums;
+using RA.DTO;
+using RA.Logic;
+using RA.UI.Core.Services;
+using RA.UI.Core.Services.Interfaces;
+using RA.UI.Core.ViewModels;
+using RA.UI.Playout.Dialogs.CategorySelectDialog;
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Collections.ObjectModel;
+using System.Linq;
+
+namespace RA.UI.Playout.Dialogs.TrackFilterDialog
+{
+    public enum FilterControlType
+    {
+        Textbox,
+        TimeSpan,
+        DatePicker,
+        CategoryPicker,
+        StatusPicker,
+        TypePicker,
+    }
+
+    public partial class FilterModel : ObservableObject
+    {
+        public static ImmutableArray<FilterOperator> operatorsEqLike = ImmutableArray.Create(FilterOperator.Equals, FilterOperator.Like);
+        public static ImmutableArray<FilterOperator> operatorsEqLtGt = ImmutableArray.Create(FilterOperator.Equals, FilterOperator.LessThan, FilterOperator.GreaterThan);
+        public static ImmutableArray<FilterOperator> operatorsEq = ImmutableArray.Create(FilterOperator.Equals);
+
+        public static readonly ImmutableDictionary<FilterLabelType, ImmutableArray<FilterOperator>> allowedOperatorsByLabel = ImmutableDictionary.CreateRange(
+           new[]
+           {
+                    KeyValuePair.Create(FilterLabelType.Album, FilterModel.operatorsEqLike),
+                    KeyValuePair.Create(FilterLabelType.Category, FilterModel.operatorsEq),
+                    KeyValuePair.Create(FilterLabelType.DateAdded, FilterModel.operatorsEqLtGt),
+                    KeyValuePair.Create(FilterLabelType.DateModified, FilterModel.operatorsEqLtGt),
+                    KeyValuePair.Create(FilterLabelType.Duration, FilterModel.operatorsEqLtGt),
+                    KeyValuePair.Create(FilterLabelType.ReleaseDate, FilterModel.operatorsEqLtGt),
+                    KeyValuePair.Create(FilterLabelType.Type, FilterModel.operatorsEq),
+                    KeyValuePair.Create(FilterLabelType.Title, FilterModel.operatorsEqLike),
+           });
+
+        public static readonly ImmutableDictionary<FilterLabelType, FilterControlType> controlByLabel = ImmutableDictionary.CreateRange(
+            new[]
+            {
+                    KeyValuePair.Create(FilterLabelType.Album, FilterControlType.Textbox),
+                    KeyValuePair.Create(FilterLabelType.Category, FilterControlType.CategoryPicker),
+                    KeyValuePair.Create(FilterLabelType.DateAdded, FilterControlType.DatePicker),
+                    KeyValuePair.Create(FilterLabelType.DateModified, FilterControlType.DatePicker),
+                    KeyValuePair.Create(FilterLabelType.Duration, FilterControlType.TimeSpan),
+                    KeyValuePair.Create(FilterLabelType.ReleaseDate, FilterControlType.DatePicker),
+                    KeyValuePair.Create(FilterLabelType.Type, FilterControlType.TypePicker),
+                    KeyValuePair.Create(FilterLabelType.Title, FilterControlType.Textbox),
+            }
+        );
+        private readonly IWindowService windowService;
+        private readonly ICategoriesService categoriesService;
+        public static TrackType[] TrackTypes => Enum.GetValues(typeof(TrackType)).Cast<TrackType>().ToArray();
+
+        [ObservableProperty]
+        private FilterLabelType selectedLabelType;
+
+        partial void OnSelectedLabelTypeChanged(FilterLabelType value)
+        {
+            ClearAllValues();
+
+            Operators.Clear();
+            if (allowedOperatorsByLabel.TryGetValue(value, out var existingOperators))
+            {
+                foreach (var op in existingOperators)
+                {
+                    Operators.Add(op);
+                }
+                SelectedOperator = Operators.First();
+            };
+
+            if (controlByLabel.TryGetValue(value, out var controlItem))
+            {
+                ControlType = controlItem;
+            }
+
+            if (ControlType == FilterControlType.DatePicker)
+            {
+                DateValue = DateTime.Now.Date;
+            }
+        }
+
+        public ObservableCollection<FilterOperator> Operators { get; private set; } = new ObservableCollection<FilterOperator>();
+
+        [ObservableProperty]
+        private FilterOperator selectedOperator;
+
+        [ObservableProperty]
+        private FilterControlType controlType;
+
+        public FilterModel(IWindowService windowService, ICategoriesService categoriesService)
+        {
+            SelectedLabelType = FilterLabelType.Album;
+            OnSelectedLabelTypeChanged(SelectedLabelType);
+            this.windowService = windowService;
+            this.categoriesService = categoriesService;
+        }
+
+        [ObservableProperty]
+        private string? textValue;
+
+        [ObservableProperty]
+        private TimeSpan? timeSpanValue;
+
+        [ObservableProperty]
+        private DateTime? dateValue;
+
+        [ObservableProperty]
+        private CategoryDTO? categoryValue;
+
+        [ObservableProperty]
+        private TrackStatus? trackStatusValue;
+
+        [ObservableProperty]
+        private TrackType? trackTypeValue;
+        private void ClearAllValues()
+        {
+            TextValue = null;
+            TimeSpanValue = null;
+            DateValue = null;
+            CategoryValue = null;
+            TrackStatusValue = null;
+            TrackTypeValue = null;
+        }
+
+        [RelayCommand]
+        private async void OpenPickCategory()
+        {
+            var vm = windowService.ShowDialog<CategorySelectViewModel>();
+            var selectedCategoryId = vm?.SelectedCategory?.CategoryId;
+            if (selectedCategoryId != null)
+            {
+                CategoryValue = await categoriesService.GetCategory(selectedCategoryId.GetValueOrDefault());
+            }
+        }
+
+
+    }
+
+    public partial class TrackFilterViewModel : DialogViewModelBase
+    {
+
+        public static FilterLabelType[] FilterLabelTypes { get; } = (FilterLabelType[])Enum.GetValues(typeof(FilterLabelType)).Cast<FilterLabelType>()
+            .Where(f => f != FilterLabelType.Status)
+            .OrderBy(type => type.ToString())
+            .ToArray();
+        public ObservableCollection<FilterModel> Filters { get; set; } = new();
+
+        public List<TrackFilterCondition>? Conditions { get; private set; } = null;
+
+        [ObservableProperty]
+        private bool isMatchAll = true;
+
+        [ObservableProperty]
+        private bool isMatchAny = false;
+        private readonly IMessageBoxService messageBoxService;
+        private readonly ICategoriesService categoriesService;
+
+        public TrackFilterViewModel(IWindowService windowService,
+                                    IMessageBoxService messageBoxService,
+                                    ICategoriesService categoriesService) : base(windowService)
+        {
+            this.messageBoxService = messageBoxService;
+            this.categoriesService = categoriesService;
+
+            Filters.Add(new FilterModel(windowService, categoriesService));
+        }
+
+        [RelayCommand]
+        private void AddFilter()
+        {
+            Filters.Add(new FilterModel(windowService, categoriesService));
+        }
+
+        [RelayCommand]
+        private void RemoveFilter(object parameter)
+        {
+            if (Filters.Count == 1)
+            {
+                messageBoxService.ShowError($"You must have at least one filter.");
+                return;
+            }
+            if (parameter is FilterModel filter)
+            {
+                Filters.Remove(filter);
+            }
+        }
+
+        private void PreviewFilters()
+        {
+            foreach (var filter in Filters)
+            {
+                DebugHelper.WriteLine(this, $"{filter.SelectedLabelType} - {filter.SelectedOperator}");
+                if (filter.TextValue != null)
+                {
+                    DebugHelper.WriteLine(this, $"{filter.TextValue}");
+                }
+                else if (filter.TimeSpanValue != null)
+                {
+                    DebugHelper.WriteLine(this, $"{filter.TimeSpanValue}");
+                }
+                else if (filter.DateValue != null)
+                {
+                    DebugHelper.WriteLine(this, $"{filter.DateValue}");
+                }
+                else if (filter.CategoryValue != null)
+                {
+                    DebugHelper.WriteLine(this, $"{filter.CategoryValue.Id} - {filter.CategoryValue.Name}");
+                }
+                else if (filter.TrackStatusValue != null)
+                {
+                    DebugHelper.WriteLine(this, $"{filter.TrackStatusValue.ToString()}");
+                }
+                else if (filter.TrackTypeValue != null)
+                {
+                    DebugHelper.WriteLine(this, $"{filter.TrackTypeValue.ToString()}");
+                }
+            }
+        }
+
+        private void CreateConditions()
+        {
+            Conditions = new();
+            foreach (var filter in Filters)
+            {
+                object? value = null;
+                if (filter.TextValue != null)
+                {
+                    value = filter.TextValue;
+                }
+                else if (filter.TimeSpanValue != null)
+                {
+                    value = filter.TimeSpanValue;
+                }
+                else if (filter.DateValue != null)
+                {
+                    value = filter.DateValue;
+                }
+                else if (filter.CategoryValue != null)
+                {
+                    value = filter.CategoryValue;
+                }
+                else if (filter.TrackStatusValue != null)
+                {
+                    value = filter.TrackStatusValue;
+                }
+                else if (filter.TrackTypeValue != null)
+                {
+                    value = filter.TrackTypeValue;
+                }
+                Conditions.Add(new TrackFilterCondition(filter.SelectedLabelType, filter.SelectedOperator, value));
+            }
+        }
+
+        protected override void FinishDialog()
+        {
+            PreviewFilters();
+            CreateConditions();
+            base.FinishDialog();
+        }
+        protected override bool CanFinishDialog()
+        {
+            return true;
+        }
+    }
+}
