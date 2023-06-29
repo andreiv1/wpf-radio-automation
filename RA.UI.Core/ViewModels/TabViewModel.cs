@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using RA.UI.Core.Factories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +14,17 @@ namespace RA.UI.Core.ViewModels
         public string TabHeaderName { get; set; }
         public ImageSource TabIcon { get; set; }
 
-        private readonly ViewModelBase viewModel;
-        public ViewModelBase ViewModel => viewModel;
+        private readonly IViewModelFactory viewModelFactory;
+        private readonly Type viewModelType;
 
-        public TabViewModel(string tabHeaderName, ImageSource tabIcon, ViewModelBase viewModel)
+        public ViewModelBase ViewModel => viewModelFactory.CreateViewModel(viewModelType);
+
+        public TabViewModel(IViewModelFactory viewModelFactory, string tabHeaderName, ImageSource tabIcon, Type viewModelType)
         {
+            this.viewModelFactory = viewModelFactory;
             TabHeaderName = tabHeaderName;
             TabIcon = tabIcon;
-            this.viewModel = viewModel;
+            this.viewModelType = viewModelType;
         }
     }
 }

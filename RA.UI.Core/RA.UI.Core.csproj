@@ -115,7 +115,6 @@
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="SharpVectors" Version="1.8.1" />
     <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.Shared.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.Themes.Windows11Dark.WPF" Version="21.1.35" />

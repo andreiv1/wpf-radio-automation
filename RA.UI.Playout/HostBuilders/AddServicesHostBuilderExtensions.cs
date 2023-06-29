@@ -30,7 +30,7 @@ namespace RA.UI.Playout.HostBuilders
                 services.AddSingleton<IMessageBoxService, MessageBoxService>();
                 services.AddSingleton<IDispatcherService, WpfDispatcherService>();
 
-                services.AddSingleton<IAudioPlayer, Player>();
+                services.AddSingleton<IAudioPlayer, AudioPlayer>();
                 services.AddSingleton<IPlaybackQueue, PlaybackQueue>();
 
                 services.AddTransient<IPlaylistsService, PlaylistsService>();

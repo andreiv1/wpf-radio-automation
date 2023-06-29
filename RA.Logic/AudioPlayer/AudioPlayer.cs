@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RA.Logic.AudioPlayer
 {
-    public class Player : IAudioPlayer, IDisposable
+    public class AudioPlayer : IAudioPlayer
     {
         public event EventHandler PlaybackStopped;
         public event EventHandler PlaybackPaused;
@@ -20,13 +20,10 @@ namespace RA.Logic.AudioPlayer
         private AudioPlayerState state;
         public AudioPlayerState State => state;
 
-        #region Constructor
-        public Player()
+        public AudioPlayer()
         {
             state = AudioPlayerState.Stopped;
         }
-
-        #endregion
 
         public void Play(IPlayerItem item)
         {
@@ -41,7 +38,7 @@ namespace RA.Logic.AudioPlayer
 
         public void Play()
         {
-            if (waveOut is not null && state == AudioPlayerState.Paused)
+            if (waveOut != null && state == AudioPlayerState.Paused)
             {
                 waveOut.Play();
                 state = AudioPlayerState.Playing;
@@ -50,7 +47,7 @@ namespace RA.Logic.AudioPlayer
 
         public void Pause()
         {
-            if(waveOut is not null && state == AudioPlayerState.Playing)
+            if (waveOut != null && state == AudioPlayerState.Playing)
             {
                 waveOut.Pause();
                 state = AudioPlayerState.Paused;
@@ -61,7 +58,7 @@ namespace RA.Logic.AudioPlayer
 
         public void Stop()
         {
-            if (waveOut is not null)
+            if (waveOut != null)
             {
                 waveOut.Stop();
                 state = AudioPlayerState.Stopped;
@@ -70,10 +67,10 @@ namespace RA.Logic.AudioPlayer
 
         public void OnPlaybackStopped(object sender, StoppedEventArgs e)
         {
-            if(waveOut is not null)
+            if (waveOut is not null)
                 waveOut.Dispose();
             waveOut = null;
-            if(audioFileReader is not null)
+            if (audioFileReader is not null)
                 audioFileReader.Dispose();
             audioFileReader = null;
             state = AudioPlayerState.Stopped;
@@ -83,7 +80,7 @@ namespace RA.Logic.AudioPlayer
 
         public void Dispose()
         {
-            if (waveOut is not null)
+            if (waveOut != null)
             {
                 waveOut.Stop();
                 waveOut.Dispose();
@@ -94,6 +91,29 @@ namespace RA.Logic.AudioPlayer
             {
                 audioFileReader.Dispose();
                 audioFileReader = null;
+            }
+        }
+
+        public void Resume()
+        {
+            if (waveOut != null && state == AudioPlayerState.Paused)
+            {
+                waveOut.Play();
+                state = AudioPlayerState.Playing;
+            }
+        }
+
+        public void Seek(TimeSpan position)
+        {
+            if (audioFileReader != null && waveOut != null)
+            {
+                if (position < TimeSpan.Zero)
+                    position = TimeSpan.Zero;
+                else if (position > audioFileReader.TotalTime)
+                    position = audioFileReader.TotalTime;
+
+                audioFileReader.CurrentTime = position;
+                waveOut.Play();
             }
         }
     }

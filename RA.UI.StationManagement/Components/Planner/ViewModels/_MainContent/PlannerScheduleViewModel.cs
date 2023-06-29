@@ -1,4 +1,5 @@
-﻿using RA.UI.Core.ViewModels;
+﻿using RA.UI.Core.Factories;
+using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.Planner.View.Schedule;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Schedule;
 using System;
@@ -15,12 +16,15 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
     public partial class PlannerScheduleViewModel : ViewModelBase
     {
         public ObservableCollection<TabViewModel> TabViewModels { get; private set; }
-        public PlannerScheduleViewModel(PlannerScheduleCalendarViewModel plannerScheduleCalendarViewModel,
-                                        PlannerDefaultScheduleViewModel plannerDefaultScheduleViewModel)
+        public PlannerScheduleViewModel(IViewModelFactory viewModelFactory)
         {
-            TabViewModels = new ObservableCollection<TabViewModel>();
-            TabViewModels.Add(new TabViewModel("Calendar", (ImageSource)Application.Current.Resources["CalendarIcon"], plannerScheduleCalendarViewModel));
-            TabViewModels.Add(new TabViewModel("Default schedules", (ImageSource)Application.Current.Resources["DefaultScheduleIcon"], plannerDefaultScheduleViewModel));
+            TabViewModels = new ObservableCollection<TabViewModel>()
+            {
+                new TabViewModel(viewModelFactory, "Calendar", (ImageSource)Application.Current.Resources["CalendarIcon"], typeof(PlannerScheduleCalendarViewModel)),
+                new TabViewModel(viewModelFactory, "Default schedules", (ImageSource)Application.Current.Resources["DefaultScheduleIcon"], typeof(PlannerDefaultScheduleViewModel)),
+            };
         }
+        
+
     }
 }

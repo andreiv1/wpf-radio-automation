@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RA.UI.Playout.ViewModels.Components
@@ -27,7 +28,6 @@ namespace RA.UI.Playout.ViewModels.Components
         [ObservableProperty]
         private IPlayerItem? selectedPlaylistItem;
         public MainViewModel MainVm { get; set; }
-
         public ObservableCollection<IPlayerItem> PlayerItems { get; } = new();
 
         #region Constructor
@@ -142,38 +142,44 @@ namespace RA.UI.Playout.ViewModels.Components
 
         private void UpdateNowPlaying()
         {
-            if (playerItemNow is not null)
+            if (playerItemNow != null)
             {
-                MainVm.NowPlayingVm.UpdateNowPlaying(playerItemNow.Artists ?? "", playerItemNow.Title, playerItemNow.Duration, 
-                    playerItemNow.ImagePath);
+                MainVm.NowPlayingVm.UpdateNowPlaying(artist: playerItemNow.Artists ?? "", 
+                                                     title: playerItemNow.Title, 
+                                                     duration: playerItemNow.Duration, 
+                                                     image: playerItemNow.ImagePath);
             }
         }
 
-        private System.Timers.Timer timer;
+        private CancellationTokenSource cancellationTokenSource;
         private void CalculateRemaining()
         {
-            if (timer != null)
+            if (cancellationTokenSource != null)
             {
-                timer.Stop();
-                timer.Dispose();
+                cancellationTokenSource.Cancel();
+                cancellationTokenSource.Dispose();
             }
 
-            timer = new System.Timers.Timer(1000);
-            timer.Elapsed += Timer_Elapsed;
-            timer.AutoReset = true;
-            timer.Start();
+            cancellationTokenSource = new CancellationTokenSource();
+            _ = StartTimerAsync(cancellationTokenSource.Token);
         }
 
-        private void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        private async Task StartTimerAsync(CancellationToken cancellationToken)
         {
-            if (playbackQueue.NowPlaying != playerItemNow)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                timer.Stop();
-                timer.Dispose();
-                return;
+                await Task.Delay(1000, cancellationToken);
+
+                if (playbackQueue.NowPlaying != playerItemNow)
+                {
+                    cancellationTokenSource.Cancel();
+                    cancellationTokenSource.Dispose();
+                    return;
+                }
+
+                MainVm.NowPlayingVm.ElapsedNow += TimeSpan.FromSeconds(1);
+                MainVm.NowPlayingVm.RemainingNow = MainVm.NowPlayingVm.DurationNow - MainVm.NowPlayingVm.ElapsedNow;
             }
-            MainVm.NowPlayingVm.ElapsedNow += TimeSpan.FromSeconds(1);
-            MainVm.NowPlayingVm.RemainingNow = MainVm.NowPlayingVm.DurationNow - MainVm.NowPlayingVm.ElapsedNow;
         }
 
         #region Commands
@@ -182,9 +188,7 @@ namespace RA.UI.Playout.ViewModels.Components
         {
             MainVm.NowPlayingVm.IsPaused = false;
             MainVm.NowPlayingVm.IsItemLoaded = true;
-            playbackQueue.Stop();
             playbackQueue.Play();
-            
             CalculateRemaining();
 
         }

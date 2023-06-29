@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using RA.UI.Core.Factories;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent;
 using System;
@@ -14,18 +15,20 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels
 {
     public partial class PlannerMainViewModel : ViewModelBase
     {
+        private readonly IViewModelFactory viewModelFactory;
+
         public ObservableCollection<TabViewModel> TabViewModels { get; set; }
-        public PlannerMainViewModel(PlannerClocksViewModel plannerClocksViewModel,
-                                    PlannerDayTemplatesViewModel plannerDayTemplatesViewModel,
-                                    PlannerScheduleViewModel plannerScheduleViewModel,
-                                    PlannerPlaylistsViewModel plannerPlaylistsViewModel)
+
+        public PlannerMainViewModel(IViewModelFactory viewModelFactory)
         {
-            TabViewModels = new ObservableCollection<TabViewModel>();
-            TabViewModels.Add(new TabViewModel("Clocks", (ImageSource)Application.Current.Resources["ClockIcon"], plannerClocksViewModel));
-            TabViewModels.Add(new TabViewModel("Day Templates", (ImageSource)Application.Current.Resources["TemplateIcon"], plannerDayTemplatesViewModel));
-            TabViewModels.Add(new TabViewModel("Schedule", (ImageSource)Application.Current.Resources["ScheduleIcon"], plannerScheduleViewModel));
-            TabViewModels.Add(new TabViewModel("Playlists", (ImageSource)Application.Current.Resources["PlaylistIcon"], plannerPlaylistsViewModel));
-            
+            this.viewModelFactory = viewModelFactory;
+            TabViewModels = new ObservableCollection<TabViewModel>()
+            {
+                new TabViewModel(viewModelFactory, "Clocks", (ImageSource)Application.Current.Resources["ClockIcon"], typeof(PlannerClocksViewModel)),
+                new TabViewModel(viewModelFactory, "Day Templates", (ImageSource)Application.Current.Resources["TemplateIcon"], typeof(PlannerDayTemplatesViewModel)),
+                new TabViewModel(viewModelFactory, "Schedule", (ImageSource)Application.Current.Resources["ScheduleIcon"], typeof(PlannerScheduleViewModel)),
+                new TabViewModel(viewModelFactory, "Playlists", (ImageSource)Application.Current.Resources["PlaylistIcon"], typeof(PlannerPlaylistsViewModel)),
+            };
         }
     }
 }

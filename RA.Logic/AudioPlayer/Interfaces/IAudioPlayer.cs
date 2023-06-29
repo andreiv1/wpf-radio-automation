@@ -11,8 +11,6 @@ namespace RA.Logic.AudioPlayer.Interfaces
         Stopped,
         Playing,
         Paused,
-        Buffered,
-        Error
     }
     public interface IAudioPlayer
     {
@@ -23,5 +21,7 @@ namespace RA.Logic.AudioPlayer.Interfaces
         public void Play();
         public void Stop();
         public void Pause();
+        public void Resume();
+        public void Seek(TimeSpan position);
     }
 }

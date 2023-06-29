@@ -23,7 +23,6 @@ namespace RA.Logic.AudioPlayer.Interfaces
         public PlaybackMode Mode { get; set; }
         public void Play();
         public void Pause();
-
         public void Resume();
         public void Stop();
         public void AddItem(IPlayerItem item);
@@ -32,7 +31,6 @@ namespace RA.Logic.AudioPlayer.Interfaces
         public IPlayerItem? GetNextItem();
         public int GetQueueLength();
         public void ClearQueue();
-
         public void UpdateETAs(TimeSpan? initOffset);
         void AddItem(IPlayerItem item, int position = 0);
     }

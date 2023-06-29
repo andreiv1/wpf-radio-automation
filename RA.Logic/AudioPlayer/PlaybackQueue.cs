@@ -112,7 +112,7 @@ namespace RA.Logic.AudioPlayer
         {
             if(list.Count > 0)
             {
-                if(nowPlaying is not null)
+                if(nowPlaying != null)
                 {
                     audioPlayer.Stop();
                 }
