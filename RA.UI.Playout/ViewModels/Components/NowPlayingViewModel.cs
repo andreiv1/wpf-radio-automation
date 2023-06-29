@@ -28,7 +28,7 @@ namespace RA.UI.Playout.ViewModels.Components
         private TimeSpan durationNow = TimeSpan.FromMinutes(1);
 
         [ObservableProperty]
-        private String image;
+        private String image = @"pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png";
 
         partial void OnDurationNowChanged(TimeSpan oldValue, TimeSpan newValue)
         {

@@ -102,7 +102,7 @@ namespace RA.UI.Core.Services
         public void CloseWindow(ViewModelBase viewModel)
         {
             Window? window = windowFactory.GetWindow(viewModel);
-            if (window is not null)
+            if (window != null)
             {
                 window.Close();
             }

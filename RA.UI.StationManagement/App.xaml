@@ -1,50 +1,14 @@
 ﻿<Application x:Class="RA.UI.StationManagement.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:RA.UI.StationManagement"
-             xmlns:syncfusion="clr-namespace:Syncfusion.Windows.Shared.Resources;assembly=Syncfusion.Shared.WPF">
+             xmlns:local="clr-namespace:RA.UI.StationManagement">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/RA.UI.Core;component/Resources/Icons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/RA.UI.Core;component/Converters/Converters.xaml" />
                 <ResourceDictionary Source="Resources/Language/StringResources.xaml"/>
-
             </ResourceDictionary.MergedDictionaries>
-
-            <!--<ControlTemplate x:Key="LauncherTitleBar">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Border Background="#3C3F41" Height="60">
-                        <TextBlock Text="Radio Automation | Management" FontSize="24" Foreground="White" Margin="10"
-                               FontWeight="DemiBold"/>
-                    </Border>
-                    --><!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Grid Margin="0,3,5,0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Margin="0,0,4,0"
-                        Style="{StaticResource WindowButtonStyle}">
-                                <TextBlock Margin="0,-1,0,0" Padding="3,0,3,5"
-                        Text="—" Style="{StaticResource WindowButtonTextStyle}"/>
-                            </Button>
-                            <Button Grid.Column="1" Style="{StaticResource WindowCloseButtonStyle}" 
-                        Click="ExitButton_Click">
-                                <TextBlock Text="✕" Padding="3,3,5,5"
-                                   Style="{StaticResource WindowButtonTextStyle}"/>
-                            </Button>
-                        </Grid>
-                    </StackPanel>--><!--
-                </Grid>
-            </ControlTemplate>-->
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -9,7 +9,7 @@
     <Title>RA | Station Management</Title>
     <Product>$(AssemblyName)</Product>
     <AssemblyName>RA - Station Management</AssemblyName>
-	<AssemblyVersion>0.4</AssemblyVersion>
+	<AssemblyVersion>0.5</AssemblyVersion>
 	<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
@@ -43,6 +43,7 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
         <PackageReference Include="Syncfusion.SfGrid.WPF" Version="21.1.35" />
         <PackageReference Include="Syncfusion.Shared.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.Tools.WPF" Version="21.1.35" />
@@ -56,8 +57,8 @@
     <PackageReference Include="Syncfusion.SfTextInputLayout.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.Themes.FluentLight.Wpf" Version="21.1.35" />
     <PackageReference Include="Syncfusion.SfTreeNavigator.WPF" Version="21.1.35" />
-    <PackageReference Include="Syncfusion.SfImageEditor.WPF" Version="21.1.35"/>
-    <PackageReference Include="Syncfusion.SfRichTextBoxAdv.WPF" Version="21.1.35"/>
+    <PackageReference Include="Syncfusion.SfImageEditor.WPF" Version="21.1.35" />
+    <PackageReference Include="Syncfusion.SfRichTextBoxAdv.WPF" Version="21.1.35" />
 </ItemGroup>
 
     <ItemGroup>
@@ -74,5 +75,11 @@
 
     <ItemGroup>
       <None Include="..\.editorconfig" Link=".editorconfig" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 </Project>

@@ -67,7 +67,7 @@
 
 
                 <Label Grid.Row="6" Grid.Column="0" Content="Database password:" VerticalAlignment="Center" />
-                <PasswordBox x:Name="dbPassword" Height="24" PasswordChanged="dbPassword_PasswordChanged"
+                <PasswordBox x:Name="dbPassword" Height="24" 
                             Grid.Row="6" Grid.Column="1" VerticalAlignment="Center"/>
 
             </Grid>

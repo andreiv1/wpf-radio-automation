@@ -12,22 +12,15 @@ namespace RA.UI.Core.ViewModels
     {
         public string TabHeaderName { get; set; }
         public ImageSource TabIcon { get; set; }
-        private readonly Type viewModelType;
 
-        private readonly IServiceProvider serviceProvider;
-        public ViewModelBase ViewModel
-        {
-            get
-            {
-                using var serviceScope = serviceProvider.CreateScope();
-                return (ViewModelBase)(serviceScope.ServiceProvider).GetService(viewModelType);
-            }
-        }
+        private readonly ViewModelBase viewModel;
+        public ViewModelBase ViewModel => viewModel;
 
-        public TabViewModel(IServiceProvider serviceProvider, Type viewModelType)
+        public TabViewModel(string tabHeaderName, ImageSource tabIcon, ViewModelBase viewModel)
         {
-            this.serviceProvider = serviceProvider;
-            this.viewModelType = viewModelType;
+            TabHeaderName = tabHeaderName;
+            TabIcon = tabIcon;
+            this.viewModel = viewModel;
         }
     }
 }

@@ -59,12 +59,7 @@ namespace RA.UI.Core.ViewModels
         {
             viewModels = new List<ViewModelBase>();
             this.navigationService = navigationService;
-
-            InitialisePages();
-            Page = 0;
         }
-
-        protected abstract void InitialisePages();
 
         [RelayCommand(CanExecute = nameof(CanGoToNextPage))]
         private void GoToNextPage()

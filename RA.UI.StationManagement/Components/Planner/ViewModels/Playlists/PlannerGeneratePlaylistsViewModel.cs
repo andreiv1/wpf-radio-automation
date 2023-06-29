@@ -110,15 +110,11 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
 
             });
         }
-        protected override async void FinishDialog()
+        protected override void FinishDialog()
         {
             isGeneratingPlaylist = true;
             FinishDialogCommand.NotifyCanExecuteChanged();
             GeneratePlaylists();
-
-            //messageBoxService.ShowInfo($"Playlists generated!");
-
-            //base.FinishDialog();
         }
         protected override bool CanFinishDialog()
         {

@@ -47,12 +47,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="WPFSoundVisualizationLib">
-      <HintPath>WPFSoundVisualizationLib.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Resources\playout_icon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -66,6 +60,12 @@
     <Compile Update="SplashScreenWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

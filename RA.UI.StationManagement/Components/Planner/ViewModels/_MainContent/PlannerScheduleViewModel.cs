@@ -14,33 +14,13 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 {
     public partial class PlannerScheduleViewModel : ViewModelBase
     {
-        public ObservableCollection<TabViewModel> TabViewModels { get; set; }
-
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public PlannerScheduleViewModel()
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public ObservableCollection<TabViewModel> TabViewModels { get; private set; }
+        public PlannerScheduleViewModel(PlannerScheduleCalendarViewModel plannerScheduleCalendarViewModel,
+                                        PlannerDefaultScheduleViewModel plannerDefaultScheduleViewModel)
         {
-            InitializeTabViewModels();
-        }
-
-        private void InitializeTabViewModels()
-        {
-            var services = App.AppHost!.Services;
-            TabViewModels = new ObservableCollection<TabViewModel>
-            {
-                new TabViewModel(services, typeof(PlannerScheduleCalendarViewModel))
-                {
-                    TabHeaderName = "Calendar",
-                    TabIcon = (ImageSource)Application.Current.Resources["CalendarIcon"]
-
-                },
-                new TabViewModel(services, typeof(PlannerDefaultScheduleViewModel))
-                {
-                    TabHeaderName = "Default schedules",
-                    TabIcon = (ImageSource) Application.Current.Resources["DefaultScheduleIcon"]
-                },
-
-            };
+            TabViewModels = new ObservableCollection<TabViewModel>();
+            TabViewModels.Add(new TabViewModel("Calendar", (ImageSource)Application.Current.Resources["CalendarIcon"], plannerScheduleCalendarViewModel));
+            TabViewModels.Add(new TabViewModel("Default schedules", (ImageSource)Application.Current.Resources["DefaultScheduleIcon"], plannerDefaultScheduleViewModel));
         }
     }
 }

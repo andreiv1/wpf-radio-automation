@@ -19,8 +19,7 @@ namespace RA.UI.StationManagement
         }
 
         [RelayCommand]
-        private void LogIn()
-        {
+        private void LogIn() { 
             windowService.CloseWindow(this);
             windowService.ShowWindow<LauncherViewModel>();
         }

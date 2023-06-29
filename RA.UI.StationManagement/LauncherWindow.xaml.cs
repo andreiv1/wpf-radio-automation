@@ -28,7 +28,7 @@ namespace RA.UI.StationManagement
 
         private void LauncherWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
-            Application.Current.Shutdown();
+            //Application.Current.Shutdown();
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)

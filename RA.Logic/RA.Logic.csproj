@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="PlanningLogic\Exceptions\**" />
+    <EmbeddedResource Remove="PlanningLogic\Exceptions\**" />
+    <None Remove="PlanningLogic\Exceptions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="TrackFileLogic\TrackFilesImporter.cs" />
   </ItemGroup>
 
@@ -15,9 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CredentialManagement" Version="1.0.2" />
     <PackageReference Include="NAudio" Version="2.1.0" />
-    <PackageReference Include="NLog" Version="5.1.2" />
     <PackageReference Include="TagLibSharp" Version="2.3.0" />
   </ItemGroup>
 
@@ -25,10 +29,6 @@
     <ProjectReference Include="..\RA.DAL\RA.DAL.csproj" />
     <ProjectReference Include="..\RA.Database\RA.Database.csproj" />
     <ProjectReference Include="..\RA.Dto\RA.Dto.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="PlanningLogic\Exceptions\" />
   </ItemGroup>
 
 </Project>

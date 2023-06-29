@@ -37,7 +37,10 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
                                                 INavigationService<MediaLibraryImportItemsViewModel> navigationService,
                                                 IMessageBoxService messageBoxService,
                                                 ITrackFilesProcessor trackFilesProcessor,
-                                                ITrackFilesImporter trackFilesImporter) : base(navigationService)
+                                                ITrackFilesImporter trackFilesImporter,
+                                                ImportItemsFirstViewModel importItemsFirstViewModel,
+                                                ImportItemsSecondViewModel importItemsSecondViewModel,
+                                                ImportItemsThirdViewModel importItemsThirdViewModel) : base(navigationService)
         {
             PageChanged += MediaLibraryImportItemsViewModel_PageChanged;
             this.windowService = windowService;
@@ -46,19 +49,16 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             this.messageBoxService = messageBoxService;
             this.trackFilesProcessor = trackFilesProcessor;
             this.trackFilesImporter = trackFilesImporter;
-        }
-        protected override void InitialisePages()
-        {
-            var firstVm = App.AppHost!.Services.GetRequiredService<ImportItemsFirstViewModel>();
-            var secondVm = App.AppHost!.Services.GetRequiredService<ImportItemsSecondViewModel>();
-            var thirdVm = App.AppHost!.Services.GetRequiredService<ImportItemsThirdViewModel>();
-            firstVm.Model = Model;
-            secondVm.Model = Model;
-            thirdVm.Model = Model;
 
-            viewModels.Add(firstVm);
-            viewModels.Add(secondVm);
-            viewModels.Add(thirdVm);
+            viewModels.Add(importItemsFirstViewModel);
+            viewModels.Add(importItemsSecondViewModel);
+            viewModels.Add(importItemsThirdViewModel);
+
+            importItemsFirstViewModel.Model = model;
+            importItemsSecondViewModel.Model = model;
+            importItemsThirdViewModel.Model = model;
+
+            Page = 0;
         }
         private void MediaLibraryImportItemsViewModel_PageChanged(object sender, int newPageIndex)
         {

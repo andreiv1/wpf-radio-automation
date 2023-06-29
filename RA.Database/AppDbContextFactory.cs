@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RA.Logic.Logger
+namespace RA.Database
 {
-    public interface ILogger
+    internal class AppDbContextFactory
     {
-        public void Info(string message);
     }
 }
