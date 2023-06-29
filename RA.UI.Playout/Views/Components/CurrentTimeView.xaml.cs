@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,12 +18,10 @@ using System.Windows.Shapes;
 
 namespace RA.UI.Playout.Views.Components
 {
-    /// <summary>
-    /// Interaction logic for CurrentTimeView.xaml
-    /// </summary>
     public partial class CurrentTimeView : UserControl, INotifyPropertyChanged
     {
         private DateTime currentTime = DateTime.Now;
+        private readonly CancellationTokenSource cts = new CancellationTokenSource();
 
         public DateTime CurrentTime
         {
@@ -34,8 +33,6 @@ namespace RA.UI.Playout.Views.Components
             }
         }
 
-        private System.Timers.Timer clockTimer;
-
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -46,22 +43,24 @@ namespace RA.UI.Playout.Views.Components
         public CurrentTimeView()
         {
             InitializeComponent();
-            InitializeClock();
             DataContext = this;
-
+            _ = InitializeClockAsync();
         }
 
-        private void InitializeClock()
+        private async Task InitializeClockAsync()
         {
-            clockTimer = new System.Timers.Timer(1000);
-            clockTimer.Elapsed += ClockTimer_Elapsed;
-            clockTimer.AutoReset = true;
-            clockTimer.Start();
+            while (!cts.Token.IsCancellationRequested)
+            {
+                await Task.Delay(500, cts.Token);
+                CurrentTime = DateTime.Now;
+            }
         }
 
-        private void ClockTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        // Call this method to stop the timer task when you no longer need it
+        public void StopClock()
         {
-            CurrentTime = DateTime.Now;
+            cts.Cancel();
         }
     }
+
 }

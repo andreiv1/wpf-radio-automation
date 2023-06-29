@@ -12,6 +12,8 @@ namespace RA.UI.Playout.ViewModels.Components
 {
     public partial class NowPlayingViewModel : ViewModelBase
     {
+        private static String defaultImage = @"pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png";
+
         [ObservableProperty]
         private string nowArtist = "-";
 
@@ -28,7 +30,7 @@ namespace RA.UI.Playout.ViewModels.Components
         private TimeSpan durationNow = TimeSpan.FromMinutes(1);
 
         [ObservableProperty]
-        private String image = @"pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png";
+        private String image = defaultImage;
 
         partial void OnDurationNowChanged(TimeSpan oldValue, TimeSpan newValue)
         {
@@ -69,6 +71,7 @@ namespace RA.UI.Playout.ViewModels.Components
         {
             NowArtist = String.Empty;
             NowTitle = String.Empty;
+            Image = defaultImage;
             ResetOnlyTimers();
         }
 

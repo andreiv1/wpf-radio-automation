@@ -14,8 +14,9 @@ namespace RA.UI.Playout.ViewModels
         public PlaylistViewModel PlaylistVm { get; private set; }
         public MediaItemsViewModel MediaItemsVm { get; private set; }
 
-        public MainViewModel(NowPlayingViewModel nowPlayingVm, PlaylistViewModel playlistVm,
-            MediaItemsViewModel mediaItemsVm)
+        public MainViewModel(NowPlayingViewModel nowPlayingVm,
+                             PlaylistViewModel playlistVm,
+                             MediaItemsViewModel mediaItemsVm)
         {
             NowPlayingVm = nowPlayingVm;
             PlaylistVm = playlistVm;

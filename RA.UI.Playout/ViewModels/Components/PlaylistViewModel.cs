@@ -39,7 +39,7 @@ namespace RA.UI.Playout.ViewModels.Components
             this.playbackQueue = playbackQueue;
             this.playlistsService = playlistsService;
 
-            playbackQueue.Mode = PlaybackMode.Manual;
+            playbackQueue.Mode = PlaybackMode.Auto;
             playbackQueue.PlaybackStarted += PlaybackQueue_PlaybackStarted;
 
             _ = LoadPlaylist(DateTime.Now,1);

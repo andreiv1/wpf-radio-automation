@@ -26,14 +26,14 @@ namespace RA.Logic.AudioPlayer
             this.audioPlayer = audioPlayer;
             this.audioPlayer.PlaybackStopped += OnPlaybackStopped;
             this.audioPlayer.PlaybackPaused += OnPlaybackPaused;
-            StartUpdateETAs();
+            _ = StartUpdateETAsAsync();
         }
 
         private void OnPlaybackPaused(object? sender, EventArgs e)
         {
             PlaybackPaused?.Invoke(this, e);
 
-            StartUpdateETAs();
+            _ = StartUpdateETAsAsync();
         }
 
         private void OnPlaybackStopped(object? sender, EventArgs e)
@@ -58,22 +58,20 @@ namespace RA.Logic.AudioPlayer
             }
             PlaybackStopped?.Invoke(this, e);
 
-            StartUpdateETAs();
+            _ = StartUpdateETAsAsync();
         }
 
         private bool isUpdatingETAs = false;
-        private System.Timers.Timer? etaTimer = null;
+        private CancellationTokenSource? etaCancellationTokenSource = null;
 
-        private void StartUpdateETAs()
+        private async Task StartUpdateETAsAsync()
         {
             if (!isUpdatingETAs && (nowPlaying == null || audioPlayer.State == AudioPlayerState.Paused))
             {
-                // Start the timer to update the ETAs
-                etaTimer = new System.Timers.Timer(1000);
-                etaTimer.Elapsed += OnUpdateETAs;
-                etaTimer.AutoReset = true;
-                etaTimer.Start();
+                // Start the task to update the ETAs
                 isUpdatingETAs = true;
+                etaCancellationTokenSource = new CancellationTokenSource();
+                await UpdateETAsAsync(etaCancellationTokenSource.Token);
             }
         }
 
@@ -81,18 +79,23 @@ namespace RA.Logic.AudioPlayer
         {
             if (isUpdatingETAs)
             {
-                etaTimer?.Stop();
-                etaTimer.Dispose();
+                // Cancel the task
+                etaCancellationTokenSource?.Cancel();
                 isUpdatingETAs = false;
             }
         }
 
-        private void OnUpdateETAs(object? sender, System.Timers.ElapsedEventArgs e)
+        private async Task UpdateETAsAsync(CancellationToken cancellationToken)
         {
-            UpdateETAs(null);
-            if (nowPlaying != null)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                StopUpdateETAs();
+                await Task.Delay(1000, cancellationToken);
+                UpdateETAs(null);
+
+                if (nowPlaying != null)
+                {
+                    StopUpdateETAs();
+                }
             }
         }
 
