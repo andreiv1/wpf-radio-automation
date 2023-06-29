@@ -13,7 +13,7 @@ namespace RA.ConsoleApp
         public AppDbContext CreateDbContext()
         {
             DbContextOptionsBuilder<AppDbContext> optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            String connString = "server=localhost;Port=3306;database=ratest;user=root;password=";
+            String connString = "server=localhost;Port=3306;database=raprod;user=root;password=";
             DbContextOptions<AppDbContext> dbContextOptions = new DbContextOptions<AppDbContext>();
 
             dbContextOptions = optionsBuilder.UseMySql(connString, ServerVersion.AutoDetect(connString))
@@ -27,8 +27,24 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
-            TestPlaylistGenerator();
-            Console.ReadLine();
+            //TestPlaylistGenerator();
+            //SchedulesPlannedService schedulesPlannedService = new SchedulesPlannedService(dbFactory);
+            //_ = schedulesPlannedService.AddPlannedSchedule(new SchedulePlannedDTO()
+            //{
+            //    StartDate = new DateTime(2023, 6, 9),
+            //    Type = SchedulePlannedType.OneTime,
+            //    Template = new TemplateDTO("") { Id = 1}
+
+            //});
+            //_ = schedulesPlannedService.GetPlannedSchedulesOverviewAsync(DateTime.Now.AddDays(-20).Date,DateTime.Now.Date);
+
+
+            //TagsService tagsService = new TagsService(dbFactory);
+            //_ = tagsService.AddTagValue("Language", "French");
+            var db = dbFactory.CreateDbContext();
+            var query = from t in db.Tracks
+                        select t;
+            var tracks = query.ToList();
         }
 
        static void TestPlaylistGenerator()

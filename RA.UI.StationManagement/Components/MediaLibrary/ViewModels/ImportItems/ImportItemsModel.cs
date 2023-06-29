@@ -31,7 +31,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Models
         #region Constructor
         public ImportItemsModel()
         {
-            //Task.Run(() => LoadCategoriesAsync());
+           
         }
         #endregion
         #region First View
@@ -48,17 +48,6 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Models
 
         [ObservableProperty]
         private string? categorySearchQuery = null;
-
-        partial void OnCategorySearchQueryChanging(string? value)
-        {
-            //Task.Run(() => LoadCategoriesAsync());
-        }
-        partial void OnCategorySearchQueryChanged(string? value)
-        {
-            //if (value is not null)
-            //    Task.Run(() => AddCategoriesAsync(value));
-        }
-
         public ObservableCollection<CategoryHierarchyDTO> Categories { get; set; } = new();
 
         public static List<string> TrackTypes => Enum.GetNames(typeof(TrackType)).ToList();
@@ -78,17 +67,11 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Models
 
         partial void OnIsCompleteScanChanged(bool value)
         {
-            if(value)
-            {
-                //Complete scan is true
-            } else
+            if(!value)
             {
                 ScanOptions = CompleteScanOptions.None;
             }
         }
-
-        [ObservableProperty]
-        private bool fetchImagesFromProviders = false;
 
         [ObservableProperty]
         private bool analyseTrackMarkers = false;

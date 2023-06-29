@@ -51,5 +51,37 @@ namespace RA.DAL
                 .Select(tv => TagValueDTO.FromEntity(tv))
                 .ToListAsync();
         }
+
+        public async Task<TagValueDTO?> AddTagValue(string tagCategory, string value)
+        {
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            var tagCategoryEntity = await dbContext.TagCategories
+                .FirstOrDefaultAsync(tc => tc.Name == tagCategory);
+            if (tagCategoryEntity == null)
+            {
+               tagCategoryEntity = new TagCategory
+               {
+                    Name = tagCategory
+               };
+               dbContext.TagCategories.Add(tagCategoryEntity);
+               await dbContext.SaveChangesAsync();
+            }
+
+
+            var tagValueEntity = await dbContext.TagValues
+                .FirstOrDefaultAsync(tv => tv.Name == value && tv.TagCategoryId == tagCategoryEntity.Id);
+            if(tagValueEntity == null)
+            {
+                tagValueEntity = new TagValue
+                {
+                    TagCategoryId = tagCategoryEntity.Id,
+                    Name = value
+                };
+                dbContext.TagValues.Add(tagValueEntity);
+                await dbContext.SaveChangesAsync();
+            }
+            
+            return TagValueDTO.FromEntity(tagValueEntity);
+        }
     }
 }

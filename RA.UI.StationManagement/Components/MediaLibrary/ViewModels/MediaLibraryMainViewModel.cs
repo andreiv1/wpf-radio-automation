@@ -20,8 +20,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         [ObservableProperty]
         private MediaLibraryTreeMenuService treeMenuService;
 
-        public MediaLibraryMainViewModel(INavigationService<MediaLibraryMainViewModel> navigationService, 
-            MediaLibraryTreeMenuService treeMenuService)
+        public MediaLibraryMainViewModel(INavigationService<MediaLibraryMainViewModel> navigationService,
+                                         MediaLibraryTreeMenuService treeMenuService)
         {
             this.navigationService = navigationService;
             this.treeMenuService = treeMenuService;

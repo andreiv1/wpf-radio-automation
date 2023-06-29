@@ -13,6 +13,7 @@ using RA.UI.StationManagement.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,6 +64,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         {
             DebugHelper.WriteLine(this,$"Page changed to {newPageIndex}");
             Type viewModelType = viewModels.ElementAt(newPageIndex).GetType();
+
             if (viewModelType == typeof(ImportItemsFirstViewModel))
             {
 
@@ -104,13 +106,35 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
                     Model.Messages.Add("Started the process of importing...");
                 });
 
-                //TODO: ImagePath from Settings
-                TrackMetadataReader.ImagePath = @"C:\Users\Andrei\Desktop\images";
+        
+                string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                TrackMetadataReader.ImagePath = Path.Combine(appDataFolder, "RadioAutomationSystem", "images");
+
+                SubfolderScanOption option;
+                switch (Model.ScanOptions)
+                {
+                    case CompleteScanOptions.None:
+                        option = SubfolderScanOption.None;
+                        break;
+                    case CompleteScanOptions.PutItemsInTheSameCategory:
+                        option = SubfolderScanOption.PutAllInSameCategory;
+                        break;
+                    case CompleteScanOptions.CreateNewCategoriesAndAsignItems:
+                        option = SubfolderScanOption.CreateNewChildrenCategoryForEachExistingCategory;
+                        break;
+                    default:
+                        throw new NotSupportedException($"The option {Model.ScanOptions} is not supported");
+                }
+
                 TrackFilesProcessorOptions options = new TrackFilesProcessorOptionsBuilder(Model.FolderPath, Model.SelectedCategory.Id)
                     .SetReadMetadata(Model.ReadItemsMetadata)
                     .SetTrackStatus(Model.SelectedTrackStatus)
                     .SetTrackType(Model.SelectedTrackType)
+                    .SetScanSubfolders(Model.IsCompleteScan)
+                    .SetSubfolderScanOption(option)
                     .Build();
+
+
                 Model.ValidItems = 0;
                 Model.InvalidItems = 0;
                 Model.WarningItems = 0;

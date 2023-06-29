@@ -1,4 +1,5 @@
 ﻿using RA.DAL.Exceptions;
+using RA.DTO;
 using RA.DTO.Abstract;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,14 @@ namespace RA.DAL
         {
             var defaultSchedule = schedulesDefaultService.GetDefaultSchedulesOverview(date, date);
             IScheduleDTO? result = defaultSchedule.FirstOrDefault().Value;
+            return result;
+        }
+
+        public async Task<IDictionary<DateTime, IScheduleDTO?>> GetSchedulesOverview(DateTime searchDateStart, DateTime searchDateEnd)
+        {
+            Dictionary<DateTime, IScheduleDTO?> result = new();
+            
+
             return result;
         }
     }

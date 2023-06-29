@@ -432,14 +432,14 @@
                             </Grid.RowDefinitions>
                             <Label Grid.Column="0" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"
                                 Content="Player Volume"/>
-                            <syncfusion:SfRangeSlider Grid.Column="0" Grid.Row="1"
+                            <syncfusion:SfRangeSlider Grid.Column="0" Grid.Row="1" Value="100"
                                                       Width="90"/>
                             <Label Grid.Column="1" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"
                                 Content="Duration"/>
   
                             <syncfusion:TimeSpanEdit Grid.Row="1" Grid.Column="1" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                      Height="24" ShowArrowButtons="False" IsReadOnly="True"
-                                                     Format="hh:mm:ss"
+                                                     Format="hh:mm:ss" Value="{Binding Track.Duration}"
                                                      />
 
                             <Label Grid.Column="2" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"

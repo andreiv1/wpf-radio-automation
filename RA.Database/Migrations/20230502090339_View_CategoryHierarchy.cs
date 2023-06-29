@@ -23,7 +23,6 @@ namespace RA.Database.Migrations
                                   ON c.ParentId = ch.Id
                                   )
                                   
-                                  
                                   SELECT Id, Name, ParentId, Level, PathName
                                   FROM CategoryHierarchy ch;
                                 ");

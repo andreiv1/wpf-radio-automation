@@ -75,19 +75,19 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         [RelayCommand]
         private void AddItem()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         [RelayCommand]
         private void OpenItemDetails()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         [RelayCommand]
         private void DeleteItem()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         #endregion
     }

@@ -114,16 +114,11 @@ namespace RA.DAL
                      .Where(pi => pi.ETA >= dateTimeStart)
                      .Where(pi => pi.ETA <= dateTimeEnd)
                      .Select(pi => PlaylistItemTrackDTO.FromEntity(pi));
-
-
                 foreach(var item in query)
                 {
                     yield return item;
                 }
-            } else
-            {
-                yield return null;
-            }
+            } 
 
            
         }

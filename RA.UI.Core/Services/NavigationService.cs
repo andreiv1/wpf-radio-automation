@@ -21,7 +21,6 @@ namespace RA.UI.Core.Services
             get => currentView!;
             private set
             {
-                //TODO: dispose old view model to avoid memory leaks
                 currentView?.Dispose();
                 currentView = value;
                 OnPropertyChanged(nameof(CurrentView));

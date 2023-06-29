@@ -160,7 +160,6 @@
                        ItemsSource="{Binding ClockItemsForSelectedClock}"
                        SelectedItem="{Binding SelectedClockItem}"
                        SelectedItems="{Binding SelectedClockItems,Mode=TwoWay}"
-                       SelectedIndex="{Binding LastSelectedClockItemIndex}"
                        SelectionUnit="Row" NavigationMode="Row"
                        SelectionMode="Multiple" AllowSorting="False"
                         RowHeight="29" AllowResizingColumns="True"

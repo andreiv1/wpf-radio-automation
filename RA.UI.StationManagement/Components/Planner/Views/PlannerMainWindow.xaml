@@ -18,8 +18,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <localuc:ComponentHeaderUserControl Grid.Row="0" Grid.ColumnSpan="2"
-                                                 HeaderText="Planner" 
-                                                 Description="Manage your station's schedule."
+                                                 HeaderText="{StaticResource PlannerTitleString}" 
+                                                 Description="{StaticResource PlannerDescriptionString}"
                                                  BackgroundColor="#FF37A55B" />
         <syncfusion:TabControlExt Grid.Row="1" Margin="0,5,0,0" 
                                   ItemsSource="{Binding TabViewModels}" 

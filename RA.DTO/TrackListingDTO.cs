@@ -14,7 +14,6 @@ namespace RA.DTO
         public string? Title { get; set; }
         public string? Type { get; set; }
         public string? FilePath { get; set; }
-
         public string? ImageName { get; set; }
         public double Duration { get; set; }
         public DateTime? ReleaseDate { get; set; }

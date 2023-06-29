@@ -3,6 +3,7 @@ using RA.DTO;
 using RA.Logic.AudioPlayer.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,8 +21,8 @@ namespace RA.UI.Playout.ViewModels.Components.Models
             {
                 if (!string.IsNullOrEmpty(trackListingDTO.ImageName))
                 {
-                    //TODO: do not hardcode path
-                    return $"C:\\Users\\Andrei\\Desktop\\images\\{trackListingDTO.ImageName}";
+                    string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                    return Path.Combine(appDataFolder, "RadioAutomationSystem", "images", trackListingDTO.ImageName);
                 }
                 else
                 {

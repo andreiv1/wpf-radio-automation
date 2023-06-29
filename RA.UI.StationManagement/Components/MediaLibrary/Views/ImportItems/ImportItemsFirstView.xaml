@@ -133,9 +133,6 @@
                                 Converter={StaticResource EnumToBooleanConverter}, 
                                 ConverterParameter=CreateNewCategoriesAndAsignItems}"/>
                     </StackPanel>
-                    <CheckBox Content="Get track images from 3rd providers if it doesn't have any inside file (this might slow down the process)" 
-                              Margin="6" 
-                              IsChecked="{Binding Model.FetchImagesFromProviders}"/>
                     <CheckBox Content="Read items metadata" 
                               Margin="6" 
                               IsChecked="{Binding Model.ReadItemsMetadata}"

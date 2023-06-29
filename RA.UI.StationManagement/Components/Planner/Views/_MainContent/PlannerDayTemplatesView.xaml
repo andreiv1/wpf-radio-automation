@@ -146,8 +146,7 @@
                     <ContextMenu>
                         <MenuItem Header="Add clock" 
                                   Command="{Binding Scheduler.DataContext.InsertClockCommand}"
-                                  CommandParameter="{Binding}"
-                                  CommandTarget="{Binding ElementName=selectedTemplateScheduler}">
+                                  CommandParameter="{Binding}">
                             <MenuItem.Icon>
                                 <Image
                                     Width="16"
@@ -163,8 +162,7 @@
                     <ContextMenu>
                         <MenuItem Header="Edit clock" 
                                   Command="{Binding Scheduler.DataContext.EditClockCommand}"
-                                  CommandParameter="{Binding .}"
-                                  CommandTarget="{Binding ElementName=selectedTemplateScheduler}">
+                                  CommandParameter="{Binding .}">
                             <MenuItem.Icon>
                                 <Image
                                     Width="16"
@@ -176,8 +174,7 @@
                         </MenuItem>
                         <MenuItem Header="Delete clock" 
                                   Command="{Binding Scheduler.DataContext.DeleteClockCommand}"
-                                  CommandParameter="{Binding .}"
-                                  CommandTarget="{Binding ElementName=selectedTemplateScheduler}">
+                                  CommandParameter="{Binding .}">
                             <MenuItem.Icon>
                                 <Image
                                     Width="16"

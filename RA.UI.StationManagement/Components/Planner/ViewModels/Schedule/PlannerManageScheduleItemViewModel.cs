@@ -21,8 +21,25 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         [ObservableProperty]
         private SchedulePlannedType scheduleType = SchedulePlannedType.Recurrent;
 
+        [ObservableProperty]
+        private String name;
+
+        partial void OnNameChanged(string value)
+        {
+            SchedulePlanned.Name = value;
+        }
+
+        partial void OnScheduleTypeChanged(SchedulePlannedType value)
+        {
+            SchedulePlanned = new();
+            SchedulePlanned.Type = value;
+            SchedulePlanned.Name = Name;
+        }
+
+
         private static IEnumerable<SchedulePlannedFrequency> scheduleFrequencies = (IEnumerable<SchedulePlannedFrequency>)
             Enum.GetValues(typeof(SchedulePlannedFrequency)).Cast<SchedulePlannedType>();
+
         private readonly IDispatcherService dispatcherService;
         private readonly ITemplatesService templatesService;
 
@@ -30,13 +47,22 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
 
         public ObservableCollection<TemplateDTO> Templates { get; set; } = new();
 
-        public PlannerManageScheduleItemViewModel(IWindowService windowService, IDispatcherService dispatcherService,
-            ITemplatesService templatesService) : base(windowService)
+        [ObservableProperty]
+        private SchedulePlannedDTO schedulePlanned;
+
+        #region Constructor
+        public PlannerManageScheduleItemViewModel(IWindowService windowService,
+                                                  IDispatcherService dispatcherService,
+                                                  ITemplatesService templatesService) : base(windowService)
         {
             this.dispatcherService = dispatcherService;
             this.templatesService = templatesService;
             _ = LoadTemplates();
+
+            SchedulePlanned = new();
         }
+
+        #endregion
 
         private async Task LoadTemplates()
         {

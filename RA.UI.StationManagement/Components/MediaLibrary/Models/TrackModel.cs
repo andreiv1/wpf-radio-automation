@@ -25,7 +25,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
         private string title = string.Empty;
 
         [ObservableProperty]
-        private double duration = 0;
+        private TimeSpan duration = TimeSpan.Zero;
 
         [ObservableProperty]
         private double startCue = 0;
@@ -93,7 +93,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
                 Type = dto.Type,
                 Status = dto.Status,
                 Title = dto.Title ?? "",
-                Duration = dto.Duration,
+                Duration = TimeSpan.FromSeconds(dto.Duration),
                 StartCue = dto.StartCue ?? 0,
                 NextCue = dto.NextCue ?? dto.Duration,
                 EndCue = dto.EndCue ?? dto.Duration,
@@ -104,7 +104,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
                 FilePath = dto.FilePath ?? "",
                 ImageName = dto.ImageName ?? "",
                 Bpm = dto.Bpm,
-                ISRC = dto.ISRC,
+                ISRC = dto?.ISRC ?? "",
                 DateAdded = dto.DateAdded,
                 DateModified = dto.DateModified,
                 DateDeleted = dto.DateDeleted,
@@ -121,7 +121,6 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
                 Type = model.Type,
                 Status = model.Status,
                 Title = model.Title,
-                Duration = model.Duration,
                 StartCue = model.StartCue,
                 NextCue = model.NextCue,
                 EndCue = model.EndCue,

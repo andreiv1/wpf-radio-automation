@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         xmlns:localconverters="clr-namespace:RA.UI.StationManagement.Converters"
-        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-        mc:Ignorable="d"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:schedule="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.Schedule" d:DataContext="{d:DesignInstance Type=schedule:PlannerManageScheduleItemViewModel}"
+                 mc:Ignorable="d"
         Title="Add planned schedule" Height="440" Width="500"
         ResizeMode="NoResize">
     <Window.Resources>
@@ -153,8 +153,7 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
-                   Content="Frequency:" FontWeight="DemiBold" IsEnabled="{Binding ScheduleType, 
-                            Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Recurrent}" />
+                   Content="Frequency:" FontWeight="DemiBold"/>
                 <syncfusion:ComboBoxAdv Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Height="24" Margin="0,10,0,0"
                                     ItemsSource="{Binding ScheduleFrequencies}">
                     <syncfusion:ComboBoxAdv.ItemTemplate>
@@ -209,7 +208,8 @@
                     </Grid.ColumnDefinitions>
                     <Label Content="Mon" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"
                            FontWeight="DemiBold"/>
-                    <CheckBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center"/>
+                    <CheckBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center"
+                              />
                     <Label Content="Tue" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"
                            FontWeight="DemiBold"/>
                     <CheckBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"/>

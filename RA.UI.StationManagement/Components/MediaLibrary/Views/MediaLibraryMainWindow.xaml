@@ -24,8 +24,8 @@
         </Grid.ColumnDefinitions>
 
         <localuc:ComponentHeaderUserControl Grid.Row="0" Grid.ColumnSpan="3"
-                                                 HeaderText="Media library" 
-                                                 Description="Description"
+                                                 HeaderText="{StaticResource MediaLibraryTitleString}" 
+                                                 Description="{StaticResource MediaLibraryDescriptionString}"
                                                  BackgroundColor="#FF5356B3" />
 
         <syncfusion:SfTreeView x:Name="navigationTreeView" Grid.Row="1" Grid.Column="0" 

@@ -75,7 +75,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         [RelayCommand]
         private void ImportItems()
         {
-            windowService.ShowWindow<MediaLibraryImportItemsViewModel>();
+            windowService.ShowDialog<MediaLibraryImportItemsViewModel>();
+            _ = LoadTracks(0, tracksPerPage);   
         }
 
         [RelayCommand]
@@ -86,7 +87,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
                 return;
             }
 
-            windowService.ShowWindow<MediaLibraryManageTrackViewModel>(SelectedTrack.Id);
+            windowService.ShowDialog<MediaLibraryManageTrackViewModel>(SelectedTrack.Id);
         }
 
         [RelayCommand]

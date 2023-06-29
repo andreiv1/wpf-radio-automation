@@ -31,8 +31,9 @@ namespace RA.DTO
         public DateTime? DateModified { get; set; }
         public DateTime? DateDeleted { get; set; }
         public List<TrackArtistDTO>? Artists { get; set; }
-
         public List<TrackCategoryDTO>? Categories { get; set; }
+
+        public List<TagValueDTO>? Tags { get; set; }
         public static TrackDTO FromEntity(Track track)
         {
             return new TrackDTO
@@ -60,6 +61,8 @@ namespace RA.DTO
                     track.TrackArtists.Select(ta => TrackArtistDTO.FromEntity(ta)).ToList() : null,
                 Categories = track.Categories != null ?
                     track.Categories.Select(c => TrackCategoryDTO.FromEntity(c)).ToList() : null,
+                Tags = track.TrackTags != null ?
+                    track.TrackTags.Select(tt => TagValueDTO.FromEntity(tt.TagValue)).ToList() : null,
             };
         }
 

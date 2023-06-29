@@ -29,12 +29,12 @@ namespace RA.Logic.TrackFileLogic
             {
                 List<TrackDTO?> toImport = processingTracks
                     .Where(pt => pt.Status == Enums.ProcessingTrackStatus.OK &&
-                     pt.TrackDto != null)
+                        pt.TrackDto != null)
                     .Select(pt => pt.TrackDto)
                     .ToList();
 
                 return await tracksService.AddTracks(toImport);
-            } catch (Exception ex)
+            } catch (Exception )
             {
                 return 0;
             }

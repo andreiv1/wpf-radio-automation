@@ -24,6 +24,7 @@ namespace RA.Database.Models
     }
     public class SchedulePlanned : ScheduleBase
     {
+
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         [EnumDataType(typeof(SchedulePlannedType))]
@@ -31,12 +32,15 @@ namespace RA.Database.Models
 
         [EnumDataType(typeof(SchedulePlannedFrequency))]
         public SchedulePlannedFrequency? Frequency { get; set; }
-        public Boolean IsMonday { get; set; }
-        public Boolean IsTuesday { get; set; }
-        public Boolean IsWednesday { get; set; }
-        public Boolean IsThursday { get; set; }
-        public Boolean IsFriday { get; set; }
-        public Boolean IsSaturday { get; set; }
-        public Boolean IsSunday { get; set; } 
+
+        public int TemplateId { get; set; }
+        public Template Template { get; set; }
+        public Boolean? IsMonday { get; set; }
+        public Boolean? IsTuesday { get; set; }
+        public Boolean? IsWednesday { get; set; }
+        public Boolean? IsThursday { get; set; }
+        public Boolean? IsFriday { get; set; }
+        public Boolean? IsSaturday { get; set; }
+        public Boolean? IsSunday { get; set; } 
     }
 }

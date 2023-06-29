@@ -8,5 +8,6 @@ namespace RA.DAL
         IEnumerable<TagCategoryDTO> GetTagCategories();
         Task<IEnumerable<TagValueDTO>> GetTagValuesByCategoryAsync(int tagCategoryId);
         Task<IEnumerable<TagValueDTO>> GetTagValuesByCategoryNameAsync(string name);
+        Task<TagValueDTO?> AddTagValue(string tagCategory, string value);
     }
 }

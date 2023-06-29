@@ -22,6 +22,14 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule.Models
 
         private int templateId;
 
+        public string RecurrenceRule
+        {
+            get
+            {
+                return $"RRULE:FREQ=DAILY;UNTIL={EndDate:yyyyMMddTHHmmssZ}";
+            }
+        }
+
         public ScheduleCalendarItem()
         {
         }

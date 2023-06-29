@@ -15,9 +15,9 @@ namespace RA.Logic.TrackFileLogic
         private static string defaultTitle = "Unknown Title";
         private static string defaultArtist = "Unknown Artist";
 
-        public TrackFilesProcessor(IArtistsService artistsService, 
-            ITracksService tracksService,
-            ICategoriesService categoriesService)
+        public TrackFilesProcessor(IArtistsService artistsService,
+                                   ITracksService tracksService,
+                                   ICategoriesService categoriesService)
         {
             this.artistsService = artistsService;
             this.tracksService = tracksService;
@@ -56,8 +56,9 @@ namespace RA.Logic.TrackFileLogic
                     dto.Bpm = metaReader.GetField(TrackMetadataField.BPM) as int?;
                     dto.ISRC = metaReader.GetField(TrackMetadataField.ISRC) as String ?? String.Empty;
                     dto.ImageName = metaReader.GetField(TrackMetadataField.Image) as String ?? String.Empty;
+                    
                 }
-                catch (Exception )
+                catch (Exception)
                 {
                     track.Status = ProcessingTrackStatus.FAILED;
                 }
@@ -67,47 +68,62 @@ namespace RA.Logic.TrackFileLogic
                 var titleAndArtist = TrackMetadataReader.GetTitleAndArtistFromPath(path);
                 if (titleAndArtist.Artist is not null)
                 {
-                    var artists = titleAndArtist.Artist;
                     var processedArtists = await ProcessArtistsAsync(dto, metaReader.GetField(TrackMetadataField.Artists) as string ?? defaultArtist);
                     dto.Artists = processedArtists.ToList();
-                
+
                 }
                 dto.Title = titleAndArtist.Title;
             }
-
-            
-
             track.TrackDto = dto;
             return track;
         }
         public async IAsyncEnumerable<ProcessingTrack> ProcessItemsFromDirectoryAsync(TrackFilesProcessorOptions options)
         {
-            if(options.DirectoryPath is not null)
+            if (options.DirectoryPath is not null)
             {
-                //Fara traversare in sub-foldere
-                var files = Directory.EnumerateFiles(options.DirectoryPath)
-                    .Where(f => SupportedTrackFormats.Contains(Path.GetExtension(f).ToLowerInvariant()));
-                CategoryDTO categoryDTO = categoriesService.GetCategory(options.MainCategoryId).Result;
-                if(categoryDTO != null)
-                foreach (var file in files)
+                if (options.ScanSubfolders && options.SubfolderScanOption == SubfolderScanOption.CreateNewChildrenCategoryForEachExistingCategory)
                 {
-                    string fileExtension = Path.GetExtension(file);
-                    ProcessingTrack processingTrack = await ProcessSingleItemAsync(file, options.ReadMetadata);
-                    if(processingTrack != null)
-                    {
-                        processingTrack.TrackDto!.Categories = new()
-                        {
-                            new TrackCategoryDTO()
-                            {
-                                CategoryId = categoryDTO.Id.GetValueOrDefault(),
-                                CategoryName = categoryDTO.Name,
-                            }
-                        };
-                        processingTrack.TrackDto.Type = options.TrackType;
-                        processingTrack.TrackDto.Status = options.TrackStatus;
-                    }
-                    yield return processingTrack!;
+                    throw new Exception();
                 }
+                else
+                {
+                    IEnumerable<string> files;
+
+                    if (options.ScanSubfolders && options.SubfolderScanOption == SubfolderScanOption.PutAllInSameCategory)
+                    {
+                        files = Directory.EnumerateFiles(options.DirectoryPath, "*.*", SearchOption.AllDirectories)
+                            .Where(f => SupportedTrackFormats.Contains(Path.GetExtension(f).ToLowerInvariant()));
+                    }
+                    else
+                    {
+                        files = Directory.EnumerateFiles(options.DirectoryPath, "*.*", SearchOption.TopDirectoryOnly)
+                            .Where(f => SupportedTrackFormats.Contains(Path.GetExtension(f).ToLowerInvariant()));
+                    }
+
+                    CategoryDTO categoryDTO = categoriesService.GetCategory(options.MainCategoryId).Result;
+                    if (categoryDTO != null)
+                        foreach (var file in files)
+                        {
+                            string fileExtension = Path.GetExtension(file);
+                            ProcessingTrack processingTrack = await ProcessSingleItemAsync(file, options.ReadMetadata);
+                            if (processingTrack != null)
+                            {
+                                processingTrack.TrackDto!.Categories = new()
+                                {
+                                    new TrackCategoryDTO()
+                                    {
+                                        CategoryId = categoryDTO.Id.GetValueOrDefault(),
+                                        CategoryName = categoryDTO.Name,
+                                    }
+                                };
+
+                                processingTrack.TrackDto.Type = options.TrackType;
+                                processingTrack.TrackDto.Status = options.TrackStatus;
+                            }
+                            yield return processingTrack!;
+                        }
+                }
+
             }
         }
 
@@ -116,25 +132,37 @@ namespace RA.Logic.TrackFileLogic
             int count = await Task.Run(() =>
             {
                 int filesCount = 0;
-                // Without traversing subfolders
-                if (options.DirectoryPath is not null)
+                IEnumerable<string> files;
+                if (options.DirectoryPath != null)
                 {
-                    try
+                    if (options.ScanSubfolders && options.SubfolderScanOption == SubfolderScanOption.PutAllInSameCategory)
                     {
-                        filesCount = Directory.EnumerateFiles(options.DirectoryPath, "*", SearchOption.TopDirectoryOnly)
-                            .Where(file => SupportedTrackFormats.Contains(Path.GetExtension(file)))
-                            .Count();
+                        files = Directory.EnumerateFiles(options.DirectoryPath, "*.*", SearchOption.AllDirectories)
+                            .Where(f => SupportedTrackFormats.Contains(Path.GetExtension(f).ToLowerInvariant()));
                     }
-                    catch (UnauthorizedAccessException ex)
+                    else
                     {
-                        Console.WriteLine("Access to directory denied: " + ex.Message);
+                        files = Directory.EnumerateFiles(options.DirectoryPath, "*.*", SearchOption.TopDirectoryOnly)
+                            .Where(f => SupportedTrackFormats.Contains(Path.GetExtension(f).ToLowerInvariant()));
                     }
-                    catch (DirectoryNotFoundException ex)
+                    if (options.DirectoryPath is not null)
                     {
-                        Console.WriteLine("Directory not found: " + ex.Message);
+                        try
+                        {
+                            filesCount = files.Count();
+                        }
+                        catch (UnauthorizedAccessException ex)
+                        {
+                            Console.WriteLine("Access to directory denied: " + ex.Message);
+                        }
+                        catch (DirectoryNotFoundException ex)
+                        {
+                            Console.WriteLine("Directory not found: " + ex.Message);
+                        }
                     }
                 }
                 return filesCount;
+                    
             });
 
             return count;
@@ -163,7 +191,7 @@ namespace RA.Logic.TrackFileLogic
                 trackArtists.Add(trackArtistDTO);
                 orderIndex++;
             };
-        
+
             return trackArtists;
         }
 

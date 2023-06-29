@@ -61,7 +61,6 @@ namespace RA.UI.Playout
                     services.AddSingleton<IAudioPlayer, Player>();
                     services.AddSingleton<IPlaybackQueue, PlaybackQueue>();
                     #endregion
-
                     #region DAL services
                     services.AddTransient<IPlaylistsService,PlaylistsService>();
                     services.AddTransient<ITracksService, TracksService>();
@@ -79,7 +78,6 @@ namespace RA.UI.Playout
                     );
 
                     #endregion
-
                     #region Singleton viewModel <=> View
                     viewModelToSingletonWindowMap.Add(typeof(MainViewModel), typeof(MainWindow));
 
@@ -103,7 +101,6 @@ namespace RA.UI.Playout
                         });
                     }
                     #endregion
-
                     #region Transient ViewModel <=> View
                     foreach (KeyValuePair<Type, Type> vmAndView in viewModelToTransientWindowMap)
                     {
@@ -111,9 +108,6 @@ namespace RA.UI.Playout
                         services.AddTransient(vmAndView.Value);
                     }
                     #endregion
-
-
-
 
                 })
                 .Build();
@@ -182,7 +176,7 @@ namespace RA.UI.Playout
                 messageBoxService.ShowError($"Failed to connect to the database: {ex.Message}");
                 return false;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return false;
             }

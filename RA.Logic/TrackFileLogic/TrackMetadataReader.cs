@@ -64,17 +64,30 @@ namespace RA.Logic.TrackFileLogic
                 {
                     metadataDictionary.Add(TrackMetadataField.Year, year);
                 }
-                String ISRC = tagLibFile.Tag.ISRC;
+                string ISRC = tagLibFile.Tag.ISRC;
                 if (!string.IsNullOrEmpty(ISRC))
                 {
                     metadataDictionary.Add(TrackMetadataField.ISRC, ISRC);
                 }
 
-                String album = tagLibFile.Tag.Album;
-                if (!String.IsNullOrEmpty(album))
+                string album = tagLibFile.Tag.Album;
+                if (!string.IsNullOrEmpty(album))
                 {
                     metadataDictionary.Add(TrackMetadataField.Album, album);
                 }
+
+                int bpm = Convert.ToInt32(tagLibFile.Tag.BeatsPerMinute);
+                if(bpm != 0)
+                {
+                    metadataDictionary.Add(TrackMetadataField.BPM, bpm);
+                }
+
+                string genres = tagLibFile.Tag.JoinedGenres;
+                if (!string.IsNullOrEmpty(genres))
+                {
+                    metadataDictionary.Add(TrackMetadataField.Genres, genres);
+                }
+
                 ProcessTrackImage(tagLibFile);
             }
             catch (TagLib.UnsupportedFormatException e)
@@ -164,7 +177,7 @@ namespace RA.Logic.TrackFileLogic
             try {
                 using var file = TagLib.File.Create(audioFilePath);
                 fileInfo.Add("Bitrate", file.Properties.AudioBitrate.ToString());
-                fileInfo.Add("FileType", file.MimeType);
+                fileInfo.Add("FileType", file.MimeType.Split("/")[1]);
                 fileInfo.Add("Frequency", file.Properties.AudioSampleRate.ToString());
 
             }

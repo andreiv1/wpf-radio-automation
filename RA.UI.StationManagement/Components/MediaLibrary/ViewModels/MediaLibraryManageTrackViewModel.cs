@@ -12,6 +12,7 @@ using RA.UI.StationManagement.Dialogs.ArtistSelectDialog;
 using RA.UI.StationManagement.Dialogs.CategorySelectDialog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -84,8 +85,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             
             if (!string.IsNullOrEmpty(Track.ImageName))
             {
-                //TODO
-                FullImagePath = $"C:\\Users\\Andrei\\Desktop\\images\\{Track.ImageName}";
+                string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                FullImagePath = Path.Combine(appDataFolder, "RadioAutomationSystem", "images", Track.ImageName);
             }
             else
             {
@@ -93,13 +94,17 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             }
 
             //Load audio file metadata
-            if (track.FilePath != null)
+            _ = Task.Run(() =>
             {
-                var metadata = TrackMetadataReader.GetAudioFileInfo(track.FilePath);
-                AudioFileBitrate = metadata["Bitrate"];
-                AudioFileFormat = metadata["FileType"];
-                AudioFileFrequency = metadata["Frequency"];
-            }
+                if (track.FilePath != null)
+                {
+                    var metadata = TrackMetadataReader.GetAudioFileInfo(track.FilePath);
+                    AudioFileBitrate = metadata["Bitrate"];
+                    AudioFileFormat = metadata["FileType"];
+                    AudioFileFrequency = metadata["Frequency"];
+                }
+            });
+            
         }
 
         #region Commands

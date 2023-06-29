@@ -115,7 +115,7 @@ namespace RA.Logic.PlanningLogic
                                                                              tracksService,
                                                                              itemCategory.CategoryId.Value,
                                                                              artistSeparation: 30, //default separation
-                                                                             trackSeparation: 60,
+                                                                             trackSeparation: 10,
                                                                              titleSeparation: 30
                                                                              );
                     }

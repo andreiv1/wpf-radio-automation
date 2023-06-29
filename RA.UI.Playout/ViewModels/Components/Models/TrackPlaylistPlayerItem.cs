@@ -2,8 +2,10 @@
 using RA.Database.Models.Enums;
 using RA.DTO;
 using RA.Logic.AudioPlayer.Interfaces;
+using RA.Logic.TrackFileLogic;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,8 +34,8 @@ namespace RA.UI.Playout.ViewModels.Components.Models
             {
                 if (!string.IsNullOrEmpty(playlistItemTrackDTO.Track.ImageName))
                 {
-                    //TODO: do not hard code path
-                    return $"C:\\Users\\Andrei\\Desktop\\images\\{playlistItemTrackDTO.Track.ImageName}";
+                    string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                    return Path.Combine(appDataFolder, "RadioAutomationSystem", "images", playlistItemTrackDTO.Track.ImageName);
                 }
                 else
                 {

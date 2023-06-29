@@ -26,10 +26,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         {
             new ScheduleCalendarItem(new DateTime(2010, 1, 1), "Loading", -1)
         };
-        //{
-        //    new ScheduleCalendarItem(DateTime.Today.Date, "Test", -1),
-        //    new ScheduleCalendarItem(DateTime.Today.Date.AddDays(1), "Test 2", -1),
-        //};
 
         [ObservableProperty]
         private bool isLoadingCalendar;
@@ -50,7 +46,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
                 .GetDefaultSchedulesOverviewAsync(monthDate - new TimeSpan(10, 0, 0, 0), monthDate.AddDays(40));
             foreach(var item in initCalendar)
             {
-                //throw new NotImplementedException();
                 if (item.Value != null && item.Value.Template != null)
                     CalendarItems.Add(ScheduleCalendarItem.FromDto(item.Value, item.Key));
             }
