@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RA.DAL;
-using RA.Logic.PlanningLogic;
-using RA.Logic.TrackFileLogic;
+using RA.DAL.Interfaces;
+using RA.Logic.Planning;
+using RA.Logic.Tracks;
 using RA.UI.Core.Factories;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
@@ -51,6 +52,7 @@ namespace RA.UI.StationManagement.HostBuilders
                 services.AddTransient<ISchedulesService, SchedulesService>();
                 services.AddTransient<ISchedulesPlannedService, SchedulesPlannedService>();
                 services.AddTransient<IPlaylistsService, PlaylistsService>();
+                services.AddTransient<IUsersService, UsersService>();
 
                 // Logic services
                 services.AddTransient<ITrackFilesImporter, TrackFileImporter>();

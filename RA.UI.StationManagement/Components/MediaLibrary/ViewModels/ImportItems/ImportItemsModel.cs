@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 using RA.Database;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using RA.Logic.TrackFileLogic.Models;
+using RA.Logic.Tracks.Models;
 
 namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Models
 {

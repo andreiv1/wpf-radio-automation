@@ -32,18 +32,26 @@ namespace RA.UI.Playout.ViewModels.Components
         [ObservableProperty]
         private String image = defaultImage;
 
+        public PlaylistViewModel PlaylistVm { get; set; }
+
         partial void OnDurationNowChanged(TimeSpan oldValue, TimeSpan newValue)
         {
             ProgressLabels.Clear();
             int totalSeconds = (int)newValue.TotalSeconds;
 
-            //TODO:
-            //if (totalSeconds <= 30)
-            //{
-            //    ProgressTickFreq = 30;
-
-            //}
-            ProgressTickFreq = 30;
+            // Calculate the ProgressTickFreq based on the song duration
+            if (totalSeconds <= 60)
+            {
+                ProgressTickFreq = 5;
+            }
+            else if (totalSeconds <= 180)
+            {
+                ProgressTickFreq = 15;
+            }
+            else
+            {
+                ProgressTickFreq = 30;
+            }
             for (int i = ProgressTickFreq; i < totalSeconds; i += ProgressTickFreq)
             {
                 TimeSpan labelTime = TimeSpan.FromSeconds(i);
@@ -81,7 +89,7 @@ namespace RA.UI.Playout.ViewModels.Components
             IsPaused = false;
             ElapsedNow = TimeSpan.Zero;
             RemainingNow = null;
-            DurationNow = TimeSpan.FromMinutes(1);
+            DurationNow = TimeSpan.Zero;
         }
         public void UpdateNowPlaying(String artist, String title, TimeSpan duration, String image)
         {
@@ -93,6 +101,13 @@ namespace RA.UI.Playout.ViewModels.Components
             RemainingNow = duration;
             DurationNow = duration;
             Image = image;
+        }
+
+        public void SeekTo(double position)
+        {
+            ElapsedNow = TimeSpan.FromSeconds(position);
+            RemainingNow = DurationNow - ElapsedNow;
+            PlaylistVm.SeekCommand.Execute(new TimeSpan[] { RemainingNow.Value, ElapsedNow});
         }
     }
 }

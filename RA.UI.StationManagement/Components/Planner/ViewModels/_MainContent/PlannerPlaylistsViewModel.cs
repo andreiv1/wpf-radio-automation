@@ -20,8 +20,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
     {
         private readonly IWindowService windowService;
         private readonly IPlaylistsService playlistsService;
-
-        #region Properties
         public ObservableCollection<PlaylistListingDTO> PlaylistsToAir { get; set; } = new();
 
         [ObservableProperty]
@@ -34,9 +32,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
         public ObservableCollection<PlaylistItemModel> SelectedPlaylistItems { get; set; } = new();
 
-        #endregion
-
-        #region Constructor
         public PlannerPlaylistsViewModel(IWindowService windowService, IPlaylistsService playlistsService)
         {
             this.windowService = windowService;
@@ -44,7 +39,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             _ = LoadPlaylistsToAir();
             _ = LoadPlaylistsByHour(SelectedDate);
         }
-        #endregion
 
         partial void OnSelectedDateChanged(DateTime value)
         {

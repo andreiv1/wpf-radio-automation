@@ -135,14 +135,10 @@
                 CustomLabels="{Binding ProgressLabels}"
                 ShowCustomLabels="True"
                 LabelPlacement="BottomRight"
-                
-                                      >
+                PreviewMouseLeftButtonUp="SfRangeSlider_PreviewMouseLeftButtonUp">
   
                 <syncfusion:SfRangeSlider.Style>
                     <Style TargetType="syncfusion:SfRangeSlider">
-                        
-                        <!-- Set the background color of the bar to green -->
-                        
                     </Style>
                 </syncfusion:SfRangeSlider.Style>
                     

@@ -159,6 +159,11 @@ namespace RA.Logic.AudioPlayer
             audioPlayer.Stop();
         }
 
+        public void Seek(TimeSpan position)
+        {
+            audioPlayer.Seek(position);
+        }
+
         public void UpdateETAs(TimeSpan? initOffset)
         {
             TimeSpan offset = TimeSpan.Zero;

@@ -549,12 +549,6 @@ namespace RA.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DateAdded")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("DateModified")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -595,35 +589,23 @@ namespace RA.Database.Migrations
                     b.ToTable("UserGroups");
                 });
 
-            modelBuilder.Entity("RA.Database.Models.UserRule", b =>
+            modelBuilder.Entity("RA.Database.Models.UserGroupRule", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("RuleName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                    b.Property<int>("RuleValue")
+                        .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("UserRules");
-                });
-
-            modelBuilder.Entity("UserGroups_UserRules", b =>
-                {
                     b.Property<int>("UserGroupId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserRuleId")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("UserGroupId", "UserRuleId");
+                    b.HasIndex("UserGroupId");
 
-                    b.HasIndex("UserRuleId");
-
-                    b.ToTable("UserGroups_UserRules");
+                    b.ToTable("UserRules");
                 });
 
             modelBuilder.Entity("RA.Database.Models.ClockItemCategory", b =>
@@ -808,7 +790,7 @@ namespace RA.Database.Migrations
             modelBuilder.Entity("RA.Database.Models.Playlist", b =>
                 {
                     b.HasOne("RA.Database.Models.User", "User")
-                        .WithMany("Playlists")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -902,26 +884,22 @@ namespace RA.Database.Migrations
 
             modelBuilder.Entity("RA.Database.Models.User", b =>
                 {
-                    b.HasOne("RA.Database.Models.UserGroup", null)
+                    b.HasOne("RA.Database.Models.UserGroup", "UserGroup")
                         .WithMany("Users")
                         .HasForeignKey("UserGroupId");
+
+                    b.Navigation("UserGroup");
                 });
 
-            modelBuilder.Entity("UserGroups_UserRules", b =>
+            modelBuilder.Entity("RA.Database.Models.UserGroupRule", b =>
                 {
-                    b.HasOne("RA.Database.Models.UserGroup", null)
-                        .WithMany()
+                    b.HasOne("RA.Database.Models.UserGroup", "UserGroup")
+                        .WithMany("Rules")
                         .HasForeignKey("UserGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_UserGroupsUserRules_UserGroupId");
+                        .IsRequired();
 
-                    b.HasOne("RA.Database.Models.UserRule", null)
-                        .WithMany()
-                        .HasForeignKey("UserRuleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_UserGroupsUserRules_UserRuleId");
+                    b.Navigation("UserGroup");
                 });
 
             modelBuilder.Entity("RA.Database.Models.ClockItemCategory", b =>
@@ -999,13 +977,10 @@ namespace RA.Database.Migrations
                     b.Navigation("TrackTags");
                 });
 
-            modelBuilder.Entity("RA.Database.Models.User", b =>
-                {
-                    b.Navigation("Playlists");
-                });
-
             modelBuilder.Entity("RA.Database.Models.UserGroup", b =>
                 {
+                    b.Navigation("Rules");
+
                     b.Navigation("Users");
                 });
 

@@ -31,7 +31,7 @@ namespace RA.Database
         public DbSet<TrackTag> TrackTags { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
-        public DbSet<UserRule> UserRules { get; set; }
+        public DbSet<UserGroupRule> UserRules { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
@@ -44,8 +44,6 @@ namespace RA.Database
             modelBuilder.ApplyConfiguration(new TrackConfig());
             modelBuilder.ApplyConfiguration(new ClockTemplateConfig());
             modelBuilder.ApplyConfiguration(new CategoryConfig());
-            modelBuilder.ApplyConfiguration(new UserGroupConfig());
-            modelBuilder.ApplyConfiguration(new UserRuleConfig());
             modelBuilder.ApplyConfiguration(new TrackTagConfig());
             modelBuilder.ApplyConfiguration(new PlaylistConfig());
             modelBuilder.ApplyConfiguration(new ClockItemConfig());

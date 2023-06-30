@@ -24,5 +24,14 @@ namespace RA.UI.StationManagement
         {
             InitializeComponent();
         }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as AuthViewModel;
+            if (vm == null) return;
+            var passwordBox = sender as PasswordBox;
+            if(passwordBox == null) return; 
+            vm.Password = passwordBox.Password;
+        }
     }
 }

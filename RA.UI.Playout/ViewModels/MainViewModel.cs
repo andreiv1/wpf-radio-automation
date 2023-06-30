@@ -23,6 +23,7 @@ namespace RA.UI.Playout.ViewModels
             MediaItemsVm = mediaItemsVm;
             mediaItemsVm.MainVm = this;
             playlistVm.MainVm = this;
+            nowPlayingVm.PlaylistVm = playlistVm;
         }
 
        

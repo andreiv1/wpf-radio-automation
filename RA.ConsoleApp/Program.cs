@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using RA.DAL;
+using RA.DAL.Interfaces;
 using RA.Database;
 using RA.Database.Models;
 using RA.DTO;
-using RA.Logic.PlanningLogic;
+using RA.Logic.Planning;
 
 namespace RA.ConsoleApp
 {
@@ -27,40 +28,28 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
-            //TestPlaylistGenerator();
-            //SchedulesPlannedService schedulesPlannedService = new SchedulesPlannedService(dbFactory);
-            //_ = schedulesPlannedService.AddPlannedSchedule(new SchedulePlannedDTO()
-            //{
-            //    StartDate = new DateTime(2023, 6, 9),
-            //    Type = SchedulePlannedType.OneTime,
-            //    Template = new TemplateDTO("") { Id = 1}
+            IUsersService usersService = new UsersService(dbFactory);
 
-            //});
-            //_ = schedulesPlannedService.GetPlannedSchedulesOverviewAsync(DateTime.Now.AddDays(-20).Date,DateTime.Now.Date);
+            var result = usersService.AddUser(new UserDTO
+            {
+                Username = "andrei",
+                Password = "andrei",
+                FullName = "Andrei",
+                GroupId = 1
+            });
+
+            result.Wait();
+
+            Console.WriteLine($"CanAddUser={result.Result}");
+
+            var result2 = usersService.CanUserLogIn("andrei", "andrei");
+
+            Console.WriteLine($"CanUserLogIn={result2.Result}");
 
 
-            //TagsService tagsService = new TagsService(dbFactory);
-            //_ = tagsService.AddTagValue("Language", "French");
-            var db = dbFactory.CreateDbContext();
-            var query = from t in db.Tracks
-                        select t;
-            var tracks = query.ToList();
         }
 
-       static void TestPlaylistGenerator()
-        {
-            IPlaylistGenerator playlistGenerator = new PlaylistGenerator(
-                new PlaylistsService(dbFactory),
-                new TracksService(dbFactory),
-                new ClocksService(dbFactory),
-                new TemplatesService(dbFactory),
-                new SchedulesService(new SchedulesDefaultService(dbFactory),
-                new SchedulesPlannedService(dbFactory))
-                );
-                ;
-
-            var playlist = playlistGenerator.GeneratePlaylistForDate(new DateTime(2023,6,9));
-        }
+      
         
     }
 }

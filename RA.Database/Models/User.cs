@@ -21,8 +21,6 @@ namespace RA.Database.Models
         [Required]
         [MaxLength(50)]
         public String FullName { get; set; }
-        public DateTime DateAdded { get; set; }
-        public DateTime DateModified { get; set; }
-        public ICollection<Playlist> Playlists { get; set; }
+        public UserGroup UserGroup { get; set; }
     }
 }

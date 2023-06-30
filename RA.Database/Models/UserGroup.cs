@@ -13,6 +13,6 @@ namespace RA.Database.Models
         [MaxLength(100)]
         public String Name { get; set; }
         public ICollection<User> Users { get; set; }
-        public ICollection<UserRule> Rules { get; set; }
+        public ICollection<UserGroupRule> Rules { get; set; }
     }
 }

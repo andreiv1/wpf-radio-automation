@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using RA.Logic;
-using RA.Logic.TrackFileLogic;
+using RA.Logic.Tracks;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
@@ -149,13 +149,13 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
   
                             switch (processingTrack.Status)
                             {
-                                case Logic.TrackFileLogic.Enums.ProcessingTrackStatus.OK:
+                                case Logic.Tracks.Enums.ProcessingTrackStatus.OK:
                                     Model.ValidItems++;
                                     break;
-                                case Logic.TrackFileLogic.Enums.ProcessingTrackStatus.FAILED:
+                                case Logic.Tracks.Enums.ProcessingTrackStatus.FAILED:
                                     Model.InvalidItems++;
                                     break;
-                                case Logic.TrackFileLogic.Enums.ProcessingTrackStatus.WARNING:
+                                case Logic.Tracks.Enums.ProcessingTrackStatus.WARNING:
                                     Model.WarningItems++;
                                     break;
                             }

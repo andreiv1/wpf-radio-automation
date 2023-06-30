@@ -27,7 +27,7 @@ namespace RA.UI.Playout.ViewModels.Components
 
         [ObservableProperty]
         private IPlayerItem? selectedPlaylistItem;
-        public MainViewModel MainVm { get; set; }
+        public MainViewModel? MainVm { get; set; }
         public ObservableCollection<IPlayerItem> PlayerItems { get; } = new();
 
         #region Constructor
@@ -97,7 +97,6 @@ namespace RA.UI.Playout.ViewModels.Components
                 playbackQueue.UpdateETAs(null);
             }
         }
-
         public void PlaybackRemoveItem(IPlayerItem playerItem)
         {
             playbackQueue.RemoveItem(playerItem);
@@ -120,7 +119,8 @@ namespace RA.UI.Playout.ViewModels.Components
             PlayerItems.Remove(playerItem);
             PlayerItems.Insert(index, playerItem);
             SelectedPlaylistItem = PlayerItems.ElementAt(index);
-            playbackQueue.UpdateETAs(MainVm.NowPlayingVm.RemainingNow ?? null);
+            if(MainVm != null)
+                playbackQueue.UpdateETAs(MainVm.NowPlayingVm.RemainingNow ?? null);
         }
 
         public void PlaybackClearItems()
@@ -151,13 +151,14 @@ namespace RA.UI.Playout.ViewModels.Components
             }
         }
 
-        private CancellationTokenSource cancellationTokenSource;
+        private CancellationTokenSource? cancellationTokenSource = null;
         private void CalculateRemaining()
         {
             if (cancellationTokenSource != null)
             {
-                cancellationTokenSource.Cancel();
-                cancellationTokenSource.Dispose();
+                cancellationTokenSource?.Cancel();
+                cancellationTokenSource?.Dispose();
+                cancellationTokenSource = null;
             }
 
             cancellationTokenSource = new CancellationTokenSource();
@@ -172,8 +173,9 @@ namespace RA.UI.Playout.ViewModels.Components
 
                 if (playbackQueue.NowPlaying != playerItemNow)
                 {
-                    cancellationTokenSource.Cancel();
-                    cancellationTokenSource.Dispose();
+                    cancellationTokenSource?.Cancel();
+                    cancellationTokenSource?.Dispose();
+                    cancellationTokenSource = null;
                     return;
                 }
 
@@ -217,6 +219,15 @@ namespace RA.UI.Playout.ViewModels.Components
         private void Restart()
         {
 
+        }
+
+        [RelayCommand]
+        private void Seek(TimeSpan[] param)
+        {
+            TimeSpan position = param[0];
+            TimeSpan remaining = param[1];
+            playbackQueue.Seek(position);
+            playbackQueue.UpdateETAs(remaining);
         }
 
         [RelayCommand]

@@ -7,13 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="PlanningLogic\Exceptions\**" />
-    <EmbeddedResource Remove="PlanningLogic\Exceptions\**" />
-    <None Remove="PlanningLogic\Exceptions\**" />
+    <Compile Remove="Planning\Exceptions\**" />
+    <EmbeddedResource Remove="Planning\Exceptions\**" />
+    <None Remove="Planning\Exceptions\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="TrackFileLogic\TrackFilesImporter.cs" />
+    <Compile Remove="Tracks\TrackFilesImporter.cs" />
   </ItemGroup>
 
   <ItemGroup>

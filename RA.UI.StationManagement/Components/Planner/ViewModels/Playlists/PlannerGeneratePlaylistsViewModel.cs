@@ -11,7 +11,7 @@ using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Playlists.Models;
 using RA.UI.Core.Services;
 using RA.DAL;
-using RA.Logic.PlanningLogic;
+using RA.Logic.Planning;
 using RA.DTO;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
