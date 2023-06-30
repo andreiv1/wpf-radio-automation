@@ -33,5 +33,6 @@ namespace RA.UI.StationManagement
             if(passwordBox == null) return; 
             vm.Password = passwordBox.Password;
         }
+        
     }
 }

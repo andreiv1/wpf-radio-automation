@@ -11,6 +11,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using RA.UI.Core.Shared;
 
 namespace RA.UI.StationManagement
 {
@@ -20,7 +21,7 @@ namespace RA.UI.StationManagement
 
         public App()
         {
-            License();
+            SyncfusionLicense.Register();
             this.host = CreateHostBuilder()
                 .Build();    
         }
@@ -48,7 +49,7 @@ namespace RA.UI.StationManagement
             var windowService = host.Services.GetRequiredService<IWindowService>();
             var dispatcherService = host.Services.GetRequiredService<IDispatcherService>();
 
-            SplashScreenWindow splashScreen = new SplashScreenWindow();
+            var splashScreen = new SplashScreenWindow();
             splashScreen.Show();
 
             var loadingTask = Task.Run(async () =>
@@ -71,9 +72,6 @@ namespace RA.UI.StationManagement
             await host.StopAsync();
             base.OnExit(e);
         }
-        private void License()
-        {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTc3ODYwNUAzMjMxMmUzMTJlMzMzNWc2NlM4V1ZTSm9xU0htNmhzSE1GZDBicktpMWZKY1VoaHdMb3pSaWhmclU9");
-        }
+        
     }
 }

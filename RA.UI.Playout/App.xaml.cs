@@ -5,13 +5,9 @@ using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.Themes;
 using RA.UI.Playout.HostBuilders;
 using RA.UI.Playout.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using RA.UI.Core.Shared;
 
 namespace RA.UI.Playout
 {
@@ -21,7 +17,7 @@ namespace RA.UI.Playout
 
         public App()
         {
-            License();
+            SyncfusionLicense.Register();
             this.host = CreateHostBuilder()
                 .Build();
         }
@@ -115,11 +111,6 @@ namespace RA.UI.Playout
         {
             await host.StopAsync();
             base.OnExit(e);
-        }
-
-        private void License()
-        {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTc3ODYwNUAzMjMxMmUzMTJlMzMzNWc2NlM4V1ZTSm9xU0htNmhzSE1GZDBicktpMWZKY1VoaHdMb3pSaWhmclU9");
         }
     }
 }

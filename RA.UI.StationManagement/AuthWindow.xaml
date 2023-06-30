@@ -4,20 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
-        xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:stationmanagement="clr-namespace:RA.UI.StationManagement" d:DataContext="{d:DesignInstance Type=stationmanagement:AuthViewModel}"
-                 mc:Ignorable="d"
-        Title="RA | Authentification" Icon="/Resources/icon.ico"
-                 Height="200" Width="300" ResizeMode="NoResize" 
-                 WindowStartupLocation="CenterScreen">
-    <Grid Margin="15">
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:stationmanagement="clr-namespace:RA.UI.StationManagement" 
+        d:DataContext="{d:DesignInstance Type=stationmanagement:AuthViewModel}"
+        mc:Ignorable="d"
+        Title="RA | Authentication" Icon="/Resources/icon.ico"
+        Height="200" Width="350" ResizeMode="NoResize" TitleBarHeight="1"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" HorizontalAlignment="Left"
+        <TextBlock Text="RA | Authentication" Grid.Row="0" FontSize="20" 
+                   FontWeight="DemiBold" HorizontalAlignment="Center"
+                   Margin="0,0,0,20"/>
+        <TextBlock Grid.Row="1" HorizontalAlignment="Left"
+                   Margin="0,0,0,5"
                    Text="Please enter your credentials:"/>
-        <Grid Grid.Row="1"
+        <Grid Grid.Row="2"
             VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
@@ -42,7 +48,7 @@
                          PasswordChanged="PasswordBox_PasswordChanged"/>
         </Grid>
 
-        <syncfusion:ButtonAdv Grid.Row="2"
+        <syncfusion:ButtonAdv Grid.Row="3"
             Label="Log in" Width="100" HorizontalAlignment="Right" 
                                   SmallIcon="{StaticResource DoneIcon}"
                                   Command="{Binding LogInCommand}"/>

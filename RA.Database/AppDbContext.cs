@@ -54,6 +54,13 @@ namespace RA.Database
                 entity.ToView("CategoriesHierarchy");
             });
 
+            modelBuilder.Entity<Category>().HasData(
+                new Category(){Id = 1, Name = "Music",Color = "#292928"},
+                new Category(){Id = 2, Name = "Station ID",Color = "#f91212"},
+                new Category(){Id = 3, Name = "Commercials",Color = "#0ac720"},
+                new Category(){Id = 4, Name = "Shows",Color = "#d016f5"},
+                new Category(){Id = 5, Name = "News",Color="#001dd9"}
+            );
             modelBuilder.Entity<TagCategory>().HasData(
                 new TagCategory { Id = 1, Name = "Genre", IsBuiltIn = true },
                 new TagCategory { Id = 2, Name = "Language", IsBuiltIn = true },
