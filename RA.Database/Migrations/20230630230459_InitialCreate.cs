@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace RA.Database.Migrations
 {
     /// <inheritdoc />
@@ -21,9 +23,9 @@ namespace RA.Database.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
+                    Description = table.Column<string>(type: "varchar(1500)", maxLength: 1500, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -38,12 +40,12 @@ namespace RA.Database.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
+                    Description = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ParentId = table.Column<int>(type: "int", nullable: true),
-                    Color = table.Column<string>(type: "longtext", nullable: true)
+                    Color = table.Column<string>(type: "varchar(7)", maxLength: 7, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -63,31 +65,12 @@ namespace RA.Database.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clocks", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Events",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    Command = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    EstimatedDuration = table.Column<TimeSpan>(type: "time(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Events", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -98,7 +81,9 @@ namespace RA.Database.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Name = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -112,8 +97,9 @@ namespace RA.Database.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsBuiltIn = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -127,7 +113,7 @@ namespace RA.Database.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -142,23 +128,24 @@ namespace RA.Database.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Type = table.Column<sbyte>(type: "tinyint", nullable: false),
-                    Status = table.Column<sbyte>(type: "tinyint", nullable: false, defaultValue: (sbyte)1),
-                    Title = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Duration = table.Column<double>(type: "double(11,5)", nullable: false),
+                    StartCue = table.Column<double>(type: "double(11,5)", nullable: true),
+                    NextCue = table.Column<double>(type: "double(11,5)", nullable: true),
+                    EndCue = table.Column<double>(type: "double(11,5)", nullable: true),
                     ReleaseDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    Album = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
+                    Album = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Comments = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Lyrics = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    FilePath = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
+                    FilePath = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ImageName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Bpm = table.Column<int>(type: "int(3)", nullable: true),
+                    Bpm = table.Column<int>(type: "int", nullable: true),
                     ISRC = table.Column<string>(type: "varchar(55)", maxLength: 55, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DateAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -177,7 +164,7 @@ namespace RA.Database.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -187,27 +174,12 @@ namespace RA.Database.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "UserRules",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    RuleName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRules", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "TagValues",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TagCategoryId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -230,7 +202,7 @@ namespace RA.Database.Migrations
                     ClockId = table.Column<int>(type: "int", nullable: false),
                     TemplateId = table.Column<int>(type: "int", nullable: false),
                     StartTime = table.Column<TimeSpan>(type: "time(6)", nullable: false),
-                    ClockSpan = table.Column<int>(type: "int", nullable: false)
+                    ClockSpan = table.Column<int>(type: "int", maxLength: 2, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -285,10 +257,19 @@ namespace RA.Database.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     Type = table.Column<int>(type: "int", nullable: false),
                     Frequency = table.Column<int>(type: "int", nullable: true),
-                    TemplateId = table.Column<int>(type: "int", nullable: true)
+                    TemplateId = table.Column<int>(type: "int", nullable: false),
+                    IsMonday = table.Column<bool>(type: "tinyint(1)", nullable: true),
+                    IsTuesday = table.Column<bool>(type: "tinyint(1)", nullable: true),
+                    IsWednesday = table.Column<bool>(type: "tinyint(1)", nullable: true),
+                    IsThursday = table.Column<bool>(type: "tinyint(1)", nullable: true),
+                    IsFriday = table.Column<bool>(type: "tinyint(1)", nullable: true),
+                    IsSaturday = table.Column<bool>(type: "tinyint(1)", nullable: true),
+                    IsSunday = table.Column<bool>(type: "tinyint(1)", nullable: true),
+                    Name = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -297,7 +278,8 @@ namespace RA.Database.Migrations
                         name: "FK_SchedulesPlanned_Templates_TemplateId",
                         column: x => x.TemplateId,
                         principalTable: "Templates",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -359,10 +341,25 @@ namespace RA.Database.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     OrderIndex = table.Column<int>(type: "int", nullable: false),
+                    ClockId = table.Column<int>(type: "int", nullable: false),
+                    ClockItemEventId = table.Column<int>(type: "int", nullable: true),
+                    EventOrderIndex = table.Column<int>(type: "int", nullable: true),
+                    ClockItemType = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: true),
-                    TrackId = table.Column<int>(type: "int", nullable: true),
-                    ClockId = table.Column<int>(type: "int", nullable: true),
-                    EventId = table.Column<int>(type: "int", nullable: true)
+                    MinDuration = table.Column<TimeSpan>(type: "time(6)", nullable: true),
+                    MaxDuration = table.Column<TimeSpan>(type: "time(6)", nullable: true),
+                    ArtistSeparation = table.Column<int>(type: "int", nullable: true),
+                    TitleSeparation = table.Column<int>(type: "int", nullable: true),
+                    TrackSeparation = table.Column<int>(type: "int", nullable: true),
+                    MinReleaseDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    MaxReleaseDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    IsFiller = table.Column<bool>(type: "tinyint(1)", nullable: true),
+                    EventType = table.Column<int>(type: "int", nullable: true),
+                    EventLabel = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    EstimatedEventStart = table.Column<TimeSpan>(type: "time(6)", nullable: true),
+                    EstimatedEventDuration = table.Column<TimeSpan>(type: "time(6)", nullable: true),
+                    TrackId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -373,20 +370,22 @@ namespace RA.Database.Migrations
                         principalTable: "Categories",
                         principalColumn: "Id");
                     table.ForeignKey(
+                        name: "FK_ClockItems_ClockItems_ClockItemEventId",
+                        column: x => x.ClockItemEventId,
+                        principalTable: "ClockItems",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_ClockItems_Clocks_ClockId",
                         column: x => x.ClockId,
                         principalTable: "Clocks",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ClockItems_Events_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Events",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ClockItems_Tracks_TrackId",
                         column: x => x.TrackId,
                         principalTable: "Tracks",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -396,16 +395,16 @@ namespace RA.Database.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    TrackType = table.Column<sbyte>(type: "tinyint(4)", nullable: false),
+                    TrackType = table.Column<int>(type: "int", nullable: false),
                     DatePlayed = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Artists = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Title = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
+                    Title = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Length = table.Column<TimeSpan>(type: "time(6)", nullable: false),
+                    LengthPlayed = table.Column<TimeSpan>(type: "time(6)", nullable: false),
                     ISRC = table.Column<string>(type: "varchar(55)", maxLength: 55, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Category = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                    CategoryName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TrackId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -421,20 +420,39 @@ namespace RA.Database.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "UserGroupRules",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    RuleValue = table.Column<int>(type: "int", nullable: false),
+                    UserGroupId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserGroupRules", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserGroupRules_UserGroups_UserGroupId",
+                        column: x => x.UserGroupId,
+                        principalTable: "UserGroups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Username = table.Column<string>(type: "longtext", nullable: true)
+                    Username = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Password = table.Column<string>(type: "longtext", nullable: true)
+                    Password = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    FullName = table.Column<string>(type: "longtext", nullable: true)
+                    FullName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    DateAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UserGroupId = table.Column<int>(type: "int", nullable: true)
+                    UserGroupId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -443,30 +461,6 @@ namespace RA.Database.Migrations
                         name: "FK_Users_UserGroups_UserGroupId",
                         column: x => x.UserGroupId,
                         principalTable: "UserGroups",
-                        principalColumn: "Id");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "UserGroups_UserRules",
-                columns: table => new
-                {
-                    UserGroupId = table.Column<int>(type: "int", nullable: false),
-                    UserRuleId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserGroups_UserRules", x => new { x.UserGroupId, x.UserRuleId });
-                    table.ForeignKey(
-                        name: "FK_UserGroupsUserRules_UserGroupId",
-                        column: x => x.UserGroupId,
-                        principalTable: "UserGroups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserGroupsUserRules_UserRuleId",
-                        column: x => x.UserRuleId,
-                        principalTable: "UserRules",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -492,6 +486,31 @@ namespace RA.Database.Migrations
                         name: "FK_Track_Tags_Tracks_TrackId",
                         column: x => x.TrackId,
                         principalTable: "Tracks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ClockItemsCategory_Tags",
+                columns: table => new
+                {
+                    ClockItemCategoryId = table.Column<int>(type: "int", nullable: false),
+                    TagValueId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClockItemsCategory_Tags", x => new { x.ClockItemCategoryId, x.TagValueId });
+                    table.ForeignKey(
+                        name: "FK_ClockItemsCategory_Tags_ClockItems_ClockItemCategoryId",
+                        column: x => x.ClockItemCategoryId,
+                        principalTable: "ClockItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ClockItemsCategory_Tags_TagValues_TagValueId",
+                        column: x => x.TagValueId,
+                        principalTable: "TagValues",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -526,7 +545,7 @@ namespace RA.Database.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     ETA = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Length = table.Column<double>(type: "double", nullable: false),
+                    Length = table.Column<double>(type: "double(11,5)", nullable: false),
                     TrackId = table.Column<int>(type: "int", nullable: true),
                     PlaylistId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -546,6 +565,53 @@ namespace RA.Database.Migrations
                         principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.InsertData(
+                table: "TagCategories",
+                columns: new[] { "Id", "IsBuiltIn", "Name" },
+                values: new object[,]
+                {
+                    { 1, true, "Genre" },
+                    { 2, true, "Language" },
+                    { 3, true, "Mood" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserGroups",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { 1, "Administrator" });
+
+            migrationBuilder.InsertData(
+                table: "TagValues",
+                columns: new[] { "Id", "Name", "TagCategoryId" },
+                values: new object[,]
+                {
+                    { 1, "English", 2 },
+                    { 2, "French", 2 },
+                    { 3, "Romanian", 2 },
+                    { 4, "Happy", 3 },
+                    { 5, "Sad", 3 },
+                    { 6, "Energetic", 3 },
+                    { 7, "Rock", 1 },
+                    { 8, "Pop", 1 },
+                    { 9, "Dance", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserGroupRules",
+                columns: new[] { "Id", "RuleValue", "UserGroupId" },
+                values: new object[,]
+                {
+                    { 1, 0, 1 },
+                    { 2, 1, 1 },
+                    { 3, 2, 1 },
+                    { 4, 3, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "FullName", "Password", "UserGroupId", "Username" },
+                values: new object[] { 1, "Andrei", "$2a$11$SWq88W6Q77w7sanz7HrxbexnTN0nLq8XB70lLFrSDQbddPzmnQdIK", 1, "andrei" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Artists_Tracks_TrackId",
@@ -573,15 +639,19 @@ namespace RA.Database.Migrations
                 column: "ClockId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClockItems_EventId",
+                name: "IX_ClockItems_ClockItemEventId",
                 table: "ClockItems",
-                column: "EventId",
-                unique: true);
+                column: "ClockItemEventId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClockItems_TrackId",
                 table: "ClockItems",
                 column: "TrackId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClockItemsCategory_Tags_TagValueId",
+                table: "ClockItemsCategory_Tags",
+                column: "TagValueId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clocks_Templates_TemplateId",
@@ -634,9 +704,14 @@ namespace RA.Database.Migrations
                 column: "TrackId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserGroups_UserRules_UserRuleId",
-                table: "UserGroups_UserRules",
-                column: "UserRuleId");
+                name: "IX_Tracks_FilePath",
+                table: "Tracks",
+                column: "FilePath");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserGroupRules_UserGroupId",
+                table: "UserGroupRules",
+                column: "UserGroupId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_UserGroupId",
@@ -654,7 +729,7 @@ namespace RA.Database.Migrations
                 name: "Categories_Tracks");
 
             migrationBuilder.DropTable(
-                name: "ClockItems");
+                name: "ClockItemsCategory_Tags");
 
             migrationBuilder.DropTable(
                 name: "Clocks_Templates");
@@ -675,19 +750,13 @@ namespace RA.Database.Migrations
                 name: "TrackHistory");
 
             migrationBuilder.DropTable(
-                name: "UserGroups_UserRules");
+                name: "UserGroupRules");
 
             migrationBuilder.DropTable(
                 name: "Artists");
 
             migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Events");
-
-            migrationBuilder.DropTable(
-                name: "Clocks");
+                name: "ClockItems");
 
             migrationBuilder.DropTable(
                 name: "Playlists");
@@ -702,10 +771,13 @@ namespace RA.Database.Migrations
                 name: "TagValues");
 
             migrationBuilder.DropTable(
-                name: "Tracks");
+                name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "UserRules");
+                name: "Clocks");
+
+            migrationBuilder.DropTable(
+                name: "Tracks");
 
             migrationBuilder.DropTable(
                 name: "Users");

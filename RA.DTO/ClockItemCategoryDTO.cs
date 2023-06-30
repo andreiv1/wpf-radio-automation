@@ -16,7 +16,6 @@ namespace RA.DTO
         public int? ArtistSeparation { get; set; }
         public int? TitleSeparation { get; set; }
         public int? TrackSeparation { get; set; }
-
         public int? MinBpm { get; set; }
         public int? MaxBpm { get; set; }
         public TimeSpan? MinDuration { get; set; }
@@ -38,8 +37,6 @@ namespace RA.DTO
                 ArtistSeparation = entity.ArtistSeparation,
                 TitleSeparation = entity.TitleSeparation,
                 TrackSeparation = entity.TrackSeparation,
-                MinBpm = entity.MinBpm,
-                MaxBpm = entity.MaxBpm,
                 MinDuration = entity.MinDuration,
                 MaxDuration = entity.MaxDuration,
                 MinReleaseDate = entity.MinReleaseDate,
@@ -62,8 +59,7 @@ namespace RA.DTO
                 ArtistSeparation= dto.ArtistSeparation,
                 TitleSeparation= dto.TitleSeparation,
                 TrackSeparation= dto.TrackSeparation,
-                MinBpm= dto.MinBpm,
-                MaxBpm= dto.MaxBpm,
+
                 MinDuration = dto.MinDuration,
                 MaxDuration = dto.MaxDuration,
                 MinReleaseDate = dto.MinReleaseDate,

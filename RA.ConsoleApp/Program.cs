@@ -11,10 +11,10 @@ namespace RA.ConsoleApp
 {
     public class DbContextFactory : IDbContextFactory<AppDbContext>
     {
+        private static String connString = "server=localhost;Port=3306;database=raprod;user=root;password=";
         public AppDbContext CreateDbContext()
         {
             DbContextOptionsBuilder<AppDbContext> optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            String connString = "server=localhost;Port=3306;database=raprod;user=root;password=";
             DbContextOptions<AppDbContext> dbContextOptions = new DbContextOptions<AppDbContext>();
 
             dbContextOptions = optionsBuilder.UseMySql(connString, ServerVersion.AutoDetect(connString))

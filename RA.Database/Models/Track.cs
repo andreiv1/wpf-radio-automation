@@ -32,13 +32,11 @@ namespace RA.Database.Models
 
         [Column(TypeName = "double(11,5)")]
         public double? EndCue { get; set; }
-
         public DateTime? ReleaseDate { get; set; }
 
         [MaxLength(200)]
         public String Album { get; set; }
         public String Comments { get; set; }
-        public String Lyrics { get; set; }
 
         [MaxLength(500)]
         public String FilePath { get; set; }
@@ -51,9 +49,7 @@ namespace RA.Database.Models
         public String ISRC { get; set; }
         public DateTime DateAdded { get; set; } = DateTime.Now;
         public DateTime? DateModified { get; set; }
-
         public DateTime? DateDeleted { get; set; }
-
         public ICollection<Category> Categories { get; set; }
         public ICollection<ArtistTrack> TrackArtists { get; set; }
         public ICollection<TrackTag> TrackTags { get; set; }

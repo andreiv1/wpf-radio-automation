@@ -19,6 +19,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
     {
         private readonly IWindowService windowService;
         private readonly IDispatcherService dispatcherService;
+        private readonly IFileBrowserDialogService fileBrowserDialogService;
         private readonly ITracksService tracksService;
 
         #region Properties
@@ -40,17 +41,17 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 
         #endregion
 
-        #region Constructor
-
-        public AllMediaItemsViewModel(IWindowService windowService, IDispatcherService dispatcherService,
-            ITracksService tracksService)
+        public AllMediaItemsViewModel(IWindowService windowService,
+                                      IDispatcherService dispatcherService,
+                                      IFileBrowserDialogService fileBrowserDialogService,
+                                      ITracksService tracksService)
         {
             this.windowService = windowService;
             this.dispatcherService = dispatcherService;
+            this.fileBrowserDialogService = fileBrowserDialogService;
             this.tracksService = tracksService;
         }
 
-        #endregion
 
         public async Task LoadTracks(int skip, int take)
         {
@@ -68,7 +69,9 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         [RelayCommand]
         private void AddItem()
         {
-            throw new NotImplementedException();
+            fileBrowserDialogService.AddExtension = true;
+            fileBrowserDialogService.Filter = "FLAC files (*.flac)|*.flac|Ogg files (*.ogg)|*.ogg|MP3 files (*.mp3)|*.mp3|WAV files (*.wav)|*.wav|All files (*.*)|*.*";
+            fileBrowserDialogService.ShowDialog();
         }
 
 

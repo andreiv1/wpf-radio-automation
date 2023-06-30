@@ -185,7 +185,7 @@ namespace RA.Database.Migrations
 
                     b.HasIndex("TagValueId");
 
-                    b.ToTable("ClockItemCategory_Tags");
+                    b.ToTable("ClockItemsCategory_Tags");
                 });
 
             modelBuilder.Entity("RA.Database.Models.ClockTemplate", b =>
@@ -376,6 +376,26 @@ namespace RA.Database.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TagCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsBuiltIn = true,
+                            Name = "Genre"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsBuiltIn = true,
+                            Name = "Language"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsBuiltIn = true,
+                            Name = "Mood"
+                        });
                 });
 
             modelBuilder.Entity("RA.Database.Models.TagValue", b =>
@@ -396,6 +416,62 @@ namespace RA.Database.Migrations
                     b.HasIndex("TagCategoryId");
 
                     b.ToTable("TagValues");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "English",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "French",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Romanian",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Happy",
+                            TagCategoryId = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Sad",
+                            TagCategoryId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Energetic",
+                            TagCategoryId = 3
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Rock",
+                            TagCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Pop",
+                            TagCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Dance",
+                            TagCategoryId = 1
+                        });
                 });
 
             modelBuilder.Entity("RA.Database.Models.Template", b =>
@@ -456,9 +532,6 @@ namespace RA.Database.Migrations
                     b.Property<string>("ImageName")
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
-
-                    b.Property<string>("Lyrics")
-                        .HasColumnType("longtext");
 
                     b.Property<double?>("NextCue")
                         .HasColumnType("double(11,5)");
@@ -559,7 +632,7 @@ namespace RA.Database.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int?>("UserGroupId")
+                    b.Property<int>("UserGroupId")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
@@ -572,6 +645,16 @@ namespace RA.Database.Migrations
                     b.HasIndex("UserGroupId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FullName = "Andrei",
+                            Password = "$2a$11$SWq88W6Q77w7sanz7HrxbexnTN0nLq8XB70lLFrSDQbddPzmnQdIK",
+                            UserGroupId = 1,
+                            Username = "andrei"
+                        });
                 });
 
             modelBuilder.Entity("RA.Database.Models.UserGroup", b =>
@@ -587,6 +670,13 @@ namespace RA.Database.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserGroups");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Administrator"
+                        });
                 });
 
             modelBuilder.Entity("RA.Database.Models.UserGroupRule", b =>
@@ -605,7 +695,33 @@ namespace RA.Database.Migrations
 
                     b.HasIndex("UserGroupId");
 
-                    b.ToTable("UserRules");
+                    b.ToTable("UserGroupRules");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            RuleValue = 0,
+                            UserGroupId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            RuleValue = 1,
+                            UserGroupId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            RuleValue = 2,
+                            UserGroupId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            RuleValue = 3,
+                            UserGroupId = 1
+                        });
                 });
 
             modelBuilder.Entity("RA.Database.Models.ClockItemCategory", b =>
@@ -621,17 +737,11 @@ namespace RA.Database.Migrations
                     b.Property<bool>("IsFiller")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int?>("MaxBpm")
-                        .HasColumnType("int");
-
                     b.Property<TimeSpan?>("MaxDuration")
                         .HasColumnType("time(6)");
 
                     b.Property<DateTime?>("MaxReleaseDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<int?>("MinBpm")
-                        .HasColumnType("int");
 
                     b.Property<TimeSpan?>("MinDuration")
                         .HasColumnType("time(6)");
@@ -886,7 +996,9 @@ namespace RA.Database.Migrations
                 {
                     b.HasOne("RA.Database.Models.UserGroup", "UserGroup")
                         .WithMany("Users")
-                        .HasForeignKey("UserGroupId");
+                        .HasForeignKey("UserGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("UserGroup");
                 });

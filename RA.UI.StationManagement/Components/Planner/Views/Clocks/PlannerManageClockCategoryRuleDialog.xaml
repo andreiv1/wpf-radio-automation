@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:RA.UI.StationManagement.Components.Planner.View.Clocks"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:clocks="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.Clocks" d:DataContext="{d:DesignInstance Type=clocks:PlannerManageClockCategoryRuleViewModel}"
         mc:Ignorable="d"
-        Title="Insert rule from category" Height="700" Width="450" ResizeMode="NoResize" 
+        Title="Insert rule from category" Height="480" Width="450" ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen"
         >
     <Grid Margin="20">
@@ -84,25 +84,7 @@
                 IsChecked="{Binding ManageModel.ExcludeWithoutReleaseDate}"/>
             
             <!-- BPM -->
-            <Label Grid.Row="3" Grid.Column="0" Margin="0,10,0,0"
-                Content="BPM:" FontWeight="DemiBold"/>
-            <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,10,0,0" Orientation="Horizontal"  
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Left">
-                <TextBlock Text="from" VerticalAlignment="Center" Margin="0,0,5,0"/>
 
-                <syncfusion:IntegerTextBox Height="24" Width="110"
-                                   VerticalAlignment="Center" MinValue="0"
-                                   Value="{Binding ManageModel.MinBpm}"/>
-
-                <TextBlock Text="to" VerticalAlignment="Center" Margin="5,0,5,0"/>
-                <syncfusion:IntegerTextBox Height="24" Width="110"
-                                   VerticalAlignment="Center" MinValue="0"
-                                   Value="{Binding ManageModel.MaxBpm}"/>
-            </StackPanel>
-            <CheckBox  Grid.Row="4" Grid.Column="1" Margin="0,5,0,0"
-                VerticalAlignment="Center" Content='exclude items without "BPM" specified'
-                IsChecked="{Binding ManageModel.ExcludeWithoutBpm}"/>
             <!-- DURATION -->
             <Label Grid.Row="5" Grid.Column="0" Margin="0,10,0,0"
                 Content="Duration:" FontWeight="DemiBold"/>
@@ -175,9 +157,9 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <!--<RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>-->
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0"
@@ -187,7 +169,7 @@
                                     ItemsSource="{Binding Genres}" DefaultText="Any genre"
                                     DisplayMemberPath="Name"
                                     />
-            <Label Grid.Row="2" VerticalAlignment="Center"
+            <!--<Label Grid.Row="2" VerticalAlignment="Center"
                 Content="Language(s):" FontWeight="DemiBold"/>
             <syncfusion:ComboBoxAdv Grid.Row="3" VerticalAlignment="Center" MinHeight="50"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
@@ -201,7 +183,7 @@
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
                                     ItemsSource="{Binding Moods}" DefaultText="Any mood" 
                                     DisplayMemberPath="Name"
-                                    />
+                                    />-->
         </Grid>
 
         <StackPanel Grid.Row="4" Margin="0,0,0,5" VerticalAlignment="Bottom">

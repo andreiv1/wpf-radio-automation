@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RA.Database.Models
 {
-    [Table("ClockItemCategory_Tags")]
+    [Table("ClockItemsCategory_Tags")]
     public class ClockItemCategoryTag
     {
         public int ClockItemCategoryId { get; set; }

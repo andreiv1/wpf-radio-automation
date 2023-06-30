@@ -32,8 +32,9 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems
         {
         }
 
-        public ImportItemsFirstViewModel(IWindowService windowService, IFolderBrowserDialogService folderBrowserDialog, 
-            ICategoriesService categoriesService)
+        public ImportItemsFirstViewModel(IWindowService windowService,
+                                         IFolderBrowserDialogService folderBrowserDialog,
+                                         ICategoriesService categoriesService)
         {
             this.windowService = windowService;
             this.folderBrowserDialog = folderBrowserDialog;

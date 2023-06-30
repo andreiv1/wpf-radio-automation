@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +14,20 @@ namespace RA.Database
     {
         public AppDbContext CreateDbContext(string[] args)
         {
-            string connectionString = "server=localhost;Port=3306;database=ratest;user=root;password=";
-            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder
-                .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-                .EnableSensitiveDataLogging(true);
 
-            return new AppDbContext(optionsBuilder.Options);
+            DbContextOptionsBuilder<AppDbContext> optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json")
+               .Build();
+
+            string connString = configuration.GetConnectionString("mariadb");
+
+            DbContextOptions<AppDbContext> dbContextOptions = optionsBuilder.UseMySql(connString, ServerVersion.AutoDetect(connString))
+                .EnableSensitiveDataLogging(false)
+                .Options;
+            return new AppDbContext(dbContextOptions);
         }
     }
 }

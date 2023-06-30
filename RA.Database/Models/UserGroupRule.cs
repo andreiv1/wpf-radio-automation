@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace RA.Database.Models
         ACCESS_REPORTS,
         ACCESS_SETTINGS,
     }
+
+    [Table("UserGroupRules")]
     public class UserGroupRule : BaseModel
     {
         [Required]
@@ -23,5 +26,7 @@ namespace RA.Database.Models
 
         [Required]
         public UserGroup UserGroup { get; set; }
+
+        public int UserGroupId { get; set; }
     }
 }

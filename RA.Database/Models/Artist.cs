@@ -20,6 +20,5 @@ namespace RA.Database.Models
         public string Description { get; set; }
 
         public ICollection<ArtistTrack> ArtistTracks { get; set; }
-
     }
 }

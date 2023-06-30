@@ -11,8 +11,8 @@ using RA.Database;
 namespace RA.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230521172117_Track_FilePath_Index")]
-    partial class Track_FilePath_Index
+    [Migration("20230630230459_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,40 @@ namespace RA.Database.Migrations
                     b.HasIndex("TrackId");
 
                     b.ToTable("Categories_Tracks");
+                });
+
+            modelBuilder.Entity("RA.Database.Models.Abstract.ClockItemBase", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClockId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ClockItemEventId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClockItemType")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EventOrderIndex")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderIndex")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClockId");
+
+                    b.HasIndex("ClockItemEventId");
+
+                    b.ToTable("ClockItems");
+
+                    b.HasDiscriminator<int>("ClockItemType");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("RA.Database.Models.Artist", b =>
@@ -142,51 +176,19 @@ namespace RA.Database.Migrations
                     b.ToTable("Clocks");
                 });
 
-            modelBuilder.Entity("RA.Database.Models.ClockItem", b =>
+            modelBuilder.Entity("RA.Database.Models.ClockItemCategoryTag", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ClockItemCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ArtistSeparation")
+                    b.Property<int>("TagValueId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
+                    b.HasKey("ClockItemCategoryId", "TagValueId");
 
-                    b.Property<int?>("ClockId")
-                        .HasColumnType("int");
+                    b.HasIndex("TagValueId");
 
-                    b.Property<TimeSpan?>("EstimatedEventDuration")
-                        .HasColumnType("time(6)");
-
-                    b.Property<string>("EventLabel")
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("EventType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderIndex")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TitleSeparation")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TrackId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TrackSeparation")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("ClockId");
-
-                    b.HasIndex("TrackId");
-
-                    b.ToTable("ClockItems");
+                    b.ToTable("ClockItemsCategory_Tags");
                 });
 
             modelBuilder.Entity("RA.Database.Models.ClockTemplate", b =>
@@ -320,6 +322,27 @@ namespace RA.Database.Migrations
                     b.Property<int?>("Frequency")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("IsFriday")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool?>("IsMonday")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool?>("IsSaturday")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool?>("IsSunday")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool?>("IsThursday")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool?>("IsTuesday")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool?>("IsWednesday")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Name")
                         .HasMaxLength(300)
                         .HasColumnType("varchar(300)");
@@ -327,7 +350,7 @@ namespace RA.Database.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("TemplateId")
+                    b.Property<int>("TemplateId")
                         .HasColumnType("int");
 
                     b.Property<int>("Type")
@@ -356,6 +379,26 @@ namespace RA.Database.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TagCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsBuiltIn = true,
+                            Name = "Genre"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsBuiltIn = true,
+                            Name = "Language"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsBuiltIn = true,
+                            Name = "Mood"
+                        });
                 });
 
             modelBuilder.Entity("RA.Database.Models.TagValue", b =>
@@ -376,6 +419,62 @@ namespace RA.Database.Migrations
                     b.HasIndex("TagCategoryId");
 
                     b.ToTable("TagValues");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "English",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "French",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Romanian",
+                            TagCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Happy",
+                            TagCategoryId = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Sad",
+                            TagCategoryId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Energetic",
+                            TagCategoryId = 3
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Rock",
+                            TagCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Pop",
+                            TagCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Dance",
+                            TagCategoryId = 1
+                        });
                 });
 
             modelBuilder.Entity("RA.Database.Models.Template", b =>
@@ -408,8 +507,7 @@ namespace RA.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Comments")
-                        .HasMaxLength(2000)
-                        .HasColumnType("varchar(2000)");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime(6)");
@@ -421,6 +519,9 @@ namespace RA.Database.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<double>("Duration")
+                        .HasColumnType("double(11,5)");
+
+                    b.Property<double?>("EndCue")
                         .HasColumnType("double(11,5)");
 
                     b.Property<string>("FilePath")
@@ -435,12 +536,14 @@ namespace RA.Database.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<string>("Lyrics")
-                        .HasMaxLength(2000)
-                        .HasColumnType("varchar(2000)");
+                    b.Property<double?>("NextCue")
+                        .HasColumnType("double(11,5)");
 
                     b.Property<DateTime?>("ReleaseDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<double?>("StartCue")
+                        .HasColumnType("double(11,5)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -522,12 +625,6 @@ namespace RA.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DateAdded")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("DateModified")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -538,7 +635,7 @@ namespace RA.Database.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int?>("UserGroupId")
+                    b.Property<int>("UserGroupId")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
@@ -551,6 +648,16 @@ namespace RA.Database.Migrations
                     b.HasIndex("UserGroupId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FullName = "Andrei",
+                            Password = "$2a$11$SWq88W6Q77w7sanz7HrxbexnTN0nLq8XB70lLFrSDQbddPzmnQdIK",
+                            UserGroupId = 1,
+                            Username = "andrei"
+                        });
                 });
 
             modelBuilder.Entity("RA.Database.Models.UserGroup", b =>
@@ -566,37 +673,131 @@ namespace RA.Database.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserGroups");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Administrator"
+                        });
                 });
 
-            modelBuilder.Entity("RA.Database.Models.UserRule", b =>
+            modelBuilder.Entity("RA.Database.Models.UserGroupRule", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("RuleName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                    b.Property<int>("RuleValue")
+                        .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("UserRules");
-                });
-
-            modelBuilder.Entity("UserGroups_UserRules", b =>
-                {
                     b.Property<int>("UserGroupId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserRuleId")
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserGroupId");
+
+                    b.ToTable("UserGroupRules");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            RuleValue = 0,
+                            UserGroupId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            RuleValue = 1,
+                            UserGroupId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            RuleValue = 2,
+                            UserGroupId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            RuleValue = 3,
+                            UserGroupId = 1
+                        });
+                });
+
+            modelBuilder.Entity("RA.Database.Models.ClockItemCategory", b =>
+                {
+                    b.HasBaseType("RA.Database.Models.Abstract.ClockItemBase");
+
+                    b.Property<int?>("ArtistSeparation")
                         .HasColumnType("int");
 
-                    b.HasKey("UserGroupId", "UserRuleId");
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("UserRuleId");
+                    b.Property<bool>("IsFiller")
+                        .HasColumnType("tinyint(1)");
 
-                    b.ToTable("UserGroups_UserRules");
+                    b.Property<TimeSpan?>("MaxDuration")
+                        .HasColumnType("time(6)");
+
+                    b.Property<DateTime?>("MaxReleaseDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<TimeSpan?>("MinDuration")
+                        .HasColumnType("time(6)");
+
+                    b.Property<DateTime?>("MinReleaseDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("TitleSeparation")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TrackSeparation")
+                        .HasColumnType("int");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("ClockItems");
+
+                    b.HasDiscriminator().HasValue(1);
+                });
+
+            modelBuilder.Entity("RA.Database.Models.ClockItemEvent", b =>
+                {
+                    b.HasBaseType("RA.Database.Models.Abstract.ClockItemBase");
+
+                    b.Property<TimeSpan?>("EstimatedEventDuration")
+                        .HasColumnType("time(6)");
+
+                    b.Property<TimeSpan>("EstimatedEventStart")
+                        .HasColumnType("time(6)");
+
+                    b.Property<string>("EventLabel")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("EventType")
+                        .HasColumnType("int");
+
+                    b.ToTable("ClockItems");
+
+                    b.HasDiscriminator().HasValue(2);
+                });
+
+            modelBuilder.Entity("RA.Database.Models.ClockItemTrack", b =>
+                {
+                    b.HasBaseType("RA.Database.Models.Abstract.ClockItemBase");
+
+                    b.Property<int>("TrackId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("TrackId");
+
+                    b.ToTable("ClockItems");
+
+                    b.HasDiscriminator().HasValue(0);
                 });
 
             modelBuilder.Entity("Categories_Tracks", b =>
@@ -614,6 +815,23 @@ namespace RA.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_TrackCategories_TrackId");
+                });
+
+            modelBuilder.Entity("RA.Database.Models.Abstract.ClockItemBase", b =>
+                {
+                    b.HasOne("RA.Database.Models.Clock", "Clock")
+                        .WithMany("ClockItems")
+                        .HasForeignKey("ClockId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RA.Database.Models.ClockItemEvent", "ClockItemEvent")
+                        .WithMany()
+                        .HasForeignKey("ClockItemEventId");
+
+                    b.Navigation("Clock");
+
+                    b.Navigation("ClockItemEvent");
                 });
 
             modelBuilder.Entity("RA.Database.Models.ArtistTrack", b =>
@@ -644,25 +862,23 @@ namespace RA.Database.Migrations
                     b.Navigation("CategoryParent");
                 });
 
-            modelBuilder.Entity("RA.Database.Models.ClockItem", b =>
+            modelBuilder.Entity("RA.Database.Models.ClockItemCategoryTag", b =>
                 {
-                    b.HasOne("RA.Database.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
+                    b.HasOne("RA.Database.Models.ClockItemCategory", "ClockItemCategory")
+                        .WithMany("ClockItemCategoryTags")
+                        .HasForeignKey("ClockItemCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("RA.Database.Models.Clock", "Clock")
-                        .WithMany("ClockItems")
-                        .HasForeignKey("ClockId");
+                    b.HasOne("RA.Database.Models.TagValue", "TagValue")
+                        .WithMany("ClockItemsCategoryTags")
+                        .HasForeignKey("TagValueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("RA.Database.Models.Track", "Track")
-                        .WithMany()
-                        .HasForeignKey("TrackId");
+                    b.Navigation("ClockItemCategory");
 
-                    b.Navigation("Category");
-
-                    b.Navigation("Clock");
-
-                    b.Navigation("Track");
+                    b.Navigation("TagValue");
                 });
 
             modelBuilder.Entity("RA.Database.Models.ClockTemplate", b =>
@@ -687,7 +903,7 @@ namespace RA.Database.Migrations
             modelBuilder.Entity("RA.Database.Models.Playlist", b =>
                 {
                     b.HasOne("RA.Database.Models.User", "User")
-                        .WithMany("Playlists")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -731,9 +947,13 @@ namespace RA.Database.Migrations
 
             modelBuilder.Entity("RA.Database.Models.SchedulePlanned", b =>
                 {
-                    b.HasOne("RA.Database.Models.Template", null)
+                    b.HasOne("RA.Database.Models.Template", "Template")
                         .WithMany("PlannedSchedules")
-                        .HasForeignKey("TemplateId");
+                        .HasForeignKey("TemplateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Template");
                 });
 
             modelBuilder.Entity("RA.Database.Models.TagValue", b =>
@@ -777,26 +997,44 @@ namespace RA.Database.Migrations
 
             modelBuilder.Entity("RA.Database.Models.User", b =>
                 {
-                    b.HasOne("RA.Database.Models.UserGroup", null)
+                    b.HasOne("RA.Database.Models.UserGroup", "UserGroup")
                         .WithMany("Users")
-                        .HasForeignKey("UserGroupId");
-                });
-
-            modelBuilder.Entity("UserGroups_UserRules", b =>
-                {
-                    b.HasOne("RA.Database.Models.UserGroup", null)
-                        .WithMany()
                         .HasForeignKey("UserGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_UserGroupsUserRules_UserGroupId");
+                        .IsRequired();
 
-                    b.HasOne("RA.Database.Models.UserRule", null)
-                        .WithMany()
-                        .HasForeignKey("UserRuleId")
+                    b.Navigation("UserGroup");
+                });
+
+            modelBuilder.Entity("RA.Database.Models.UserGroupRule", b =>
+                {
+                    b.HasOne("RA.Database.Models.UserGroup", "UserGroup")
+                        .WithMany("Rules")
+                        .HasForeignKey("UserGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_UserGroupsUserRules_UserRuleId");
+                        .IsRequired();
+
+                    b.Navigation("UserGroup");
+                });
+
+            modelBuilder.Entity("RA.Database.Models.ClockItemCategory", b =>
+                {
+                    b.HasOne("RA.Database.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("RA.Database.Models.ClockItemTrack", b =>
+                {
+                    b.HasOne("RA.Database.Models.Track", "Track")
+                        .WithMany()
+                        .HasForeignKey("TrackId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Track");
                 });
 
             modelBuilder.Entity("RA.Database.Models.Artist", b =>
@@ -833,6 +1071,8 @@ namespace RA.Database.Migrations
 
             modelBuilder.Entity("RA.Database.Models.TagValue", b =>
                 {
+                    b.Navigation("ClockItemsCategoryTags");
+
                     b.Navigation("TrackTags");
                 });
 
@@ -852,14 +1092,16 @@ namespace RA.Database.Migrations
                     b.Navigation("TrackTags");
                 });
 
-            modelBuilder.Entity("RA.Database.Models.User", b =>
-                {
-                    b.Navigation("Playlists");
-                });
-
             modelBuilder.Entity("RA.Database.Models.UserGroup", b =>
                 {
+                    b.Navigation("Rules");
+
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("RA.Database.Models.ClockItemCategory", b =>
+                {
+                    b.Navigation("ClockItemCategoryTags");
                 });
 #pragma warning restore 612, 618
         }

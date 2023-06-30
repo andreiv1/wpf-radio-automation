@@ -36,17 +36,19 @@ namespace RA.UI.StationManagement
             this.windowService = windowService;
             this.messageBoxService = messageBoxService;
             this.usersService = usersService;
+
+            //DevBypassLogIn();
         }
 
         [RelayCommand(CanExecute = nameof(CanLogIn))]
         private async void LogIn() {
             if (Username == null || Password == null) return;
-            var canThisUserLogin = await usersService.CanUserLogIn(Username, Password); 
-            
-            if(canThisUserLogin)
+            var canThisUserLogin = await usersService.CanUserLogIn(Username, Password);
+
+            if (canThisUserLogin)
             {
                 windowService.CloseWindow(this);
-                if(isFirstOpened)
+                if (isFirstOpened)
                 {
                     isFirstOpened = false;
                     windowService.ShowWindow<LauncherViewModel>();
@@ -56,7 +58,16 @@ namespace RA.UI.StationManagement
             {
                 messageBoxService.ShowError("The provided credentials are not correct.");
             }
+        }
 
+        private void DevBypassLogIn()
+        {
+            windowService.CloseWindow(this);
+            if (isFirstOpened)
+            {
+                isFirstOpened = false;
+                windowService.ShowWindow<LauncherViewModel>();
+            }
         }
 
         private bool CanLogIn()

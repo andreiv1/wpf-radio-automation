@@ -53,7 +53,52 @@ namespace RA.Database
                 entity.HasNoKey();
                 entity.ToView("CategoriesHierarchy");
             });
-        }
 
+            modelBuilder.Entity<TagCategory>().HasData(
+                new TagCategory { Id = 1, Name = "Genre", IsBuiltIn = true },
+                new TagCategory { Id = 2, Name = "Language", IsBuiltIn = true },
+                new TagCategory { Id = 3, Name = "Mood", IsBuiltIn = true }
+            );
+
+            modelBuilder.Entity<TagValue>().HasData(
+                new TagValue { Id = 1, TagCategoryId = 2, Name = "English"},
+                new TagValue { Id = 2, TagCategoryId = 2, Name = "French"},
+                new TagValue { Id = 3, TagCategoryId = 2, Name = "Romanian"}
+            );
+
+            modelBuilder.Entity<TagValue>().HasData(
+                new TagValue { Id = 4, TagCategoryId = 3, Name = "Happy"},
+                new TagValue { Id = 5, TagCategoryId = 3, Name = "Sad"},
+                new TagValue { Id = 6, TagCategoryId = 3, Name = "Energetic"}
+            );
+
+            modelBuilder.Entity<TagValue>().HasData(
+                new TagValue { Id = 7, TagCategoryId = 1, Name = "Rock"},
+                new TagValue { Id = 8, TagCategoryId = 1, Name = "Pop"},
+                new TagValue { Id = 9, TagCategoryId = 1, Name = "Dance"}
+            );
+
+            modelBuilder.Entity<UserGroup>().HasData(
+                new UserGroup { Id = 1, Name = "Administrator"}
+            );
+
+            modelBuilder.Entity<UserGroupRule>().HasData(new UserGroupRule[]
+            {
+                new UserGroupRule { Id = 1, RuleValue = UserRuleType.ACCESS_MEDIA_LIBRARY, UserGroupId = 1 },
+                new UserGroupRule { Id = 2, RuleValue = UserRuleType.ACCESS_PLANNER, UserGroupId = 1 },
+                new UserGroupRule { Id = 3, RuleValue = UserRuleType.ACCESS_REPORTS, UserGroupId = 1 },
+                new UserGroupRule { Id = 4, RuleValue = UserRuleType.ACCESS_SETTINGS, UserGroupId = 1 },
+            });
+
+            modelBuilder.Entity<User>().HasData(new User()
+            {
+                Id = 1,
+                FullName = "Andrei",
+                Username = "andrei",
+                Password = "$2a$11$SWq88W6Q77w7sanz7HrxbexnTN0nLq8XB70lLFrSDQbddPzmnQdIK",
+                UserGroupId = 1
+            });
+
+        }
     }
 }
