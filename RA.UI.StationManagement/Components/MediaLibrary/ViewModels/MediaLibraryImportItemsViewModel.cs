@@ -138,7 +138,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
                 {
                     await foreach (var processingTrack in trackFilesProcessor.ProcessItemsFromDirectoryAsync(options))
                     {
-                        dispatcherService.InvokeOnUIThread(() =>
+                        await dispatcherService.InvokeOnUIThreadAsync(() =>
                         {
   
                             switch (processingTrack.Status)

@@ -49,11 +49,11 @@ namespace RA.Logic.Tracks
 
                 string title = tagLibFile.Tag.Title;
                 if(title is not null)
-                metadataDictionary.Add(TrackMetadataField.Title, title);
+                    metadataDictionary.Add(TrackMetadataField.Title, title);
 
                 string artists = SplitArtistsField(tagLibFile.Tag.Performers);
                 if(!String.IsNullOrEmpty(artists))
-                metadataDictionary.Add(TrackMetadataField.Artists, artists);
+                    metadataDictionary.Add(TrackMetadataField.Artists, artists);
 
                 var duration = tagLibFile.Properties.Duration;
                 metadataDictionary.Add(TrackMetadataField.Duration, duration.TotalSeconds);
@@ -89,7 +89,7 @@ namespace RA.Logic.Tracks
 
                 ProcessTrackImage(tagLibFile);
             }
-            catch (TagLib.UnsupportedFormatException e)
+            catch (TagLib.UnsupportedFormatException)
             {
                 throw new TrackUnsupportedFormatException();
             }
@@ -141,15 +141,13 @@ namespace RA.Logic.Tracks
         public static String SplitArtistsField(string[] input)
         {
             String output = String.Empty;
-            if (input is not null)
+
+            if (input.Length == 1)
             {
-                if (input.Length == 1)
-                {
-                    //Split potentially item with more items
-                    input = input[0].Split(splitTokens, StringSplitOptions.None);
-                }
-                output = String.Join(defaultArtistDelimiter, input);
+                //Split potentially item with more items
+                input = input[0].Split(splitTokens, StringSplitOptions.None);
             }
+            output = String.Join(defaultArtistDelimiter, input);
             return output;
         }
 
