@@ -9,7 +9,6 @@ namespace RA.Logic.Tracks
 {
     public class TrackMetadataReader : ITrackMetadataReader
     {
-        #region Fields
         /// <summary>
         /// Split tokens for multiple artists inside a field
         /// </summary>
@@ -18,9 +17,13 @@ namespace RA.Logic.Tracks
         public static readonly string defaultArtistDelimiter = " / ";
         private readonly string filePath;
         private Dictionary<TrackMetadataField, object> metadataDictionary;
-        #endregion
 
         public static String? ImagePath { get; set; }
+
+        static TrackMetadataReader()
+        {
+            CreateImageDirectoryPath();
+        }
         
         public TrackMetadataReader(String filePath)
         {
@@ -129,8 +132,6 @@ namespace RA.Logic.Tracks
 
                 var imageFileName = $"{hash}.jpg";
 
-
-                //TODO: IMPORTANT!!! --> THIS FORCE TO CREATE Roaming\RadioAutomationSystem\images
                 var imageFilePath = Path.Combine(ImagePath, imageFileName);
                 File.WriteAllBytes(imageFilePath, imageData);
 
@@ -193,7 +194,20 @@ namespace RA.Logic.Tracks
             return fileInfo;
         }
 
-
+        private static void CreateImageDirectoryPath()
+        {
+            string roamingPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string folderPath = Path.Combine(roamingPath, "RadioAutomation", "images");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+                Console.WriteLine("Folder created successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Folder already exists.");
+            }
+        }
 
     }
 }

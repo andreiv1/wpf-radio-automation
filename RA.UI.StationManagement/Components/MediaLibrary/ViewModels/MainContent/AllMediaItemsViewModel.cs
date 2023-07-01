@@ -63,12 +63,16 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             }
         }
 
+        private void LoadTracksFromStart()
+        {
+            _ = LoadTracks(0, tracksPerPage);
+        }
         #region Commands
         [RelayCommand]
         private void AddItem()
         {
             windowService.ShowDialog<MediaLibraryImportSingleItemViewModel>();
-            _ = LoadTracks(0, tracksPerPage);
+            LoadTracksFromStart();
         }
 
 
@@ -76,18 +80,15 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         private void ImportItems()
         {
             windowService.ShowDialog<MediaLibraryImportItemsViewModel>();
-            _ = LoadTracks(0, tracksPerPage);   
+            LoadTracksFromStart();   
         }
 
         [RelayCommand]
         private void EditItem()
         {
-            if(SelectedTrack is null)
-            {
-                return;
-            }
-
+            if (SelectedTrack == null) return;
             windowService.ShowDialog<MediaLibraryManageTrackViewModel>(SelectedTrack.Id);
+            LoadTracksFromStart();
         }
 
         [RelayCommand]
