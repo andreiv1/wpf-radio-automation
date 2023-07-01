@@ -27,13 +27,17 @@ namespace RA.Logic.Tracks
         {
             try
             {
-                List<TrackDTO?> toImport = processingTracks
-                    .Where(pt => pt.Status == Enums.ProcessingTrackStatus.OK &&
-                        pt.TrackDto != null)
-                    .Select(pt => pt.TrackDto)
-                    .ToList();
+                List<TrackDTO> tracksToImport = new();
+                foreach (var processingTrack in processingTracks)
+                {
+                    if (processingTrack.Status == Enums.ProcessingTrackStatus.OK &&
+                        processingTrack.TrackDto != null)
+                    {
+                        tracksToImport.Add(processingTrack.TrackDto);
+                    }
+                }
 
-                return await tracksService.AddTracks(toImport);
+                return await tracksService.AddTracks(tracksToImport);
             } catch (Exception )
             {
                 return 0;

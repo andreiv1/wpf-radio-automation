@@ -58,9 +58,10 @@ namespace RA.Logic.Tracks
                     dto.ImageName = metaReader.GetField(TrackMetadataField.Image) as String ?? String.Empty;
                     
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     track.Status = ProcessingTrackStatus.FAILED;
+                    track.Message = $"Error: {e.Message}";
                 }
             }
             if (string.IsNullOrEmpty(dto.Title) || dto.Artists?.Count == 0)

@@ -1,7 +1,5 @@
-﻿using Castle.DynamicProxy.Contributors;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Extensions.DependencyInjection;
 using RA.Logic;
 using RA.Logic.Tracks;
 using RA.UI.Core.Services;
@@ -9,13 +7,9 @@ using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Models;
-using RA.UI.StationManagement.Services;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 

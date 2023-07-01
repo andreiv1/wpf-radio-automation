@@ -21,15 +21,14 @@ namespace RA.Logic.Tracks
         #endregion
 
         public static String? ImagePath { get; set; }
-
-        #region Constructor
+        
         public TrackMetadataReader(String filePath)
         {
             this.filePath = filePath;
             this.metadataDictionary = new();
             ReadMetadata();
         }
-        #endregion Constructor
+
         public object? GetField(TrackMetadataField field)
         {
             object? f;
@@ -129,6 +128,9 @@ namespace RA.Logic.Tracks
 
 
                 var imageFileName = $"{hash}.jpg";
+
+
+                //TODO: IMPORTANT!!! --> THIS FORCE TO CREATE Roaming\RadioAutomationSystem\images
                 var imageFilePath = Path.Combine(ImagePath, imageFileName);
                 File.WriteAllBytes(imageFilePath, imageData);
 
@@ -170,21 +172,25 @@ namespace RA.Logic.Tracks
         }
 
 
-        public static Dictionary<string, string> GetAudioFileInfo(string audioFilePath)
+        public static async Task<Dictionary<string, string>> GetAudioFileInfo(string audioFilePath)
         {
             Dictionary<string, string> fileInfo = new Dictionary<string, string>();
 
-            try {
-                using var file = TagLib.File.Create(audioFilePath);
-                fileInfo.Add("Bitrate", file.Properties.AudioBitrate.ToString());
-                fileInfo.Add("FileType", file.MimeType.Split("/")[1]);
-                fileInfo.Add("Frequency", file.Properties.AudioSampleRate.ToString());
-
-            }
-            catch(Exception)
+            await Task.Run(() =>
             {
+                try
+                {
+                    using var file = TagLib.File.Create(audioFilePath);
+                    fileInfo.Add("Bitrate", file.Properties.AudioBitrate.ToString());
+                    fileInfo.Add("FileType", file.MimeType.Split("/")[1]);
+                    fileInfo.Add("Frequency", file.Properties.AudioSampleRate.ToString());
 
-            }
+                }
+                catch (Exception)
+                {
+
+                }
+            });
 
             return fileInfo;
         }

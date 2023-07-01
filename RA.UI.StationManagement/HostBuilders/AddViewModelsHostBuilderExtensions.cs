@@ -43,52 +43,51 @@ namespace RA.UI.StationManagement.HostBuilders
 {
     public static class AddViewModelsHostBuilderExtensions
     {
+        static readonly Dictionary<Type, Type> viewModelToSingletonWindowMap = new()
+        {
+            { typeof(AuthViewModel), typeof(AuthWindow) },
+            { typeof(LauncherViewModel), typeof(LauncherWindow) }
+        };
+        static readonly Dictionary<Type, Type> viewModelToTransientWindowMap = new()
+        {
+            { typeof(AllMediaItemsViewModel), typeof(AllMediaItemsView) },
+            { typeof(ArtistSelectViewModel), typeof(ArtistSelectDialog) },
+            { typeof(ArtistsViewModel), typeof(ArtistsView) },
+            { typeof(CategoryItemsViewModel), typeof(CategoryItemsView) },
+            { typeof(CategorySelectViewModel), typeof(CategorySelectDialog) },
+            { typeof(CategoriesViewModel), typeof(CategoriesView) },
+            { typeof(ImportItemsFirstViewModel), typeof(ImportItemsFirstView) },
+            { typeof(ImportItemsSecondViewModel), typeof(ImportItemsSecondView) },
+            { typeof(ImportItemsThirdViewModel), typeof(ImportItemsThirdView) },
+            { typeof(MediaLibraryImportItemsViewModel), typeof(MediaLibraryImportItemsWindow) },
+            { typeof(MediaLibraryImportSingleItemViewModel), typeof(MediaLibraryImportSingleItemWindow)},
+            { typeof(MediaLibraryMainViewModel), typeof(MediaLibraryMainWindow) },
+            { typeof(MediaLibraryManageCategoryViewModel), typeof(MediaLibraryManageCategoryWindow) },
+            { typeof(MediaLibraryManageTrackViewModel), typeof(MediaLibraryManageTrackWindow) },
+            { typeof(PlannerClocksViewModel), typeof(PlannerClocksView) },
+            { typeof(PlannerDayTemplatesViewModel), typeof(PlannerDayTemplatesView) },
+            { typeof(PlannerDefaultScheduleViewModel), typeof(PlannerDefaultScheduleView) },
+            { typeof(PlannerGeneratePlaylistsViewModel), typeof(PlannerGeneratePlaylistsWindow) },
+            { typeof(PlannerMainViewModel), typeof(PlannerMainWindow) },
+            { typeof(PlannerManageClockCategoryRuleViewModel), typeof(PlannerManageClockCategoryRuleDialog) },
+            { typeof(PlannerManageClockEventRuleViewModel), typeof(PlannerManageClockEventRuleDialog) },
+            { typeof(PlannerManageClockViewModel), typeof(PlannerManageClockDialog) },
+            { typeof(PlannerManageScheduleItemViewModel), typeof(PlannerManageScheduleItemDialog) },
+            { typeof(PlannerManageTemplateViewModel), typeof(PlannerManageTemplateDialog) },
+            { typeof(PlannerPlaylistsViewModel), typeof(PlannerPlaylistsView) },
+            { typeof(PlannerScheduleCalendarViewModel), typeof(PlannerScheduleView) },
+            { typeof(PlannerScheduleViewModel), typeof(PlannerScheduleView) },
+            { typeof(PlannerTemplateSelectClockViewModel), typeof(PlannerTemplateSelectClockWindow) },
+            { typeof(ReportsMainViewModel), typeof(ReportsMainWindow) },
+            { typeof(SettingsMainViewModel), typeof(SettingsMainWindow) },
+            { typeof(TagsViewModel), typeof(TagsView) },
+            { typeof(TemplateSelectViewModel), typeof(TemplateSelectDialog) },
+            { typeof(TrackSelectViewModel), typeof(TrackSelectDialog) }
+        };
         public static IHostBuilder AddViewModels(this IHostBuilder host)
         {
             return host.ConfigureServices((hostContext, services) =>
             {
-                Dictionary<Type, Type> viewModelToSingletonWindowMap = new()
-                {
-                     { typeof(AuthViewModel), typeof(AuthWindow) },
-                     { typeof(LauncherViewModel), typeof(LauncherWindow) }
-                };
-                Dictionary<Type, Type> viewModelToTransientWindowMap = new()
-                {
-                    { typeof(MediaLibraryMainViewModel), typeof(MediaLibraryMainWindow) },
-                    { typeof(MediaLibraryImportItemsViewModel), typeof(MediaLibraryImportItemsWindow) },
-                    { typeof(AllMediaItemsViewModel), typeof(AllMediaItemsView) },
-                    { typeof(ArtistsViewModel), typeof(ArtistsView) },
-                    { typeof(CategoriesViewModel), typeof(CategoriesView) },
-                    { typeof(CategoryItemsViewModel), typeof(CategoryItemsView) },
-                    { typeof(TagsViewModel), typeof(TagsView) },
-                    { typeof(ImportItemsFirstViewModel), typeof(ImportItemsFirstView) },
-                    { typeof(ImportItemsSecondViewModel), typeof(ImportItemsSecondView) },
-                    { typeof(ImportItemsThirdViewModel), typeof(ImportItemsThirdView) },
-                    { typeof(MediaLibraryManageTrackViewModel), typeof(MediaLibraryManageTrackWindow) },
-                    { typeof(MediaLibraryManageCategoryViewModel), typeof(MediaLibraryManageCategoryWindow) },
-                    { typeof(PlannerMainViewModel), typeof(PlannerMainWindow) },
-                    { typeof(PlannerClocksViewModel), typeof(PlannerClocksView) },
-                    { typeof(PlannerDayTemplatesViewModel), typeof(PlannerDayTemplatesView) },
-                    { typeof(PlannerScheduleViewModel), typeof(PlannerScheduleView) },
-                    { typeof(PlannerScheduleCalendarViewModel), typeof(PlannerScheduleView) },
-                    { typeof(PlannerDefaultScheduleViewModel), typeof(PlannerDefaultScheduleView) },
-                    { typeof(PlannerPlaylistsViewModel), typeof(PlannerPlaylistsView) },
-                    { typeof(PlannerManageClockCategoryRuleViewModel), typeof(PlannerManageClockCategoryRuleDialog) },
-                    { typeof(PlannerManageClockEventRuleViewModel), typeof(PlannerManageClockEventRuleDialog) },
-                    { typeof(PlannerManageClockViewModel), typeof(PlannerManageClockDialog) },
-                    { typeof(PlannerManageTemplateViewModel), typeof(PlannerManageTemplateDialog) },
-                    { typeof(PlannerManageScheduleItemViewModel), typeof(PlannerManageScheduleItemDialog) },
-                    { typeof(PlannerGeneratePlaylistsViewModel), typeof(PlannerGeneratePlaylistsWindow) },
-                    { typeof(PlannerTemplateSelectClockViewModel), typeof(PlannerTemplateSelectClockWindow) },
-                    { typeof(ReportsMainViewModel), typeof(ReportsMainWindow) },
-                    { typeof(SettingsMainViewModel), typeof(SettingsMainWindow) },
-                    { typeof(CategorySelectViewModel), typeof(CategorySelectDialog) },
-                    { typeof(TrackSelectViewModel), typeof(TrackSelectDialog) },
-                    { typeof(TemplateSelectViewModel), typeof(TemplateSelectDialog) },
-                    { typeof(ArtistSelectViewModel), typeof(ArtistSelectDialog) }
-                };
-
-
                 //Register window factory
                 services.AddSingleton<IWindowFactory>(provider =>
                     new WindowFactory(

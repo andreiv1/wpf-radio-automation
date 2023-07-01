@@ -1,13 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RA.DAL;
 using RA.Database;
 using RA.Database.Models;
 using RA.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace RA.DAL
 {
@@ -111,7 +106,7 @@ namespace RA.DAL
 
         public async Task<int> AddTracks(IEnumerable<TrackDTO> trackDTOs)
         {
-            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            await using var dbContext = await dbContextFactory.CreateDbContextAsync();
             var tracks = trackDTOs.Select(t => TrackDTO.ToEntity(t)).ToList();
             foreach(var t in tracks)
             {
@@ -121,10 +116,10 @@ namespace RA.DAL
                     categories[i] = dbContext.AttachOrGetTrackedEntity<Category>(categories[i]);
                 }
                 t.Categories = categories;
-
             }
             dbContext.Tracks.AddRange(tracks);
-            return await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
+            return tracks.Count;
         }
 
         public async Task<bool> TrackExistsByPath(String filePath)

@@ -2,12 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DTO;
-using RA.Logic;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -69,9 +67,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         [RelayCommand]
         private void AddItem()
         {
-            fileBrowserDialogService.AddExtension = true;
-            fileBrowserDialogService.Filter = "FLAC files (*.flac)|*.flac|Ogg files (*.ogg)|*.ogg|MP3 files (*.mp3)|*.mp3|WAV files (*.wav)|*.wav|All files (*.*)|*.*";
-            fileBrowserDialogService.ShowDialog();
+            windowService.ShowDialog<MediaLibraryImportSingleItemViewModel>();
+            _ = LoadTracks(0, tracksPerPage);
         }
 
 

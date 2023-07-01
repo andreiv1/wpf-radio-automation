@@ -36,8 +36,6 @@ namespace RA.UI.StationManagement
             this.windowService = windowService;
             this.messageBoxService = messageBoxService;
             this.usersService = usersService;
-
-            //DevBypassLogIn();
         }
 
         [RelayCommand(CanExecute = nameof(CanLogIn))]
@@ -57,16 +55,6 @@ namespace RA.UI.StationManagement
             else
             {
                 messageBoxService.ShowError("The provided credentials are not correct.");
-            }
-        }
-
-        private void DevBypassLogIn()
-        {
-            windowService.CloseWindow(this);
-            if (isFirstOpened)
-            {
-                isFirstOpened = false;
-                windowService.ShowWindow<LauncherViewModel>();
             }
         }
 

@@ -94,11 +94,11 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             }
 
             //Load audio file metadata
-            _ = Task.Run(() =>
+            _ = Task.Run(async () =>
             {
                 if (track.FilePath != null)
                 {
-                    var metadata = TrackMetadataReader.GetAudioFileInfo(track.FilePath);
+                    var metadata = await TrackMetadataReader.GetAudioFileInfo(track.FilePath);
                     AudioFileBitrate = metadata["Bitrate"];
                     AudioFileFormat = metadata["FileType"];
                     AudioFileFrequency = metadata["Frequency"];
@@ -135,15 +135,15 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         private void AddCategory()
         {
             var vm = windowService.ShowDialog<CategorySelectViewModel>();
-            if (vm.SelectedCategory == null) return;
-            if (Track!.Categories.Where(c => c.CategoryId == vm.SelectedCategory.CategoryId).Any()) return;
+            if (vm.SelectedCategory == null || Track == null) return;
+            if (Track.Categories == null) Track.Categories = new();
+            if (Track.Categories.Any(c => c.CategoryId == vm.SelectedCategory.CategoryId)) return;
 
-            Track!.Categories?.Add(new TrackCategoryDTO()
+            Track.Categories.Add(new TrackCategoryDTO()
             {
                 CategoryId = vm.SelectedCategory.CategoryId,
                 CategoryName = vm.SelectedCategory.Name,
             });
-            //messageBoxService.ShowInfo($"Selected {vm.SelectedCategory.CategoryId}");
         }
 
         [RelayCommand]
@@ -158,7 +158,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         {
             var vm = windowService.ShowDialog<ArtistSelectViewModel>();
             if(vm.SelectedArtist == null) return;
-            if (Track.Artists.Where(a => a.ArtistId == vm.SelectedArtist.Id).Any()) return;
+            if (Track.Artists.Any(a => a.ArtistId == vm.SelectedArtist.Id)) return;
             int orderIndex = 0;
             if (Track.Artists.Any())
             {
@@ -189,9 +189,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         [RelayCommand]
         private void SaveTrack()
         {
-            //messageBoxService.ShowInfo("Fake save!");
-            if(Track != null)
-            tracksService.UpdateTrack(TrackModel.ToDto(Track));
+            if(Track != null) tracksService.UpdateTrack(TrackModel.ToDto(Track));
         }
 
         #endregion
