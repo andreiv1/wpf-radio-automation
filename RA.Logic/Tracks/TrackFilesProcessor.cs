@@ -84,7 +84,7 @@ namespace RA.Logic.Tracks
             {
                 if (options.ScanSubfolders && options.SubfolderScanOption == SubfolderScanOption.CreateNewChildrenCategoryForEachExistingCategory)
                 {
-                    throw new Exception();
+                    throw new NotImplementedException();
                 }
                 else
                 {

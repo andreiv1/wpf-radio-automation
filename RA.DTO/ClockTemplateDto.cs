@@ -21,7 +21,6 @@ namespace RA.DTO
             {
                 ClockId = entity.ClockId,
                 TemplateId = entity.TemplateId,
-                //TemplateName = entity.Template.Name,
                 StartTime = entity.StartTime,
                 ClockSpan = entity.ClockSpan,
             };
