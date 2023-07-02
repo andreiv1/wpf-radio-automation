@@ -27,6 +27,30 @@ namespace RA.UI.Playout.ViewModels.Components
 
         [ObservableProperty]
         private IPlayerItem? selectedPlaylistItem;
+
+        [ObservableProperty]
+        private String loadedPlaylistDuration = "00:00:00";
+
+        [ObservableProperty]
+        private bool isAutoPlay = false;
+
+        [ObservableProperty]
+        private bool isAutoReload = true;
+
+        partial void OnIsAutoPlayChanged(bool value)
+        {
+            if(value)
+            {
+                playbackQueue.Mode = PlaybackMode.Auto;
+                if (playbackQueue.NowPlaying == null)
+                {
+                    Play();
+                }
+            } else
+            {
+                playbackQueue.Mode = PlaybackMode.Manual;
+            }
+        }
         public MainViewModel? MainVm { get; set; }
         public ObservableCollection<IPlayerItem> PlayerItems { get; } = new();
         public PlaylistViewModel(IDispatcherService dispatcherService,
@@ -37,11 +61,26 @@ namespace RA.UI.Playout.ViewModels.Components
             this.playbackQueue = playbackQueue;
             this.playlistsService = playlistsService;
 
-            playbackQueue.Mode = PlaybackMode.Auto;
             playbackQueue.PlaybackStarted += PlaybackQueue_PlaybackStarted;
             playbackQueue.PlaybackItemChange += PlaybackQueue_PlaybackItemChange;
 
+            PlayerItems.CollectionChanged += PlayerItems_CollectionChanged;
+
             _ = LoadPlaylist(DateTime.Now,1);
+        }
+
+        private void PlayerItems_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            TimeSpan totalDuration = TimeSpan.Zero;
+            foreach(var item in PlayerItems)
+            {
+               IPlayerItem? playerItem = item;
+               if(playerItem != null)
+               {
+                  totalDuration += playerItem.Duration;
+               }
+            }
+            LoadedPlaylistDuration = totalDuration.ToString(@"hh\:mm\:ss");
         }
 
         private void PlaybackQueue_PlaybackItemChange(object? sender, EventArgs e)
@@ -186,14 +225,17 @@ namespace RA.UI.Playout.ViewModels.Components
             }
         }
 
-        #region Commands
-        [RelayCommand]
-        private void PlayNext()
+        private void Play()
         {
-            MainVm!.NowPlayingVm.IsPaused = false;
+MainVm!.NowPlayingVm.IsPaused = false;
             MainVm!.NowPlayingVm.IsItemLoaded = true;
             playbackQueue.Play();
             CalculateRemaining();
+        }
+        #region Commands
+        [RelayCommand]
+        private void Next()
+        {
 
         }
 

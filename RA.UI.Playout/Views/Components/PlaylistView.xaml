@@ -85,8 +85,8 @@
                                                       SmallIcon="{StaticResource DoubleUpIcon}"
                                                       Command="{Binding DataContext.MoveTrackUpCommand,RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                                       CommandParameter="{Binding .}"/>
-                                <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
-                                                      SmallIcon="{StaticResource AudioListenIcon}"/>
+                                <!--<syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
+                                                      SmallIcon="{StaticResource AudioListenIcon}"/>-->
                                 <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
                                                       SmallIcon="{StaticResource InfoIcon}"/>
                                 <syncfusion:ButtonAdv SizeMode="Small" Margin="0,0,3,0"
