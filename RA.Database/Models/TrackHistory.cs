@@ -24,6 +24,8 @@ namespace RA.Database.Models
 
         [MaxLength(100)]
         public String CategoryName { get; set; }
-        public Track Track { get; set; }
+        public Track? Track { get; set; }
+
+        public int? TrackId { get; set; }
     }
 }

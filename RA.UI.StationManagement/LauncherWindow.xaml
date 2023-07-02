@@ -12,7 +12,8 @@
         Title="RA | Station Management Launcher"         
         Height="400" Width="500" 
         ShowTitle="True" ShowMaximizeButton="False"
-        Icon="/Resources/icon.ico" WindowStartupLocation="CenterScreen">
+        Icon="/Resources/icon.ico" WindowStartupLocation="CenterScreen"
+        Closed="RAWindow_Closed">
 
     <uicore:RAWindow.Resources>
         <DropShadowEffect x:Key="ShadowEffect" Color="#444" Opacity="0.3" Direction="315" ShadowDepth="5" BlurRadius="10" />

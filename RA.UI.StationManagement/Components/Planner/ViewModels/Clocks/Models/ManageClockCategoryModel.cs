@@ -21,19 +21,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks.Models
         private bool excludeWithoutReleaseDate = false;
         #endregion
 
-        #region Bpm
-
-        [ObservableProperty]
-        private int? minBpm;
-
-        [ObservableProperty]
-        private int? maxBpm;
-
-        [ObservableProperty]
-        private bool excludeWithoutBpm = false;
-
-        #endregion
-
         #region Duration
 
         [ObservableProperty]
@@ -60,27 +47,18 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks.Models
         [ObservableProperty]
         private bool isFiller = false;
 
-      
-        //TODO: tags
-
-
         public static ManageClockCategoryModel FromDto(ClockItemCategoryDTO dto)
         {
             return new ManageClockCategoryModel
             {
                 FromReleaseDate = dto.MinReleaseDate,
                 ToReleaseDate = dto.MaxReleaseDate,
-                //ExcludeWithoutReleaseDate = dto.
-                MinBpm = dto.MinBpm,
-                MaxBpm = dto.MaxBpm,
                 MinDuration = dto.MinDuration.HasValue ? dto.MinDuration : new TimeSpan(0, 0, 0),
                 MaxDuration = dto.MaxDuration.HasValue ? dto.MaxDuration : new TimeSpan(0, 999, 0),
                 ArtistSeparation = new TimeSpan(0,dto.ArtistSeparation.GetValueOrDefault(),0),
                 TitleSeparation = new TimeSpan(0,dto.TitleSeparation.GetValueOrDefault(),0),
                 TrackSeparation = new TimeSpan(0,dto.TrackSeparation.GetValueOrDefault(),0),
                 IsFiller = dto.IsFiller,
-
-                
             };
         }
 

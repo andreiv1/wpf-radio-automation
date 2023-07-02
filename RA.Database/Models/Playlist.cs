@@ -14,6 +14,5 @@ namespace RA.Database.Models
         public DateTime DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
         public ICollection<PlaylistItem> PlaylistItems { get; set; }
-        public User User { get; set; }
     }
 }

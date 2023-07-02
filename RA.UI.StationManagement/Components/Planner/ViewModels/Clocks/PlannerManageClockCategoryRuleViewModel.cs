@@ -74,8 +74,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
                 OrderIndex = orderIndex,
                 CategoryId = SelectedCategory.Id,
                 ClockId = clockId,
-                MinBpm = ManageModel.MinBpm,
-                MaxBpm = ManageModel.MaxBpm,
                 MinDuration = ManageModel.MinDuration,
                 MaxDuration = ManageModel.MaxDuration,
                 MinReleaseDate = ManageModel.FromReleaseDate,

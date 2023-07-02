@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
 using RA.DAL;
-using RA.Database;
 using RA.DTO;
 using RA.Logic;
 using RA.UI.Core.Services;
@@ -12,11 +10,8 @@ using RA.UI.StationManagement.Components.Planner.ViewModels.Clocks;
 using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Models;
 using RA.UI.StationManagement.Dialogs.TrackSelectDialog;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent

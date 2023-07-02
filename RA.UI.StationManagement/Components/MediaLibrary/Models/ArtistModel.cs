@@ -20,7 +20,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
             return new ArtistModel
             {
                 Id = dto.Id,
-                Name = dto.Name,
+                Name = dto?.Name ?? string.Empty,
             };
         }
     }

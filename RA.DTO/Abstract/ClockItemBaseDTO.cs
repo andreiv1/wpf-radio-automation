@@ -16,9 +16,6 @@ namespace RA.DTO.Abstract
         public int? ClockItemEventId { get; set; }
         public int? EventOrderIndex { get; set; }
 
-        //TODO: add to db
-        public bool? IsFiller { get; set; } = false;
-
         public static ClockItemBase ToEntity(ClockItemBaseDTO dto)
         {
             if(dto is ClockItemTrackDTO itemTrack)

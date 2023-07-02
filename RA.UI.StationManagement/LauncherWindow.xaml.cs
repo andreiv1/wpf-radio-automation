@@ -35,5 +35,10 @@ namespace RA.UI.StationManagement
         {
             Close();
         }
+
+        private void RAWindow_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }

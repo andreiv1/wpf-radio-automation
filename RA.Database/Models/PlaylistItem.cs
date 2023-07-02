@@ -1,10 +1,5 @@
 ﻿using RA.Database.Models.Abstract;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RA.Database.Models
 {
@@ -16,8 +11,10 @@ namespace RA.Database.Models
         [Column(TypeName = "double(11,5)")]
         public double Length { get; set; }
         public Track Track { get; set; }
-
+        public string Label { get; set; }
         public int PlaylistId { get; set; }
         public Playlist Playlist { get; set; }
+        public virtual PlaylistItem ParentPlaylistItem { get; set; }
+        public int? ParentPlaylistItemId { get; set; }
     }
 }

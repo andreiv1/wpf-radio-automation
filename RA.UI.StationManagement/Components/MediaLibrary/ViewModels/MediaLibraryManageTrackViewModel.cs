@@ -12,6 +12,7 @@ using RA.UI.StationManagement.Dialogs.ArtistSelectDialog;
 using RA.UI.StationManagement.Dialogs.CategorySelectDialog;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,9 +25,10 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
     {
         private readonly int trackId;
         private readonly ITracksService tracksService;
+        private readonly ITagsService tagsService;
         private readonly IMessageBoxService messageBoxService;
         private readonly IFileBrowserDialogService fileBrowserDialogService;
-
+        private readonly IDispatcherService dispatcherService;
         [ObservableProperty]
         private TrackModel? track;
 
@@ -37,13 +39,13 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         private TrackCategoryDTO? selectedCategory;
 
         [ObservableProperty]
-        private String audioFileFormat;
+        private String audioFileFormat = string.Empty;
 
         [ObservableProperty]
-        private String audioFileBitrate;
+        private String audioFileBitrate = string.Empty;
 
         [ObservableProperty]
-        private String audioFileFrequency;
+        private String audioFileFrequency = string.Empty;
 
         private string? fullImagePath;
         public string? FullImagePath
@@ -51,34 +53,84 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             get => fullImagePath;
             private set => SetProperty(ref fullImagePath, value);
         }
+        public ObservableCollection<TagValueDTO> Genres { get; set; } = new();
+        public ObservableCollection<TagValueDTO> SelectedGenres { get; set; } = new();
+        public ObservableCollection<TagValueDTO> Languages { get; set; } = new();
+        public ObservableCollection<TagValueDTO> SelectedLanguages { get; set; } = new();
+        public ObservableCollection<TagValueDTO> Moods { get; set; } = new();
+        public ObservableCollection<TagValueDTO> SelectedMoods { get; set; } = new();
 
-        #region Constructor
         public MediaLibraryManageTrackViewModel(IWindowService windowService,
                                                 IFileBrowserDialogService fileBrowserDialogService,
-                                                IMessageBoxService messageBoxService,
-                                                ITracksService tracksService) : base(windowService)
-        {
-            this.tracksService = tracksService;
-            this.fileBrowserDialogService = fileBrowserDialogService;
-            this.messageBoxService = messageBoxService;
-            Track = new();
-        }
-        public MediaLibraryManageTrackViewModel(IWindowService windowService,
-                                                IFileBrowserDialogService fileBrowserDialogService,
+                                                IDispatcherService dispatcherService,
                                                 IMessageBoxService messageBoxService,
                                                 ITracksService tracksService,
+                                                ITagsService tagsService,
                                                 int trackId) : base(windowService) 
         {
             this.trackId = trackId;
             this.tracksService = tracksService;
+            this.tagsService = tagsService;
             this.fileBrowserDialogService = fileBrowserDialogService;
+            this.dispatcherService = dispatcherService;
             this.messageBoxService = messageBoxService;
-            LoadTrack();
+            var loadTask = LoadTrack();
+            var fetchTagsTask = FetchTags();
+
+            Task.WhenAll(loadTask, fetchTagsTask)
+                .ContinueWith(t => AsignTagsToTrack());
+
+            SelectedGenres.CollectionChanged += SelectedGenres_CollectionChanged;
+            SelectedLanguages.CollectionChanged += SelectedLanguages_CollectionChanged;
+            SelectedMoods.CollectionChanged += SelectedMoods_CollectionChanged;
         }
 
-        #endregion
+        private void SelectedMoods_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            ProcessTags_CollectionChnaged(e);
+        }
 
-        private async void LoadTrack()
+        private void SelectedLanguages_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            ProcessTags_CollectionChnaged(e);
+        }
+
+        private void SelectedGenres_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            ProcessTags_CollectionChnaged(e);
+        }
+
+        private void ProcessTags_CollectionChnaged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                var removedItems = e.OldItems;
+                if (removedItems == null || Track == null || Track.Tags == null) 
+                    return;
+
+                foreach (var item in removedItems)
+                {
+                    TagValueDTO? tagValue = item as TagValueDTO;
+                    if (tagValue != null)
+                        Track.Tags.Remove(Track.Tags.Where(t => t.TagValueId == tagValue.Id).First());
+                }
+            } else if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                var addedItems = e.NewItems;
+                if (addedItems == null || Track == null || Track.Tags == null)
+                    return;
+
+                foreach (var item in addedItems)
+                {
+                    if (item is TagValueDTO tagValue)
+                    {
+                        Track.Tags.Add(new TrackTagDTO() { TagCategoryId = tagValue.TagCategoryId, TagValueId = tagValue.Id, TrackId = Track.Id });
+                    }
+                }
+            }
+        }
+
+        private async Task LoadTrack()
         {
             var track = await Task.Run(() => tracksService.GetTrack(trackId));
             Track = TrackModel.FromDto(track);
@@ -107,14 +159,58 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             
         }
 
+        private async Task FetchTags()
+        {
+            foreach (var genre in await tagsService.GetTagValuesByCategoryNameAsync("Genre"))
+            {
+                Genres.Add(genre);
+            }
+
+            foreach (var language in await tagsService.GetTagValuesByCategoryNameAsync("Language"))
+            {
+                Languages.Add(language);
+            }
+
+            foreach (var mood in await tagsService.GetTagValuesByCategoryNameAsync("Mood"))
+            {
+                Moods.Add(mood);
+            }
+        }
+
+        private void AsignTagsToTrack()
+        {
+            if (Track == null || Track.Tags == null) throw new Exception("t or tt can't be null");
+            foreach(var genre in Genres)
+            {
+                if(Track.Tags.Where(t => t.TagValueId == genre.Id).Any())
+                {
+                    dispatcherService.InvokeOnUIThread(() => SelectedGenres.Add(genre));
+                }
+            }
+            foreach(var language in Languages)
+            {
+                if(Track.Tags.Where(t => t.TagValueId ==  language.Id).Any())
+                {
+                    dispatcherService.InvokeOnUIThread(() => SelectedLanguages.Add(language));
+                }
+            }
+            foreach(var  mood in Moods)
+            {
+                if(Track.Tags.Where(t => t.TagValueId == mood.Id).Any())
+                {
+                    dispatcherService.InvokeOnUIThread(() => SelectedMoods.Add(mood));
+                }
+            }
+        }
+
         #region Commands
         [RelayCommand]
         private void PickFile()
         {
-            fileBrowserDialogService.Filter = "Audio files (*.mp3;*.flac)|*.mp3;*.flac|All Files (*.*)|*.*";
+            fileBrowserDialogService.Filter = "Audio files (*.mp3;*wav;*.flac)|*.mp3;*wav;*.flac|All Files (*.*)|*.*";
             fileBrowserDialogService.ShowDialog();
             Track!.FilePath = fileBrowserDialogService.SelectedPath;
-            messageBoxService.ShowWarning("To do meta-data updating...");
+            messageBoxService.ShowWarning("To do metadata updating...");
         }
 
         [RelayCommand]
@@ -158,7 +254,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         {
             var vm = windowService.ShowDialog<ArtistSelectViewModel>();
             if(vm.SelectedArtist == null) return;
-            if (Track.Artists.Any(a => a.ArtistId == vm.SelectedArtist.Id)) return;
+            if (Track?.Artists?.Any(a => a.ArtistId == vm.SelectedArtist.Id) ?? true) return;
             int orderIndex = 0;
             if (Track.Artists.Any())
             {
@@ -170,7 +266,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             Track.Artists.Add(new TrackArtistDTO()
             {
                 ArtistId = vm.SelectedArtist.Id,
-                ArtistName = vm.SelectedArtist.Name,
+                ArtistName = vm.SelectedArtist?.Name ?? "Artist Name",
                 OrderIndex = orderIndex,
             });
         }
@@ -178,9 +274,9 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         [RelayCommand]
         private void RemoveArtist()
         {
-            if (SelectedTrackArtist == null) return;
-            Track.Artists.Remove(SelectedTrackArtist);
-            for(int i = 0; i < Track.Artists.Count; i++)
+            if (SelectedTrackArtist == null || Track == null || Track.Artists == null) return;
+            Track?.Artists?.Remove(SelectedTrackArtist);
+            for(int i = 0; i < Track!.Artists.Count; i++)
             {
                 Track.Artists.ElementAt(i).OrderIndex = i;
             }
@@ -190,6 +286,11 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         private void SaveTrack()
         {
             if(Track != null) tracksService.UpdateTrack(TrackModel.ToDto(Track));
+            messageBoxService.ShowYesNoInfo(
+                message: $"Media item saved succesfully. Would you like to exit?", 
+                title: "Item info",
+                actionYes: () => { windowService.CloseDialog(); }, 
+                actionNo: () => { });
         }
 
         #endregion

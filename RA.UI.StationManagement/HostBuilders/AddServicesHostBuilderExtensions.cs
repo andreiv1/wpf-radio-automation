@@ -57,7 +57,7 @@ namespace RA.UI.StationManagement.HostBuilders
                 // Logic services
                 services.AddTransient<ITrackFilesImporter, TrackFileImporter>();
                 services.AddTransient<ITrackFilesProcessor, TrackFilesProcessor>();
-                services.AddTransient<IPlaylistGenerator, PlaylistGenerator>();
+                services.AddTransient<IPlaylistGenerator, PlaylistGeneratorOld>();
             });
 
             return host;

@@ -12,6 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using RA.UI.Core.Shared;
+using Microsoft.EntityFrameworkCore;
+using RA.Database;
 
 namespace RA.UI.StationManagement
 {
@@ -48,13 +50,27 @@ namespace RA.UI.StationManagement
 
             var windowService = host.Services.GetRequiredService<IWindowService>();
             var dispatcherService = host.Services.GetRequiredService<IDispatcherService>();
-
+            var messageBoxService = host.Services.GetRequiredService<IMessageBoxService>();
+            
             var splashScreen = new SplashScreenWindow();
             splashScreen.Show();
 
+            var canConnect = false;
             var loadingTask = Task.Run(async () =>
             {
-                await Task.Delay(1000);
+                var dbContextFactory = host.Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
+                var dbContext = dbContextFactory.CreateDbContext();
+
+                try
+                {
+                    canConnect = await DatabaseConnectionTester.CanConnectToDatabase(dbContext);
+                }
+                catch(DatabaseConnectionException ex)
+                {
+                    messageBoxService.ShowError(ex.Message);
+                    await dispatcherService.InvokeOnUIThreadAsync(() => Application.Current.Shutdown());
+                }
+                
             });
 
             Task.WhenAll(loadingTask).ContinueWith(async t =>

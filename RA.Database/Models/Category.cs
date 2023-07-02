@@ -17,14 +17,14 @@ namespace RA.Database.Models
         public string Name { get; set; }
 
         [MaxLength(1000)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public int? ParentId { get; set; }
 
-        public Category CategoryParent { get; set; }
+        public Category? CategoryParent { get; set; }
 
         [MaxLength(7)]
-        public string Color { get; set; }
+        public string? Color { get; set; }
 
         public ICollection<Category> Subcategories { get; set; }
         public ICollection<Track> Tracks { get; set; }

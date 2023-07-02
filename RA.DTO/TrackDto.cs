@@ -15,14 +15,12 @@ namespace RA.DTO
         public TrackStatus Status { get; set; }
         public string? Title { get; set; }
         public double Duration { get; set; }
-
         public double? StartCue { get; set; }
         public double? NextCue { get; set; }
         public double? EndCue { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public string? Album { get; set; }
         public string? Comments { get; set; }
-        public string? Lyrics { get; set; }
         public string? FilePath { get; set; }
         public string? ImageName { get; set; }
         public int? Bpm { get; set; }
@@ -30,10 +28,9 @@ namespace RA.DTO
         public DateTime DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
         public DateTime? DateDeleted { get; set; }
-        public List<TrackArtistDTO>? Artists { get; set; }
-        public List<TrackCategoryDTO>? Categories { get; set; }
-
-        public List<TagValueDTO>? Tags { get; set; }
+        public List<TrackArtistDTO> Artists { get; set; }
+        public List<TrackCategoryDTO> Categories { get; set; }
+        public List<TrackTagDTO> Tags { get; set; }
         public static TrackDTO FromEntity(Track track)
         {
             return new TrackDTO
@@ -57,11 +54,11 @@ namespace RA.DTO
                 DateModified = track.DateModified,
                 DateDeleted = track.DateDeleted,
                 Artists = track.TrackArtists != null ?
-                    track.TrackArtists.Select(ta => TrackArtistDTO.FromEntity(ta)).ToList() : null,
+                    track.TrackArtists.Select(ta => TrackArtistDTO.FromEntity(ta)).ToList() : new(),
                 Categories = track.Categories != null ?
-                    track.Categories.Select(c => TrackCategoryDTO.FromEntity(c)).ToList() : null,
+                    track.Categories.Select(c => TrackCategoryDTO.FromEntity(c)).ToList() : new(),
                 Tags = track.TrackTags != null ?
-                    track.TrackTags.Select(tt => TagValueDTO.FromEntity(tt.TagValue)).ToList() : null,
+                    track.TrackTags.Select(tt => TrackTagDTO.FromEntity(tt)).ToList() : new(),
             };
         }
 
@@ -72,6 +69,7 @@ namespace RA.DTO
                 Id = dto.Id,
                 TrackArtists = dto.Artists != null ? dto.Artists.Select(a => TrackArtistDTO.ToEntity(a)).ToList() : null,
                 Categories = dto.Categories != null ? dto.Categories.Select(c => TrackCategoryDTO.ToEntity(c)).ToList() : null,
+                TrackTags = dto.Tags != null ? dto.Tags.Select(t => TrackTagDTO.ToEntity(t)).ToList() : null,
                 StartCue = dto.StartCue,
                 EndCue = dto.EndCue,
                 NextCue = dto.NextCue,

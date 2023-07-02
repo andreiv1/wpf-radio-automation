@@ -404,15 +404,24 @@
                         </syncfusion:GridTemplateColumn>
                     </syncfusion:SfDataGrid.Columns>
                     
-                    <!-- Context menu -->
+                    <!-- Context menu for CLOCK ITEMS -->
                     <syncfusion:SfDataGrid.ContextMenu>
                         <ContextMenu>
+                            <MenuItem Header="Copy item(s)">
+								<MenuItem.Icon>
+									<Image Source="{StaticResource CopyIcon}" Width="16" Height="16" />
+								</MenuItem.Icon>
+							</MenuItem>
+							<MenuItem Header="Paste item(s)">
+								<MenuItem.Icon>
+									<Image Source="{StaticResource PasteIcon}" Width="16" Height="16" />
+								</MenuItem.Icon>
+							</MenuItem>
                             <MenuItem Header="Delete item(s)" Command="{Binding RemoveSelectedItemsInSelectedClockCommand}">
                                 <MenuItem.Icon>
                                     <Image Source="{StaticResource RemoveIcon}" Width="16" Height="16" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                           
                             <MenuItem Header="Edit item" Command="{Binding EditItemInSelectedClockCommand}">
                                 <MenuItem.Icon>
                                     <Image Source="{StaticResource EditIcon}" Width="16" Height="16" />

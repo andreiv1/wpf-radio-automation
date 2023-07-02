@@ -48,6 +48,8 @@ namespace RA.Database
             modelBuilder.ApplyConfiguration(new PlaylistConfig());
             modelBuilder.ApplyConfiguration(new ClockItemConfig());
             modelBuilder.ApplyConfiguration(new ClockItemCategoryTagConfig());
+            modelBuilder.ApplyConfiguration(new TrackHistoryConfig());
+
             modelBuilder.Entity<CategoryHierarchy>(entity =>
             {
                 entity.HasNoKey();
@@ -105,7 +107,8 @@ namespace RA.Database
                 Password = "$2a$11$SWq88W6Q77w7sanz7HrxbexnTN0nLq8XB70lLFrSDQbddPzmnQdIK",
                 UserGroupId = 1
             });
-
         }
+
+
     }
 }

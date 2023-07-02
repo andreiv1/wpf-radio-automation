@@ -44,6 +44,8 @@ namespace RA.DAL
             using var dbContext = dbContextFactory.CreateDbContext();
             return await dbContext.GetTrackById(id)
                 .Include(c => c.Categories)
+                .Include(tt => tt.TrackTags)
+                .ThenInclude(tt => tt.TagValue)
                 .Select(t => TrackDTO.FromEntity(t))
                 .FirstAsync();
         }
@@ -54,26 +56,51 @@ namespace RA.DAL
             var existingTrack = dbContext.Tracks
                 .Where(t => t.Id == trackDTO.Id)
                 .Include(t => t.Categories)
+                .Include(t => t.TrackTags)
                 .FirstOrDefault();
+
             var track = TrackDTO.ToEntity(trackDTO);
             if (existingTrack == null) return;
             dbContext.Entry(existingTrack).CurrentValues.SetValues(track);
 
-            // Remove categories that are no longer associated with the track
-            foreach (var existingCategory in existingTrack.Categories.ToList())
+            if (track.Categories != null)
             {
-                if(!track.Categories.Any(c => c.Id == existingCategory.Id))
+                // Remove categories that are no longer associated with the track
+                foreach (var existingCategory in existingTrack.Categories.ToList())
                 {
-                    existingTrack.Categories.Remove(existingCategory);
+                    if (!track.Categories.Any(c => c.Id == existingCategory.Id))
+                    {
+                        existingTrack.Categories.Remove(existingCategory);
+                    }
+                }
+
+                // Add new categories to the track
+                foreach (var newCategory in track.Categories)
+                {
+                    if (!existingTrack.Categories.Any(c => c.Id == newCategory.Id))
+                    {
+                        existingTrack.Categories.Add(newCategory);
+                    }
                 }
             }
 
-            // Add new categories to the track
-            foreach (var newCategory in track.Categories)
+            if (track.TrackTags != null)
             {
-                if (!existingTrack.Categories.Any(c => c.Id == newCategory.Id))
+                // Remove tags that are no longer associated
+                foreach (var existingTag in existingTrack.TrackTags.ToList())
                 {
-                    existingTrack.Categories.Add(newCategory);
+                    if (!track.TrackTags.Any(tt => tt.TagValueId == existingTag.TagValueId))
+                    {
+                        existingTrack.TrackTags.Remove(existingTag);
+                    }
+                }
+                // Add new tags to the track
+                foreach (var newTag in track.TrackTags)
+                {
+                    if (!existingTrack.TrackTags.Any(tt => tt.TagValueId == newTag.TagValueId))
+                    {
+                        existingTrack.TrackTags.Add(newTag);
+                    }
                 }
             }
 

@@ -16,14 +16,11 @@ namespace RA.DTO
         public int? ArtistSeparation { get; set; }
         public int? TitleSeparation { get; set; }
         public int? TrackSeparation { get; set; }
-        public int? MinBpm { get; set; }
-        public int? MaxBpm { get; set; }
         public TimeSpan? MinDuration { get; set; }
         public TimeSpan? MaxDuration { get; set; }
         public DateTime? MinReleaseDate { get; set; }
         public DateTime? MaxReleaseDate { get; set; }
-        public Boolean IsFiller { get; set; } = false;
-
+        public bool IsFiller { get; set; }
         public static ClockItemCategoryDTO FromEntity(ClockItemCategory entity)
         {
             return new ClockItemCategoryDTO
@@ -56,9 +53,9 @@ namespace RA.DTO
                 OrderIndex = dto.OrderIndex,
                 ClockId = dto.ClockId,
                 CategoryId = dto.CategoryId,
-                ArtistSeparation= dto.ArtistSeparation,
-                TitleSeparation= dto.TitleSeparation,
-                TrackSeparation= dto.TrackSeparation,
+                ArtistSeparation = dto.ArtistSeparation,
+                TitleSeparation = dto.TitleSeparation,
+                TrackSeparation = dto.TrackSeparation,
 
                 MinDuration = dto.MinDuration,
                 MaxDuration = dto.MaxDuration,

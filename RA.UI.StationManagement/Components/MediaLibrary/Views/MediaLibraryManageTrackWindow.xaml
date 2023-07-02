@@ -464,10 +464,10 @@
                             <TextBox Grid.Row="1" Grid.Column="5" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                Height="24" IsReadOnly="True"
                                      Text="{Binding AudioFileFormat}"/>
-                            <Label Grid.Column="6" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"
+                            <!--<Label Grid.Column="6" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"
                                 Content="Detect"/>
                             <syncfusion:ButtonAdv Grid.Row="1" Grid.Column="6" Width="95" SmallIcon="{x:Null}"
-                                Label="Cue points"/>
+                                Label="Cue points"/>-->
                         </Grid>
 
                     </StackPanel>
@@ -527,6 +527,7 @@
                             <syncfusion:ComboBoxAdv Grid.Row="1" VerticalAlignment="Center" MinHeight="45"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
                                     ItemsSource="{Binding Genres}" DefaultText="Any genre"
+                                    SelectedItems="{Binding SelectedGenres}"
                                     DisplayMemberPath="Name"
                                     />
                             <Label Grid.Row="2" VerticalAlignment="Center"
@@ -534,6 +535,7 @@
                             <syncfusion:ComboBoxAdv Grid.Row="3" VerticalAlignment="Center" MinHeight="45"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
                                     ItemsSource="{Binding Languages}" DefaultText="Any language"
+                                    SelectedItems="{Binding SelectedLanguages}"
                                     DisplayMemberPath="Name"
                                     />
 
@@ -542,6 +544,7 @@
                             <syncfusion:ComboBoxAdv Grid.Row="5" VerticalAlignment="Center" MinHeight="45"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
                                     ItemsSource="{Binding Moods}" DefaultText="Any mood" 
+                                    SelectedItems="{Binding SelectedMoods}"
                                     DisplayMemberPath="Name"
                                     />
                         </Grid>

@@ -70,6 +70,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
         private DateTime? dateDeleted;
         public ObservableCollection<TrackArtistDTO>? Artists { get; set; }
         public ObservableCollection<TrackCategoryDTO>? Categories { get; set; }
+        public ObservableCollection<TrackTagDTO>? Tags { get; set; }
         public String ArtistsText
         {
             get
@@ -100,7 +101,6 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
                 ReleaseDate = dto.ReleaseDate,
                 Album = dto.Album ?? "",
                 Comments = dto.Comments ?? "",
-                Lyrics = dto.Lyrics ?? "",
                 FilePath = dto.FilePath ?? "",
                 ImageName = dto.ImageName ?? "",
                 Bpm = dto.Bpm,
@@ -110,6 +110,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
                 DateDeleted = dto.DateDeleted,
                 Artists = dto.Artists != null ? new ObservableCollection<TrackArtistDTO>(dto.Artists) : null,
                 Categories = dto.Categories != null ? new ObservableCollection<TrackCategoryDTO>(dto.Categories) : null,
+                Tags = dto.Tags != null ? new ObservableCollection<TrackTagDTO>(dto.Tags) : null,
             };
         }
 
@@ -120,20 +121,21 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
                 Id = model.Id,
                 Type = model.Type,
                 Status = model.Status,
+                Duration = model.Duration.TotalSeconds,
                 Title = model.Title,
-                StartCue = model.StartCue,
-                NextCue = model.NextCue,
-                EndCue = model.EndCue,
+                StartCue = model.StartCue == 0 ? null : model.StartCue,
+                NextCue = model.NextCue == model.Duration.TotalSeconds ? null : model.NextCue,
+                EndCue = model.EndCue == model.Duration.TotalSeconds ? null : model.EndCue,
                 ReleaseDate = model.ReleaseDate,
                 Album = model.Album,
                 Comments = model.Comments,
-                Lyrics = model.Lyrics,
                 FilePath = model.FilePath,
                 ImageName = model.ImageName,
                 Bpm = model.Bpm,
                 ISRC = model.ISRC,
                 Artists = model.Artists?.ToList(),
                 Categories = model?.Categories?.ToList(),
+                Tags = model.Tags.ToList(),
             };
         }
     }

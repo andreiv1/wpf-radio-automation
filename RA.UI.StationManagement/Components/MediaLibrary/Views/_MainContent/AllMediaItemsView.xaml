@@ -79,7 +79,8 @@
                        RowHeight="30">
             <syncfusion:SfDataGrid.Columns>
                 <syncfusion:GridTemplateColumn MinimumWidth="50" HeaderText=" "
-                                                   MappingName="Type" Width="16" MaximumWidth="16">
+                                                   MappingName="Type" Width="16" MaximumWidth="16"
+                                               AllowSorting="False">
                     <syncfusion:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Image Width="24" Height="20">
@@ -117,7 +118,7 @@
                                            DisplayBinding="{Binding Path=Duration, Converter={StaticResource DoubleToTimeSpanConverter}, StringFormat={}{0:hh\\:mm\\:ss} }">
                 </syncfusion:GridTextColumn>
 
-                <syncfusion:GridDateTimeColumn HeaderText="Date Added" MappingName="DateAdded"
+                <syncfusion:GridDateTimeColumn HeaderText="Date Added" MappingName="DateAdded" 
                                     MinimumWidth="130"/>
                 <syncfusion:GridDateTimeColumn HeaderText="Date Modified" MappingName="DateModified"
                                    MinimumWidth="130"/>
@@ -134,13 +135,13 @@
         </syncfusion:SfDataGrid>
         <Grid Grid.Row="2" Margin="5,0,5,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Label Content="Total items:" HorizontalAlignment="Left" VerticalAlignment="Center"
+            <Label Content="Items found:" HorizontalAlignment="Left" VerticalAlignment="Center"
                     FontSize="14"/>
 
             <Label Grid.Column="1" FontSize="14"
