@@ -2,7 +2,7 @@
 using RA.Database;
 using RA.Database.Models;
 using RA.DTO;
-
+using System.Diagnostics;
 
 namespace RA.DAL
 {
@@ -51,24 +51,34 @@ namespace RA.DAL
         public async Task UpdateTrack(TrackDTO trackDTO)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
-            Track track = TrackDTO.ToEntity(trackDTO);
+            var existingTrack = dbContext.Tracks
+                .Where(t => t.Id == trackDTO.Id)
+                .Include(t => t.Categories)
+                .FirstOrDefault();
+            var track = TrackDTO.ToEntity(trackDTO);
+            if (existingTrack == null) return;
+            dbContext.Entry(existingTrack).CurrentValues.SetValues(track);
 
-            var existingCategories = await dbContext
-                .Tracks.Where(t => t.Id == track.Id)
-                .SelectMany(t => t.Categories)
-                .ToListAsync();
-
-            foreach(var category in existingCategories)
+            // Remove categories that are no longer associated with the track
+            foreach (var existingCategory in existingTrack.Categories.ToList())
             {
-                var toRemove = track.Categories.Where(c => c.Id == category.Id).FirstOrDefault();
-                if (toRemove != null)
+                if(!track.Categories.Any(c => c.Id == existingCategory.Id))
                 {
-                    track.Categories.Remove(toRemove);
+                    existingTrack.Categories.Remove(existingCategory);
                 }
             }
 
-            dbContext.Tracks.Update(track);
-            
+            // Add new categories to the track
+            foreach (var newCategory in track.Categories)
+            {
+                if (!existingTrack.Categories.Any(c => c.Id == newCategory.Id))
+                {
+                    existingTrack.Categories.Add(newCategory);
+                }
+            }
+
+            existingTrack.DateModified = DateTime.Now;
+
             await dbContext.SaveChangesAsync();
         }
 
