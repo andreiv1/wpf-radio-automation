@@ -2,12 +2,12 @@
 using Microsoft.Extensions.Hosting;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
+using RA.UI.Core.Shared;
 using RA.UI.Core.Themes;
 using RA.UI.Playout.HostBuilders;
 using RA.UI.Playout.ViewModels;
 using System.Threading.Tasks;
 using System.Windows;
-using RA.UI.Core.Shared;
 
 namespace RA.UI.Playout
 {

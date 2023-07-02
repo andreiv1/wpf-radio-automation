@@ -107,7 +107,7 @@ namespace RA.UI.Playout.ViewModels.Components
         {
             ElapsedNow = TimeSpan.FromSeconds(position);
             RemainingNow = DurationNow - ElapsedNow;
-            PlaylistVm.SeekCommand.Execute(new TimeSpan[] { RemainingNow.Value, ElapsedNow});
+            PlaylistVm.SeekCommand.Execute(new TimeSpan[] { TimeSpan.FromSeconds(position), RemainingNow.GetValueOrDefault()});
         }
     }
 }

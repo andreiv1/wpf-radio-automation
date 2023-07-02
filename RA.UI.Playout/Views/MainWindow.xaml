@@ -235,24 +235,12 @@
                             </Grid.ColumnDefinitions>
                             <Image Source="{StaticResource PlayRedIcon}" Width="32" Height="20" VerticalAlignment="Center"/>
                             <Label Grid.Column="1" VerticalAlignment="Center"
-                                Content="Auxiliary Players" FontWeight="Bold"/>
+                                Content="Now Playing Details" FontWeight="Bold"/>
                         </Grid>
                     </syncfusion:TabItemExt.Header>
                 </syncfusion:TabItemExt>
 
-                <syncfusion:TabItemExt>
-                    <syncfusion:TabItemExt.Header>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="32"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Image Source="{StaticResource InternetIcon}" Width="32" Height="20" VerticalAlignment="Center"/>
-                            <Label Grid.Column="1" VerticalAlignment="Center"
-                                Content="Web Browser" FontWeight="Bold"/>
-                        </Grid>
-                    </syncfusion:TabItemExt.Header>
-                </syncfusion:TabItemExt>
+               
             </syncfusion:TabControlExt>
             
             

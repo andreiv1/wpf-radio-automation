@@ -8,7 +8,7 @@
 	  <Title>RA | Playout</Title>
 	  <Product>$(AssemblyName)</Product>
 	  <AssemblyName>RA - Playout</AssemblyName>
-    <AssemblyVersion>0.2</AssemblyVersion>
+    <AssemblyVersion>0.3</AssemblyVersion>
     <ApplicationIcon>Resources\playout_icon.ico</ApplicationIcon>
   </PropertyGroup>
 

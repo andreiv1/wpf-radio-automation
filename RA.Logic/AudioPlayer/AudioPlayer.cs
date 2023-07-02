@@ -102,13 +102,10 @@ namespace RA.Logic.AudioPlayer
         {
             if (audioFileReader != null && waveOut != null)
             {
-                if (position < TimeSpan.Zero)
-                    position = TimeSpan.Zero;
-                else if (position > audioFileReader.TotalTime)
-                    position = audioFileReader.TotalTime;
-
-                audioFileReader.CurrentTime = position;
-                waveOut.Play();
+                //audioFileReader.Position = (long)(position.TotalSeconds * audioFileReader.WaveFormat.SampleRate * audioFileReader.WaveFormat.Channels * audioFileReader.WaveFormat.BitsPerSample / 8);
+                //waveOut.Play();
+                var pos = (long)(position.TotalSeconds * audioFileReader.WaveFormat.SampleRate * audioFileReader.WaveFormat.Channels * audioFileReader.WaveFormat.BitsPerSample / 8);
+                audioFileReader.Seek(pos, SeekOrigin.Begin);
             }
         }
     }

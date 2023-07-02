@@ -29,8 +29,6 @@ namespace RA.UI.Playout.ViewModels.Components
         private IPlayerItem? selectedPlaylistItem;
         public MainViewModel? MainVm { get; set; }
         public ObservableCollection<IPlayerItem> PlayerItems { get; } = new();
-
-        #region Constructor
         public PlaylistViewModel(IDispatcherService dispatcherService,
                                  IPlaybackQueue playbackQueue,
                                  IPlaylistsService playlistsService)
@@ -41,11 +39,15 @@ namespace RA.UI.Playout.ViewModels.Components
 
             playbackQueue.Mode = PlaybackMode.Auto;
             playbackQueue.PlaybackStarted += PlaybackQueue_PlaybackStarted;
+            playbackQueue.PlaybackItemChange += PlaybackQueue_PlaybackItemChange;
 
             _ = LoadPlaylist(DateTime.Now,1);
         }
 
-        #endregion
+        private void PlaybackQueue_PlaybackItemChange(object? sender, EventArgs e)
+        {
+            DebugHelper.WriteLine(this, $"Playback item changed");
+        }
 
         #region Data fetching
         private async Task LoadPlaylist(DateTime date, int maxHours = 1)
@@ -144,7 +146,7 @@ namespace RA.UI.Playout.ViewModels.Components
         {
             if (playerItemNow != null)
             {
-                MainVm.NowPlayingVm.UpdateNowPlaying(artist: playerItemNow.Artists ?? "", 
+                MainVm!.NowPlayingVm.UpdateNowPlaying(artist: playerItemNow.Artists ?? "", 
                                                      title: playerItemNow.Title, 
                                                      duration: playerItemNow.Duration, 
                                                      image: playerItemNow.ImagePath);
@@ -179,8 +181,8 @@ namespace RA.UI.Playout.ViewModels.Components
                     return;
                 }
 
-                MainVm.NowPlayingVm.ElapsedNow += TimeSpan.FromSeconds(1);
-                MainVm.NowPlayingVm.RemainingNow = MainVm.NowPlayingVm.DurationNow - MainVm.NowPlayingVm.ElapsedNow;
+                MainVm!.NowPlayingVm.ElapsedNow += TimeSpan.FromSeconds(1);
+                MainVm!.NowPlayingVm.RemainingNow = MainVm.NowPlayingVm.DurationNow - MainVm.NowPlayingVm.ElapsedNow;
             }
         }
 
@@ -188,8 +190,8 @@ namespace RA.UI.Playout.ViewModels.Components
         [RelayCommand]
         private void PlayNext()
         {
-            MainVm.NowPlayingVm.IsPaused = false;
-            MainVm.NowPlayingVm.IsItemLoaded = true;
+            MainVm!.NowPlayingVm.IsPaused = false;
+            MainVm!.NowPlayingVm.IsItemLoaded = true;
             playbackQueue.Play();
             CalculateRemaining();
 
@@ -233,7 +235,7 @@ namespace RA.UI.Playout.ViewModels.Components
         [RelayCommand]
         private void AddTrackToTop()
         {
-            if (MainVm.MediaItemsVm.SelectedTrack == null) return;
+            if (MainVm!.MediaItemsVm.SelectedTrack == null) return;
             IPlayerItem newItem = new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack);
             PlaybackAddItem(newItem, 0);
             SelectedPlaylistItem = newItem;
@@ -242,7 +244,7 @@ namespace RA.UI.Playout.ViewModels.Components
         [RelayCommand]
         private void AddTrackToBottom()
         {
-            if (MainVm.MediaItemsVm.SelectedTrack == null) return;
+            if (MainVm!.MediaItemsVm.SelectedTrack == null) return;
             IPlayerItem newItem = new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack);
             PlaybackAddItem(newItem);
             SelectedPlaylistItem = newItem;
@@ -252,7 +254,7 @@ namespace RA.UI.Playout.ViewModels.Components
         private void InsertTrack()
         {
             if(SelectedPlaylistItem == null) return;
-            if (MainVm.MediaItemsVm.SelectedTrack == null) return;
+            if (MainVm!.MediaItemsVm.SelectedTrack == null) return;
             int index = PlayerItems.IndexOf(SelectedPlaylistItem) + 1;
             IPlayerItem newItem = new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack);
             PlaybackAddItem(newItem, index);
@@ -263,7 +265,7 @@ namespace RA.UI.Playout.ViewModels.Components
         private void ReplaceTrack()
         {
             if (SelectedPlaylistItem == null) return;
-            if (MainVm.MediaItemsVm.SelectedTrack == null) return;
+            if (MainVm!.MediaItemsVm.SelectedTrack == null) return;
             int originalIndex = PlayerItems.IndexOf(SelectedPlaylistItem);
             PlaybackRemoveItem(SelectedPlaylistItem);
             IPlayerItem newItem = new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack);

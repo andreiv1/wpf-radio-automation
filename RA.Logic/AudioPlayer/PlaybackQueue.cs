@@ -26,6 +26,7 @@ namespace RA.Logic.AudioPlayer
             this.audioPlayer = audioPlayer;
             this.audioPlayer.PlaybackStopped += OnPlaybackStopped;
             this.audioPlayer.PlaybackPaused += OnPlaybackPaused;
+           
             _ = StartUpdateETAsAsync();
         }
 
