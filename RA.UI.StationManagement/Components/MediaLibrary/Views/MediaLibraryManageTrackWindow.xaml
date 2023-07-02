@@ -512,7 +512,7 @@
                         <GroupBox.Header>
                             <Label Content="Tags" FontSize="15" FontWeight="bold"/>
                         </GroupBox.Header>
-                        <Grid Margin="0,10,0,0" >
+                        <Grid Margin="0,3,0,0" >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
@@ -526,7 +526,7 @@
                 Content="Genre(s):" FontWeight="DemiBold"/>
                             <syncfusion:ComboBoxAdv Grid.Row="1" VerticalAlignment="Center" MinHeight="45"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
-                                    ItemsSource="{Binding Genres}" DefaultText="Any genre"
+                                    ItemsSource="{Binding Genres}" 
                                     SelectedItems="{Binding SelectedGenres}"
                                     DisplayMemberPath="Name"
                                     />
@@ -534,7 +534,7 @@
                 Content="Language(s):" FontWeight="DemiBold"/>
                             <syncfusion:ComboBoxAdv Grid.Row="3" VerticalAlignment="Center" MinHeight="45"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
-                                    ItemsSource="{Binding Languages}" DefaultText="Any language"
+                                    ItemsSource="{Binding Languages}"
                                     SelectedItems="{Binding SelectedLanguages}"
                                     DisplayMemberPath="Name"
                                     />
@@ -543,7 +543,7 @@
                 Content="Mood(s):" FontWeight="DemiBold"/>
                             <syncfusion:ComboBoxAdv Grid.Row="5" VerticalAlignment="Center" MinHeight="45"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
-                                    ItemsSource="{Binding Moods}" DefaultText="Any mood" 
+                                    ItemsSource="{Binding Moods}" 
                                     SelectedItems="{Binding SelectedMoods}"
                                     DisplayMemberPath="Name"
                                     />

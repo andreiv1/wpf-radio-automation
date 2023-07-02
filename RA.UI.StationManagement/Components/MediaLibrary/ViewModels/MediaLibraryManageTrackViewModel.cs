@@ -112,7 +112,10 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
                 {
                     TagValueDTO? tagValue = item as TagValueDTO;
                     if (tagValue != null)
-                        Track.Tags.Remove(Track.Tags.Where(t => t.TagValueId == tagValue.Id).First());
+                    {
+                        var toDelete = Track.Tags.Where(t => t.TagValueId == tagValue.Id).First();
+                        Track.Tags.Remove(toDelete);
+                    }
                 }
             } else if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
@@ -122,9 +125,15 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
 
                 foreach (var item in addedItems)
                 {
-                    if (item is TagValueDTO tagValue)
+                    TagValueDTO? tagValue = item as TagValueDTO;
+                    if (tagValue != null)
                     {
-                        Track.Tags.Add(new TrackTagDTO() { TagCategoryId = tagValue.TagCategoryId, TagValueId = tagValue.Id, TrackId = Track.Id });
+                        var alreadyExists = Track.Tags.Any(t => t.TagValueId == tagValue.Id);
+                        if(!alreadyExists)
+                        {
+                            Track.Tags.Add(new TrackTagDTO() { TagCategoryId = tagValue.TagCategoryId, TagValueId = tagValue.Id, TrackId = Track.Id });
+                        }
+                        
                     }
                 }
             }
@@ -285,7 +294,9 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         [RelayCommand]
         private void SaveTrack()
         {
-            if(Track != null) tracksService.UpdateTrack(TrackModel.ToDto(Track));
+            if (Track == null) return;
+            var dto = TrackModel.ToDto(Track);
+            if (Track != null) tracksService.UpdateTrack(dto);
             messageBoxService.ShowYesNoInfo(
                 message: $"Media item saved succesfully. Would you like to exit?", 
                 title: "Item info",
