@@ -68,7 +68,8 @@ namespace RA.DAL
                 // Remove categories that are no longer associated with the track
                 foreach (var existingCategory in existingTrack.Categories.ToList())
                 {
-                    if (!track.Categories.Any(c => c.Id == existingCategory.Id))
+                    if (!track.Categories
+                        .Any(c => c.Id == existingCategory.Id))
                     {
                         existingTrack.Categories.Remove(existingCategory);
                     }
@@ -77,7 +78,8 @@ namespace RA.DAL
                 // Add new categories to the track
                 foreach (var newCategory in track.Categories)
                 {
-                    if (!existingTrack.Categories.Any(c => c.Id == newCategory.Id))
+                    if (!existingTrack.Categories
+                        .Any(c => c.Id == newCategory.Id))
                     {
                         existingTrack.Categories.Add(newCategory);
                     }
@@ -89,7 +91,8 @@ namespace RA.DAL
                 // Remove tags that are no longer associated
                 foreach (var existingTag in existingTrack.TrackTags.ToList())
                 {
-                    if (!track.TrackTags.Any(tt => tt.TagValueId == existingTag.TagValueId))
+                    if (!track.TrackTags
+                        .Any(tt => tt.TagValueId == existingTag.TagValueId))
                     {
                         existingTrack.TrackTags.Remove(existingTag);
                     }
@@ -97,7 +100,8 @@ namespace RA.DAL
                 // Add new tags to the track
                 foreach (var newTag in track.TrackTags)
                 {
-                    if (!existingTrack.TrackTags.Any(tt => tt.TagValueId == newTag.TagValueId))
+                    if (!existingTrack.TrackTags
+                        .Any(tt => tt.TagValueId == newTag.TagValueId))
                     {
                         existingTrack.TrackTags.Add(newTag);
                     }
