@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RA.Database;
 using RA.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RA.DAL
 {
@@ -25,5 +20,21 @@ namespace RA.DAL
             dbContext.TrackHistory.Add(entity);
             await dbContext.SaveChangesAsync();
         }
+
+        public async Task<ICollection<TrackHistoryListingDTO>> RetrieveTrackHistory(DateTime dateMinPlayed)
+        {
+            ICollection<TrackHistoryListingDTO> history = new List<TrackHistoryListingDTO>();
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            var result = await dbContext.TrackHistory
+                .Where(th => th.DatePlayed >= dateMinPlayed)
+                .Include(th => th.Track)
+                .Include(th => th.Track!.TrackArtists)
+                .ThenInclude(ta => ta.Artist)
+                .Select(th => TrackHistoryListingDTO.FromEntity(th))
+                .ToListAsync();
+            return result;
+        }
+
+
     }
 }

@@ -14,7 +14,16 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
+            _ = TestHistory();
+
+            Console.ReadKey();
             
+        }
+
+        static async Task TestHistory()
+        {
+            ITrackHistoryService trackHistoryService = new TrackHistoryService(dbFactory);
+            var result = await trackHistoryService.RetrieveTrackHistory(DateTime.Now.Date);
         }
     }
 }

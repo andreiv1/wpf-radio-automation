@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RA.Database;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.Shared;
@@ -42,37 +44,28 @@ namespace RA.UI.Playout
         {
             var windowService = host.Services.GetRequiredService<IWindowService>();
             var dispatcherService = host.Services.GetRequiredService<IDispatcherService>();
+            var messageBoxService = host.Services.GetRequiredService<IMessageBoxService>();
+
             ThemeManager.SetTheme(ThemeType.Dark);
             SplashScreenWindow splashScreen = new SplashScreenWindow();
             splashScreen.Show();
 
-            //var canConnect = false;
-            //var testDatabaseTask = Task.Run(() =>
-            //{
-            //    canConnect = CanConnectToDatabase();
-            //});
-
-
-
-            //Task.WhenAll(testDatabaseTask, loadComponents).ContinueWith(t =>
-            //{
-            //    dispatcherService.InvokeOnUIThread(() =>
-            //    {
-            //        if (canConnect)
-            //        {
-            //            windowService.ShowWindow<MainViewModel>();
-            //        }
-            //        else
-            //        {
-            //            windowService.ShowWindow<DatabaseSetupViewModel>();
-            //        }
-
-            //        splashScreen.Hide();
-            //    });
-            //});
+            var canConnect = false;
             var loadingTask = Task.Run(async () =>
             {
-                await Task.Delay(1000);
+                var dbContextFactory = host.Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
+                var dbContext = dbContextFactory.CreateDbContext();
+
+                try
+                {
+                    canConnect = await DatabaseConnectionTester.CanConnectToDatabase(dbContext);
+                }
+                catch (DatabaseConnectionException ex)
+                {
+                    messageBoxService.ShowError(ex.Message);
+                    await dispatcherService.InvokeOnUIThreadAsync(() => Application.Current.Shutdown());
+                }
+
             });
 
             Task.WhenAll(loadingTask).ContinueWith(async t =>
@@ -86,27 +79,6 @@ namespace RA.UI.Playout
 
         }
 
-        //private bool CanConnectToDatabase()
-        //{
-        //    var messageBoxService = AppHost!.Services.GetRequiredService<IMessageBoxService>();
-        //    try
-        //    {
-        //        IDbContextFactory<AppDbContext> dbContextFactory = AppHost!.Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
-        //        using var dbContext = dbContextFactory.CreateDbContext();
-        //        var result = dbContext.Database.ExecuteSqlRaw("SELECT 1 FROM Tracks;");
-        //        return true;
-        //    }
-        //    catch (MySqlException ex)
-        //    {
-        //        messageBoxService.ShowError($"Failed to connect to the database: {ex.Message}");
-        //        return false;
-        //    }
-        //    catch (Exception )
-        //    {
-        //        return false;
-        //    }
-
-        //}
         protected override async void OnExit(ExitEventArgs e)
         {
             await host.StopAsync();

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
+using RA.Database.Models.Enums;
 using RA.DTO;
 using RA.Logic;
 using RA.Logic.AudioPlayer.Interfaces;
@@ -23,6 +24,7 @@ namespace RA.UI.Playout.ViewModels.Components
         private readonly IDispatcherService dispatcherService;
         private readonly IPlaybackQueue playbackQueue;
         private readonly IPlaylistsService playlistsService;
+        private readonly ITrackHistoryService trackHistoryService;
         private IPlayerItem? playerItemNow;
 
         [ObservableProperty]
@@ -55,18 +57,25 @@ namespace RA.UI.Playout.ViewModels.Components
         public ObservableCollection<IPlayerItem> PlayerItems { get; } = new();
         public PlaylistViewModel(IDispatcherService dispatcherService,
                                  IPlaybackQueue playbackQueue,
-                                 IPlaylistsService playlistsService)
+                                 IPlaylistsService playlistsService,
+                                 ITrackHistoryService trackHistoryService)
         {
             this.dispatcherService = dispatcherService;
             this.playbackQueue = playbackQueue;
             this.playlistsService = playlistsService;
-
+            this.trackHistoryService = trackHistoryService;
             playbackQueue.PlaybackStarted += PlaybackQueue_PlaybackStarted;
+            playbackQueue.PlaybackStopped += PlaybackQueue_PlaybackStopped;
             playbackQueue.PlaybackItemChange += PlaybackQueue_PlaybackItemChange;
 
             PlayerItems.CollectionChanged += PlayerItems_CollectionChanged;
 
             _ = LoadPlaylist(DateTime.Now,1);
+        }
+
+        private void PlaybackQueue_PlaybackStopped(object? sender, EventArgs e)
+        {
+            MainVm!.NowPlayingVm.Reset();
         }
 
         private void PlayerItems_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -87,8 +96,6 @@ namespace RA.UI.Playout.ViewModels.Components
         {
             DebugHelper.WriteLine(this, $"Playback item changed");
         }
-
-        #region Data fetching
         private async Task LoadPlaylist(DateTime date, int maxHours = 1)
         {
             await Task.Run(() => {
@@ -105,9 +112,6 @@ namespace RA.UI.Playout.ViewModels.Components
             });
         }
 
-        #endregion
-
-        #region Playback Queue events & logic 
         public void PlaybackAddItem(IPlayerItem playerItem)
         {
             playbackQueue.AddItem(playerItem);
@@ -177,10 +181,9 @@ namespace RA.UI.Playout.ViewModels.Components
                 PlayerItems.RemoveAt(0);
 
                 UpdateNowPlaying();
+                AddNowToHistory();
             }
         }
-        #endregion
-
         private void UpdateNowPlaying()
         {
             if (playerItemNow != null)
@@ -227,12 +230,24 @@ namespace RA.UI.Playout.ViewModels.Components
 
         private void Play()
         {
-MainVm!.NowPlayingVm.IsPaused = false;
+            MainVm!.NowPlayingVm.IsPaused = false;
             MainVm!.NowPlayingVm.IsItemLoaded = true;
             playbackQueue.Play();
             CalculateRemaining();
         }
-        #region Commands
+
+        private void AddNowToHistory()
+        {
+            TrackType trackType = (TrackType)Enum.Parse(typeof(TrackType), playerItemNow.TrackType);
+            _ = trackHistoryService.AddTrackToHistory(new TrackHistoryDTO()
+            {
+                DatePlayed = DateTime.Now,
+                TrackId = playerItemNow.TrackId,
+                TrackType = trackType,
+
+            });
+        }
+
         [RelayCommand]
         private void Next()
         {
@@ -257,6 +272,7 @@ MainVm!.NowPlayingVm.IsPaused = false;
         {
             playbackQueue.Stop();
             CalculateRemaining();
+            MainVm!.NowPlayingVm.Reset();
         }
 
         [RelayCommand]
@@ -346,8 +362,7 @@ MainVm!.NowPlayingVm.IsPaused = false;
         {
             PlaybackClearItems();
         }
-       
-        #endregion
+    
     }
 
 }

@@ -7,7 +7,6 @@ namespace RA.DTO
     {
         public TrackType TrackType { get; set; }
         public DateTime DatePlayed { get; set; }
-        public TimeSpan LengthPlayed { get; set; }
         public int? TrackId { get; set; }
         public static TrackHistory ToEntity(TrackHistoryDTO dto)
         {
@@ -15,7 +14,6 @@ namespace RA.DTO
             {
                 TrackType = dto.TrackType,
                 DatePlayed = dto.DatePlayed,
-                LengthPlayed = dto.LengthPlayed,
                 TrackId = dto.TrackId,
             };
         }

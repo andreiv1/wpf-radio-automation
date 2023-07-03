@@ -35,6 +35,7 @@ namespace RA.UI.Playout.HostBuilders
 
                 services.AddTransient<IPlaylistsService, PlaylistsService>();
                 services.AddTransient<ITracksService, TracksService>();
+                services.AddSingleton<ITrackHistoryService, TrackHistoryService>();
             });
 
             return host;

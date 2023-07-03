@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -20,6 +21,10 @@ namespace RA.Database.Migrations
 
             migrationBuilder.DropColumn(
                 name: "ISRC",
+                table: "TrackHistory");
+
+            migrationBuilder.DropColumn(
+                name: "LengthPlayed",
                 table: "TrackHistory");
 
             migrationBuilder.DropColumn(
@@ -52,6 +57,13 @@ namespace RA.Database.Migrations
                 type: "varchar(55)",
                 maxLength: 55,
                 nullable: true)
+            .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.AddColumn<TimeSpan>(
+                name: "LengthPlayed",
+                table: "TrackHistory",
+                type: "time(6)",
+                nullable: false)
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.AddColumn<string>(

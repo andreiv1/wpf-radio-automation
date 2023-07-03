@@ -9,8 +9,8 @@ namespace RA.Logic.AudioPlayer.Interfaces
 {
     public interface IPlayerItem
     {
+        public int TrackId { get; }
         public string FilePath { get; }
-
         public string ImagePath { get; }
         public TimeSpan Duration { get; }
         public DateTime ETA { get; set; }

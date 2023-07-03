@@ -13,7 +13,6 @@ namespace RA.Database.Models
     {
         public TrackType TrackType { get; set; }
         public DateTime DatePlayed { get; set; }
-        public TimeSpan LengthPlayed { get; set; }
         public Track? Track { get; set; }
         public int? TrackId { get; set; }
     }

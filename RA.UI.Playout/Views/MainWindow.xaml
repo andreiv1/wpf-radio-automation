@@ -229,6 +229,37 @@
                                 Content="History" FontWeight="Bold"/>
                         </Grid>
                     </syncfusion:TabItemExt.Header>
+                    
+                    <!-- HISTORY !-->
+                    <Grid>
+                        <syncfusion:SfDataGrid Grid.Row="1" SelectionMode="Single"
+                                AutoGenerateColumns="False"
+                               AllowSorting="False" ColumnSizer="AutoLastColumnFill"
+                               SelectionUnit="Row" NavigationMode="Row"
+                               RowHeight="30"
+                               >
+                            <syncfusion:SfDataGrid.Columns>
+                                <syncfusion:GridTemplateColumn HeaderText="Date played" MinimumWidth="170"
+                                                               ColumnSizer="Star">
+                                    <syncfusion:GridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <TextBlock Text="dd.mm"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </syncfusion:GridTemplateColumn.CellTemplate>
+                                </syncfusion:GridTemplateColumn>
+
+                                <syncfusion:GridTextColumn HeaderText="Artists" MappingName="Artists"
+                                           MinimumWidth="200"
+                                           AllowResizing="True"
+                                    ColumnSizer="Star"/>
+                                <syncfusion:GridTextColumn HeaderText="Title" MappingName="Title" MinimumWidth="300"
+                                                           ColumnSizer="Star"/>
+                            </syncfusion:SfDataGrid.Columns>
+
+                        </syncfusion:SfDataGrid>
+                    </Grid>
                 </syncfusion:TabItemExt>
 
                 <syncfusion:TabItemExt>

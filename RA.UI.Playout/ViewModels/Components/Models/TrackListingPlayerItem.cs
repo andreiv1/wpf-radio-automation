@@ -43,6 +43,8 @@ namespace RA.UI.Playout.ViewModels.Components.Models
 
         public string? TrackType => trackListingDTO.Type;
 
+        public int TrackId => trackListingDTO.Id;
+
         public TrackListingPlayerItem(TrackListingDTO trackListingDTO)
         {
             this.trackListingDTO = trackListingDTO;

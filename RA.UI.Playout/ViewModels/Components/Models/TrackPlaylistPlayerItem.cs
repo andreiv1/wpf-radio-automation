@@ -45,6 +45,8 @@ namespace RA.UI.Playout.ViewModels.Components.Models
             }
         }
 
+        public int TrackId => playlistItemTrackDTO.Track.Id;
+
         public TrackPlaylistPlayerItem(PlaylistItemTrackDTO playlistItemTrackDTO)
         {
             this.playlistItemTrackDTO = playlistItemTrackDTO;
