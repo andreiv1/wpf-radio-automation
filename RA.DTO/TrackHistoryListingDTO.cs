@@ -1,10 +1,5 @@
 ﻿using RA.Database.Models;
 using RA.Database.Models.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RA.DTO
 {
@@ -15,6 +10,8 @@ namespace RA.DTO
         public string? Artists { get; set; }
         public string? Title { get; set; }
 
+        public string? ISRC { get; set; }
+
         public static TrackHistoryListingDTO FromEntity(TrackHistory entity)
         {
             return new TrackHistoryListingDTO
@@ -24,6 +21,7 @@ namespace RA.DTO
                 Artists = entity.Track?.TrackArtists != null ? string.Join(" / ",
                     entity.Track.TrackArtists.Select(ta => ta.Artist.Name)) : String.Empty,
                 Title = entity.Track?.Title,
+                ISRC = entity.Track?.ISRC,
             };
         }
     }

@@ -24,6 +24,7 @@
     <None Remove="Resources\Icons\icons8-commercial-48.png" />
     <None Remove="Resources\Icons\icons8-conversion-48.png" />
     <None Remove="Resources\Icons\icons8-copy-48.png" />
+    <None Remove="Resources\Icons\icons8-csv-48.png" />
     <None Remove="Resources\Icons\icons8-database-administrator-48.png" />
     <None Remove="Resources\Icons\icons8-database-restore-48.png" />
     <None Remove="Resources\Icons\icons8-database-view-48.png" />
@@ -37,14 +38,17 @@
     <None Remove="Resources\Icons\icons8-edit-file-48.png" />
     <None Remove="Resources\Icons\icons8-eject-48.png" />
     <None Remove="Resources\Icons\icons8-error-48.png" />
+    <None Remove="Resources\Icons\icons8-excel-48.png" />
     <None Remove="Resources\Icons\icons8-expired-48.png" />
     <None Remove="Resources\Icons\icons8-flash-on-48.png" />
     <None Remove="Resources\Icons\icons8-folder-tree-48.png" />
     <None Remove="Resources\Icons\icons8-forward-48.png" />
+    <None Remove="Resources\Icons\icons8-graph-report-48.png" />
     <None Remove="Resources\Icons\icons8-history-48.png" />
     <None Remove="Resources\Icons\icons8-info-48.png" />
     <None Remove="Resources\Icons\icons8-insert-96.png" />
     <None Remove="Resources\Icons\icons8-internet-48.png" />
+    <None Remove="Resources\Icons\icons8-list-view-48.png" />
     <None Remove="Resources\Icons\icons8-music-48.png" />
     <None Remove="Resources\Icons\icons8-music-band-48.png" />
     <None Remove="Resources\Icons\icons8-music-folder-48.png" />
@@ -89,7 +93,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Icons\icons8-csv-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\icons8-excel-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Icons\icons8-expired-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\icons8-graph-report-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\icons8-list-view-48.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\icons8-realtime-48.png">

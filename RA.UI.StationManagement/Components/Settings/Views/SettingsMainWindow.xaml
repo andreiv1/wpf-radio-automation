@@ -1,20 +1,30 @@
 ﻿<uicore:RAWindow x:Class="RA.UI.StationManagement.Components.Settings.Views.SettingsMainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
-        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-        mc:Ignorable="d"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+                 xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+                 xmlns:localuc="clr-namespace:RA.UI.StationManagement.UserControls"
+                 mc:Ignorable="d"
         Title="Settings" Height="450" Width="800"
                  ResizeMode="NoResize">
-    <Grid>
+    <Grid KeyboardNavigation.TabNavigation="None">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto" MinWidth="200" MaxWidth="700"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        <localuc:ComponentHeaderUserControl Grid.Row="0" Grid.ColumnSpan="3"
+                                                 HeaderText="Settings" 
+                                                 Description="Configure app settings and preferences."
+                                                 BackgroundColor="#FF9B9B9B" />
 
-        <syncfusion:SfTreeNavigator Grid.Column="0">
+        <syncfusion:SfTreeNavigator Grid.Column="0" Grid.Row="1" Header="Settings">
             <syncfusion:SfTreeNavigatorItem Header="General"/>
             <syncfusion:SfTreeNavigatorItem Header="Database"/>
             <syncfusion:SfTreeNavigatorItem Header="Users"/>

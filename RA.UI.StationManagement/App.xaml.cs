@@ -14,6 +14,7 @@ using System.Windows;
 using RA.UI.Core.Shared;
 using Microsoft.EntityFrameworkCore;
 using RA.Database;
+using OfficeOpenXml;
 
 namespace RA.UI.StationManagement
 {
@@ -23,6 +24,7 @@ namespace RA.UI.StationManagement
 
         public App()
         {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             SyncfusionLicense.Register();
             this.host = CreateHostBuilder()
                 .Build();    

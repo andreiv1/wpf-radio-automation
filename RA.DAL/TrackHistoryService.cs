@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RA.Database;
+using RA.Database.Models.Enums;
 using RA.DTO;
 
 namespace RA.DAL
@@ -23,7 +24,6 @@ namespace RA.DAL
 
         public async Task<ICollection<TrackHistoryListingDTO>> RetrieveTrackHistory(DateTime dateMinPlayed)
         {
-            ICollection<TrackHistoryListingDTO> history = new List<TrackHistoryListingDTO>();
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
             var result = await dbContext.TrackHistory
                 .Where(th => th.DatePlayed >= dateMinPlayed)
@@ -31,6 +31,23 @@ namespace RA.DAL
                 .Include(th => th.Track!.TrackArtists)
                 .ThenInclude(ta => ta.Artist)
                 .OrderByDescending(th => th.DatePlayed)
+                .Select(th => TrackHistoryListingDTO.FromEntity(th))
+                .ToListAsync();
+            return result;
+        }
+
+        public async Task<ICollection<TrackHistoryListingDTO>> GetHistoryBetween(DateTime dateStart,
+                                                                                 DateTime dateEnd,
+                                                                                 IList<TrackType> trackTypes)
+        {
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            var result = await dbContext.TrackHistory
+                .Where(th => th.DatePlayed >= dateStart && th.DatePlayed <= dateEnd)
+                .Where(th => trackTypes.Contains(th.TrackType))
+                .Include(th => th.Track)
+                .Include(th => th.Track!.TrackArtists)
+                .ThenInclude(ta => ta.Artist)
+                .OrderBy(th => th.DatePlayed)
                 .Select(th => TrackHistoryListingDTO.FromEntity(th))
                 .ToListAsync();
             return result;

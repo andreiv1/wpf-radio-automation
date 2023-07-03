@@ -103,4 +103,12 @@
     <BitmapImage x:Key="FixedBreakEventIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-realtime-48.png"/>
     <BitmapImage x:Key="DynamicBreakEventIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-expired-48.png"/>
 
+    <BitmapImage x:Key="ExcelFileIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-excel-48.png"/>
+    <BitmapImage x:Key="CsvFileIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-csv-48.png"/>
+
+    <BitmapImage x:Key="ListViewIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-list-view-48.png"/>
+    <BitmapImage x:Key="GraphReportIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-graph-report-48.png"/>
+    
+    
+
 </ResourceDictionary>
