@@ -59,14 +59,16 @@
                                           LargeIcon="{StaticResource LoopIcon}"/>
                     <syncfusion:ButtonAdv Grid.Column="1" SizeMode="Large" Margin="0,0,5,0"
                                           Label="Pause"
-                                          LargeIcon="{StaticResource PauseIcon}"/>
+                                          LargeIcon="{StaticResource PauseIcon}"
+                                          Command="{Binding PlaylistVm.PauseCommand}"/>
                     <syncfusion:ButtonAdv Grid.Column="2" SizeMode="Large" Margin="0,0,5,0"
                                           Label="Stop" 
                                           LargeIcon="{StaticResource StopIcon}"
                                           Command="{Binding PlaylistVm.StopCommand}"/>
                     <syncfusion:ButtonAdv Grid.Column="3" SizeMode="Large" Margin="0,0,5,0"
                                           Label="Restart" 
-                                          LargeIcon="{StaticResource ReplayIcon}"/>
+                                          LargeIcon="{StaticResource ReplayIcon}"
+                                          Command="{Binding PlaylistVm.RestartCommand}"/>
                 </Grid>
 
                 <!-- Column 4: Time -->

@@ -18,6 +18,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         private readonly IWindowService windowService;
         private readonly IDispatcherService dispatcherService;
         private readonly IFileBrowserDialogService fileBrowserDialogService;
+        private readonly IMessageBoxService messageBoxService;
         private readonly ITracksService tracksService;
 
         #region Properties
@@ -32,6 +33,9 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         [ObservableProperty]
         private int pages;
 
+        [ObservableProperty]
+        private int pageIndex = 0;
+
         private const int tracksPerPage = 100;
 
         [ObservableProperty]
@@ -42,11 +46,13 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         public AllMediaItemsViewModel(IWindowService windowService,
                                       IDispatcherService dispatcherService,
                                       IFileBrowserDialogService fileBrowserDialogService,
+                                      IMessageBoxService messageBoxService,
                                       ITracksService tracksService)
         {
             this.windowService = windowService;
             this.dispatcherService = dispatcherService;
             this.fileBrowserDialogService = fileBrowserDialogService;
+            this.messageBoxService = messageBoxService;
             this.tracksService = tracksService;
         }
 
@@ -66,6 +72,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         private void LoadTracksFromStart()
         {
             _ = LoadTracks(0, tracksPerPage);
+            PageIndex = 0;
+            
         }
         #region Commands
         [RelayCommand]
@@ -92,9 +100,20 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         }
 
         [RelayCommand]
-        private void DeleteItem()
+        private async void DeleteItem()
         {
-            throw new NotImplementedException();
+            if (SelectedTrack == null) return;
+            var isDeleted = await tracksService.DeleteTrack(SelectedTrack.Id);
+            if (isDeleted)
+            {
+                messageBoxService.ShowInfo($"Selected track ({SelectedTrack.Title}) deleted succesfully!");
+                LoadTracksFromStart();
+            }
+            else
+            {
+                messageBoxService.ShowError($"Selected track ({SelectedTrack.Title}) can't be deleted");
+            }
+            
         }
 
         [RelayCommand]

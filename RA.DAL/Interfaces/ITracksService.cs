@@ -20,5 +20,6 @@ namespace RA.DAL
         Task<TrackListingDTO?> GetRandomTrack(int categoryId, List<int>? trackIdsToExclude = null);
         Task<bool> TrackExistsByPath(string filePath);
         Task UpdateTrack(TrackDTO trackDTO);
+        Task<bool> DeleteTrack(int trackId);
     }
 }

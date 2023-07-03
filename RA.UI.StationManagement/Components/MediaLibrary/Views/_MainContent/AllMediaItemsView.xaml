@@ -130,6 +130,11 @@
                             <Image Source="{StaticResource EditIcon}" Width="16" Height="16"/>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Header="Delete" Command="{Binding DeleteItemCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource RemoveIcon}" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </ContextMenu>
             </syncfusion:SfDataGrid.ContextMenu>
         </syncfusion:SfDataGrid>
@@ -148,6 +153,7 @@
                    Content="{Binding TotalTracks}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <syncfusion:SfDataPager  Grid.Column="3" HorizontalAlignment="Right"
                            PageCount="{Binding Pages}"
+                           PageIndex="{Binding PageIndex}"
                            PageSize="100" 
                            NumericButtonCount="10"
                            AutoEllipsisMode="Both"

@@ -63,7 +63,6 @@
 
 
         <syncfusion:SfGridSplitter Grid.Row="1" Grid.Column="1" Margin="2,0,0,0"
-                                   
                                    ResizeBehavior="PreviousAndNext"/>
         <!-- Content -->
         <ContentControl

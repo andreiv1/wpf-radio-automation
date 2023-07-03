@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
 using RA.Database;
 using RA.Database.Models;
 using RA.DTO;
@@ -111,6 +112,28 @@ namespace RA.DAL
             existingTrack.DateModified = DateTime.Now;
 
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> DeleteTrack(int trackId)
+        {
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            var isDeleted = false;
+            try
+            {
+                if ((await dbContext.Tracks
+                    .Where(t => t.Id == trackId)
+                    .ExecuteDeleteAsync()) == 1)
+                {
+                    isDeleted = true;
+                }
+            }
+            catch(MySqlException e)
+            {
+                isDeleted = false;
+                Debug.WriteLine($"Error deleting TrackId={trackId}: {e.Message}");
+            }
+
+            return isDeleted;
         }
 
         public async Task<IEnumerable<TrackListingDTO>> GetTrackListByArtistAsync(int artistId, int skip, int take)

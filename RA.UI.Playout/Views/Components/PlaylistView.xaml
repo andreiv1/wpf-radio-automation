@@ -23,14 +23,14 @@
 
                     <Grid Grid.Row="1" Margin="0,5,0,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="65"/>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding ETA, StringFormat={}{0:HH:mm:ss}}" 
                                    VerticalAlignment="Center"
-                                   FontWeight="Bold"
+                                   FontWeight="Black"
                                    Margin="3,0,5,0"
                                    Grid.Column="0"/>
                         <Image Width="32" Height="32" Grid.Column="1" Margin="0,0,10,0">

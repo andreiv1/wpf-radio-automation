@@ -24,7 +24,7 @@ namespace RA.UI.StationManagement.Services.Navigation
         private readonly ICategoriesService categoriesService;
 
         public CategoriesTreeMenuService(IDispatcherService dispatcherService,
-            ICategoriesService categoriesService)
+                                         ICategoriesService categoriesService)
         {
             this.dispatcherService = dispatcherService;
             this.categoriesService = categoriesService;

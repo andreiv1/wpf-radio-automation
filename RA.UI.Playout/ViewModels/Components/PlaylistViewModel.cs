@@ -277,7 +277,12 @@ namespace RA.UI.Playout.ViewModels.Components
         [RelayCommand]
         private void Restart()
         {
-
+            if(playerItemNow != null)
+            {
+                Seek(new TimeSpan[] { TimeSpan.Zero, playerItemNow.Duration });
+                UpdateNowPlaying();
+            }
+            
         }
 
         [RelayCommand]
