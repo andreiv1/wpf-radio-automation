@@ -12,7 +12,7 @@
         Icon="/Resources/playout_icon.ico" WindowStartupLocation="CenterScreen"
         Title="RA | Playout" MinHeight="700" MinWidth="1400"
         KeyboardNavigation.TabNavigation="None">
-  
+
     <Grid Margin="0,0,0,5">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -35,7 +35,7 @@
                                           Command="{Binding PlaylistVm.PlayNextCommand}"/>
                     <Button Content="Fade next" Margin="0,5,0,0" Height="25"/>
                 </StackPanel>
-                
+
                 <!-- Column 2 : Now playing -->
                 <component:NowPlayingView Grid.Column="1" Margin="2,5,5,0"
                                               DataContext="{Binding NowPlayingVm}"/>
@@ -68,13 +68,13 @@
                                           Label="Restart" 
                                           LargeIcon="{StaticResource ReplayIcon}"/>
                 </Grid>
-                
+
                 <!-- Column 4: Time -->
                 <component:CurrentTimeView Grid.Column="3" />
-               
+
             </Grid>
-            
-         
+
+
         </Border>
 
         <!-- Main Content -->
@@ -86,8 +86,8 @@
             </Grid.ColumnDefinitions>
 
             <!-- Playlist -->
-            
-    
+
+
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -132,12 +132,12 @@
                             </Style>
                         </syncfusion:ButtonAdv.Style>
                     </syncfusion:ButtonAdv>
-               
+
                     <syncfusion:ButtonAdv 
                         Grid.Column="3" Height="45" IsCheckable="True" IsChecked="{Binding PlaylistVm.IsAutoPlay}"
                         d:IsChecked="True"
                       SmallIcon="{x:Null}" FontWeight="Black" VerticalAlignment="Center">
-                        
+
                         <syncfusion:ButtonAdv.Style>
                             <Style TargetType="syncfusion:ButtonAdv" BasedOn="{StaticResource {x:Type syncfusion:ButtonAdv}}">
                                 <Style.Triggers>
@@ -176,11 +176,12 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="85*"/>
+                            <ColumnDefinition Width="291*"/>
 
                         </Grid.ColumnDefinitions>
                         <!-- Playlist operation buttons -->
-                        <Grid Grid.Column="0" Width="80">
+                        <Grid Grid.Column="0" Width="80" Margin="10,0,10,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="2*"/>
                                 <RowDefinition Height="3*"/>
@@ -213,7 +214,7 @@
                                       Command="{Binding PlaylistVm.AddTrackToBottomCommand}"/>
                         </Grid>
                         <component:MediaItemsView Grid.Column="1"
-                                      DataContext="{Binding MediaItemsVm}"/>
+                                      DataContext="{Binding MediaItemsVm}" Grid.ColumnSpan="2"/>
                     </Grid>
                 </syncfusion:TabItemExt>
 
@@ -229,37 +230,9 @@
                                 Content="History" FontWeight="Bold"/>
                         </Grid>
                     </syncfusion:TabItemExt.Header>
-                    
+
                     <!-- HISTORY !-->
-                    <Grid>
-                        <syncfusion:SfDataGrid Grid.Row="1" SelectionMode="Single"
-                                AutoGenerateColumns="False"
-                               AllowSorting="False" ColumnSizer="AutoLastColumnFill"
-                               SelectionUnit="Row" NavigationMode="Row"
-                               RowHeight="30"
-                               >
-                            <syncfusion:SfDataGrid.Columns>
-                                <syncfusion:GridTemplateColumn HeaderText="Date played" MinimumWidth="170"
-                                                               ColumnSizer="Star">
-                                    <syncfusion:GridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Grid>
-                                                <TextBlock Text="dd.mm"/>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </syncfusion:GridTemplateColumn.CellTemplate>
-                                </syncfusion:GridTemplateColumn>
-
-                                <syncfusion:GridTextColumn HeaderText="Artists" MappingName="Artists"
-                                           MinimumWidth="200"
-                                           AllowResizing="True"
-                                    ColumnSizer="Star"/>
-                                <syncfusion:GridTextColumn HeaderText="Title" MappingName="Title" MinimumWidth="300"
-                                                           ColumnSizer="Star"/>
-                            </syncfusion:SfDataGrid.Columns>
-
-                        </syncfusion:SfDataGrid>
-                    </Grid>
+                    <component:HistoryView DataContext="{Binding HistoryVm}"/>
                 </syncfusion:TabItemExt>
 
                 <syncfusion:TabItemExt>
@@ -271,15 +244,15 @@
                             </Grid.ColumnDefinitions>
                             <Image Source="{StaticResource PlayRedIcon}" Width="32" Height="20" VerticalAlignment="Center"/>
                             <Label Grid.Column="1" VerticalAlignment="Center"
-                                Content="Now Playing Details" FontWeight="Bold"/>
+                                Content="Details" FontWeight="Bold"/>
                         </Grid>
                     </syncfusion:TabItemExt.Header>
                 </syncfusion:TabItemExt>
 
-               
+
             </syncfusion:TabControlExt>
-            
-            
+
+
         </Grid>
     </Grid>
 </uicore:RAWindow>

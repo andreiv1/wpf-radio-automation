@@ -26,6 +26,7 @@ namespace RA.UI.Playout.HostBuilders
                     { typeof(PlaylistViewModel), typeof(PlaylistView) },
                     { typeof(NowPlayingViewModel), typeof(NowPlayingView) },
                     { typeof(MediaItemsViewModel), typeof(MediaItemsView) },
+                    { typeof(HistoryViewModel), typeof(HistoryView) },
                 };
                 Dictionary<Type, Type> viewModelToTransientWindowMap = new()
                 {

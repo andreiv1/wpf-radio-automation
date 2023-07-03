@@ -2,11 +2,7 @@
 using RA.UI.Core.ViewModels;
 using Syncfusion.Windows.Controls.Input;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RA.UI.Playout.ViewModels.Components
 {
@@ -21,6 +17,9 @@ namespace RA.UI.Playout.ViewModels.Components
         private string nowTitle = "-";
 
         [ObservableProperty]
+        private string nowInfo = "-";
+
+        [ObservableProperty]
         private TimeSpan? remainingNow = null;
 
         [ObservableProperty]
@@ -32,7 +31,7 @@ namespace RA.UI.Playout.ViewModels.Components
         [ObservableProperty]
         private String image = defaultImage;
 
-        public PlaylistViewModel PlaylistVm { get; set; }
+        public PlaylistViewModel? PlaylistVm { get; set; }
 
         partial void OnDurationNowChanged(TimeSpan oldValue, TimeSpan newValue)
         {
@@ -107,7 +106,7 @@ namespace RA.UI.Playout.ViewModels.Components
         {
             ElapsedNow = TimeSpan.FromSeconds(position);
             RemainingNow = DurationNow - ElapsedNow;
-            PlaylistVm.SeekCommand.Execute(new TimeSpan[] { TimeSpan.FromSeconds(position), RemainingNow.GetValueOrDefault()});
+            PlaylistVm?.SeekCommand.Execute(new TimeSpan[] { TimeSpan.FromSeconds(position), RemainingNow.GetValueOrDefault()});
         }
     }
 }

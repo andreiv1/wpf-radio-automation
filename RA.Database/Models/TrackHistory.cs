@@ -1,18 +1,13 @@
-﻿using RA.Database.Models.Abstract;
-using RA.Database.Models.Enums;
-using System;
-using System.Collections.Generic;
+﻿using RA.Database.Models.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RA.Database.Models
 {
-    public class TrackHistory : BaseModel
+    public class TrackHistory
     {
-        public TrackType TrackType { get; set; }
+        [Key]
         public DateTime DatePlayed { get; set; }
+        public TrackType TrackType { get; set; }
         public Track? Track { get; set; }
         public int? TrackId { get; set; }
     }

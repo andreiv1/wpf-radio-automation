@@ -9,11 +9,8 @@ using RA.UI.Core.Services;
 using RA.UI.Core.ViewModels;
 using RA.UI.Playout.ViewModels.Components.Models;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -75,7 +72,7 @@ namespace RA.UI.Playout.ViewModels.Components
 
         private void PlaybackQueue_PlaybackStopped(object? sender, EventArgs e)
         {
-            MainVm!.NowPlayingVm.Reset();
+            
         }
 
         private void PlayerItems_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -239,13 +236,15 @@ namespace RA.UI.Playout.ViewModels.Components
         private void AddNowToHistory()
         {
             TrackType trackType = (TrackType)Enum.Parse(typeof(TrackType), playerItemNow.TrackType);
-            _ = trackHistoryService.AddTrackToHistory(new TrackHistoryDTO()
+            var trackHistory = new TrackHistoryDTO()
             {
                 DatePlayed = DateTime.Now,
                 TrackId = playerItemNow.TrackId,
                 TrackType = trackType,
-
-            });
+            };
+            
+            var addTask = trackHistoryService.AddTrackToHistory(trackHistory);
+            addTask.ContinueWith(async (t) => await MainVm!.HistoryVm.AddItem(trackHistory.DatePlayed));
         }
 
         [RelayCommand]

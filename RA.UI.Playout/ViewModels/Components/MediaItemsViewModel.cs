@@ -17,9 +17,7 @@ namespace RA.UI.Playout.ViewModels.Components
         private readonly IDispatcherService dispatcherService;
         private readonly ITracksService tracksService;
 
-        public MainViewModel MainVm { get; set; }
-
-        #region Properties
+        public MainViewModel? MainVm { get; set; }
         public ObservableCollection<TrackListingDTO> Tracks { get; set; } = new();
 
         [ObservableProperty]
@@ -35,7 +33,6 @@ namespace RA.UI.Playout.ViewModels.Components
 
         [ObservableProperty]
         private TrackListingDTO? selectedTrack;
-        #endregion
 
         public MediaItemsViewModel(IDispatcherService dispatcherService,
                                    ITracksService tracksService)

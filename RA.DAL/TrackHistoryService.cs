@@ -30,8 +30,24 @@ namespace RA.DAL
                 .Include(th => th.Track)
                 .Include(th => th.Track!.TrackArtists)
                 .ThenInclude(ta => ta.Artist)
+                .OrderByDescending(th => th.DatePlayed)
                 .Select(th => TrackHistoryListingDTO.FromEntity(th))
                 .ToListAsync();
+            return result;
+        }
+
+        public async Task<TrackHistoryListingDTO?> RetrieveItem(DateTime datePlayed)
+        {
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            var result = await dbContext.TrackHistory
+                .Where(th => th.DatePlayed == datePlayed)
+                .Include(th => th.Track)
+                .Include(th => th.Track!.TrackArtists)
+                .ThenInclude(ta => ta.Artist)
+                .OrderByDescending(th => th.DatePlayed)
+                .Select(th => TrackHistoryListingDTO.FromEntity(th))
+                .FirstOrDefaultAsync();
+
             return result;
         }
 
