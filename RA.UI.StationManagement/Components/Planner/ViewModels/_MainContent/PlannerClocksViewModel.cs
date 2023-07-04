@@ -34,6 +34,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
         [ObservableProperty]
         private ClockItemModel? selectedClockItem = null;
+        
+        [ObservableProperty]
+        private bool isRuleSelectionEnabled = false;
         public ObservableCollection<object> SelectedClockItems { get; set; } = new();
         partial void OnSelectedClockChanged(ClockDTO? value)
         {
@@ -41,7 +44,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             SelectedClockItem = null;
             ClockItemsForSelectedClock.Clear();
             SelectedClockItems.Clear();
-            IsSelectionEnabled = true;
+            IsRuleSelectionEnabled = true;
             NotifyAllHeaderButtons();
         }
         [ObservableProperty]
@@ -384,6 +387,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private void RefreshClocks()
         {
             _ = LoadClocks();
+            IsRuleSelectionEnabled = false;
         }
 
         [RelayCommand(CanExecute = nameof(CanUseHeaderButtons))]
@@ -397,9 +401,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         {
             return SelectedClock != null;
         }
-
-        [ObservableProperty]
-        private bool isSelectionEnabled = false;
+        
         private void NotifyAllHeaderButtons()
         {
             PreviewClockCommand.NotifyCanExecuteChanged();

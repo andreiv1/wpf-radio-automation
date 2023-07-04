@@ -119,7 +119,7 @@
                         Margin="0,2,0,0">
                 <syncfusion:DropDownButtonAdv Label="Insert rule" Height="25" Margin="0,0,3,0"
                                               SmallIcon="{x:Null}"
-                                              IsEnabled="{Binding IsSelectionEnabled}">
+                                              IsEnabled="{Binding IsRuleSelectionEnabled}">
                     <syncfusion:DropDownMenuGroup>
                         <syncfusion:DropDownMenuItem Header="From track"
                                                      Command="{Binding InsertTrackToSelectedClockCommand}">
