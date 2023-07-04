@@ -2,17 +2,12 @@
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DAL.Models;
-using RA.Logic;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Schedule.Models;
 using Syncfusion.UI.Xaml.Scheduler;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
@@ -30,8 +25,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         [ObservableProperty]
         private bool isLoadingCalendar;
 
-        public PlannerScheduleCalendarViewModel(IWindowService windowService, 
-            ISchedulesDefaultService defaultScheduleService)
+        public PlannerScheduleCalendarViewModel(IWindowService windowService,
+                                                ISchedulesDefaultService defaultScheduleService)
         {
             this.windowService = windowService;
             this.defaultScheduleService = defaultScheduleService;
@@ -67,7 +62,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             }
             IsLoadingCalendar = false;
         }
-        #region Commands
+        //Commands
         [RelayCommand]
         private void LoadScheduleOnDemand(object parameter)
         {
@@ -86,6 +81,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         {
             windowService.ShowDialog<PlannerManageScheduleItemViewModel>();
         }
-        #endregion
+
     }
 }
