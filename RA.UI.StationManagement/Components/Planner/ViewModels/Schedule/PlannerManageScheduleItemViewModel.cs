@@ -49,7 +49,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         [ObservableProperty]
         private SchedulePlannedDTO schedulePlanned;
 
-        #region Constructor
         public PlannerManageScheduleItemViewModel(IWindowService windowService,
                                                   IDispatcherService dispatcherService,
                                                   ITemplatesService templatesService) : base(windowService)
@@ -60,8 +59,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
 
             SchedulePlanned = new();
         }
-
-        #endregion
 
         private async Task LoadTemplates()
         {
