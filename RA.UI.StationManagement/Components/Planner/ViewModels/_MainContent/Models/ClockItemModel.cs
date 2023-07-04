@@ -2,8 +2,10 @@
 using RA.Database.Models.Enums;
 using RA.DTO;
 using RA.DTO.Abstract;
+using Syncfusion.Data.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +24,34 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
             {
                 if (Item is ClockItemCategoryDTO category)
                 {
-                    return $"{category.CategoryName}";
+                    ImmutableSortedDictionary<string, HashSet<string>> groupedTags = category.Tags
+                        .GroupBy(t => t.TagCategory)
+                        .ToImmutableSortedDictionary(g => g.Key, g => g.Select(tagValue => tagValue.TagValue).ToHashSet());
+
+                    var tagsStringBuilder = new StringBuilder();
+                    if(groupedTags.Count > 0)
+                    {
+                        int tagCategoryIndex = 0;
+                        foreach(var tagPair in groupedTags)
+                        {
+                           
+                            tagsStringBuilder.Append($"{tagPair.Key}: ");
+                            for(int i = 0; i < tagPair.Value.Count; i++)
+                            {
+                                var value = tagPair.Value.ElementAt(i);
+                                tagsStringBuilder.Append(value);
+                                if(i < tagPair.Value.Count - 1)
+                                {
+                                    tagsStringBuilder.Append(", ");
+                                }
+                            }
+                            if(tagCategoryIndex < groupedTags.Count - 1)
+                                tagsStringBuilder.Append("; ");
+                            tagCategoryIndex++;
+                        }
+                    }
+                    var tagsText = tagsStringBuilder.Length > 0 ? $" -> {tagsStringBuilder.ToString()}" : string.Empty;
+                    return $"{category.CategoryName}{(tagsText)}";
                 }
 
                 if (Item is ClockItemEventDTO eventItem){

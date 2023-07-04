@@ -1,10 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
-using RA.DAL.Models;
-using RA.Database.Models;
 using RA.DTO;
-using RA.Logic;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
@@ -15,7 +12,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
@@ -28,7 +24,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         private readonly ISchedulesDefaultService defaultSchedulesService;
         private readonly ITemplatesService templatesService;
 
-        #region Properties
+       #region Properties
         public ObservableCollection<ScheduleDefaultDTO> DefaultSchedules { get; private set; } = new(); 
         
         [ObservableProperty]
@@ -38,20 +34,61 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         [ObservableProperty]
         private DefaultScheduleItem? selectedDefaultScheduleItem;
 
-        /// <summary>
-        /// Used for creating a SelectedDefaultSchedule
-        /// </summary>
+
         [ObservableProperty]
-        private DateTimeRange addNewScheduleRange = new DateTimeRange(DateTime.Now.Date, DateTime.Now.Date.AddDays(7));
+        private DateTime newScheduleStartDate = DateTime.Now.Date;
+
+        partial void OnNewScheduleStartDateChanged(DateTime oldValue, DateTime newValue)
+        {
+            if(newValue >= NewScheduleEndDate)
+            {
+                messageBoxService.ShowWarning($"Start date must be less than end date!");
+                NewScheduleStartDate = oldValue;
+                return;
+            }
+            var overlapTask = Task.Run(async () => {
+                IsAnyOverLap = await CheckOverlaping(newValue, NewScheduleEndDate);
+            });
+
+            overlapTask.ContinueWith(async (t) => await dispatcherService.InvokeOnUIThreadAsync(() => AddNewDefaultScheduleCommand.NotifyCanExecuteChanged()));
+
+        }
+    
+
+        [ObservableProperty]
+        private DateTime newScheduleEndDate = DateTime.Now.Date.AddDays(7);
+
+        partial void OnNewScheduleEndDateChanged(DateTime oldValue, DateTime newValue)
+        {
+            if(newValue <= NewScheduleStartDate)
+            {
+                messageBoxService.ShowWarning($"End date must be greater than start date!");
+                NewScheduleEndDate = oldValue;
+                return;
+            }
+            var overlapTask = Task.Run(async () => {
+                IsAnyOverLap = await CheckOverlaping(NewScheduleStartDate, newValue);
+            });
+
+            overlapTask.ContinueWith(async (t) => await dispatcherService.InvokeOnUIThreadAsync(() => AddNewDefaultScheduleCommand.NotifyCanExecuteChanged()));
+        }
+
+
+
+        [ObservableProperty]
+        private string newScheduleName;
+
+        [ObservableProperty]
+        private bool isAnyOverLap = false;
 
         partial void OnSelectedDefaultScheduleChanged(ScheduleDefaultDTO? value)
         {
             _ = LoadDefaultScheduleForSelectedInterval();
         }
         public ObservableCollection<TemplateDTO> Templates { get; private set; } = new();
-        #endregion
+    
 
-        #region Constructor
+      
         public PlannerDefaultScheduleViewModel(IDispatcherService dispatcherService, IWindowService windowService, IMessageBoxService messageBoxService,
             ISchedulesDefaultService defaultSchedulesService, ITemplatesService templatesService)
         {
@@ -63,9 +100,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             _ = LoadDefaultSchedules();
         }
 
-        #endregion
-
-        #region Data fetching
+        //Data fetching
         private async Task LoadDefaultSchedules()
         {
             DefaultSchedules.Clear();
@@ -107,10 +142,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
                     else
                     {
                         DefaultScheduleItemsForSelected.Add(
-                          new DefaultScheduleItem()
-                          {
-                              Day = day,
-                          });
+                        new DefaultScheduleItem()
+                        {
+                            Day = day,
+                        });
                     }
                 }
             }
@@ -152,9 +187,14 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
                 Templates.Add(template);
             }
         }
-        #endregion
 
-        #region Commands
+        private async Task<bool> CheckOverlaping(DateTime start, DateTime end)
+        {
+            return !(await defaultSchedulesService.IsAnyOverlap(start, end));
+        }
+        
+
+        //Commands
 
         //Commands for selected default schedule
         [RelayCommand]
@@ -178,9 +218,17 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
 
             if (SelectedDefaultSchedule.Id == null)
             {
+                if(string.IsNullOrEmpty(NewScheduleName))
+                {
+                    messageBoxService.ShowWarning($"The default schedule must have a name.");
+                    return;
+                }
                 //Add new schedule
                 SelectedDefaultSchedule.Items = DefaultScheduleItemsForSelected.Select(s => DefaultScheduleItem.ToDto(s, SelectedDefaultSchedule)).ToList();
                 await defaultSchedulesService.AddDefaultSchedule(SelectedDefaultSchedule);
+
+                //Because i added the schedule, the interval is now busy
+                IsAnyOverLap = true;
                 messageBoxService.ShowInfo($"New default schedule added succesfully.");
 
                 //Refresh the schedules
@@ -241,6 +289,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         [RelayCommand(CanExecute = nameof(CanAddNewDefaultSchedule))]
         private void AddNewDefaultSchedule()
         {
+            if (string.IsNullOrEmpty(NewScheduleName))
+            {
+                messageBoxService.ShowWarning($"The default schedule must have a name.");
+                return;
+            }
+
             DefaultScheduleItemsForSelected.Clear();
             var firstDayOfWeek = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
             int startDayIndex = 0;
@@ -271,15 +325,15 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             }
             SelectedDefaultSchedule = new()
             {
-                StartDate = AddNewScheduleRange.StartDate,
-                EndDate = AddNewScheduleRange.EndDate
+                Name = NewScheduleName,
+                StartDate = NewScheduleStartDate,
+                EndDate = NewScheduleEndDate,
             };
         }
 
-        //DEBUG
         private bool CanAddNewDefaultSchedule()
         {
-            return true;
+            return IsAnyOverLap;
         }
 
 

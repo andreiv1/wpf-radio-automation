@@ -33,6 +33,7 @@ namespace RA.DTO
             return new ScheduleDefault()
             {
                 Id = scheduleDefaultDto.Id.GetValueOrDefault(),
+                Name = scheduleDefaultDto.Name,
                 StartDate = scheduleDefaultDto.StartDate ?? throw new ArgumentException($"Schedule must have a start date"),
                 EndDate = scheduleDefaultDto.EndDate ?? throw new ArgumentException($"Schedule must have an end date"),
             };

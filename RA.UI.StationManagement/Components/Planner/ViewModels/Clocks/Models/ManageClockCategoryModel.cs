@@ -28,6 +28,15 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks.Models
         [ObservableProperty]
         private bool enforceDurationLimits = false;
 
+        partial void OnEnforceDurationLimitsChanged(bool value)
+        {
+            if (!value)
+            {
+                MinDuration = null;
+                MaxDuration = null;
+            }
+        }
+
         [ObservableProperty]
         private TimeSpan? artistSeparation = new TimeSpan(0);
 
@@ -40,16 +49,20 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks.Models
         [ObservableProperty]
         private bool isFiller = false;
 
+        private int? orderIndex;
+
         public List<ClockItemCategoryTagDTO>? Tags { get; set; } = new();
 
         public static ManageClockCategoryModel FromDto(ClockItemCategoryDTO dto)
         {
             return new ManageClockCategoryModel
             {
+                orderIndex = dto.OrderIndex,
                 FromReleaseDate = dto.MinReleaseDate,
                 ToReleaseDate = dto.MaxReleaseDate,
                 MinDuration = dto.MinDuration.HasValue ? dto.MinDuration : new TimeSpan(0, 0, 0),
                 MaxDuration = dto.MaxDuration.HasValue ? dto.MaxDuration : new TimeSpan(0, 999, 0),
+                EnforceDurationLimits = dto.MinDuration.HasValue && dto.MaxDuration.HasValue,
                 ArtistSeparation = new TimeSpan(0,dto.ArtistSeparation.GetValueOrDefault(),0),
                 TitleSeparation = new TimeSpan(0,dto.TitleSeparation.GetValueOrDefault(),0),
                 TrackSeparation = new TimeSpan(0,dto.TrackSeparation.GetValueOrDefault(),0),
@@ -63,6 +76,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks.Models
             //Convert the model to dto
             return new ClockItemCategoryDTO
             {
+                OrderIndex = model.orderIndex.GetValueOrDefault(),
                 MinReleaseDate = model.FromReleaseDate,
                 MaxReleaseDate = model.ToReleaseDate,
                 MinDuration = model.EnforceDurationLimits ? model.MinDuration.GetValueOrDefault() : null,

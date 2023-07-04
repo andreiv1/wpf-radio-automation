@@ -192,6 +192,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
             dto.CategoryId = SelectedCategory.Id;
             dto.Id = clockItemId;
             dto.ClockId = clockId;
+
+            //dto.Or
+           
             await clocksService.UpdateClockItem(dto);
         }
         protected override bool CanFinishDialog()

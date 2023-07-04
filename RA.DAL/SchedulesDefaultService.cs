@@ -1,13 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using RA.Database;
 using RA.Database.Models;
 using RA.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection.Metadata.Ecma335;
 
 namespace RA.DAL
 {
@@ -111,7 +106,8 @@ namespace RA.DAL
                 item.Template = dbContext.AttachOrGetTrackedEntity<Template>(item.Template);
             }
             dbContext.UpdateRange(toUpdate);
-            return await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
+            return toUpdate.Count;
         }
 
         public async Task<int> AddDefaultSchedule(ScheduleDefaultDTO scheduleDefaultDto)
@@ -132,5 +128,21 @@ namespace RA.DAL
             await dbContext.AddAsync(schedule);
             return await dbContext.SaveChangesAsync();
         }
+
+        public async Task<bool> IsAnyOverlap(DateTime start, DateTime end)
+        {
+            start = start.Date;
+            end = end.Date;
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var overlappingSchedule = await dbContext.SchedulesDefault
+               .FirstOrDefaultAsync(s =>
+                   (start <= s.EndDate && end >= s.StartDate)
+                   || (start >= s.StartDate && start <= s.EndDate)
+                   || (end >= s.StartDate && end <= s.EndDate));
+
+
+            return overlappingSchedule != null;
+
+       }
     }
 }

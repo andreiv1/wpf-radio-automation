@@ -1,12 +1,14 @@
 ﻿<uicore:RAUserControl x:Class="RA.UI.StationManagement.Components.Planner.View.Schedule.PlannerDefaultScheduleView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
-             xmlns:local="clr-namespace:RA.UI.StationManagement.Components.Planner.View.Schedule"
-             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-             mc:Ignorable="d" 
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+                      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                      xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+                      xmlns:schedule="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.Schedule"
+                      d:DataContext="{d:DesignInstance Type=schedule:PlannerDefaultScheduleViewModel}"
+                      mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <!-- Temporary card -->
@@ -69,36 +71,43 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="5"/>
                         <RowDefinition Height="auto"/>
+
                     </Grid.RowDefinitions>
 
                     <Label Grid.Column="0" Content="Name:" FontWeight="DemiBold"
                        VerticalAlignment="Center" Grid.ColumnSpan="2"/>
+                    
+                    <syncfusion:SfTextBoxExt Grid.Column="1" Height="24" VerticalAlignment="Center"
+                                             Text="{Binding NewScheduleName}"
+                                             Watermark="Type name..."/>
 
-                    <!--<syncfusion:DateTimeEdit Grid.Column="1" DateTime="{Binding AddNewScheduleRange.StartDate,Mode=TwoWay}"
-                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)" 
-                        />-->
-                    <syncfusion:SfTextBoxExt Grid.Column="1" Height="24" VerticalAlignment="Center"/>
-
-                    <Label Grid.Row="2" Grid.Column="0" Content="Start Date*:" FontWeight="DemiBold"
+                    <Label Grid.Row="2" Grid.Column="0" Content="Start Date:" FontWeight="DemiBold"
                        VerticalAlignment="Center" Grid.ColumnSpan="2"/>
 
-                    <syncfusion:DateTimeEdit Grid.Row="2" Grid.Column="1" DateTime="{Binding AddNewScheduleRange.StartDate,Mode=TwoWay}"
+                    <syncfusion:DateTimeEdit Grid.Row="2" Grid.Column="1" DateTime="{Binding NewScheduleStartDate,Mode=TwoWay}"
                         Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)" 
-                        />
+                        MinDateTime="{x:Static sys:DateTime.Today}"/>
 
-                    <Label Grid.Row="4" Grid.Column="0" Content="End Date*:" FontWeight="DemiBold"
+                    <Label Grid.Row="4" Grid.Column="0" Content="End Date:" FontWeight="DemiBold"
                        VerticalAlignment="Center" Grid.ColumnSpan="2"/>
 
-                    <syncfusion:DateTimeEdit Grid.Row="4" Grid.Column="1" DateTime="{Binding AddNewScheduleRange.EndDate,Mode=TwoWay}"
-                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)" 
-                        />
+                    <syncfusion:DateTimeEdit Grid.Row="4" Grid.Column="1" DateTime="{Binding NewScheduleEndDate,Mode=TwoWay}"
+                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)"
+                                             MinDateTime="{x:Static sys:DateTime.Today}"/>
 
-                    <syncfusion:ButtonAdv Grid.Row="6" Grid.Column="2" Label="Add and fill schedule" SmallIcon="{StaticResource PlusIcon}"
-                                    Width="198" HorizontalAlignment="Right"
+                    <TextBlock Grid.Row="6" Grid.ColumnSpan="2" Text="Existing schedule overlaps with this interval."
+                               Foreground="DarkRed" FontWeight="DemiBold" Margin="0,0,10,0"
+                               HorizontalAlignment="Right"
+                               Visibility="{Binding IsAnyOverLap, Converter={StaticResource BooleanToCollapsedInversedVisibilityConverter}}"
+                               >
+                        
+                    </TextBlock>
+                    <syncfusion:ButtonAdv Grid.Row="8" Grid.Column="1" Label="Add and then fill schedule" SmallIcon="{StaticResource PlusIcon}"
+                                    Width="198" HorizontalAlignment="Right" Margin="0,5,0,5"
                                     Command="{Binding AddNewDefaultScheduleCommand}"/>
                 </Grid>
             </Expander>
-            <syncfusion:SfTextBoxExt Grid.Row="2" Height="24" Margin="0,5,0,0" VerticalAlignment="Center"
+            <syncfusion:SfTextBoxExt Grid.Row="2" Height="24" Margin="0,10,0,0" VerticalAlignment="Center"
                                      Watermark="Search schedule by its name..."/>
 
             <syncfusion:SfDataGrid Grid.Row="3" AllowSorting="False"

@@ -299,13 +299,16 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             {
                 var vm = windowService.ShowDialog<PlannerManageClockCategoryRuleViewModel>(SelectedClock.Id, itemCategory.Id);
                 //messageBoxService.ShowWarning("TO DO UPDATE");
-                if (vm != null) vm.UpdateClockItem();
+                if (vm != null) await vm.UpdateClockItem();
             } else if(SelectedClockItem.Item is ClockItemEventDTO itemEvent)
             {
                 var vm = windowService.ShowDialog<PlannerManageClockEventRuleViewModel>(SelectedClock.Id, itemEvent.Id);
                 messageBoxService.ShowWarning("TO DO UPDATE");
+            } else if(SelectedClockItem.Item is ClockItemTrackDTO itemTrack)
+            {
+                messageBoxService.ShowWarning("TO DO");
             }
-            //_ = LoadClockItemsForSelectedClock();
+            _ = LoadClockItemsForSelectedClock();
         }
 
         [RelayCommand(CanExecute = nameof(CanUseHeaderButtons))]

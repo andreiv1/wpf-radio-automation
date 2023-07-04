@@ -11,5 +11,6 @@ namespace RA.DAL
         Task<IDictionary<DayOfWeek, ScheduleDefaultItemDTO?>> GetDefaultScheduleItems(ScheduleDefaultDTO parentDefaultScheduleDto);
         Task<int> UpdateDefaultScheduleItems(List<ScheduleDefaultItemDTO> defaultScheduleItems);
         Task<int> AddDefaultSchedule(ScheduleDefaultDTO scheduleDefaultDto);
+        Task<bool> IsAnyOverlap(DateTime start, DateTime end);
     }
 }
