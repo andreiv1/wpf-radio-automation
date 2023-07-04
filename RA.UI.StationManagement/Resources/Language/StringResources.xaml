@@ -8,8 +8,8 @@
     <system:String x:Key="PlannerTitleString">Planner</system:String>
     <system:String x:Key="PlannerDescriptionString">Manage the station's program and playlists.</system:String>
 
-    <system:String x:Key="ReportsTitleString">.</system:String>
-    <system:String x:Key="ReportsDescriptionString">.</system:String>
+    <system:String x:Key="ReportsTitleString">Reports</system:String>
+    <system:String x:Key="ReportsDescriptionString">View your station's history and performance metrics.</system:String>
 
     <system:String x:Key="EventDynamicBreakDescriptionString">
         A dynamic break is a break that can occur at any point during the music playing process, and its start time is not fixed. Instead, the dynamic break will occur when the current song has finished playing, and there is a gap in the playlist or queue. For example, if there are two songs playing, and the dynamic break is set to occur after 30 minutes, but a third song starts playing at the 29-minute mark, the dynamic break will begin immediately after the third song has finished playing.

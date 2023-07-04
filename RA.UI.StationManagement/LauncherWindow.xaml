@@ -97,8 +97,8 @@
                         BackgroundColor="#FF37A55B"
                         Command="{Binding OpenPlannerComponentCommand}"/>
             <usercontrols:LauncherComponentControl
-                        HeaderText="Reports"
-                        Description="View your station's performance metrics."
+                        HeaderText="{StaticResource ReportsTitleString}"
+                        Description="{StaticResource ReportsDescriptionString}"
                         BackgroundColor="#FFD88B38"
                         Command="{Binding OpenReportsComponentCommand}"/>
             <usercontrols:LauncherComponentControl

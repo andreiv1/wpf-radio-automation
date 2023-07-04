@@ -41,6 +41,13 @@ namespace RA.DAL
                                                                                  IList<TrackType> trackTypes)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            if(dateStart == dateEnd)
+            {
+                dateEnd = dateStart.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+            } else
+            {
+                dateEnd = dateEnd.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+            }
             var result = await dbContext.TrackHistory
                 .Where(th => th.DatePlayed >= dateStart && th.DatePlayed <= dateEnd)
                 .Where(th => trackTypes.Contains(th.TrackType))

@@ -18,8 +18,8 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <localuc:ComponentHeaderUserControl Grid.Row="0" Grid.ColumnSpan="3"
-                                                 HeaderText="Reports" 
-                                                 Description="View your station's performance metrics."
+                                                 HeaderText="{StaticResource ReportsTitleString}" 
+                                                 Description="{StaticResource ReportsDescriptionString}"
                                                  BackgroundColor="#FFD88B38" />
         <Grid Grid.Row="1" Margin="5">
             <Grid.RowDefinitions>
@@ -27,7 +27,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
-                <Label Content="Royalty report" FontWeight="DemiBold" FontSize="17"/>
+                <Label Content="Generate report" FontWeight="DemiBold" FontSize="17"/>
                 <Label Content="Start date:" FontWeight="DemiBold"/>
                 <syncfusion:SfDatePicker Height="24" 
                                      VerticalAlignment="Center"
@@ -53,23 +53,40 @@
                                   SmallIcon="{StaticResource ListViewIcon}"
                                   Command="{Binding GenerateReportCommand}"/>
             </StackPanel>
-            <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center">
                 <Label Content="Other reports" FontWeight="DemiBold" FontSize="17"/>
-                <syncfusion:ButtonAdv Margin="0,10,0,0" Label="Most played" Width="150" HorizontalAlignment="Left"
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <syncfusion:ButtonAdv Grid.Column="0" Label="Most played" 
                                   SizeMode="Large"
                                   LargeIcon="{StaticResource GraphReportIcon}"/>
-                <syncfusion:ButtonAdv Margin="0,10,0,0" Label="Category distribution" Width="150" HorizontalAlignment="Left"
+
+                    <syncfusion:ButtonAdv Grid.Column="2" Label="Category distribution"
                                   SizeMode="Large"
                                   SmallIcon="{StaticResource GraphReportIcon}"/>
+                </Grid>
+               
+                
             </StackPanel>
         </Grid>
        
         <Grid Grid.Row="1" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackPanel HorizontalAlignment="Right" Margin="5" Orientation="Horizontal">
+            <TextBlock Text="{Binding ReportTitle}" Grid.Column="0" VerticalAlignment="Center" FontSize="15" FontWeight="DemiBold"/>
+            <StackPanel Grid.Column="2"
+                HorizontalAlignment="Right" Margin="5" Orientation="Horizontal">
                 <syncfusion:ButtonAdv 
                                       Label="Export as CSV" Width="120" 
                                       SmallIcon="{StaticResource CsvFileIcon}"
