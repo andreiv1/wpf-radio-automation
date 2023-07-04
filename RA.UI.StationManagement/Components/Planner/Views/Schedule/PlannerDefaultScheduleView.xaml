@@ -208,7 +208,7 @@
                                       Command="{Binding SaveSelectedDefaultTemplateCommand}"/>
             </StackPanel>
 
-            <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,10,0,0">
+            <!--<StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,10,0,0">
                 <syncfusion:SfScheduler x:Name="Schedule" Height="100"
                                 BorderThickness="0" 
                                 AllowViewNavigation="True"
@@ -225,7 +225,7 @@
                         <syncfusion:DaysViewSettings MinimumAppointmentDuration="0:30:0" />
                     </syncfusion:SfScheduler.DaysViewSettings>
                 </syncfusion:SfScheduler>
-            </StackPanel>
+            </StackPanel>-->
 
         </Grid>
     </Grid>
