@@ -46,6 +46,8 @@ namespace RA.DAL
                 .Include(ci => ((ClockItemTrack)ci).Track)
                 .ThenInclude(ci => ci.TrackArtists)
                 .ThenInclude(ta => ta.Artist)
+                .IgnoreQueryFilters()
+                .AsNoTracking()
                 .ToListAsync()
                 ;
 
@@ -77,6 +79,7 @@ namespace RA.DAL
             using var dbContext = dbContextFactory.CreateDbContext();
             return await dbContext.Clocks
                 .Select(c => ClockDTO.FromEntity(c))
+                .AsNoTracking()
                 .ToListAsync();
         }
         public async Task<Dictionary<int, TimeSpan>> CalculateAverageDurationsForCategoriesInClockWithId(int clockId)
@@ -227,6 +230,7 @@ namespace RA.DAL
                 .Where(ci => ci.Id == clockItemId)
                 .Include(ci => ((ClockItemCategory)ci).ClockItemCategoryTags)
                 .ThenInclude(t => ((ClockItemCategoryTag)t).TagValue.TagCategory)
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
             if (entity == null)
             {

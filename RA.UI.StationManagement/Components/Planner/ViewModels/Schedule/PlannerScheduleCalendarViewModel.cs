@@ -85,10 +85,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         [RelayCommand]
         private void LoadScheduleOnDemand(object parameter)
         {
-            if(parameter == null)
-            {
-                return;
-            }
+            if (parameter == null) return;
 
             var eventArgs = parameter as QueryAppointmentsEventArgs;
             _ = LoadSchedule(new DateTimeRange(eventArgs.VisibleDateRange
@@ -98,7 +95,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         [RelayCommand]
         private void AddScheduleItem()
         {
-            windowService.ShowDialog<PlannerManageScheduleItemViewModel>();
+            var vm = windowService.ShowDialog<PlannerManageScheduleItemViewModel>();
+            _ = LoadSchedule(new DateTimeRange (vm.StartDate.AddDays(-60), vm.EndDate.AddDays(60)));
         }
 
     }

@@ -52,6 +52,7 @@ namespace RA.DAL
                 .Where(th => th.DatePlayed >= dateStart && th.DatePlayed <= dateEnd)
                 .Where(th => trackTypes.Contains(th.TrackType))
                 .Include(th => th.Track)
+                .IgnoreQueryFilters()
                 .Include(th => th.Track!.TrackArtists)
                 .ThenInclude(ta => ta.Artist)
                 .OrderBy(th => th.DatePlayed)

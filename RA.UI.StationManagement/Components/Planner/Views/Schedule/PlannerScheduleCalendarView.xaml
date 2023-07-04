@@ -37,12 +37,15 @@
                         EndTime="EndDate"
                         Foreground="Foreground"
                         AppointmentBackground="Background"
+                        Location="Test"
                         />
             </syncfusion:SfScheduler.AppointmentMapping>
             <syncfusion:SfScheduler.DaysViewSettings>
                 <syncfusion:DaysViewSettings TimeRulerFormat="HH:mm" ViewHeaderHeight="0"
-                                                 MinimumAppointmentDuration="1:0:0" TimeInterval="1:0:0"/>
+                                                 MinimumAppointmentDuration="1:0:0" TimeInterval="1:0:0">
+                </syncfusion:DaysViewSettings>
             </syncfusion:SfScheduler.DaysViewSettings>
+ 
         </syncfusion:SfScheduler>
     </Grid>
 </uicore:RAUserControl>

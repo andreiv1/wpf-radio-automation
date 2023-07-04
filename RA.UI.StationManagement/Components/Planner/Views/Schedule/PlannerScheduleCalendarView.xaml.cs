@@ -27,6 +27,12 @@ namespace RA.UI.StationManagement.Components.Planner.View.Schedule
         {
             InitializeComponent(); 
             DataContextChanged += PlannerScheduleCalendarView_DataContextChanged;
+            calendar.AppointmentEditorOpening += Calendar_AppointmentEditorOpening;
+        }
+
+        private void Calendar_AppointmentEditorOpening(object? sender, Syncfusion.UI.Xaml.Scheduler.AppointmentEditorOpeningEventArgs e)
+        {
+            e.Cancel = true;
         }
 
         private void PlannerScheduleCalendarView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

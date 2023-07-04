@@ -25,7 +25,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule.Models
         public DateTime EndDate { get => Date.AddHours(23).AddMinutes(59); }
 
         [ObservableProperty]
-        private string itemDisplay;
+        private string itemDisplay = "";
 
         private int templateId;
 

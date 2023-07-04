@@ -8,10 +8,8 @@ using RA.UI.StationManagement.Components.Planner.ViewModels._MainContent.Models;
 using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Models;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Playlists;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent

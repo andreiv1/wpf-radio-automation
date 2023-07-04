@@ -29,11 +29,11 @@ namespace RA.DTO
                 OrderIndex = entity.OrderIndex,
 
                 TrackId = entity.TrackId,
-                Artists = entity.Track.TrackArtists != null ? string.Join(" / ", 
+                Artists = entity.Track?.TrackArtists != null ? string.Join(" / ", 
                     entity.Track.TrackArtists.Select(ta => ta.Artist.Name)) : null,
-                Title = entity.Track.Title,
-                TrackType = entity.Track.Type,
-                TrackDuration = TimeSpan.FromSeconds(entity.Track.Duration),
+                Title = entity.Track?.Title ?? "",
+                TrackType = entity.Track?.Type ?? TrackType.Other,
+                TrackDuration = TimeSpan.FromSeconds(entity.Track?.Duration ?? 0),
 
                 ClockItemEventId = entity.ClockItemEventId,
                 EventOrderIndex = entity.EventOrderIndex,
