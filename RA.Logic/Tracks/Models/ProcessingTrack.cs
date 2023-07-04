@@ -1,10 +1,5 @@
 ﻿using RA.DTO;
 using RA.Logic.Tracks.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RA.Logic.Tracks.Models
 {
@@ -13,6 +8,7 @@ namespace RA.Logic.Tracks.Models
         public TrackDTO? TrackDto { get; set; }
         public ProcessingTrackStatus Status { get; set; }
 
+        public String OriginalPath { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
 
         public string? Categories => TrackDto?.Categories?.Count > 0 ?

@@ -18,5 +18,10 @@ namespace RA.ConsoleApp
             TrackHistoryService trackHistoryService = new TrackHistoryService(dbFactory);
             await trackHistoryService.GetMostPlayedTracks(DateTime.Now.Date.AddDays(-1),DateTime.Now.Date.AddDays(1));
         }
+
+        static async Task MusicCategoryDistribution()
+        {
+
+        }
     }
 }

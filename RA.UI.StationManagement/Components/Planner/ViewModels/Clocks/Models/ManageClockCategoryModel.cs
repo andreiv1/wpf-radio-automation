@@ -40,6 +40,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks.Models
         [ObservableProperty]
         private bool isFiller = false;
 
+        public List<ClockItemCategoryTagDTO>? Tags { get; set; }
+
         public static ManageClockCategoryModel FromDto(ClockItemCategoryDTO dto)
         {
             return new ManageClockCategoryModel
@@ -52,6 +54,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks.Models
                 TitleSeparation = new TimeSpan(0,dto.TitleSeparation.GetValueOrDefault(),0),
                 TrackSeparation = new TimeSpan(0,dto.TrackSeparation.GetValueOrDefault(),0),
                 IsFiller = dto.IsFiller,
+                Tags = dto.Tags,
             };
         }
 

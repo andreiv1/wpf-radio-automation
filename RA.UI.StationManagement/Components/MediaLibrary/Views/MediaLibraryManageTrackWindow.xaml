@@ -41,34 +41,67 @@
             </Image>
             <!-- Item essential info -->
             <Grid Grid.Column="1" Margin="10,5,0,0" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{Binding Track.ArtistsText}" d:Text="ARTISTS" FontWeight="Bold" FontSize="16">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Track.ArtistsText}" Value="">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-                <TextBlock Grid.Row="1" Text="{Binding Track.Title}" d:Text="Title" FontWeight="DemiBold" FontSize="15">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Track.Title}" Value="">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{Binding Track.ArtistsText}" d:Text="ARTISTS" FontWeight="Bold" FontSize="16">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Track.ArtistsText}" Value="">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock Text="{Binding Track.Title}" d:Text="Title" FontWeight="DemiBold" FontSize="15">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Track.Title}" Value="">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Margin="0,0,20,0">
+                    <TextBlock Text="Date Added:" FontWeight="Bold" HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding Track.DateAdded, StringFormat=dd.MM.yyyy HH:mm}" HorizontalAlignment="Right"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="Date Modified:" FontWeight="Bold" HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding Track.DateModified, StringFormat=dd.MM.yyyy HH:mm}" HorizontalAlignment="Right">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Track.DateModified}" Value="">
+                                        <Setter Property="Text" Value="no" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel Grid.Column="3">
+                    <TextBlock Text="Internal ID:" FontWeight="Bold" HorizontalAlignment="Right"
+                               Foreground="DarkRed"/>
+                    <TextBlock Text="{Binding Track.Id}" HorizontalAlignment="Right"
+                               Foreground="DarkRed"/>
+                </StackPanel>
             </Grid>
         </Grid>
 

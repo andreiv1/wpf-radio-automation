@@ -11,6 +11,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent
         public AllMediaItemsView()
         {
             InitializeComponent();
+            itemsSfDataGrid.SortColumnDescriptions.Clear();
         }
 
 

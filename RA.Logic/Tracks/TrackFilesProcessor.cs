@@ -24,12 +24,18 @@ namespace RA.Logic.Tracks
             this.categoriesService = categoriesService;
         }
 
-        public async Task<ProcessingTrack> ProcessSingleItemAsync(string path, bool readMetadata = false)
+        public async Task<ProcessingTrack> ProcessSingleItemAsync(string path, TrackFilesProcessorOptions options)
         {
             ITrackMetadataReader metaReader = new TrackMetadataReader(path);
             ProcessingTrack track = new();
             TrackDTO dto = new();
 
+            track.OriginalPath = path;
+            if(options.NewDirectoryOption != NewDirectoryOption.LeaveCurrent && options.NewDirectoryPath != null)
+            {
+                path = Path.Combine(options.NewDirectoryPath,
+                                Path.GetFileName(path));
+            }
             if (await tracksService.TrackExistsByPath(path))
             {
                 track.Status = ProcessingTrackStatus.WARNING;
@@ -40,7 +46,7 @@ namespace RA.Logic.Tracks
             double duration = (double)(metaReader.GetField(TrackMetadataField.Duration) ?? 0);
             dto.Duration = duration;
 
-            if (readMetadata)
+            if (options.ReadMetadata)
             {
                 try
                 {
@@ -106,7 +112,7 @@ namespace RA.Logic.Tracks
                         foreach (var file in files)
                         {
                             string fileExtension = Path.GetExtension(file);
-                            ProcessingTrack processingTrack = await ProcessSingleItemAsync(file, options.ReadMetadata);
+                            ProcessingTrack processingTrack = await ProcessSingleItemAsync(file, options);
                             if (processingTrack != null)
                             {
                                 processingTrack.TrackDto!.Categories = new()
@@ -196,9 +202,9 @@ namespace RA.Logic.Tracks
             return trackArtists;
         }
 
-        public ProcessingTrack ProcessSingleItem(string path, bool readMetadata = false)
+        public ProcessingTrack ProcessSingleItem(string path, TrackFilesProcessorOptions options)
         {
-            return ProcessSingleItemAsync(path, readMetadata).Result;
+            return ProcessSingleItemAsync(path, options).Result;
         }
     }
 }

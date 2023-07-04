@@ -15,6 +15,14 @@ namespace RA.Database.Config
     {
         public void Configure(EntityTypeBuilder<Track> builder)
         {
+            builder.HasQueryFilter(t => t.DateDeleted == null);
+
+            builder.Property(t => t.Album).IsRequired(false);
+            builder.Property(t => t.Comments).IsRequired(false);
+            builder.Property(t => t.Bpm).IsRequired(false);
+            builder.Property(t => t.ImageName).IsRequired(false);
+            builder.Property(t => t.ISRC).IsRequired(false);
+            
             builder.HasIndex(t => t.FilePath);
             builder.HasMany(t => t.Categories)
                 .WithMany(c => c.Tracks)
@@ -38,6 +46,10 @@ namespace RA.Database.Config
                 .WithOne(tt => tt.Track)
                 .HasForeignKey(tt => tt.TrackId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+           
+
+
         }
     }
 }

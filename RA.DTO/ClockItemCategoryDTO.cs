@@ -21,6 +21,7 @@ namespace RA.DTO
         public DateTime? MinReleaseDate { get; set; }
         public DateTime? MaxReleaseDate { get; set; }
         public bool IsFiller { get; set; }
+        public List<ClockItemCategoryTagDTO>? Tags { get; set; }
         public static ClockItemCategoryDTO FromEntity(ClockItemCategory entity)
         {
             return new ClockItemCategoryDTO
@@ -42,9 +43,11 @@ namespace RA.DTO
 
                 ClockItemEventId = entity.ClockItemEventId,
                 EventOrderIndex = entity.EventOrderIndex,
+
+                Tags = entity.ClockItemCategoryTags != null ?
+                    entity.ClockItemCategoryTags.Select(ct => ClockItemCategoryTagDTO.FromEntity(ct)).ToList() : null,
             };
         }
-
         public static ClockItemCategory ToEntity(ClockItemCategoryDTO dto)
         {
             return new ClockItemCategory

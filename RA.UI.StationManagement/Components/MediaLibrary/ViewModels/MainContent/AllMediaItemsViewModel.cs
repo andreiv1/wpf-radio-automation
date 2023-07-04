@@ -21,7 +21,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         private readonly IMessageBoxService messageBoxService;
         private readonly ITracksService tracksService;
 
-        #region Properties
+        private const int tracksPerPage = 100;
         public ObservableCollection<TrackListingDTO> Items { get; set; } = new();
 
         [ObservableProperty]
@@ -36,12 +36,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         [ObservableProperty]
         private int pageIndex = 0;
 
-        private const int tracksPerPage = 100;
-
         [ObservableProperty]
         private TrackListingDTO? selectedTrack;
-
-        #endregion
 
         public AllMediaItemsViewModel(IWindowService windowService,
                                       IDispatcherService dispatcherService,
@@ -75,7 +71,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             PageIndex = 0;
             
         }
-        #region Commands
+        
+        //Commands
         [RelayCommand]
         private void AddItem()
         {
@@ -104,14 +101,17 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         {
             if (SelectedTrack == null) return;
             var isDeleted = await tracksService.DeleteTrack(SelectedTrack.Id);
+            var trackString = $"{(string.IsNullOrWhiteSpace(SelectedTrack.Artists) ? 
+                string.Empty : $"{SelectedTrack.Artists} - ")}";
             if (isDeleted)
             {
-                messageBoxService.ShowInfo($"Selected track ({SelectedTrack.Title}) deleted succesfully!");
+                messageBoxService.ShowInfo($"Selected track '{trackString}{SelectedTrack.Title}' deleted succesfully!");
                 LoadTracksFromStart();
             }
             else
             {
-                messageBoxService.ShowError($"Selected track ({SelectedTrack.Title}) can't be deleted");
+                messageBoxService.ShowError($"Selected track '{trackString}{SelectedTrack.Title}' can't be deleted.\n" +
+                    $"It might be used somewhere else (in a clock or playlist).");
             }
             
         }
@@ -121,7 +121,6 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         {
             throw new NotImplementedException();
         }
-        #endregion
 
     }
 }

@@ -54,6 +54,7 @@ namespace RA.UI.StationManagement.HostBuilders
                 services.AddTransient<IPlaylistsService, PlaylistsService>();
                 services.AddTransient<IUsersService, UsersService>();
                 services.AddTransient<ITrackHistoryService, TrackHistoryService>(); 
+                services.AddTransient<IReportsService, ReportsService>();
 
                 // Logic services
                 services.AddTransient<ITrackFilesImporter, TrackFileImporter>();

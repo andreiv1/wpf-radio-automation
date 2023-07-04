@@ -101,6 +101,14 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Models
 
         [ObservableProperty]
         private bool isLeaveCurrentSelected = true;
+
+        partial void OnIsLeaveCurrentSelectedChanged(bool value)
+        {
+            if (!value)
+            {
+                NewDestinationPath = null;
+            }
+        }
         #endregion
 
         #region Third View

@@ -13,6 +13,13 @@ namespace RA.Logic.Tracks
         PutAllInSameCategory,
         CreateNewChildrenCategoryForEachExistingCategory
     }
+
+    public enum NewDirectoryOption
+    {
+        LeaveCurrent,
+        CopyToNewLocation,
+        MoveToNewLocation
+    }
     public class TrackFilesProcessorOptions
     {
         public string? DirectoryPath { get; internal set; }
@@ -22,7 +29,8 @@ namespace RA.Logic.Tracks
         public bool ReadMetadata { get; internal set; } = false;
         public bool ScanSubfolders { get; internal set; } = false;
         public SubfolderScanOption SubfolderScanOption { get; internal set; } = SubfolderScanOption.None;
-
+        public string? NewDirectoryPath { get; internal set; }
+        public NewDirectoryOption NewDirectoryOption { get; internal set; } = NewDirectoryOption.LeaveCurrent;
         internal TrackFilesProcessorOptions() { }
 
     }
@@ -62,6 +70,20 @@ namespace RA.Logic.Tracks
         public TrackFilesProcessorOptionsBuilder SetSubfolderScanOption(SubfolderScanOption option)
         {
             options.SubfolderScanOption = option;
+            return this;
+        }
+
+        public TrackFilesProcessorOptionsBuilder SetNewDirectoryPath(string? newDirectoryPath, NewDirectoryOption option)
+        {
+            if(option != NewDirectoryOption.LeaveCurrent)
+            {
+                if(!string.IsNullOrEmpty(newDirectoryPath))
+                {
+                options.NewDirectoryPath = newDirectoryPath;
+                
+                }
+            }
+            options.NewDirectoryOption = option;
             return this;
         }
 

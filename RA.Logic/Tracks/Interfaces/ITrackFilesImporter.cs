@@ -9,8 +9,8 @@ namespace RA.Logic.Tracks
 {
     public interface ITrackFilesImporter
     {
-        Task<int> ImportAsync(IEnumerable<ProcessingTrack> processingTracks);
-        void Import(IEnumerable<ProcessingTrack> processingTracks);
-        Task ImportSingleAsync(ProcessingTrack processingTrack);
+        Task<int> ImportAsync(IEnumerable<ProcessingTrack> processingTracks, TrackFilesProcessorOptions options);
+        void Import(IEnumerable<ProcessingTrack> processingTracks, TrackFilesProcessorOptions options);
+        Task ImportSingleAsync(ProcessingTrack processingTrack, TrackFilesProcessorOptions options);
     }
 }

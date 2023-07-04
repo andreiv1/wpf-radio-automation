@@ -120,14 +120,15 @@ namespace RA.DAL
             var isDeleted = false;
             try
             {
-                if ((await dbContext.Tracks
-                    .Where(t => t.Id == trackId)
-                    .ExecuteDeleteAsync()) == 1)
+                var track = await dbContext.Tracks.FirstOrDefaultAsync(t => t.Id == trackId);
+                if (track != null)
                 {
+                    track.DateDeleted = DateTime.Now;
+                    await dbContext.SaveChangesAsync();
                     isDeleted = true;
                 }
             }
-            catch(MySqlException e)
+            catch (DbUpdateException e)
             {
                 isDeleted = false;
                 Debug.WriteLine($"Error deleting TrackId={trackId}: {e.Message}");

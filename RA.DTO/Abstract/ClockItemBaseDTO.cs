@@ -31,7 +31,7 @@ namespace RA.DTO.Abstract
                 return ClockItemEventDTO.ToEntity(itemEvent);
             }
 
-            throw new Exception("Unrecognised clock item type.");
+            throw new InvalidOperationException("Unrecognised clock item type.");
         }
 
         public static ClockItemBaseDTO FromEntity(ClockItemBase entity)

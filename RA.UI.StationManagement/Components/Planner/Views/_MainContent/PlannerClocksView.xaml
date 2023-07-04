@@ -163,7 +163,7 @@
                        SelectionUnit="Row" NavigationMode="Row"
                        SelectionMode="Multiple" AllowSorting="False"
                         RowHeight="29" AllowResizingColumns="True"
-                       AutoGenerateColumns="False">
+                       AutoGenerateColumns="False" KeyboardNavigation.TabNavigation="None">
                     <syncfusion:SfDataGrid.Columns>
                         <!--Estimated Start Time-->
                         <syncfusion:GridTemplateColumn HeaderText="Start Time"
@@ -391,6 +391,7 @@
                                                     <DataTrigger Binding="{Binding Item.IsFiller}" Value="True">
                                                         <Setter Property="Text" Value="Yes"/>
                                                         <Setter Property="FontWeight" Value="DemiBold"/>
+                                                        <Setter Property="Foreground" Value="Red"/>
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding Item.IsFiller}" Value="False">
                                                         <Setter Property="Text" Value="No"/>

@@ -1,11 +1,6 @@
 ﻿using RA.Database.Models.Abstract;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RA.Database.Models
 {
@@ -17,7 +12,7 @@ namespace RA.Database.Models
         public string Name { get; set; }
 
         [MaxLength(1500)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public ICollection<ArtistTrack> ArtistTracks { get; set; }
     }

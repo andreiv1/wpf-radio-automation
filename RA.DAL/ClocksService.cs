@@ -179,7 +179,9 @@ namespace RA.DAL
         public async Task<ClockItemBaseDTO> GetClockItemAsync(int clockItemId)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            var entity = await dbContext.ClockItems.Where(ci => ci.Id == clockItemId)
+            var entity = await dbContext.ClockItems
+                .Where(ci => ci.Id == clockItemId)
+                .Include(ci => ((ClockItemCategory)ci).ClockItemCategoryTags)
                 .FirstOrDefaultAsync();
             if (entity == null)
             {

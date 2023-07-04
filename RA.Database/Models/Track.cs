@@ -19,7 +19,7 @@ namespace RA.Database.Models
 
         [Required]
         [MaxLength(200)]
-        public String Title { get; set; }
+        public string Title { get; set; }
 
         [Column(TypeName= "double(11,5)")]
         public double Duration { get; set; }
@@ -35,18 +35,18 @@ namespace RA.Database.Models
         public DateTime? ReleaseDate { get; set; }
 
         [MaxLength(200)]
-        public String Album { get; set; }
-        public String Comments { get; set; }
+        public string? Album { get; set; }
+        public string? Comments { get; set; }
 
         [MaxLength(500)]
-        public String FilePath { get; set; }
+        public string FilePath { get; set; }
 
         [MaxLength(50)]
-        public String ImageName { get; set; }
+        public string? ImageName { get; set; }
         public int? Bpm { get; set; }
 
         [MaxLength(55)]
-        public String ISRC { get; set; }
+        public String? ISRC { get; set; }
         public DateTime DateAdded { get; set; } = DateTime.Now;
         public DateTime? DateModified { get; set; }
         public DateTime? DateDeleted { get; set; }

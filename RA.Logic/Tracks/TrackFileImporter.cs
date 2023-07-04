@@ -13,17 +13,18 @@ namespace RA.Logic.Tracks
             this.tracksService = tracksService;
         }
 
-        public void Import(IEnumerable<ProcessingTrack> processingTracks)
+        public void Import(IEnumerable<ProcessingTrack> processingTracks, TrackFilesProcessorOptions options)
         {
-            ImportAsync(processingTracks).Wait();
+            ImportAsync(processingTracks,options).Wait();
         }
 
-        public async Task ImportSingleAsync(ProcessingTrack processingTrack)
+        public async Task ImportSingleAsync(ProcessingTrack processingTrack, TrackFilesProcessorOptions options)
         {
-            await ImportAsync(new ProcessingTrack[] { processingTrack });
+            await ImportAsync(new ProcessingTrack[] { processingTrack },options);
         }
 
-        public async Task<int> ImportAsync(IEnumerable<ProcessingTrack> processingTracks)
+        public async Task<int> ImportAsync(IEnumerable<ProcessingTrack> processingTracks,
+                                           TrackFilesProcessorOptions options)
         {
             try
             {
@@ -34,6 +35,24 @@ namespace RA.Logic.Tracks
                         processingTrack.TrackDto != null)
                     {
                         tracksToImport.Add(processingTrack.TrackDto);
+                        if(options.NewDirectoryOption != NewDirectoryOption.LeaveCurrent && options.NewDirectoryPath != null)
+                        {
+                            var newFilePath = Path.Combine(options.NewDirectoryPath,
+                                Path.GetFileName(processingTrack.OriginalPath));
+
+                            switch(options.NewDirectoryOption)
+                            {
+                                case NewDirectoryOption.CopyToNewLocation:
+                                    await CopyTrack(processingTrack.OriginalPath, newFilePath); 
+                                    break;
+                                case NewDirectoryOption.MoveToNewLocation:
+                                    await MoveTrack(processingTrack.OriginalPath, newFilePath);
+                                    break;
+                            }
+
+                            processingTrack.TrackDto.FilePath = newFilePath;
+
+                        }
                     }
                 }
 
@@ -44,5 +63,38 @@ namespace RA.Logic.Tracks
             }
         }
 
+        private async Task MoveTrack(string originalPath, string movePath)
+        {
+      
+                await Task.Run(() => {
+                    try
+                    {
+                        File.Move(originalPath, movePath);
+                        // File moved successfully
+                    }
+                    catch (IOException e)
+                    {
+                        // Handle any exceptions occurred during the move operation
+                        Console.WriteLine($"An error occurred while moving the file: {e.Message}");
+                    }
+                });
+        }
+
+        private async Task CopyTrack(string originalPath, string copyPath)
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    File.Copy(originalPath, copyPath);
+                    // File moved successfully
+                }
+                catch (IOException e)
+                {
+                    // Handle any exceptions occurred during the move operation
+                    Console.WriteLine($"An error occurred while moving the file: {e.Message}");
+                }
+            });
+        }
     }
 }

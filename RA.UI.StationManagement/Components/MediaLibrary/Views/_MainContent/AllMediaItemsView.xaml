@@ -67,7 +67,8 @@
 
         </StackPanel>
 
-        <syncfusion:SfDataGrid Grid.Row="1"
+        <syncfusion:SfDataGrid x:Name="itemsSfDataGrid" 
+                       Grid.Row="1"
                        Margin="5,5,5,0"
                        ColumnSizer="Auto"
                        ItemsSource="{Binding Items, Mode=TwoWay}"
@@ -118,10 +119,31 @@
                                            DisplayBinding="{Binding Path=Duration, Converter={StaticResource DoubleToTimeSpanConverter}, StringFormat={}{0:hh\\:mm\\:ss} }">
                 </syncfusion:GridTextColumn>
 
-                <syncfusion:GridDateTimeColumn HeaderText="Date Added" MappingName="DateAdded" 
-                                    MinimumWidth="130"/>
-                <syncfusion:GridDateTimeColumn HeaderText="Date Modified" MappingName="DateModified"
-                                   MinimumWidth="130"/>
+                <syncfusion:GridTemplateColumn HeaderText="Date Added" Width="130" AllowSorting="True"
+                                               MappingName="DateAdded"
+                                                               ColumnSizer="Star">
+                    <syncfusion:GridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Text="{Binding DateAdded, StringFormat=dd.MM.yyyy HH:mm:ss}"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </syncfusion:GridTemplateColumn.CellTemplate>
+                </syncfusion:GridTemplateColumn>
+
+                <syncfusion:GridTemplateColumn HeaderText="Date Modified" Width="130" AllowSorting="True"
+                                               MappingName="DateModified"
+                                                               ColumnSizer="Star">
+                    <syncfusion:GridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Text="{Binding DateModified, StringFormat=dd.MM.yyyy HH:mm:ss}" 
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </syncfusion:GridTemplateColumn.CellTemplate>
+                </syncfusion:GridTemplateColumn>
             </syncfusion:SfDataGrid.Columns>
             <syncfusion:SfDataGrid.ContextMenu>
                 <ContextMenu>
@@ -153,7 +175,7 @@
                    Content="{Binding TotalTracks}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <syncfusion:SfDataPager  Grid.Column="3" HorizontalAlignment="Right"
                            PageCount="{Binding Pages}"
-                           PageIndex="{Binding PageIndex}"
+                           PageIndex="{Binding PageIndex, Mode=TwoWay}"
                            PageSize="100" 
                            NumericButtonCount="10"
                            AutoEllipsisMode="Both"
