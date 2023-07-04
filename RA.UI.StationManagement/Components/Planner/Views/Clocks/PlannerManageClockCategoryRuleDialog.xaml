@@ -1,13 +1,14 @@
 ﻿<uicore:RAWindow x:Class="RA.UI.StationManagement.Components.Planner.View.Clocks.PlannerManageClockCategoryRuleDialog"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
-        xmlns:local="clr-namespace:RA.UI.StationManagement.Components.Planner.View.Clocks"
-        xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:clocks="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.Clocks" d:DataContext="{d:DesignInstance Type=clocks:PlannerManageClockCategoryRuleViewModel}"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+                 xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+                 xmlns:clocks="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.Clocks"
+                 d:DataContext="{d:DesignInstance Type=clocks:PlannerManageClockCategoryRuleViewModel}"
         mc:Ignorable="d"
-        Title="Insert rule from category" Height="480" Width="450" ResizeMode="NoResize" 
+        Title="Insert rule from category" Height="580" Width="450" ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen"
         >
     <Grid Margin="20">
@@ -30,7 +31,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Label Content="Source:" Grid.Column="0"
+            <Label Content="Source*:" Grid.Column="0"
                    FontWeight="DemiBold"/>
             <syncfusion:SfTextBoxExt Grid.Column="0" Grid.Row="1"
                                      Watermark="No category selected" IsReadOnly="True" Height="25"
@@ -79,11 +80,6 @@
                                      Value="{Binding ManageModel.ToReleaseDate, Mode=TwoWay}"
                                      />
             </StackPanel>
-            <CheckBox  Grid.Row="1" Grid.Column="1" Margin="0,5,0,0"
-                VerticalAlignment="Center" Content='exclude items without "Release date" specified'
-                IsChecked="{Binding ManageModel.ExcludeWithoutReleaseDate}"/>
-            
-            <!-- BPM -->
 
             <!-- DURATION -->
             <Label Grid.Row="5" Grid.Column="0" Margin="0,10,0,0"
@@ -103,7 +99,7 @@
                        Content="at least" />
                 <syncfusion:TimeSpanEdit 
                     Grid.Row="0" Grid.Column="1"
-                                     MinValue="0:0:0" Value="{Binding ManageModel.MinDuration}"
+                                     MinValue="0:0:0" Value="{Binding ManageModel.MinDuration, Mode=TwoWay}"
                    
                                      Format="m 'min' s 'sec'"/>
 
@@ -111,7 +107,7 @@
                        Content="no more than" />
                 <syncfusion:TimeSpanEdit 
                     Grid.Row="1" Grid.Column="1" Margin="0,5,0,0"
-                                     MinValue="0:0:0" Value="{Binding ManageModel.MaxDuration}"
+                                     MinValue="0:0:0" Value="{Binding ManageModel.MaxDuration, Mode=TwoWay}"
                                      Format="m 'min' s 'sec'"/>
 
                 <CheckBox Grid.Row="2" Grid.ColumnSpan="2" Margin="0,5,0,0"
@@ -148,8 +144,8 @@
                                      Format="h 'hours' m 'min'"/>
             
             <!-- Separation description -->
-            <!--<TextBlock Grid.Row="2" Grid.ColumnSpan="3" TextWrapping="Wrap" Margin="4,5,0,0" Height="auto"
-                   Text="{StaticResource TrackAllSeparationString}"/>-->
+            <TextBlock Grid.Row="2" Grid.ColumnSpan="3" TextWrapping="Wrap" Margin="4,5,0,0" Height="auto"
+                   Text="{StaticResource TrackAllSeparationString}"/>
         </Grid>
 
         <Grid Grid.Row="3" Margin="0,10,0,0" >
@@ -157,19 +153,19 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
-                <!--<RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>-->
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0"
                 Content="Genre(s):" FontWeight="DemiBold"/>
             <syncfusion:ComboBoxAdv Grid.Row="1" VerticalAlignment="Center" MinHeight="50"
-                                    SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
+                                    SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true"
                                     ItemsSource="{Binding Genres}" DefaultText="Any genre"
                                     DisplayMemberPath="Name"
                                     />
-            <!--<Label Grid.Row="2" VerticalAlignment="Center"
+            <Label Grid.Row="2" VerticalAlignment="Center"
                 Content="Language(s):" FontWeight="DemiBold"/>
             <syncfusion:ComboBoxAdv Grid.Row="3" VerticalAlignment="Center" MinHeight="50"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
@@ -183,11 +179,12 @@
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
                                     ItemsSource="{Binding Moods}" DefaultText="Any mood" 
                                     DisplayMemberPath="Name"
-                                    />-->
+                                    />
         </Grid>
 
         <StackPanel Grid.Row="4" Margin="0,0,0,5" VerticalAlignment="Bottom">
-            <CheckBox Content="Use this rule as filler when no other rules can apply" Margin="0,0,0,5"/>
+            <CheckBox Content="Use this rule as filler when no other rules can apply" Margin="0,0,0,5"
+                      IsChecked="{Binding ManageModel.IsFiller}"/>
             <TextBlock FontWeight="Bold">
                 <Run Text="There are"/>
                 <Run Text="{Binding NoOfTracksMatchingConditions}"/>

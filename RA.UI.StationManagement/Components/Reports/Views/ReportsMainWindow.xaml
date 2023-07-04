@@ -106,7 +106,8 @@
                                RowHeight="30"
                                ItemsSource="{Binding TrackHistoryReport}">
             <syncfusion:SfDataGrid.Columns>
-                <syncfusion:GridTemplateColumn HeaderText="Date played" Width="130"
+                <syncfusion:GridTemplateColumn HeaderText="Date played" Width="130" AllowSorting="True"
+                                               MappingName="DatePlayed"
                                                                ColumnSizer="Star">
                     <syncfusion:GridTemplateColumn.CellTemplate>
                         <DataTemplate>

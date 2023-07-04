@@ -74,12 +74,16 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
                 OrderIndex = orderIndex,
                 CategoryId = SelectedCategory.Id,
                 ClockId = clockId,
-                MinDuration = ManageModel.MinDuration,
-                MaxDuration = ManageModel.MaxDuration,
                 MinReleaseDate = ManageModel.FromReleaseDate,
                 MaxReleaseDate = ManageModel.ToReleaseDate,
                 IsFiller = ManageModel.IsFiller,
             };
+
+            if (ManageModel.EnforceDurationLimits)
+            {
+                newClockItem.MinDuration = ManageModel.MinDuration;
+                newClockItem.MaxDuration = ManageModel.MaxDuration;
+            }
 
             if(ManageModel.ArtistSeparation?.TotalMinutes > 0)
             {
@@ -111,7 +115,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
             base.CancelDialog();
         }
 
-        #region Data fetch
+        //Data fetch
+        
         private async Task FetchTags()
         {
             foreach(var genre in await tagsService.GetTagValuesByCategoryNameAsync("Genre"))
@@ -138,10 +143,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
             SelectedCategory = await categoriesService.GetCategoryHierarchy(dto.CategoryId.GetValueOrDefault());
             ManageModel = ManageClockCategoryModel.FromDto(dto);
         }
-        #endregion
+       
 
 
-        #region Commands
+   
         [RelayCommand]
         private async void OpenPickCategory()
         {
@@ -152,6 +157,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
                 NoOfTracksMatchingConditions = await categoriesService.NoOfTracksMatchingConditions(vm.SelectedCategory.CategoryId);
             }
         }
-        #endregion
+        
     }
 }

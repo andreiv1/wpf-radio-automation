@@ -25,8 +25,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
         private bool duplicate = false;
         private readonly IClocksService clocksService;
 
-        #region Constructors
-        public PlannerManageClockViewModel(IWindowService windowService, IClocksService clocksService) 
+       
+        public PlannerManageClockViewModel(IWindowService windowService,
+                                           IClocksService clocksService) 
             : base(windowService)
         {
             DialogName = "Add new clock";
@@ -35,7 +36,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
             ManagedClock.Validate();
         }
 
-        public PlannerManageClockViewModel(IWindowService windowService, IClocksService clocksService, int clockId, bool duplicate = false) 
+        public PlannerManageClockViewModel(IWindowService windowService,
+                                           IClocksService clocksService,
+                                           int clockId,
+                                           bool duplicate = false) 
             : base(windowService)
         {
             DialogName = "Edit clock";
@@ -46,9 +50,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
             _ = LoadClock();
 
         }
-        #endregion
+       
 
-        #region Events
         private void ManagedClock_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
         {
             if (e.PropertyName == "Name")
@@ -56,9 +59,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
                 FinishDialogCommand.NotifyCanExecuteChanged();
             }
         }
-        #endregion
+        
 
-        #region Data fetching
+        //Data fetching
         private async Task LoadClock()
         {
             if (ManagedClock?.Id != null)
@@ -73,7 +76,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
 
             }
         }
-        #endregion
+
 
         #region Commands
         //[RelayCommand] in base class

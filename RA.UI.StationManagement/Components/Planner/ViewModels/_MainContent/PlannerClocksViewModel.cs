@@ -44,7 +44,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         [ObservableProperty]
         private TimeSpan totalDuration;
 
-        #region Constructor
         public PlannerClocksViewModel(IWindowService windowService,
                                       IDispatcherService dispatcherService,
                                       IClocksService clocksService)
@@ -55,14 +54,14 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             _ = LoadClocks();
             ClockItemsForSelectedClock.CollectionChanged += ClockItemsForSelectedClock_CollectionChanged;
         }
-        #endregion
+    
         private void ClockItemsForSelectedClock_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             CalculateStartTime();
             FillPieChart();
         }
 
-        #region Data fetching
+        //Data fetching
         private async Task LoadClocks()
         {
             var clocks = await Task.Run(() => clocksService.GetClocksAsync());
@@ -175,8 +174,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             }
         }
 
-        #endregion
-
+ 
         private void CalculateStartTime()
         {
             TotalDuration = TimeSpan.Zero;
@@ -261,7 +259,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             if (vm.SelectedCategory == null) return;
 
             DebugHelper.WriteLine(this, $"To add clock rule - {vm.SelectedCategory.Id}");
-            int latestIndex = ClockItemsForSelectedClock.Count;
+            int latestIndex = ClockItemsForSelectedClock
+                .Where(x => x.Item.OrderIndex > -1)
+                .Count();
 
             await vm.AddClockItem(latestIndex);
 
@@ -298,7 +298,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
                 _ = LoadClockItemsForSelectedClock();
             }
-            
         }
 
         [RelayCommand]

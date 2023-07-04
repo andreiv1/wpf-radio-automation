@@ -10,7 +10,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks.Models
 {
     public partial class ManageClockCategoryModel : ObservableObject
     {
-        #region Release Date
         [ObservableProperty]
         private DateTime? fromReleaseDate;
 
@@ -19,9 +18,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks.Models
 
         [ObservableProperty]
         private bool excludeWithoutReleaseDate = false;
-        #endregion
-
-        #region Duration
 
         [ObservableProperty]
         private TimeSpan? minDuration = new TimeSpan(0,0,0);
@@ -32,9 +28,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks.Models
         [ObservableProperty]
         private bool enforceDurationLimits = false;
 
-        #endregion
-
-        #region Separation
         [ObservableProperty]
         private TimeSpan? artistSeparation = new TimeSpan(0);
 
@@ -43,7 +36,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks.Models
 
         [ObservableProperty]
         private TimeSpan? trackSeparation = new TimeSpan(0);
-        #endregion
+ 
         [ObservableProperty]
         private bool isFiller = false;
 

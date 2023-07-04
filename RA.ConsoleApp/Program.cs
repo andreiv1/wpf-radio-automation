@@ -1,11 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using RA.DAL;
-using RA.DAL.Interfaces;
-using RA.Database;
-using RA.Database.Models;
-using RA.DTO;
-using RA.Logic.Planning;
+﻿using RA.DAL;
 
 namespace RA.ConsoleApp
 {
@@ -22,8 +15,8 @@ namespace RA.ConsoleApp
 
         static async Task TestHistory()
         {
-            ITrackHistoryService trackHistoryService = new TrackHistoryService(dbFactory);
-            var result = await trackHistoryService.RetrieveTrackHistory(DateTime.Now.Date);
+            TrackHistoryService trackHistoryService = new TrackHistoryService(dbFactory);
+            await trackHistoryService.GetMostPlayedTracks(DateTime.Now.Date.AddDays(-1),DateTime.Now.Date.AddDays(1));
         }
     }
 }

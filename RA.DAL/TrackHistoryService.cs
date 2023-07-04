@@ -75,6 +75,33 @@ namespace RA.DAL
             return result;
         }
 
+        public async Task GetMostPlayedTracks(DateTime dateStart,
+                                              DateTime dateEnd,
+                                              int max = 10,
+                                              IList<TrackType>? trackTypesToExclude = null)
+        {
+            //TODO
+            throw new NotImplementedException();
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            var query = dbContext.TrackHistory
+                .Include(th => th.Track)
+                .Include(th => th.Track!.TrackArtists)
+                .ThenInclude(ta => ta.Artist)
+                .Where(th => th.DatePlayed >= dateStart && th.DatePlayed <= dateEnd);
+
+            if (trackTypesToExclude != null && trackTypesToExclude.Any())
+            {
+                query = query.Where(th => !trackTypesToExclude.Contains(th.Track.Type));
+            }
+
+            var result = await query
+                .GroupBy(th => new { th.TrackId, th.Track })
+                .OrderByDescending(group => group.Count())
+                .Take(max)
+                .ToListAsync();
+
+        }
+
 
     }
 }
