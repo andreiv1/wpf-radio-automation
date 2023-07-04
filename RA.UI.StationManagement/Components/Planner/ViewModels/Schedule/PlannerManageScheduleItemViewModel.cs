@@ -89,7 +89,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
 
         protected override async void FinishDialog()
         {
-            MessageBox.Show($"Selected schedule type: {ScheduleType.ToString()}");
+            await AddSchedule();
+            base.FinishDialog();
+        }
+
+        private async Task AddSchedule()
+        {
             SchedulePlannedDTO dto = new()
             {
                 Name = Name,
@@ -98,7 +103,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
                 StartDate = StartDate,
             };
 
-            if(ScheduleType == SchedulePlannedType.Recurrent)
+            if (ScheduleType == SchedulePlannedType.Recurrent)
             {
                 dto.EndDate = EndDate;
                 dto.Frequency = SelectedFrequency;
@@ -110,9 +115,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
                 dto.IsSaturday = IsSaturday;
                 dto.IsSunday = IsSunday;
             }
-            
+
             await Task.Run(() => { schedulesPlannedService.AddPlannedSchedule(dto); });
-            base.FinishDialog();
         }
 
         protected override bool CanFinishDialog()

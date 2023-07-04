@@ -55,7 +55,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             IsLoadingCalendar = false;
             foreach(var item in calendar)
             {
-                if (!String.IsNullOrEmpty(item.Value?.Template?.Name))
+                if (!string.IsNullOrEmpty(item.Value?.Template?.Name))
                 {
                     CalendarItems.Add(ScheduleCalendarItem.FromDto(item.Value, item.Key));
                 }

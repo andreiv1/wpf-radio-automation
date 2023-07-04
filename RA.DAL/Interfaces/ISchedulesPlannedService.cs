@@ -10,5 +10,6 @@ namespace RA.DAL
     public interface ISchedulesPlannedService
     {
         Task AddPlannedSchedule(SchedulePlannedDTO schedule);
+        Task<IDictionary<DateTime, SchedulePlannedDTO?>> GetPlannedSchedulesOverviewAsync(DateTime searchDateStart, DateTime searchDateEnd);
     }
 }

@@ -30,7 +30,18 @@ namespace RA.DAL
         public async Task<IDictionary<DateTime, IScheduleDTO?>> GetSchedulesOverview(DateTime searchDateStart, DateTime searchDateEnd)
         {
             Dictionary<DateTime, IScheduleDTO?> result = new();
-            
+            var defaultSchedules = await schedulesDefaultService.GetDefaultSchedulesOverviewAsync(searchDateStart, searchDateEnd);
+            var plannedSchedules = await schedulesPlannedService.GetPlannedSchedulesOverviewAsync(searchDateStart, searchDateEnd);
+
+            foreach(var itm in defaultSchedules)
+            {
+                result.Add(itm.Key, itm.Value);
+            }
+
+            foreach(var itm in plannedSchedules)
+            {
+                result[itm.Key] = itm.Value;
+            }
 
             return result;
         }
