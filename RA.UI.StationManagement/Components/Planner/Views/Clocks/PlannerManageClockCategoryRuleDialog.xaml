@@ -8,7 +8,7 @@
                  xmlns:clocks="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.Clocks"
                  d:DataContext="{d:DesignInstance Type=clocks:PlannerManageClockCategoryRuleViewModel}"
         mc:Ignorable="d"
-        Title="Insert rule from category" Height="580" Width="450" ResizeMode="NoResize" 
+        Title="Insert rule from category" Height="690" Width="450" ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen"
         >
     <Grid Margin="20">
@@ -161,7 +161,7 @@
             <Label Grid.Row="0"
                 Content="Genre(s):" FontWeight="DemiBold"/>
             <syncfusion:ComboBoxAdv Grid.Row="1" VerticalAlignment="Center" MinHeight="50"
-                                    SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true"
+                                    SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
                                     ItemsSource="{Binding Genres}" DefaultText="Any genre"
                                     DisplayMemberPath="Name"
                                     />
