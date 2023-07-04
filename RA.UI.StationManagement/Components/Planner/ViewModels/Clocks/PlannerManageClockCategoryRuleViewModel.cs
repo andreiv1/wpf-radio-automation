@@ -9,10 +9,8 @@ using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Clocks.Models;
 using RA.UI.StationManagement.Dialogs.CategorySelectDialog;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
@@ -24,13 +22,14 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
         private readonly IClocksService clocksService;
         private readonly ITagsService tagsService;
         private readonly int clockId;
+        private readonly int clockItemId;
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(FinishDialogCommand))]
         private CategoryHierarchyDTO? selectedCategory;
 
         [ObservableProperty]
-        private ManageClockCategoryModel manageModel;
+        private ManageClockCategoryModel categoryModel;
 
         [ObservableProperty]
         private int noOfTracksMatchingConditions = 0;
@@ -44,7 +43,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
 
         public bool IsEditing { get; private set; } = false;
         public PlannerManageClockCategoryRuleViewModel(IWindowService windowService,
-            IDispatcherService dispatcherService,
+                                                       IDispatcherService dispatcherService,
                                                        ICategoriesService categoriesService,
                                                        IClocksService clocksService,
                                                        ITagsService tagsService,
@@ -55,24 +54,26 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
             this.clocksService = clocksService;
             this.tagsService = tagsService;
             this.clockId = clockId;
-            ManageModel = new ManageClockCategoryModel();
+            CategoryModel = new ManageClockCategoryModel();
             _ = FetchTags();
             InitTagsCollectionEvents();
         }
 
         //TODO: Edit ctr
         public PlannerManageClockCategoryRuleViewModel(IWindowService windowService,
-            IDispatcherService dispatcherService,
+                                                       IDispatcherService dispatcherService,
                                                        ICategoriesService categoriesService,
                                                        IClocksService clocksService,
                                                        ITagsService tagsService,
-                                                       int clockId, int clockItemId) : base(windowService)
+                                                       int clockId,
+                                                       int clockItemId) : base(windowService)
         {
             this.dispatcherService = dispatcherService;
             this.categoriesService = categoriesService;
             this.clocksService = clocksService;
             this.tagsService = tagsService;
             this.clockId = clockId;
+            this.clockItemId = clockItemId;
             IsEditing = true;
             var loadTask = LoadModel(clockItemId);
             var fetchTask = FetchTags();
@@ -84,24 +85,24 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
 
         private void AsignTagsToClockItem()
         {
-            if(ManageModel == null || ManageModel.Tags == null) return;
+            if(CategoryModel == null || CategoryModel.Tags == null) return;
             foreach (var genre in Genres)
             {
-                if (ManageModel.Tags.Where(t => t.TagValueId == genre.Id).Any())
+                if (CategoryModel.Tags.Where(t => t.TagValueId == genre.Id).Any())
                 {
                     dispatcherService.InvokeOnUIThread(() => SelectedGenres.Add(genre));
                 }
             }
             foreach (var language in Languages)
             {
-                if (ManageModel.Tags.Where(t => t.TagValueId == language.Id).Any())
+                if (CategoryModel.Tags.Where(t => t.TagValueId == language.Id).Any())
                 {
                     dispatcherService.InvokeOnUIThread(() => SelectedLanguages.Add(language));
                 }
             }
             foreach (var mood in Moods)
             {
-                if (ManageModel.Tags.Where(t => t.TagValueId == mood.Id).Any())
+                if (CategoryModel.Tags.Where(t => t.TagValueId == mood.Id).Any())
                 {
                     dispatcherService.InvokeOnUIThread(() => SelectedMoods.Add(mood));
                 }
@@ -116,56 +117,59 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
 
         private void SelectedMoods_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            ProcessTags_CollectionChnaged(e);
+            ProcessTags_CollectionChanged(e);
         }
 
         private void SelectedLanguages_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            ProcessTags_CollectionChnaged(e);
+            ProcessTags_CollectionChanged(e);
         }
 
         private void SelectedGenres_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            ProcessTags_CollectionChnaged(e);
+            ProcessTags_CollectionChanged(e);
         }
 
-        private void ProcessTags_CollectionChnaged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void ProcessTags_CollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
-                //var removedItems = e.OldItems;
-                //if (removedItems == null || Track == null || Track.Tags == null)
-                //    return;
-
-                //foreach (var item in removedItems)
-                //{
-                //    TagValueDTO? tagValue = item as TagValueDTO;
-                //    if (tagValue != null)
-                //    {
-                //        var toDelete = Track.Tags.Where(t => t.TagValueId == tagValue.Id).First();
-                //        Track.Tags.Remove(toDelete);
-                //    }
-                //}
+                var removedItems = e.OldItems;
+                if (removedItems == null || CategoryModel == null || CategoryModel.Tags == null) return;
+                foreach(var item in removedItems)
+                {
+                    TagValueDTO? tagValue = item as TagValueDTO;
+                    if (tagValue != null)
+                    {
+                        var toDelete = CategoryModel.Tags.Where(x => x.TagValueId == tagValue.Id).First();
+                        CategoryModel.Tags.Remove(toDelete);
+                    }
+                }
             }
             else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
-                //var addedItems = e.NewItems;
-                //if (addedItems == null || Track == null || Track.Tags == null)
-                //    return;
+                var addedItems = e.NewItems;
+                if (addedItems == null || CategoryModel == null || CategoryModel.Tags == null)
+                    return;
 
-                //foreach (var item in addedItems)
-                //{
-                //    TagValueDTO? tagValue = item as TagValueDTO;
-                //    if (tagValue != null)
-                //    {
-                //        var alreadyExists = Track.Tags.Any(t => t.TagValueId == tagValue.Id);
-                //        if (!alreadyExists)
-                //        {
-                //            Track.Tags.Add(new TrackTagDTO() { TagCategoryId = tagValue.TagCategoryId, TagValueId = tagValue.Id, TrackId = Track.Id });
-                //        }
+                foreach (var item in addedItems)
+                {
+                    TagValueDTO? tagValue = item as TagValueDTO;
+                    if (tagValue != null)
+                    {
+                        var alreadyExists = CategoryModel.Tags.Any(t => t.TagValueId == tagValue.Id);
+                        if (!alreadyExists)
+                        {
+            
+                            CategoryModel.Tags.Add(new ClockItemCategoryTagDTO()
+                            {
+                                ClockItemId = clockItemId,
+                                TagValueId = tagValue.Id
+                            });
+                        }
 
-                //    }
-                //}
+                    }
+                }
             }
         }
 
@@ -173,40 +177,22 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
         {
             if (SelectedCategory == null) return;
             if (Result == RADialogResult.Cancel) return;
-            var newClockItem = new ClockItemCategoryDTO()
-            {
-                OrderIndex = orderIndex,
-                CategoryId = SelectedCategory.Id,
-                ClockId = clockId,
-                MinReleaseDate = ManageModel.FromReleaseDate,
-                MaxReleaseDate = ManageModel.ToReleaseDate,
-                IsFiller = ManageModel.IsFiller,
-            };
 
-            if (ManageModel.EnforceDurationLimits)
-            {
-                newClockItem.MinDuration = ManageModel.MinDuration;
-                newClockItem.MaxDuration = ManageModel.MaxDuration;
-            }
+            var newClockItemDto = ManageClockCategoryModel.ToDto(CategoryModel);
+            newClockItemDto.CategoryId = SelectedCategory.Id;
+            newClockItemDto.ClockId = clockId;
+            newClockItemDto.OrderIndex = orderIndex;
+            await clocksService.AddClockItem(newClockItemDto);
+        }
 
-            if(ManageModel.ArtistSeparation?.TotalMinutes > 0)
-            {
-                newClockItem.ArtistSeparation = (int)ManageModel.ArtistSeparation.Value.TotalMinutes;
-            }
-
-            if(ManageModel.TitleSeparation?.TotalMinutes > 0)
-            {
-                newClockItem.TitleSeparation = (int)ManageModel.TitleSeparation.Value.TotalMinutes;
-            }
-
-            if(ManageModel.TrackSeparation?.TotalMinutes > 0)
-            {
-                newClockItem.TrackSeparation = (int)ManageModel.TrackSeparation.Value.TotalMinutes;
-            }
-
-            
-
-            await clocksService.AddClockItem(newClockItem);
+        public async Task UpdateClockItem()
+        {
+            if (SelectedCategory == null) return;
+            var dto = ManageClockCategoryModel.ToDto(CategoryModel);
+            dto.CategoryId = SelectedCategory.Id;
+            dto.Id = clockItemId;
+            dto.ClockId = clockId;
+            await clocksService.UpdateClockItem(dto);
         }
         protected override bool CanFinishDialog()
         {
@@ -245,7 +231,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
             if (dto == null) throw new NullReferenceException($"Clock item must not be null.");
             DebugHelper.WriteLine(this, $"Loaded category clock item {clockItemId}");
             SelectedCategory = await categoriesService.GetCategoryHierarchy(dto.CategoryId.GetValueOrDefault());
-            ManageModel = ManageClockCategoryModel.FromDto(dto);
+            CategoryModel = ManageClockCategoryModel.FromDto(dto);
         }
        
 
@@ -261,6 +247,5 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
                 NoOfTracksMatchingConditions = await categoriesService.NoOfTracksMatchingConditions(vm.SelectedCategory.CategoryId);
             }
         }
-        
     }
 }

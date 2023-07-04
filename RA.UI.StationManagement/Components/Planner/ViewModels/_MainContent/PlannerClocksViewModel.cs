@@ -291,20 +291,21 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         }
 
         [RelayCommand(CanExecute = nameof(CanUseHeaderButtons))]
-        private void EditSelectedItemInSelectedClock()
+        private async void EditSelectedItemInSelectedClock()
         {
             if(SelectedClock == null || SelectedClockItem == null) return;
             if(SelectedClockItem!.Item == null) return;
             if(SelectedClockItem.Item is ClockItemCategoryDTO itemCategory)
             {
                 var vm = windowService.ShowDialog<PlannerManageClockCategoryRuleViewModel>(SelectedClock.Id, itemCategory.Id);
-                messageBoxService.ShowWarning("TO DO UPDATE");
+                //messageBoxService.ShowWarning("TO DO UPDATE");
+                if (vm != null) vm.UpdateClockItem();
             } else if(SelectedClockItem.Item is ClockItemEventDTO itemEvent)
             {
                 var vm = windowService.ShowDialog<PlannerManageClockEventRuleViewModel>(SelectedClock.Id, itemEvent.Id);
                 messageBoxService.ShowWarning("TO DO UPDATE");
             }
-            _ = LoadClockItemsForSelectedClock();
+            //_ = LoadClockItemsForSelectedClock();
         }
 
         [RelayCommand(CanExecute = nameof(CanUseHeaderButtons))]
@@ -379,7 +380,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             }
             else
             {
-                messageBoxService.ShowError($"Clock '{SelectedClock.Name}' couldn't be deleted because it is used by an existing template.");
+                messageBoxService.ShowError($"Clock '{SelectedClock.Name}' couldn't be deleted.");
             }
         }
 

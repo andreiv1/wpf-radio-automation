@@ -52,7 +52,7 @@ namespace RA.DTO
                 Name = dto.Name,
                 Type = dto.Type,
                 StartDate = dto.StartDate.GetValueOrDefault(),
-                EndDate = dto.EndDate,
+                EndDate = dto.EndDate.GetValueOrDefault(),
                 Frequency = dto.Frequency,
                 TemplateId = dto.Template.Id,
                 IsMonday = dto.IsMonday,

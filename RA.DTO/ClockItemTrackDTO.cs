@@ -18,6 +18,8 @@ namespace RA.DTO
         public TrackType TrackType { get; set; }
         public TimeSpan TrackDuration { get; set; }
 
+        public bool IsFiller => false;
+
         public static ClockItemTrackDTO FromEntity(ClockItemTrack entity)
         {
             return new ClockItemTrackDTO

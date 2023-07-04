@@ -152,7 +152,47 @@ namespace RA.DAL
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             var entity = ClockItemBaseDTO.ToEntity(clockItemDto);
-            dbContext.Add(entity);
+            dbContext.ClockItems.Add(entity);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateClockItem(ClockItemCategoryDTO clockItemCategoryDto)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var existingClockItem = dbContext.ClockItems
+                .Where(ci => ci.Id == clockItemCategoryDto.Id)
+                .Include(ci => ((ClockItemCategory)ci).ClockItemCategoryTags)
+                .FirstOrDefault() as ClockItemCategory;
+            var clockItem = ClockItemCategoryDTO.ToEntity(clockItemCategoryDto);
+            if (existingClockItem == null) return;
+
+            dbContext.Entry(existingClockItem).CurrentValues.SetValues(clockItem);
+
+
+            if (clockItemCategoryDto.Tags != null)
+            {
+                // Remove tags no longer associated
+                foreach (var existingTag in existingClockItem.ClockItemCategoryTags.ToList())
+                {
+                    if(!clockItemCategoryDto.Tags
+                        .Any(t => t.TagValueId == existingTag.TagValueId)){
+                        existingClockItem.ClockItemCategoryTags.Remove(existingTag);
+                    }
+                   
+                }
+
+                // Add new tags
+                foreach (var newTag in clockItem.ClockItemCategoryTags)
+                {
+                    if(!existingClockItem.ClockItemCategoryTags
+                        .Any(t => t.TagValueId == newTag.TagValueId))
+                    {
+                        existingClockItem.ClockItemCategoryTags.Add(newTag);
+                    }
+                }
+            }
+
+   
             await dbContext.SaveChangesAsync();
         }
 

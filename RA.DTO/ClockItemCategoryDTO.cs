@@ -66,6 +66,9 @@ namespace RA.DTO
                 MaxReleaseDate = dto.MaxReleaseDate,
                 IsFiller = dto.IsFiller,
 
+                ClockItemCategoryTags = dto.Tags != null ?
+                    dto.Tags.Select(t => ClockItemCategoryTagDTO.ToEntity(t)).ToList() : new(),
+
             };
         }
     }

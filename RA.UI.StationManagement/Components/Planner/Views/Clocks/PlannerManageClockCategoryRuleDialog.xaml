@@ -69,14 +69,14 @@
                                      Height="24" Width="110"
                                      VerticalAlignment="Center" HorizontalContentAlignment="Center"
                                      AllowNull="True" AllowInlineEditing="True"
-                                     Value="{Binding ManageModel.FromReleaseDate, Mode=TwoWay}"
+                                     Value="{Binding CategoryModel.FromReleaseDate, Mode=TwoWay}"
                                      />
                 <TextBlock Text="to" VerticalAlignment="Center" Margin="5,0,5,0"/>
                 <syncfusion:SfDatePicker 
                                      Height="24" Width="110" 
                                      VerticalAlignment="Center" HorizontalContentAlignment="Center"
                                      AllowNull="True" AllowInlineEditing="True"
-                                     Value="{Binding ManageModel.ToReleaseDate, Mode=TwoWay}"
+                                     Value="{Binding CategoryModel.ToReleaseDate, Mode=TwoWay}"
                                      />
             </StackPanel>
 
@@ -98,7 +98,7 @@
                        Content="at least" />
                 <syncfusion:TimeSpanEdit 
                     Grid.Row="0" Grid.Column="1"
-                                     MinValue="0:0:0" Value="{Binding ManageModel.MinDuration, Mode=TwoWay}"
+                                     MinValue="0:0:0" Value="{Binding CategoryModel.MinDuration, Mode=TwoWay}"
                    
                                      Format="m 'min' s 'sec'"/>
 
@@ -106,12 +106,12 @@
                        Content="no more than" />
                 <syncfusion:TimeSpanEdit 
                     Grid.Row="1" Grid.Column="1" Margin="0,5,0,0"
-                                     MinValue="0:0:0" Value="{Binding ManageModel.MaxDuration, Mode=TwoWay}"
+                                     MinValue="0:0:0" Value="{Binding CategoryModel.MaxDuration, Mode=TwoWay}"
                                      Format="m 'min' s 'sec'"/>
 
                 <CheckBox Grid.Row="2" Grid.ColumnSpan="2" Margin="0,5,0,0"
                           Content="enforce duration limits"
-                          IsChecked="{Binding ManageModel.EnforceDurationLimits}"/>
+                          IsChecked="{Binding CategoryModel.EnforceDurationLimits}"/>
             </Grid>
 
         </Grid>
@@ -133,13 +133,13 @@
             <Label Content="Track separation:" Grid.Column="2"
                    FontWeight="DemiBold"/>
             <syncfusion:TimeSpanEdit Grid.Row="1" Grid.Column="0" Margin="0,0,3,0"
-                                     MinValue="0:0:0" Value="{Binding ManageModel.ArtistSeparation, Mode=TwoWay}"
+                                     MinValue="0:0:0" Value="{Binding CategoryModel.ArtistSeparation, Mode=TwoWay}"
                                      Format="h 'hours' m 'min'"/>
             <syncfusion:TimeSpanEdit Grid.Row="1" Grid.Column="1" Margin="0,0,3,0"
-                                     MinValue="0:0:0" Value="{Binding ManageModel.TitleSeparation, Mode=TwoWay}"
+                                     MinValue="0:0:0" Value="{Binding CategoryModel.TitleSeparation, Mode=TwoWay}"
                                      Format="h 'hours' m 'min'"/>
             <syncfusion:TimeSpanEdit Grid.Row="1" Grid.Column="2" 
-                                     MinValue="0:0:0" Value="{Binding ManageModel.TrackSeparation, Mode=TwoWay}"
+                                     MinValue="0:0:0" Value="{Binding CategoryModel.TrackSeparation, Mode=TwoWay}"
                                      Format="h 'hours' m 'min'"/>
             
             <!-- Separation description -->
@@ -160,33 +160,33 @@
             <Label Grid.Row="0"
                 Content="Genre(s):" FontWeight="DemiBold"/>
             <syncfusion:ComboBoxAdv Grid.Row="1" VerticalAlignment="Center" MinHeight="50"
-                                    SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
-                                    ItemsSource="{Binding Genres}" DefaultText="Any genre"
-                                    SelectedItems="{Binding SelectedGenres}"
+                                    SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="True"
+                                    ItemsSource="{Binding Genres}"
+                                    SelectedItems="{Binding SelectedGenres, UpdateSourceTrigger=PropertyChanged}"
                                     DisplayMemberPath="Name"
                                     />
             <Label Grid.Row="2" VerticalAlignment="Center"
                 Content="Language(s):" FontWeight="DemiBold"/>
             <syncfusion:ComboBoxAdv Grid.Row="3" VerticalAlignment="Center" MinHeight="50"
-                                    SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
-                                    ItemsSource="{Binding Languages}" DefaultText="Any language"
-                                    SelectedItems="{Binding SelectedLanguages}"
+                                    SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true"
+                                    ItemsSource="{Binding Languages}"
+                                    SelectedItems="{Binding SelectedLanguages, UpdateSourceTrigger=PropertyChanged}"
                                     DisplayMemberPath="Name"
                                     />
 
             <Label Grid.Row="4" VerticalAlignment="Center"
                 Content="Mood(s):" FontWeight="DemiBold"/>
             <syncfusion:ComboBoxAdv Grid.Row="5" VerticalAlignment="Center" MinHeight="50"
-                                    SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
-                                    ItemsSource="{Binding Moods}" DefaultText="Any mood" 
-                                    SelectedItems="{Binding SelectedMoods}"
+                                    SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" 
+                                    ItemsSource="{Binding Moods}"
+                                    SelectedItems="{Binding SelectedMoods, UpdateSourceTrigger=PropertyChanged}"
                                     DisplayMemberPath="Name"
                                     />
         </Grid>
 
         <StackPanel Grid.Row="4" Margin="0,0,0,5" VerticalAlignment="Bottom">
             <CheckBox Content="Use this rule as filler when no other rules can apply" Margin="0,0,0,5"
-                      IsChecked="{Binding ManageModel.IsFiller}"/>
+                      IsChecked="{Binding CategoryModel.IsFiller}"/>
             <TextBlock FontWeight="Bold">
                 <Run Text="There are"/>
                 <Run Text="{Binding NoOfTracksMatchingConditions}"/>

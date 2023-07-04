@@ -23,5 +23,6 @@ namespace RA.DAL
         Task DeleteClockItem(int clockItemId);
 
         Task<bool> RemoveClock(int clockId);
+        Task UpdateClockItem(ClockItemCategoryDTO clockItemCategoryDto);
     }
 }

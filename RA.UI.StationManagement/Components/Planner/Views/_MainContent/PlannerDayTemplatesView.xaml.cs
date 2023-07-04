@@ -69,16 +69,12 @@ namespace RA.UI.StationManagement.Components.Planner.Views.MainContent
         }
         private async void selectedTemplateScheduler_AppointmentResizing(object sender, AppointmentResizingEventArgs e)
         {
-           
-            //if(e.Action == ResizeAction.Progressing)
-            //{
-            //    DebugHelper.WriteLine(this, $"Resizing: {e.StartTime} {e.EndTime}");
-            //} 
-
-            if(e.Action == ResizeAction.Committing)
+  
+           if(e.Action == ResizeAction.Committing)
             {
                 var newStart = RoundDate(e.StartTime);
                 var newEnd = RoundDate(e.EndTime);
+
                 DebugHelper.WriteLine(this, $"Resized to: {newStart} {newEnd}");
                 var vm = DataContext as PlannerDayTemplatesViewModel;
                 var clockModel = e.Appointment.Data as TemplateClockItemModel;
