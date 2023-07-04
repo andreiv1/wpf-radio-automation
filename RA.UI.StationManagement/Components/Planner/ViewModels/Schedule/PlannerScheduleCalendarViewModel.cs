@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DAL.Models;
+using RA.DTO;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Schedule.Models;
@@ -15,7 +16,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
     public partial class PlannerScheduleCalendarViewModel : ViewModelBase
     {
         private readonly IWindowService windowService;
-        private readonly ISchedulesDefaultService defaultScheduleService;
+        private readonly ISchedulesService schedulesService;
 
         public ObservableCollection<ScheduleCalendarItem> CalendarItems { get; private set; } = new()
         {
@@ -26,10 +27,11 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         private bool isLoadingCalendar;
 
         public PlannerScheduleCalendarViewModel(IWindowService windowService,
-                                                ISchedulesDefaultService defaultScheduleService)
+                                                ISchedulesService schedulesService)
         {
             this.windowService = windowService;
-            this.defaultScheduleService = defaultScheduleService;
+            this.schedulesService = schedulesService;
+
             _ = InitSchedule();
         }
 
@@ -37,12 +39,20 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         {
             IsLoadingCalendar = true;
             var monthDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            var initCalendar = await defaultScheduleService
-                .GetDefaultSchedulesOverviewAsync(monthDate - new TimeSpan(10, 0, 0, 0), monthDate.AddDays(40));
+            var initCalendar = await schedulesService
+                .GetSchedulesOverview(monthDate - new TimeSpan(10, 0, 0, 0), monthDate.AddDays(40));
             foreach(var item in initCalendar)
             {
                 if (item.Value != null && item.Value.Template != null)
-                    CalendarItems.Add(ScheduleCalendarItem.FromDto(item.Value, item.Key));
+                {
+                    if(item.Value is ScheduleDefaultItemDTO defaultSchedule){
+                        CalendarItems.Add(ScheduleCalendarItem.FromDto(defaultSchedule, item.Key));
+                    } else if(item.Value is SchedulePlannedDTO plannedSchedule)
+                    {
+                        CalendarItems.Add(ScheduleCalendarItem.FromDto(plannedSchedule, item.Key));
+                    }
+                }
+                    
             }
             IsLoadingCalendar = false;
         }
@@ -51,13 +61,22 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         {
             CalendarItems.Clear();
             IsLoadingCalendar = true;
-            var calendar = await defaultScheduleService.GetDefaultSchedulesOverviewAsync(range.StartDate, range.EndDate);
+            var calendar = await schedulesService
+                .GetSchedulesOverview(range.StartDate, range.EndDate);
+
             IsLoadingCalendar = false;
             foreach(var item in calendar)
             {
                 if (!string.IsNullOrEmpty(item.Value?.Template?.Name))
                 {
-                    CalendarItems.Add(ScheduleCalendarItem.FromDto(item.Value, item.Key));
+                    if (item.Value is ScheduleDefaultItemDTO defaultSchedule)
+                    {
+                        CalendarItems.Add(ScheduleCalendarItem.FromDto(defaultSchedule, item.Key));
+                    }
+                    else if (item.Value is SchedulePlannedDTO plannedSchedule)
+                    {
+                        CalendarItems.Add(ScheduleCalendarItem.FromDto(plannedSchedule, item.Key));
+                    }
                 }
             }
             IsLoadingCalendar = false;

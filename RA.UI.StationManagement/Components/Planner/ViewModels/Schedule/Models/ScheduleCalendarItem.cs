@@ -47,5 +47,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule.Models
                 dto.Template?.Id ?? -1);
         }
 
+        public static ScheduleCalendarItem FromDto(SchedulePlannedDTO dto, DateTime date)
+        {
+            return new ScheduleCalendarItem(date, dto.Template?.Name, dto.Template?.Id ?? -1);
+        }
+
     }
 }
