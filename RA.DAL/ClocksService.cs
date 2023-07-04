@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
 using RA.DAL.Exceptions;
 using RA.Database;
 using RA.Database.Models;
 using RA.DTO;
 using RA.DTO.Abstract;
+using System.Diagnostics;
 
 namespace RA.DAL
 {
@@ -191,6 +193,26 @@ namespace RA.DAL
 
         }
 
+        public async Task<bool> RemoveClock(int clockId)
+        {
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            var isDeleted = false;
+            try
+            {
+                if ((await dbContext.Clocks
+                    .Where(c => c.Id == clockId)
+                    .ExecuteDeleteAsync()) == 1)
+                {
+                    isDeleted = true;
+                }
+            }
+            catch (MySqlException e)
+            {
+                isDeleted = false;
+                Debug.WriteLine($"Error deleting ClockId={clockId}: {e.Message}");
+            }
 
+            return isDeleted;
+        }
     }
 }

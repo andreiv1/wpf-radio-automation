@@ -20,6 +20,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
     {
         private readonly IClocksService clocksService;
         private readonly IWindowService windowService;
+        private readonly IMessageBoxService messageBoxService;
         private readonly IDispatcherService dispatcherService;
 
         public ObservableCollection<ClockDTO> Clocks { get; set; } = new();
@@ -45,10 +46,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private TimeSpan totalDuration;
 
         public PlannerClocksViewModel(IWindowService windowService,
+            IMessageBoxService messageBoxService,
                                       IDispatcherService dispatcherService,
                                       IClocksService clocksService)
         {
             this.windowService = windowService;
+            this.messageBoxService = messageBoxService;
             this.dispatcherService = dispatcherService;
             this.clocksService = clocksService;
             _ = LoadClocks();
@@ -357,6 +360,23 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         {
             if (SelectedClock == null) return;
             windowService.ShowDialog<PlannerManageClockViewModel>(SelectedClock.Id, true);
+        }
+
+        [RelayCommand]
+        private async void RemoveSelectedClock()
+        {
+            if (SelectedClock == null) return;
+            var result = await clocksService.RemoveClock(SelectedClock.Id);
+            if (result)
+            {
+                messageBoxService.ShowInfo($"Clock '{SelectedClock.Name}' deleted succcesfully.'");
+                SelectedClock = null;
+                _ = LoadClocks();
+            }
+            else
+            {
+                messageBoxService.ShowError($"Clock '{SelectedClock.Name}' couldn't be deleted because it is used by an existing template.");
+            }
         }
 
         [RelayCommand]
