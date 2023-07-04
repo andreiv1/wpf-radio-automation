@@ -41,6 +41,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             SelectedClockItem = null;
             ClockItemsForSelectedClock.Clear();
             SelectedClockItems.Clear();
+            IsSelectionEnabled = true;
+            NotifyAllHeaderButtons();
         }
         [ObservableProperty]
         private TimeSpan totalDuration;
@@ -285,7 +287,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             _ = LoadClockItemsForSelectedClock();
         }
 
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanUseHeaderButtons))]
         private void EditSelectedItemInSelectedClock()
         {
             if(SelectedClock == null || SelectedClockItem == null) return;
@@ -293,17 +295,16 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             if(SelectedClockItem.Item is ClockItemCategoryDTO itemCategory)
             {
                 var vm = windowService.ShowDialog<PlannerManageClockCategoryRuleViewModel>(SelectedClock.Id, itemCategory.Id);
-
-                _ = LoadClockItemsForSelectedClock();
+                messageBoxService.ShowWarning("TO DO UPDATE");
             } else if(SelectedClockItem.Item is ClockItemEventDTO itemEvent)
             {
                 var vm = windowService.ShowDialog<PlannerManageClockEventRuleViewModel>(SelectedClock.Id, itemEvent.Id);
-
-                _ = LoadClockItemsForSelectedClock();
+                messageBoxService.ShowWarning("TO DO UPDATE");
             }
+            _ = LoadClockItemsForSelectedClock();
         }
 
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanUseHeaderButtons))]
         private async void RemoveSelectedItemsInSelectedClock()
         {
             DebugHelper.WriteLine(this, $"Selected clock items to remove: {SelectedClockItems.Count}");
@@ -384,6 +385,28 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         {
             _ = LoadClocks();
         }
+
+        [RelayCommand(CanExecute = nameof(CanUseHeaderButtons))]
+        private void PreviewClock()
+        {
+            if (SelectedClock == null) return;
+            windowService.ShowDialog<PlannerPreviewClockViewModel>();
+        }
+
+        private bool CanUseHeaderButtons()
+        {
+            return SelectedClock != null;
+        }
+
+        [ObservableProperty]
+        private bool isSelectionEnabled = false;
+        private void NotifyAllHeaderButtons()
+        {
+            PreviewClockCommand.NotifyCanExecuteChanged();
+            EditSelectedItemInSelectedClockCommand.NotifyCanExecuteChanged();
+            RemoveSelectedItemsInSelectedClockCommand.NotifyCanExecuteChanged();
+        }
         #endregion
+
     }
 }

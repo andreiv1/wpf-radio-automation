@@ -82,7 +82,8 @@ namespace RA.UI.StationManagement.HostBuilders
             { typeof(SettingsMainViewModel), typeof(SettingsMainWindow) },
             { typeof(TagsViewModel), typeof(TagsView) },
             { typeof(TemplateSelectViewModel), typeof(TemplateSelectDialog) },
-            { typeof(TrackSelectViewModel), typeof(TrackSelectDialog) }
+            { typeof(TrackSelectViewModel), typeof(TrackSelectDialog) },
+            { typeof(PlannerPreviewClockViewModel), typeof(PlannerPreviewClockWindow) }
         };
         public static IHostBuilder AddViewModels(this IHostBuilder host)
         {

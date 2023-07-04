@@ -65,7 +65,6 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left">
                 <TextBlock Text="from" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                <!--Value="{Binding Track.ReleaseDate, Mode=TwoWay}"-->
                 <syncfusion:SfDatePicker 
                                      Height="24" Width="110"
                                      VerticalAlignment="Center" HorizontalContentAlignment="Center"
@@ -163,6 +162,7 @@
             <syncfusion:ComboBoxAdv Grid.Row="1" VerticalAlignment="Center" MinHeight="50"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
                                     ItemsSource="{Binding Genres}" DefaultText="Any genre"
+                                    SelectedItems="{Binding SelectedGenres}"
                                     DisplayMemberPath="Name"
                                     />
             <Label Grid.Row="2" VerticalAlignment="Center"
@@ -170,6 +170,7 @@
             <syncfusion:ComboBoxAdv Grid.Row="3" VerticalAlignment="Center" MinHeight="50"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
                                     ItemsSource="{Binding Languages}" DefaultText="Any language"
+                                    SelectedItems="{Binding SelectedLanguages}"
                                     DisplayMemberPath="Name"
                                     />
 
@@ -178,6 +179,7 @@
             <syncfusion:ComboBoxAdv Grid.Row="5" VerticalAlignment="Center" MinHeight="50"
                                     SelectedValueDelimiter=", " AllowMultiSelect="true" AutoCompleteMode="Suggest" IsEditable="true" EnableToken="true" 
                                     ItemsSource="{Binding Moods}" DefaultText="Any mood" 
+                                    SelectedItems="{Binding SelectedMoods}"
                                     DisplayMemberPath="Name"
                                     />
         </Grid>
@@ -196,9 +198,22 @@
             <syncfusion:ButtonAdv Label="Cancel" Margin="0,0,5,0"
                                   SmallIcon="{StaticResource CloseIcon}"
                                   Command="{Binding CancelDialogCommand}" IsCancel="True"/>
-            <syncfusion:ButtonAdv Label="Insert"
+            <syncfusion:ButtonAdv 
                                   SmallIcon="{StaticResource DoneIcon}"
-                                  Command="{Binding FinishDialogCommand}" IsDefault="True"/>
+                                  Command="{Binding FinishDialogCommand}" IsDefault="True">
+                <syncfusion:ButtonAdv.Style>
+                    <Style TargetType="syncfusion:ButtonAdv" BasedOn="{StaticResource {x:Type syncfusion:ButtonAdv}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                                <Setter Property="Label" Value="Edit"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsEditing}" Value="False">
+                                <Setter Property="Label" Value="Insert"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </syncfusion:ButtonAdv.Style>
+            </syncfusion:ButtonAdv>
         </StackPanel>
     </Grid>
 </uicore:RAWindow>

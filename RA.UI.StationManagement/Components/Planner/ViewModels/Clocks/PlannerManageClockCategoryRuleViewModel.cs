@@ -41,6 +41,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
         public ObservableCollection<TagValueDTO> SelectedLanguages { get; set; } = new();
         public ObservableCollection<TagValueDTO> Moods { get; set; } = new();
         public ObservableCollection<TagValueDTO> SelectedMoods { get; set; } = new();
+
+        public bool IsEditing { get; private set; } = false;
         public PlannerManageClockCategoryRuleViewModel(IWindowService windowService,
             IDispatcherService dispatcherService,
                                                        ICategoriesService categoriesService,
@@ -71,7 +73,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
             this.clocksService = clocksService;
             this.tagsService = tagsService;
             this.clockId = clockId;
-
+            IsEditing = true;
             var loadTask = LoadModel(clockItemId);
             var fetchTask = FetchTags();
 

@@ -41,6 +41,8 @@ namespace RA.DAL
                 .Where(ci => ci.ClockId == clockId)
                 .OrderBy(ci => ci.OrderIndex)
                 .Include(ci => ((ClockItemCategory)ci).Category)
+                .Include(ci => ((ClockItemCategory)ci).ClockItemCategoryTags)
+                .ThenInclude(t => ((ClockItemCategoryTag)t).TagValue.TagCategory)
                 .Include(ci => ((ClockItemTrack)ci).Track)
                 .ThenInclude(ci => ci.TrackArtists)
                 .ThenInclude(ta => ta.Artist)
@@ -184,6 +186,7 @@ namespace RA.DAL
             var entity = await dbContext.ClockItems
                 .Where(ci => ci.Id == clockItemId)
                 .Include(ci => ((ClockItemCategory)ci).ClockItemCategoryTags)
+                .ThenInclude(t => ((ClockItemCategoryTag)t).TagValue.TagCategory)
                 .FirstOrDefaultAsync();
             if (entity == null)
             {

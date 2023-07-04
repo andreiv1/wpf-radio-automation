@@ -33,7 +33,7 @@ namespace RA.DTO
         public List<TrackTagDTO> Tags { get; set; }
         public static TrackDTO FromEntity(Track track)
         {
-            return new TrackDTO
+            var dto = new TrackDTO
             {
                 Id = track.Id,
                 Type = track.Type,
@@ -60,6 +60,7 @@ namespace RA.DTO
                 Tags = track.TrackTags != null ?
                     track.TrackTags.Select(tt => TrackTagDTO.FromEntity(tt)).ToList() : new(),
             };
+            return dto;
         }
 
         public static Track ToEntity(TrackDTO dto)

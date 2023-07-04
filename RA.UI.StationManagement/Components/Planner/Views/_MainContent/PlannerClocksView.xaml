@@ -114,48 +114,55 @@
                 <RowDefinition Height="*" MinHeight="250"/>
             </Grid.RowDefinitions>
 
-            <!-- Clock items operations -->
+            <!-- CLOCK ITEMS HEADER OPERATIONS -->
             <StackPanel Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal"
                         Margin="0,2,0,0">
                 <syncfusion:DropDownButtonAdv Label="Insert rule" Height="25" Margin="0,0,3,0"
                                               SmallIcon="{x:Null}"
-                                              IsEnabled="True">
+                                              IsEnabled="{Binding IsSelectionEnabled}">
                     <syncfusion:DropDownMenuGroup>
                         <syncfusion:DropDownMenuItem Header="From track"
-                                                     Command="{Binding InsertTrackToSelectedClockCommand}"/>
+                                                     Command="{Binding InsertTrackToSelectedClockCommand}">
+                            <syncfusion:DropDownMenuItem.Icon>
+                                <Image Source="{StaticResource SongIcon}"/>
+                            </syncfusion:DropDownMenuItem.Icon>
+                        </syncfusion:DropDownMenuItem>
                         <syncfusion:DropDownMenuItem Header="From category" 
-                                                     Command="{Binding InsertCategoryRuleToSelectedClockCommand}"/>
+                                                     Command="{Binding InsertCategoryRuleToSelectedClockCommand}">
+                            <syncfusion:DropDownMenuItem.Icon>
+                                <Image Source="{StaticResource MusicFolderIcon}"/>
+                            </syncfusion:DropDownMenuItem.Icon>
+                        </syncfusion:DropDownMenuItem>
                         <syncfusion:DropDownMenuItem Header="From event"
-                                                     Command="{Binding InsertEventRuleToSelectedClockCommand}"/>
+                                                     Command="{Binding InsertEventRuleToSelectedClockCommand}">
+                            <syncfusion:DropDownMenuItem.Icon>
+                                <Image Source="{StaticResource DynamicBreakEventIcon}"/>
+                            </syncfusion:DropDownMenuItem.Icon>
+                        </syncfusion:DropDownMenuItem>
                     </syncfusion:DropDownMenuGroup>
                 </syncfusion:DropDownButtonAdv>
 
+                <syncfusion:ButtonAdv Label="Preview clock" Height="25" Margin="0,0,3,0"
+                                      Command="{Binding PreviewClockCommand}"
+                                      SmallIcon="{StaticResource ClockIcon}"/>
+                
                 <syncfusion:ButtonAdv Label="Edit item" Height="25" Margin="0,0,3,0"
                                       Command="{Binding EditSelectedItemInSelectedClockCommand}"
                                       SmallIcon="{StaticResource EditIcon}"/>
-                <!--<syncfusion:ButtonAdv Label="Copy item(s)" Height="25" Margin="0,0,3,0"
-                                      Command="{Binding CopySelectedItemsInSelectedClockCommand}"
-                                      SmallIcon="{StaticResource CopyIcon}"/>
-
-                <syncfusion:ButtonAdv Label="Paste item(s)" Height="25" Margin="0,0,3,0"
-                                      Command="{Binding PasteSelectedItemsInSelectedClockCommand}"
-                                      SmallIcon="{StaticResource PasteIcon}"/>-->
 
                 <syncfusion:ButtonAdv Label="Delete item(s)" Height="25" Margin="0,0,3,0"
                                       Command="{Binding RemoveSelectedItemsInSelectedClockCommand}"
                                       SmallIcon="{StaticResource RemoveIcon}"/>
             </StackPanel>
-            <!--SelectionChanged="selectedClockItemsDataGrid_SelectionChanged"-->
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" KeyboardNavigation.TabNavigation="None">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="10"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="2"/>
                 </Grid.RowDefinitions>
-                <!--AllowDraggingRows="True"
-                       AllowDrop="True"-->
-                <syncfusion:SfDataGrid x:Name="selectedClockItemsDataGrid"
+        
+                <syncfusion:SfDataGrid x:Name="selectedClockItemsDataGrid" KeyboardNavigation.TabNavigation="None"
                        Grid.Row="2"
                        ItemsSource="{Binding ClockItemsForSelectedClock}"
                        SelectedItem="{Binding SelectedClockItem}"
@@ -163,7 +170,7 @@
                        SelectionUnit="Row" NavigationMode="Row"
                        SelectionMode="Multiple" AllowSorting="False"
                         RowHeight="29" AllowResizingColumns="True"
-                       AutoGenerateColumns="False" KeyboardNavigation.TabNavigation="None">
+                       AutoGenerateColumns="False">
                     <syncfusion:SfDataGrid.Columns>
                         <!--Estimated Start Time-->
                         <syncfusion:GridTemplateColumn HeaderText="Start Time"
@@ -423,7 +430,7 @@
                                     <Image Source="{StaticResource RemoveIcon}" Width="16" Height="16" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Header="Edit item" Command="{Binding EditItemInSelectedClockCommand}">
+                            <MenuItem Header="Edit item" Command="{Binding EditSelectedItemInSelectedClockCommand}">
                                 <MenuItem.Icon>
                                     <Image Source="{StaticResource EditIcon}" Width="16" Height="16" />
                                 </MenuItem.Icon>

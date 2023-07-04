@@ -6,6 +6,7 @@ namespace RA.DTO
     {
         public int ClockItemId { get; set; }
         public int TagValueId { get; set; }
+        public int TagCategoryId { get; private set; }
 
         public static ClockItemCategoryTagDTO FromEntity(ClockItemCategoryTag entity)
         {
@@ -13,6 +14,7 @@ namespace RA.DTO
             {
                 ClockItemId = entity.ClockItemCategoryId,
                 TagValueId = entity.TagValueId,
+                TagCategoryId = entity.TagValue.TagCategoryId,
             };
         }
 
