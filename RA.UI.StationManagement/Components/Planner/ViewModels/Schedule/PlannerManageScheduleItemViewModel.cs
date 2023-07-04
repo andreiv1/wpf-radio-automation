@@ -17,47 +17,64 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
 {
     public partial class PlannerManageScheduleItemViewModel : DialogViewModelBase
     {
-        [ObservableProperty]
-        private SchedulePlannedType scheduleType = SchedulePlannedType.Recurrent;
-
-        [ObservableProperty]
-        private String name;
-
-        partial void OnNameChanged(string value)
-        {
-            SchedulePlanned.Name = value;
-        }
-
-        partial void OnScheduleTypeChanged(SchedulePlannedType value)
-        {
-            SchedulePlanned = new();
-            SchedulePlanned.Type = value;
-            SchedulePlanned.Name = Name;
-        }
-
-
         private static IEnumerable<SchedulePlannedFrequency> scheduleFrequencies = (IEnumerable<SchedulePlannedFrequency>)
             Enum.GetValues(typeof(SchedulePlannedFrequency)).Cast<SchedulePlannedType>();
 
         private readonly IDispatcherService dispatcherService;
         private readonly ITemplatesService templatesService;
+        private readonly ISchedulesPlannedService schedulesPlannedService;
+        [ObservableProperty]
+        private SchedulePlannedType scheduleType = SchedulePlannedType.Recurrent;
+
+        [ObservableProperty]
+        private String name = string.Empty;
+
+        [ObservableProperty]
+        private DateTime startDate = DateTime.Today.Date;
+
+        [ObservableProperty]
+        private DateTime endDate = DateTime.Today.Date.AddDays(1);
+
+        [ObservableProperty]
+        private SchedulePlannedFrequency selectedFrequency;
+
+        [ObservableProperty]
+        private TemplateDTO? selectedTemplate;
+
+        [ObservableProperty]
+        private bool isMonday;
+
+        [ObservableProperty]
+        private bool isTuesday;
+
+        [ObservableProperty]
+        private bool isWednesday;
+
+        [ObservableProperty]
+        private bool isThursday;
+
+        [ObservableProperty]
+        private bool isFriday;
+
+        [ObservableProperty]
+        private bool isSaturday;
+
+        [ObservableProperty]
+        private bool isSunday;
 
         public List<SchedulePlannedFrequency> ScheduleFrequencies => scheduleFrequencies.ToList();
 
         public ObservableCollection<TemplateDTO> Templates { get; set; } = new();
 
-        [ObservableProperty]
-        private SchedulePlannedDTO schedulePlanned;
-
         public PlannerManageScheduleItemViewModel(IWindowService windowService,
                                                   IDispatcherService dispatcherService,
-                                                  ITemplatesService templatesService) : base(windowService)
+                                                  ITemplatesService templatesService,
+                                                  ISchedulesPlannedService schedulesPlannedService) : base(windowService)
         {
             this.dispatcherService = dispatcherService;
             this.templatesService = templatesService;
+            this.schedulesPlannedService = schedulesPlannedService;
             _ = LoadTemplates();
-
-            SchedulePlanned = new();
         }
 
         private async Task LoadTemplates()
@@ -70,9 +87,31 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             }
         }
 
-        protected override void FinishDialog()
+        protected override async void FinishDialog()
         {
             MessageBox.Show($"Selected schedule type: {ScheduleType.ToString()}");
+            SchedulePlannedDTO dto = new()
+            {
+                Name = Name,
+                Type = ScheduleType,
+                Template = SelectedTemplate,
+                StartDate = StartDate,
+            };
+
+            if(ScheduleType == SchedulePlannedType.Recurrent)
+            {
+                dto.EndDate = EndDate;
+                dto.Frequency = SelectedFrequency;
+                dto.IsMonday = IsMonday;
+                dto.IsTuesday = IsTuesday;
+                dto.IsWednesday = IsWednesday;
+                dto.IsThursday = IsThursday;
+                dto.IsFriday = IsFriday;
+                dto.IsSaturday = IsSaturday;
+                dto.IsSunday = IsSunday;
+            }
+            
+            await Task.Run(() => { schedulesPlannedService.AddPlannedSchedule(dto); });
             base.FinishDialog();
         }
 

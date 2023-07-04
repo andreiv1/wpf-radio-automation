@@ -1,13 +1,16 @@
 ﻿<uicore:RAWindow x:Class="RA.UI.StationManagement.Components.Planner.Views.Schedule.PlannerManageScheduleItemDialog"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
-        xmlns:localconverters="clr-namespace:RA.UI.StationManagement.Converters"
-        xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:schedule="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.Schedule" d:DataContext="{d:DesignInstance Type=schedule:PlannerManageScheduleItemViewModel}"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+                 xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+                 xmlns:schedule="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.Schedule"
+                 xmlns:localconverters="clr-namespace:RA.UI.StationManagement.Converters"
+                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                 d:DataContext="{d:DesignInstance Type=schedule:PlannerManageScheduleItemViewModel}"
                  mc:Ignorable="d"
-        Title="Add planned schedule" Height="440" Width="500"
+                 Title="Add planned schedule" Height="440" Width="500"
         ResizeMode="NoResize">
     <Window.Resources>
         <!-- Temporary card -->
@@ -79,7 +82,7 @@
                    Content="Name:" FontWeight="DemiBold"
                    />
             <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
-                     Height="24"/>
+                     Height="24" Text="{Binding Name}"/>
             <!-- Schedule type -->
             <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
                    Content="Schedule type:" FontWeight="DemiBold"
@@ -93,7 +96,7 @@
             </StackPanel>
 
             <!-- ONE TIME FORM -->
-            <Grid Grid.Row="2" Grid.ColumnSpan="2">
+            <Grid Grid.Row="2" Grid.ColumnSpan="2" d:Visibility="Visible">
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Setter Property="Visibility" Value="Collapsed" />
@@ -119,17 +122,20 @@
                    Content="Template:" FontWeight="DemiBold"/>
 
                 <syncfusion:ComboBoxAdv Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Height="24" Margin="0,10,0,0"
-                                    ItemsSource="{Binding Templates}" AutoCompleteMode="Suggest" DisplayMemberPath="Name"/>
+                                    ItemsSource="{Binding Templates}" AutoCompleteMode="Suggest" DisplayMemberPath="Name"
+                                    SelectedItem="{Binding SelectedTemplate}"/>
 
                 <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
                    Content="Date:" FontWeight="DemiBold"
                    />
                 <syncfusion:DateTimeEdit Grid.Row="1" Grid.Column="1" Margin="0,10,0,0"
-                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)"/>
+                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)"
+                        DateTime="{Binding StartDate}"
+                        MinDateTime="{x:Static sys:DateTime.Today}"/>
             </Grid>
                 
             <!-- RECURRENT FORM -->
-            <Grid Grid.Row="2" Grid.ColumnSpan="2" d:Visibility="Visible">
+            <Grid Grid.Row="2" Grid.ColumnSpan="2" d:Visibility="Hidden">
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Setter Property="Visibility" Value="Collapsed" />
@@ -155,7 +161,8 @@
                 <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
                    Content="Frequency:" FontWeight="DemiBold"/>
                 <syncfusion:ComboBoxAdv Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Height="24" Margin="0,10,0,0"
-                                    ItemsSource="{Binding ScheduleFrequencies}">
+                                    ItemsSource="{Binding ScheduleFrequencies}"
+                                    SelectedItem="{Binding SelectedFrequency}">
                     <syncfusion:ComboBoxAdv.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Converter={StaticResource PlannedScheduleFrequencyConverter}}"/>
@@ -167,13 +174,16 @@
                    Content="Template:" FontWeight="DemiBold"/>
 
                 <syncfusion:ComboBoxAdv Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Height="24" Margin="0,10,0,0"
-                                    ItemsSource="{Binding Templates}" AutoCompleteMode="Suggest" DisplayMemberPath="Name"/>
+                                    ItemsSource="{Binding Templates}" AutoCompleteMode="Suggest" DisplayMemberPath="Name"
+                                    SelectedItem="{Binding SelectedTemplate}"/>
 
                 <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
                    Content="Start Date:" FontWeight="DemiBold"
                    />
                 <syncfusion:DateTimeEdit Grid.Row="2" Grid.Column="1"  Height="24" VerticalAlignment="Center" Margin="0,10,0,0"
-                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)"/>
+                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)"
+                        DateTime="{Binding StartDate}"
+                        MinDateTime="{x:Static sys:DateTime.Today}"/>
 
                 <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
                    Content="End Date:" FontWeight="DemiBold"
@@ -181,6 +191,8 @@
                    />
                 <syncfusion:DateTimeEdit Grid.Row="3" Grid.Column="1" Margin="0,10,0,0" 
                         Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)"
+                                         DateTime="{Binding EndDate}"
+                        MinDateTime="{x:Static sys:DateTime.Today}"
                        />
 
                 <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="0,15,0,0" 
@@ -209,25 +221,31 @@
                     <Label Content="Mon" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"
                            FontWeight="DemiBold"/>
                     <CheckBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center"
-                              />
+                              IsChecked="{Binding IsMonday}"/>
                     <Label Content="Tue" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"
                            FontWeight="DemiBold"/>
-                    <CheckBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"/>
+                    <CheckBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"
+                              IsChecked="{Binding IsTuesday}"/>
                     <Label Content="Wed" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center"
                            FontWeight="DemiBold"/>
-                    <CheckBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center"/>
+                    <CheckBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center"
+                              IsChecked="{Binding IsWednesday}"/>
                     <Label Content="Thu" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center"
                            FontWeight="DemiBold"/>
-                    <CheckBox Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center"/>
+                    <CheckBox Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center"
+                              IsChecked="{Binding IsThursday}"/>
                     <Label Content="Fri" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center"
                            FontWeight="DemiBold"/>
-                    <CheckBox Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center"/>
+                    <CheckBox Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center"
+                              IsChecked="{Binding IsFriday}"/>
                     <Label Content="Sat" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Center"
                            FontWeight="DemiBold"/>
-                    <CheckBox Grid.Row="1" Grid.Column="5" HorizontalAlignment="Center"/>
+                    <CheckBox Grid.Row="1" Grid.Column="5" HorizontalAlignment="Center"
+                              IsChecked="{Binding IsSaturday}"/>
                     <Label Content="Sun" Grid.Row="0" Grid.Column="6" HorizontalAlignment="Center"
                            FontWeight="DemiBold"/>
-                    <CheckBox Grid.Row="1" Grid.Column="6" HorizontalAlignment="Center"/>
+                    <CheckBox Grid.Row="1" Grid.Column="6" HorizontalAlignment="Center"
+                              IsChecked="{Binding IsSunday}"/>
                 </Grid>
 
             </Grid>

@@ -19,12 +19,12 @@ namespace RA.DAL
             this.dbContextFactory = dbContextFactory;
         }
 
-        public async Task<int> AddPlannedSchedule(SchedulePlannedDTO schedule)
+        public async Task AddPlannedSchedule(SchedulePlannedDTO schedule)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             SchedulePlanned entity = SchedulePlannedDTO.ToEntity(schedule);
             await dbContext.AddAsync(entity);
-            return await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task<IDictionary<DateTime, SchedulePlannedDTO?>> GetPlannedSchedulesOverviewAsync(DateTime searchDateStart,
