@@ -11,7 +11,7 @@
                  mc:Ignorable="d"
         Title="Media Library"
         MinHeight="450"
-        MinWidth="900">
+        MinWidth="900" Icon="{StaticResource MediaLibraryIcon}">
     <Grid KeyboardNavigation.TabNavigation="None">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>

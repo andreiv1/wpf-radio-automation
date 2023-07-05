@@ -31,6 +31,7 @@ using RA.UI.StationManagement.Components.Settings.Views;
 using RA.UI.StationManagement.Dialogs.ArtistSelectDialog;
 using RA.UI.StationManagement.Dialogs.CategorySelectDialog;
 using RA.UI.StationManagement.Dialogs.TemplateSelectDialog;
+using RA.UI.StationManagement.Dialogs.TrackFilterDialog;
 using RA.UI.StationManagement.Dialogs.TrackSelectDialog;
 using System;
 using System.Collections.Generic;
@@ -82,7 +83,8 @@ namespace RA.UI.StationManagement.HostBuilders
             { typeof(TagsViewModel), typeof(TagsView) },
             { typeof(TemplateSelectViewModel), typeof(TemplateSelectDialog) },
             { typeof(TrackSelectViewModel), typeof(TrackSelectDialog) },
-            { typeof(PlannerPreviewClockViewModel), typeof(PlannerPreviewClockWindow) }
+            { typeof(PlannerPreviewClockViewModel), typeof(PlannerPreviewClockWindow) },
+            { typeof(TrackFilterViewModel), typeof(TrackFilterDialog) },
         };
         public static IHostBuilder AddViewModels(this IHostBuilder host)
         {

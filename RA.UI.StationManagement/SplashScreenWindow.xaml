@@ -100,5 +100,6 @@
         <syncfusion:SfMaskedEdit Visibility="Hidden"/>
         <syncfusion:ComboBoxAdv Visibility="Hidden"/>
         <syncfusion:TimeSpanEdit Visibility="Hidden"/>
+        <syncfusion:DateTimeEdit Visibility="Hidden"/>
     </Grid>
 </uicore:RAWindow>

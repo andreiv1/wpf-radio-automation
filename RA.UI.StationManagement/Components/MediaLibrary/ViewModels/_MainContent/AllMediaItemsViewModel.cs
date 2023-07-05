@@ -6,6 +6,7 @@ using RA.Logic;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
+using RA.UI.StationManagement.Dialogs.TrackFilterDialog;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -144,7 +145,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         [RelayCommand]
         private void FilterItems()
         {
-            throw new NotImplementedException();
+            windowService.ShowDialog<TrackFilterViewModel>();
         }
 
     }

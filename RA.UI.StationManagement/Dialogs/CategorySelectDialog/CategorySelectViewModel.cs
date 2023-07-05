@@ -1,22 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
-using RA.Database.Models;
-using RA.DTO;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
-using RA.UI.StationManagement.Services;
 using Syncfusion.UI.Xaml.TreeView.Engine;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 
 namespace RA.UI.StationManagement.Dialogs.CategorySelectDialog
 {
@@ -61,8 +54,9 @@ namespace RA.UI.StationManagement.Dialogs.CategorySelectDialog
         [NotifyCanExecuteChangedFor(nameof(FinishDialogCommand))]
         private CategorySelectModel? selectedCategory;
         public ObservableCollection<CategorySelectModel> CategoryItems { get; set; } = new();
-        public CategorySelectViewModel(IWindowService windowService, IDispatcherService dispatcher,
-            ICategoriesService categoriesService) : base(windowService)
+        public CategorySelectViewModel(IWindowService windowService,
+                                       IDispatcherService dispatcher,
+                                       ICategoriesService categoriesService) : base(windowService)
         {
             DialogName = "Select category";
             this.dispatcher = dispatcher;
@@ -78,13 +72,13 @@ namespace RA.UI.StationManagement.Dialogs.CategorySelectDialog
             node!.ShowExpanderAnimation = true;
 
             dispatcher.InvokeOnUIThread(new Action(
-                async () =>
-                {
+            async () =>
+            {
                     await Task.Delay(300);
                     await Task.Run(() => LoadChildCategories(node));
                     node!.ShowExpanderAnimation = false;
                     node!.IsExpanded = true;
-                }));
+            }));
 
         }
         private bool CanExecuteOnDemandLoading(object sender)

@@ -12,16 +12,19 @@ namespace RA.Logic.Tracks
         private readonly IArtistsService artistsService;
         private readonly ITracksService tracksService;
         private readonly ICategoriesService categoriesService;
-        private static string defaultTitle = "Unknown Title";
-        private static string defaultArtist = "Unknown Artist";
+        private readonly ITagsService tagsService;
+        private static readonly string defaultTitle = "Unknown Title";
+        private static readonly string defaultArtist = "Unknown Artist";
 
         public TrackFilesProcessor(IArtistsService artistsService,
                                    ITracksService tracksService,
-                                   ICategoriesService categoriesService)
+                                   ICategoriesService categoriesService,
+                                   ITagsService tagsService)
         {
             this.artistsService = artistsService;
             this.tracksService = tracksService;
             this.categoriesService = categoriesService;
+            this.tagsService = tagsService;
         }
 
         public async Task<ProcessingTrack> ProcessSingleItemAsync(string path, TrackFilesProcessorOptions options)
@@ -50,8 +53,10 @@ namespace RA.Logic.Tracks
             {
                 try
                 {
+                    var artists = await ProcessArtistsAsync(metaReader.GetField(TrackMetadataField.Artists) as string ?? string.Empty);
+                    var genres = await ProcessGenresAsync(metaReader.GetField(TrackMetadataField.Genres) as string ?? string.Empty);
                     dto.Title = metaReader.GetField(TrackMetadataField.Title) as string ?? string.Empty;
-                    var artists = await ProcessArtistsAsync(dto, metaReader.GetField(TrackMetadataField.Artists) as string ?? string.Empty);
+                    
                     dto.Artists = artists.ToList();
                     dto.Album = metaReader.GetField(TrackMetadataField.Album) as string ?? string.Empty;
                     int? year = metaReader.GetField(TrackMetadataField.Year) as int?;
@@ -62,6 +67,7 @@ namespace RA.Logic.Tracks
                     dto.Bpm = metaReader.GetField(TrackMetadataField.BPM) as int?;
                     dto.ISRC = metaReader.GetField(TrackMetadataField.ISRC) as String ?? String.Empty;
                     dto.ImageName = metaReader.GetField(TrackMetadataField.Image) as String ?? String.Empty;
+                    dto.Tags = genres.ToList();
                     
                 }
                 catch (Exception e)
@@ -75,7 +81,7 @@ namespace RA.Logic.Tracks
                 var titleAndArtist = TrackMetadataReader.GetTitleAndArtistFromPath(path);
                 if (titleAndArtist.Artist is not null)
                 {
-                    var processedArtists = await ProcessArtistsAsync(dto, metaReader.GetField(TrackMetadataField.Artists) as string ?? defaultArtist);
+                    var processedArtists = await ProcessArtistsAsync(metaReader.GetField(TrackMetadataField.Artists) as string ?? defaultArtist);
                     dto.Artists = processedArtists.ToList();
 
                 }
@@ -174,7 +180,7 @@ namespace RA.Logic.Tracks
 
             return count;
         }
-        private async Task<IEnumerable<TrackArtistDTO>> ProcessArtistsAsync(TrackDTO trackDto, String inputArtists)
+        private async Task<IEnumerable<TrackArtistDTO>> ProcessArtistsAsync(string inputArtists)
         {
             List<TrackArtistDTO> trackArtists = new();
             int orderIndex = 0;
@@ -200,6 +206,29 @@ namespace RA.Logic.Tracks
             };
 
             return trackArtists;
+        }
+
+        private async Task<IEnumerable<TrackTagDTO>> ProcessGenresAsync(string inputGenres)
+        {
+            List<TrackTagDTO> genresValues = new();
+            string[] splitGenres = inputGenres.Split(TrackMetadataReader.splitTokens, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var genre in splitGenres)
+            {
+                var tagValue = await tagsService.AddTagValue("Genre", genre.Trim());
+                if (tagValue != null)
+                {
+                    genresValues.Add(new TrackTagDTO
+                    {
+                        TagCategoryId = 1, //BuiltIn
+                        TagValueId = tagValue.Id,
+                    });
+                }
+                else
+                {
+                    DebugHelper.WriteLine(this, $"Tag value {genre} couldn't be inserted");
+                }
+                }
+                return genresValues;
         }
 
         public ProcessingTrack ProcessSingleItem(string path, TrackFilesProcessorOptions options)

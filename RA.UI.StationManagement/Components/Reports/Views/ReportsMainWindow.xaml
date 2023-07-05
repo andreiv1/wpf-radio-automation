@@ -5,9 +5,11 @@
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
                   xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
-                  xmlns:localuc="clr-namespace:RA.UI.StationManagement.UserControls" xmlns:viewmodels="clr-namespace:RA.UI.StationManagement.Components.Reports.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ReportsMainViewModel}"
-                  mc:Ignorable="d"
-        Title="Reports" Height="600" Width="950">
+                  xmlns:viewmodels="clr-namespace:RA.UI.StationManagement.Components.Reports.ViewModels"
+                  xmlns:localuc="clr-namespace:RA.UI.StationManagement.UserControls"
+                  d:DataContext="{d:DesignInstance Type=viewmodels:ReportsMainViewModel}"
+                  mc:Ignorable="d" 
+        Title="Reports" Height="600" Width="950" Icon="{StaticResource GraphReportIcon}">
     <Grid KeyboardNavigation.TabNavigation="None">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>

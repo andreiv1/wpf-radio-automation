@@ -2,18 +2,14 @@
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DTO;
-using RA.Logic;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Dialogs.CategorySelectDialog;
 using Syncfusion.UI.Xaml.TreeView.Engine;
-using Syncfusion.Windows.Controls.Input;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RA.UI.StationManagement.Dialogs.TrackSelectDialog
@@ -26,7 +22,6 @@ namespace RA.UI.StationManagement.Dialogs.TrackSelectDialog
         private CategorySelectModel? selectedCategory;
         public ObservableCollection<CategorySelectModel> CategoryItems { get; set; } = new();
 
-        #region Constructor
         public TrackSelectViewModel(IWindowService windowService,
                                     IDispatcherService dispatcherService,
                                     ICategoriesService categoriesService,
@@ -38,7 +33,6 @@ namespace RA.UI.StationManagement.Dialogs.TrackSelectDialog
             Task.Run(() => LoadRootCategories());
             Task.Run(() => LoadTracks(0, 100));
         }
-        #endregion
 
         public ObservableCollection<TrackListingDTO> Tracks { get; set; } = new();
 
@@ -53,11 +47,8 @@ namespace RA.UI.StationManagement.Dialogs.TrackSelectDialog
         private int pages;
 
         private const int tracksPerPage = 100;
-
-        #region Data fetching
         public async Task LoadTracks(int skip, int take)
         {
-            IsMainDataLoading = true;
             Tracks.Clear();
             TotalTracks = await tracksService.GetTrackCountAsync();
             Pages = TotalTracks > 0 ? (TotalTracks - 1) / tracksPerPage + 1 : 0;
@@ -67,9 +58,7 @@ namespace RA.UI.StationManagement.Dialogs.TrackSelectDialog
             {
                 Tracks.Add(track);
             }
-            IsMainDataLoading = false;
         }
-        #endregion
         protected override bool CanFinishDialog()
         {
             return SelectedTrack != null;
