@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RA.UI.Playout.ViewModels.Components
@@ -22,6 +23,27 @@ namespace RA.UI.Playout.ViewModels.Components
 
         [ObservableProperty]
         private string searchQuery = "";
+
+        private const int searchDelayMilliseconds = 500; // Set an appropriate delay time
+
+        private CancellationTokenSource? searchQueryToken;
+        partial void OnSearchQueryChanged(string value)
+        {
+            if (searchQueryToken != null)
+            {
+                searchQueryToken.Cancel();
+            }
+
+            searchQueryToken = new CancellationTokenSource();
+            var cancellationToken = searchQueryToken.Token;
+            Task.Delay(searchDelayMilliseconds, cancellationToken).ContinueWith(task =>
+            {
+                if (task.IsCompletedSuccessfully && !cancellationToken.IsCancellationRequested)
+                {
+                    _ = LoadTracks(0, tracksPerPage, value);
+                }
+            });
+        }
 
         [ObservableProperty]
         private int totalTracks = 0;
@@ -42,13 +64,13 @@ namespace RA.UI.Playout.ViewModels.Components
             _ = LoadTracks(0, 100);
         }
 
-        #region Data fetching
-        public async Task LoadTracks(int skip, int take)
+        //Data fetching
+        public async Task LoadTracks(int skip, int take, string query = "")
         {
             Tracks.Clear();
-            TotalTracks = await tracksService.GetTrackCountAsync();
+            TotalTracks = await tracksService.GetTrackCountAsync(query);
             Pages = TotalTracks > 0 ? (TotalTracks - 1) / tracksPerPage + 1 : 0;
-            var tracks = await tracksService.GetTrackListAsync(skip, take);
+            var tracks = await tracksService.GetTrackListAsync(skip, take, query);
 
             foreach (var track in tracks.ToList())
             {
@@ -56,6 +78,6 @@ namespace RA.UI.Playout.ViewModels.Components
             }
 
         }
-        #endregion
+      
     }
 }

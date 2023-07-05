@@ -30,8 +30,10 @@ namespace RA.DAL
                 .Include(th => th.Track)
                 .Include(th => th.Track!.TrackArtists)
                 .ThenInclude(ta => ta.Artist)
+                .IgnoreQueryFilters()
                 .OrderByDescending(th => th.DatePlayed)
                 .Select(th => TrackHistoryListingDTO.FromEntity(th))
+                .AsNoTracking()
                 .ToListAsync();
             return result;
         }

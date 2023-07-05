@@ -366,7 +366,12 @@ namespace RA.UI.Playout.ViewModels.Components
         {
             PlaybackClearItems();
         }
-    
+
+        [RelayCommand]
+        private void PlayNext()
+        {
+
+        }
     }
 
 }
