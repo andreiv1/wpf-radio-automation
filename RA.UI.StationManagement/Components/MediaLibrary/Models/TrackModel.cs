@@ -136,6 +136,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Models
                 Artists = model.Artists?.ToList(),
                 Categories = model?.Categories?.ToList(),
                 Tags = model.Tags.ToList(),
+                
             };
         }
     }

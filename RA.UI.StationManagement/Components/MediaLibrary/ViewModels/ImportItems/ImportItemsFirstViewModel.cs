@@ -26,11 +26,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems
         private readonly IFolderBrowserDialogService folderBrowserDialog;
         private readonly ICategoriesService categoriesService;
 
-        public ImportItemsModel Model { get; set; }
+        public ImportItemsModel? Model { get; set; }
 
-        public ImportItemsFirstViewModel()
-        {
-        }
 
         public ImportItemsFirstViewModel(IWindowService windowService,
                                          IFolderBrowserDialogService folderBrowserDialog,
@@ -41,6 +38,11 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems
             this.categoriesService = categoriesService;
         }
 
+
+        public async Task SetCategory(int categoryId)
+        {
+            Model!.SelectedCategory = await categoriesService.GetCategoryHierarchy(categoryId);
+        }
      
         [RelayCommand]
         private void PickFolder()
@@ -48,7 +50,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems
             DialogResult dialogResult = folderBrowserDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                Model.FolderPath = folderBrowserDialog.SelectedPath;
+                Model!.FolderPath = folderBrowserDialog.SelectedPath;
             }
         }
 
@@ -60,7 +62,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems
             if(selectedCategory != null)
             {
                 DebugHelper.WriteLine(this, $"Picked category: {selectedCategory.CategoryId}, {selectedCategory.Name}");
-                Model.SelectedCategory = await categoriesService.GetCategoryHierarchy(selectedCategory.CategoryId);
+                Model!.SelectedCategory = await categoriesService.GetCategoryHierarchy(selectedCategory.CategoryId);
             }
         }
     }

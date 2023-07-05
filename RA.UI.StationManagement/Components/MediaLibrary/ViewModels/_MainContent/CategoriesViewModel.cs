@@ -56,7 +56,6 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         private void AddCategory()
         {
             var vm = windowService.ShowDialog<MediaLibraryManageCategoryViewModel>();
-            _ = categoriesService.AddCategory(vm.Category);
             _ = LoadCategories();
             _ = treeMenuService.ReloadCategories();
         }

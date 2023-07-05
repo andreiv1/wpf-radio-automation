@@ -85,7 +85,6 @@ namespace RA.DTO
                 ImageName = dto.ImageName,
                 Bpm = dto.Bpm,
                 ISRC = dto.ISRC,
-                DateAdded = DateTime.Now,
             };
         }
     }

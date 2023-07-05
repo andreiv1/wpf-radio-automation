@@ -2,20 +2,22 @@
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DTO;
+using RA.Logic;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
+using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Categories;
 using RA.UI.StationManagement.Services;
-using System;
-using System.Collections.Generic;
+using Syncfusion.Windows.Controls.Input;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 {
     public partial class CategoryItemsViewModel : ViewModelBase
     {
+        private readonly IWindowService windowService;
         private readonly ICategoriesService categoryService;
         private readonly ITracksService tracksService;
         private readonly INavigationService<MediaLibraryMainViewModel> navigationService;
@@ -25,6 +27,32 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 
         public ObservableCollection<TrackListingDTO> CategoryTracks { get; private set; } = new();
 
+
+        [ObservableProperty]
+        private string searchQuery = "";
+
+        private const int searchDelayMilliseconds = 500; // Set an appropriate delay time
+
+        private CancellationTokenSource? searchQueryToken;
+        partial void OnSearchQueryChanged(string value)
+        {
+            if (searchQueryToken != null)
+            {
+                searchQueryToken.Cancel();
+            }
+
+            searchQueryToken = new CancellationTokenSource();
+            var cancellationToken = searchQueryToken.Token;
+            Task.Delay(searchDelayMilliseconds, cancellationToken).ContinueWith(task =>
+            {
+                if (task.IsCompletedSuccessfully && !cancellationToken.IsCancellationRequested)
+                {
+                    DebugHelper.WriteLine(this, $"Performing search query: {value}");
+                    //_ = LoadTracks(0, tracksPerPage, value);
+                }
+            });
+        }
+
         [ObservableProperty]
         private CategoryDTO? selectedSubcategory;
 
@@ -32,16 +60,33 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         private CategoryHierarchyDTO? categoryHierarchy;
 
         [ObservableProperty]
+        private TrackListingDTO? selectedTrack;
+
+        [ObservableProperty]
         private bool hasTracks = false;
 
         [ObservableProperty]
         private bool hasSubcategories = false;
-        public CategoryItemsViewModel(ICategoriesService categoryService,
+
+        private const int tracksPerPage = 100;
+
+        [ObservableProperty]
+        private int totalTracks = 0;
+
+        [ObservableProperty]
+        private int pages;
+
+        [ObservableProperty]
+        private int pageIndex = 0;
+
+        public CategoryItemsViewModel(IWindowService windowService, 
+                                      ICategoriesService categoryService,
                                       ITracksService tracksService,
                                       INavigationService<MediaLibraryMainViewModel> navigationService,
-                                   MediaLibraryTreeMenuService treeMenuService,
+                                      MediaLibraryTreeMenuService treeMenuService,
                                       int categoryId)
         {
+            this.windowService = windowService;
             this.categoryService = categoryService;
             this.tracksService = tracksService;
             this.navigationService = navigationService;
@@ -49,9 +94,13 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             this.categoryId = categoryId;
             _ = LoadCategory();
             _ = LoadSubcategories();
-            _ = LoadTracksInCategory();
+            _ = LoadTracksFromStart();
         }
 
+        private async Task LoadTracksFromStart()
+        {
+            await LoadTracksInCategory(0, tracksPerPage);
+        }
         private async Task LoadCategory()
         {
             CategoryHierarchy = await categoryService.GetCategoryHierarchy(categoryId);
@@ -68,9 +117,12 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             }
         }
 
-        private async Task LoadTracksInCategory()
+        public async Task LoadTracksInCategory(int skip, int take, string query = "")
         {
-            var tracks = await tracksService.GetTrackListByCategoryAsync(categoryId, 0, 100);
+          
+            var tracks = await tracksService.GetTrackListByCategoryAsync(categoryId, skip, take);
+            TotalTracks = await tracksService.GetTrackCountByCategoryAsync(categoryId);
+            Pages = TotalTracks > 0 ? (TotalTracks - 1) / tracksPerPage + 1 : 0;
             HasTracks = tracks.Any();
             CategoryTracks.Clear();
             foreach(var track in tracks.ToList())
@@ -84,6 +136,30 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         {
             if (SelectedSubcategory == null || SelectedSubcategory.Id == null) return;
             navigationService.NavigateTo<CategoryItemsViewModel>(SelectedSubcategory.Id);
+        }
+
+        [RelayCommand]
+        private void AddSubcategory()
+        {
+            int? parentCategoryId = categoryId;
+            windowService.ShowDialog<MediaLibraryManageCategoryViewModel>(parentCategoryId, CategoryHierarchy!.Name);
+            _ = LoadSubcategories();
+            _ = treeMenuService.ReloadCategories();
+        }
+
+        [RelayCommand]
+        private void EditItem()
+        {
+            if (SelectedTrack == null) return;
+            windowService.ShowDialog<MediaLibraryManageTrackViewModel>(SelectedTrack.Id);
+            _ = LoadTracksFromStart();
+        }
+
+        [RelayCommand]
+        private void ImportItems()
+        {
+            windowService.ShowDialog<MediaLibraryImportItemsViewModel>(categoryId);
+            _ = LoadTracksFromStart();
         }
 
     }

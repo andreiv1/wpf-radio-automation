@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
-        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-        mc:Ignorable="d"
-        Title="MediaLibraryManageCategoryWindow" Height="450" Width="600">
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:categories="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Categories" d:DataContext="{d:DesignInstance Type=categories:MediaLibraryManageCategoryViewModel}"
+                 mc:Ignorable="d"
+        Title="Manage category" Height="450" Width="600">
     <Window.Resources>
         <!-- Temporary card -->
         <ControlTemplate x:Key="NoToggleButtonExpanderTemplate" TargetType="{x:Type Expander}">
@@ -62,7 +62,9 @@ Please add a name, a suggestive description if you need and a color for easily d
                 <RowDefinition Height="5"/>
 
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="20"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="15"/>
 
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
@@ -85,8 +87,17 @@ Please add a name, a suggestive description if you need and a color for easily d
             <syncfusion:ColorPicker Grid.Row="4" Grid.Column="1" Color="{Binding Category.Color, 
                 Converter={StaticResource HexToColorConverter},  Mode=TwoWay}"
                                     />
-
-            <StackPanel Grid.Row="6" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Label Grid.Row="6" Content="Parent" FontWeight="DemiBold" Visibility="{Binding ParentName, Converter={StaticResource NullToVisibilityConverter}}">
+                
+            </Label>
+            <syncfusion:SfTextBoxExt Grid.Row="6" Grid.Column="1" Height="24" VerticalAlignment="Center" 
+                                     Text="{Binding ParentName, Mode=OneTime}" IsReadOnly="True"
+                                     Visibility="{Binding ParentName, Converter={StaticResource NullToVisibilityConverter}}">
+                
+            </syncfusion:SfTextBoxExt>
+            
+            
+            <StackPanel Grid.Row="8" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
                 <syncfusion:ButtonAdv Label="Cancel" SmallIcon="{StaticResource RemoveIcon}"
                                       Command="{Binding CancelDialogCommand}"
                                   Margin="0,0,5,0"/>

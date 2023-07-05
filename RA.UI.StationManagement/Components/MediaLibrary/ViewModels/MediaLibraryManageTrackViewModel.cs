@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
-using RA.Database.Models.Enums;
 using RA.DTO;
 using RA.Logic.Tracks;
 using RA.UI.Core.Services;
@@ -11,13 +10,10 @@ using RA.UI.StationManagement.Components.MediaLibrary.Models;
 using RA.UI.StationManagement.Dialogs.ArtistSelectDialog;
 using RA.UI.StationManagement.Dialogs.CategorySelectDialog;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
 {
@@ -237,7 +233,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             }
         }
 
-        #region Commands
+        //Commands
         [RelayCommand]
         private void PickFile()
         {
@@ -322,14 +318,15 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             if (Track == null) return;
             var dto = TrackModel.ToDto(Track);
             if (Track != null) tracksService.UpdateTrack(dto);
+            var updateTime = DateTime.Now;
             messageBoxService.ShowYesNoInfo(
                 message: $"Media item saved succesfully. Would you like to exit?", 
                 title: "Item info",
                 actionYes: () => { windowService.CloseDialog(); }, 
-                actionNo: () => { });
+                actionNo: () => { Track!.DateModified = updateTime; });
         }
 
-        #endregion
+        
 
     }
 }

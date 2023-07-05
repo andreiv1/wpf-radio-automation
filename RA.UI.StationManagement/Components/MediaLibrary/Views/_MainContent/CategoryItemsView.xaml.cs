@@ -19,9 +19,6 @@ using System.Windows.Shapes;
 
 namespace RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent
 {
-    /// <summary>
-    /// Interaction logic for CategoryItemsView.xaml
-    /// </summary>
     public partial class CategoryItemsView : RAUserControl
     {
         public CategoryItemsView()
@@ -31,8 +28,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent
 
         private void SfDataPager_OnDemandLoading(object sender, Syncfusion.UI.Xaml.Controls.DataPager.OnDemandLoadingEventArgs e)
         {
-            //TODO: load
-            //vm?.LoadTracks(e.StartIndex, e.PageSize);
+            var vm = DataContext as CategoryItemsViewModel as CategoryItemsViewModel;
+            vm?.LoadTracksInCategory(e.StartIndex, e.PageSize);
         }
         private void subcategoriesSfDataGrid_CellDoubleTapped(object sender, Syncfusion.UI.Xaml.Grid.GridCellDoubleTappedEventArgs e)
         {

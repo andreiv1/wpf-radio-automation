@@ -1,9 +1,4 @@
 ﻿using RA.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RA.DAL
 {
@@ -21,5 +16,6 @@ namespace RA.DAL
         Task UpdateTrack(TrackDTO trackDTO);
         Task<bool> DeleteTrack(int trackId);
         Task<IEnumerable<TrackListingDTO>> GetTrackListAsync(int skip, int take, string query = "", bool includeDisabled = false);
+        Task<int> GetTrackCountByCategoryAsync(int categoryId);
     }
 }

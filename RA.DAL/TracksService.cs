@@ -65,9 +65,13 @@ namespace RA.DAL
                 .Include(t => t.TrackTags)
                 .FirstOrDefault();
 
+            var existingAddedDate = existingTrack.DateAdded;
             var track = TrackDTO.ToEntity(trackDTO);
             if (existingTrack == null) return;
+
             dbContext.Entry(existingTrack).CurrentValues.SetValues(track);
+            existingTrack.DateAdded = existingAddedDate;
+            existingTrack.DateModified = DateTime.Now;
 
             if (track.Categories != null)
             {
@@ -114,8 +118,6 @@ namespace RA.DAL
                 }
             }
 
-            existingTrack.DateModified = DateTime.Now;
-
             await dbContext.SaveChangesAsync();
         }
 
@@ -145,15 +147,22 @@ namespace RA.DAL
         public async Task<IEnumerable<TrackListingDTO>> GetTrackListByArtistAsync(int artistId, int skip, int take)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
-            return await dbContext.GetTracks()
+            //return await dbContext.GetTracks()
+            //    .Skip(skip).Take(take)
+            //    .Where(t => t.TrackArtists.Contains(new ArtistTrack
+            //    {
+            //        ArtistId = artistId,
+            //        TrackId = t.Id,
+            //    }))
+            //    .Select(t => TrackListingDTO.FromEntity(t))
+            //    .ToListAsync();
+            //TODO: Bug
+            var result = dbContext.GetTracks()
                 .Skip(skip).Take(take)
-                .Where(t => t.TrackArtists.Contains(new ArtistTrack
-                {
-                    ArtistId = artistId,
-                    TrackId = t.Id,
-                }))
-                .Select(t => TrackListingDTO.FromEntity(t))
-                .ToListAsync();
+                .Where(t => t.TrackArtists.Any(ta => ta.ArtistId == artistId))
+                .Select(t => TrackListingDTO.FromEntity(t));
+
+            return await result.ToListAsync();
         }
 
         public IEnumerable<TrackListingDTO> GetTrackListByArtist(int artistId, int skip, int take)
@@ -164,14 +173,27 @@ namespace RA.DAL
         public async Task<IEnumerable<TrackListingDTO>> GetTrackListByCategoryAsync(int categoryId, int skip, int take)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
+            var result = await dbContext.GetTracks()
+               .Include(c => c.Categories)
+               .Where(t => t.Categories.Any(x => x.Id == categoryId))
+               .Skip(skip).Take(take)
+               .Select(t => TrackListingDTO.FromEntity(t))
+               .AsNoTracking()
+               .ToListAsync();
+
+            return result;
+        }
+
+        public async Task<int> GetTrackCountByCategoryAsync(int categoryId)
+        {
+            using var dbContext = await dbContextFactory.CreateDbContextAsync();
             return await dbContext.GetTracks()
-                .Skip(skip).Take(take)
+                .Include(c => c.Categories)
                 .Where(t => t.Categories.Contains(new Category()
                 {
                     Id = categoryId,
                 }))
-                .Select(t => TrackListingDTO.FromEntity(t))
-                .ToListAsync();
+                .CountAsync();
         }
 
         public async Task<int> AddTracks(IEnumerable<TrackDTO> trackDTOs)

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using RA.DAL;
 using RA.Logic;
 using RA.Logic.Tracks;
 using RA.UI.Core.Services;
@@ -34,7 +35,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
                                                 ITrackFilesImporter trackFilesImporter,
                                                 ImportItemsFirstViewModel importItemsFirstViewModel,
                                                 ImportItemsSecondViewModel importItemsSecondViewModel,
-                                                ImportItemsThirdViewModel importItemsThirdViewModel) : base(navigationService)
+                                                ImportItemsThirdViewModel importItemsThirdViewModel,
+                                                int? categoryId = null) : base(navigationService)
         {
             PageChanged += MediaLibraryImportItemsViewModel_PageChanged;
             this.windowService = windowService;
@@ -53,6 +55,11 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             importItemsThirdViewModel.Model = model;
 
             Page = 0;
+
+            if (categoryId.HasValue)
+            {
+                importItemsFirstViewModel?.SetCategory(categoryId.Value);
+            }
         }
         private void MediaLibraryImportItemsViewModel_PageChanged(object sender, int newPageIndex)
         {
@@ -221,8 +228,6 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
                 title: "Pick an option",
                 actionYes: () => { Page = 0;}, 
                 actionNo: () => { windowService.CloseWindow(this); });
-            
-
         }
 
         private bool CanExecuteImport()

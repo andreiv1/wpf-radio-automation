@@ -19,6 +19,7 @@
             <RowDefinition Height="55"/>
             <!--<RowDefinition Height="{Binding Subcategories, Converter={StaticResource CollectionToGridLengthConverter}}"/>-->
             <RowDefinition Height="150"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
@@ -58,20 +59,20 @@
 
                 <syncfusion:ButtonAdv
                 Margin="0,0,5,0"
-                Command="{Binding AddCategoryCommand}"
+                Command="{Binding AddSubcategoryCommand}"
                 SmallIcon="{StaticResource AddFolderIcon}"
                 Label="Add subcategory"/>
                 
                 
                 <!-- Buttons shown only for items -->
-                <StackPanel Orientation="Horizontal" Visibility="{Binding HasTracks,Converter={StaticResource BooleanToCollapsedVisibilityConverter}}">
-                    <syncfusion:ButtonAdv
+                <StackPanel Orientation="Horizontal">
+                    <!--<syncfusion:ButtonAdv
                 Margin="0,0,5,0"
                 Command="{Binding AddItemCommand}"
                 SmallIcon="{StaticResource AudioAddFileIcon}"
-                Label="Add item"/>
+                Label="Add item"/>-->
 
-                    <syncfusion:ButtonAdv
+                    <!--<syncfusion:ButtonAdv
                 Margin="0,0,5,0"
                 Command="{Binding OpenItemDetailsCommand}"
                 SmallIcon="{StaticResource EditIcon}"
@@ -81,13 +82,13 @@
                 Margin="0,0,5,0"
                 Command="{Binding DeleteItemCommand}"
                 SmallIcon="{StaticResource RemoveIcon}"
-                Label="Delete item"/>
+                Label="Delete item"/>-->
 
                     <syncfusion:ButtonAdv
-                Margin="0,0,5,0"
-                Command="{Binding ImportItemsCommand}"
-                SmallIcon="{StaticResource ImportItemsIcon}"
-                Label="Import items here"/>
+                        Margin="0,0,5,0"
+                        Command="{Binding ImportItemsCommand}"
+                        SmallIcon="{StaticResource ImportItemsIcon}"
+                        Label="Import items here"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
@@ -140,7 +141,7 @@
 
         <!-- Category Items (Tracks)-->
         <syncfusion:SfDataGrid x:Name="tracksSfDataGrid"
-                       Grid.Row="2"
+                       Grid.Row="3"
                        Margin="5,3,5,0"
                        ColumnSizer="Auto"
                        ItemsSource="{Binding CategoryTracks}"
@@ -235,9 +236,15 @@
 
 
         </syncfusion:SfDataGrid>
-
+        <syncfusion:SfGridSplitter Grid.Row="2"
+                                HorizontalAlignment="Stretch"
+                                Height="5"
+                                VerticalAlignment="Top"
+                                EnableCollapseButton="True"
+                                ResizeBehavior="PreviousAndNext"
+                                ShowsPreview="True"/>    
         <!-- No category items message -->
-        <Grid Grid.Row="2"
+        <Grid Grid.Row="3"
                   Visibility="{Binding HasTracks,Converter={StaticResource BooleanToVisibileVisibilityConverter}}"
                   VerticalAlignment="Top" 
                   HorizontalAlignment="Center" 
@@ -249,7 +256,7 @@
                            Margin="5,50,5,0" Foreground="Gray"/>
         </Grid>
 
-        <Grid Grid.Row="3" Margin="5,0,5,0">
+        <Grid Grid.Row="4" Margin="5,0,5,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="100"/>
