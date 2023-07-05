@@ -1,4 +1,5 @@
-﻿using RA.UI.StationManagement.Dialogs.TrackFilterDialog;
+﻿using RA.DAL.Models;
+using RA.UI.StationManagement.Dialogs.TrackFilterDialog;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

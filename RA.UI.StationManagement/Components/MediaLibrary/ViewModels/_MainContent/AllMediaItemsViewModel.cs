@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
+using RA.DAL.Models;
 using RA.DTO;
 using RA.Logic;
 using RA.UI.Core.Services;
@@ -8,11 +9,13 @@ using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Dialogs.TrackFilterDialog;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
 namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 {
@@ -78,12 +81,14 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         }
 
 
-        public async Task LoadTracks(int skip, int take, string query = "")
+
+        public List<TrackFilterCondition>? FilterConditions { get; private set; }
+        public async Task LoadTracks(int skip, int take, string query = "", List<TrackFilterCondition>? conditions = null)
         {
             Items.Clear();
-            TotalTracks = await tracksService.GetTrackCountAsync(query);
+            TotalTracks = await tracksService.GetTrackCountAsync(query, conditions);
             Pages = TotalTracks > 0 ? (TotalTracks - 1) / tracksPerPage + 1 : 0;
-            var tracks = await tracksService.GetTrackListAsync(skip, take, query, includeDisabled: true);
+            var tracks = await tracksService.GetTrackListAsync(skip, take, query, conditions);
             foreach (var track in tracks.ToList())
             {
                 Items.Add(track);
@@ -92,7 +97,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 
         private void LoadTracksFromStart()
         {
-            _ = LoadTracks(0, tracksPerPage);
+            _ = LoadTracks(0, tracksPerPage, conditions: FilterConditions);
             SearchQuery = string.Empty;
             PageIndex = 0;
             
@@ -145,7 +150,9 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         [RelayCommand]
         private void FilterItems()
         {
-            windowService.ShowDialog<TrackFilterViewModel>();
+            var vm = windowService.ShowDialog<TrackFilterViewModel>();
+            FilterConditions = vm?.Conditions;
+            _ = LoadTracks(0, tracksPerPage, conditions: FilterConditions);
         }
 
     }

@@ -1,9 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
+using RA.DAL.Models;
 using RA.Database;
 using RA.Database.Models;
+using RA.Database.Models.Enums;
 using RA.DTO;
 using System.Diagnostics;
+using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RA.DAL
 {
@@ -16,29 +20,141 @@ namespace RA.DAL
             this.dbContextFactory = dbContextFactory;
         }
 
-        public async Task<int> GetTrackCountAsync(string query = "", bool includeDisabled = false)
-        {
-            using (var dbContext = dbContextFactory.CreateDbContext())
-            {
-                return await dbContext
-                    .GetTracks(query, includeDisabled)
-                    .AsNoTracking()
-                    .CountAsync();
-            }
-        }
-
-        public async Task<IEnumerable<TrackListingDTO>> GetTrackListAsync(int skip, int take, string query = "", bool includeDisabled = false)
+        public async Task<int> GetTrackCountAsync(string searchQuery = "", ICollection<TrackFilterCondition>? conditions = null)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-                return await dbContext.GetTracks(query, includeDisabled)
-                    .Skip(skip)
-                    .Take(take)
-                    .AsNoTracking()
-                    .Select(t => TrackListingDTO.FromEntity(t))
-                    .ToListAsync();
-            
+
+            var query = dbContext
+                .GetTracks(includeDisabled: true)
+                .IgnoreQueryFilters()
+                .AsNoTracking();
+
+            var filters = GenerateFilters(conditions);
+
+            foreach (var filter in filters)
+            {
+                query = query.Where(filter.Value);
+            }
+
+            return await query.CountAsync();
+
         }
 
+        public async Task<IEnumerable<TrackListingDTO>> GetTrackListAsync(int skip,
+                                                                          int take,
+                                                                          string searchQuery = "",
+                                                                          ICollection<TrackFilterCondition>? conditions = null)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var query = dbContext.GetTracks(includeDisabled: true)
+                    .IgnoreQueryFilters()
+                    .AsNoTracking();
+
+
+            var filters = GenerateFilters(conditions);
+
+            foreach (var filter in filters)
+            {
+                query = query.Where(filter.Value);
+            }
+
+            query = query.Skip(skip).Take(take);
+
+            return await query.Select(t => TrackListingDTO.FromEntity(t)).ToListAsync();
+        }
+
+        private Dictionary<(FilterLabelType, FilterOperator), Expression<Func<Track, bool>>> GenerateFilters(ICollection<TrackFilterCondition>? conditions)
+        {
+            var filters = new Dictionary<(FilterLabelType, FilterOperator), Expression<Func<Track, bool>>>();
+
+            if (conditions != null)
+            {
+                foreach (var condition in conditions)
+                {
+                    switch (condition.FilterLabelType)
+                    {
+                        case FilterLabelType.Album when condition.FilterOperator == FilterOperator.Equals:
+                            string? albumEquals = condition.Value as string;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Album.ToLower() == albumEquals.ToLower();
+                            break;
+                        case FilterLabelType.Album when condition.FilterOperator == FilterOperator.Like:
+                            string? albumLike = condition.Value as string;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Album.ToLower().Contains(albumLike.ToLower());
+                            break;
+                        case FilterLabelType.Category when condition.FilterOperator == FilterOperator.Like:
+                            int? categoryId = condition.Value as int?;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Categories.Any(tc => tc.Id == categoryId);
+                            break;
+
+                        case FilterLabelType.DateAdded when condition.FilterOperator == FilterOperator.Equals:
+                            DateTime? dateAddedEquals = condition.Value as DateTime?;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.DateAdded == dateAddedEquals;
+                            break;
+                        case FilterLabelType.DateAdded when condition.FilterOperator == FilterOperator.LessThan:
+                            DateTime? dateAddedLessThan = condition.Value as DateTime?;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.DateAdded < dateAddedLessThan;
+                            break;
+                        case FilterLabelType.DateAdded when condition.FilterOperator == FilterOperator.GreaterThan:
+                            DateTime? dateAddedGreaterThan = condition.Value as DateTime?;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.DateAdded > dateAddedGreaterThan;
+                            break;
+
+                        case FilterLabelType.DateModified when condition.FilterOperator == FilterOperator.Equals:
+                            DateTime? dateModifiedEquals = condition.Value as DateTime?;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.DateModified == dateModifiedEquals;
+                            break;
+                        case FilterLabelType.DateModified when condition.FilterOperator == FilterOperator.LessThan:
+                            DateTime? dateModifiedLessThan = condition.Value as DateTime?;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.DateModified < dateModifiedLessThan;
+                            break;
+                        case FilterLabelType.DateModified when condition.FilterOperator == FilterOperator.GreaterThan:
+                            DateTime? dateModifiedGreaterThan = condition.Value as DateTime?;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.DateModified > dateModifiedGreaterThan;
+                            break;
+
+                        case FilterLabelType.ReleaseDate when condition.FilterOperator == FilterOperator.Equals:
+                            DateTime? releaseDateEquals = condition.Value as DateTime?;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.ReleaseDate == releaseDateEquals;
+                            break;
+                        case FilterLabelType.ReleaseDate when condition.FilterOperator == FilterOperator.LessThan:
+                            DateTime? releaseDateLessThan = condition.Value as DateTime?;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.ReleaseDate < releaseDateLessThan;
+                            break;
+                        case FilterLabelType.ReleaseDate when condition.FilterOperator == FilterOperator.GreaterThan:
+                            DateTime? releaseDateGreaterThan = condition.Value as DateTime?;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.ReleaseDate > releaseDateGreaterThan;
+                            break;
+
+                        case FilterLabelType.Duration when condition.FilterOperator == FilterOperator.Equals:
+                            double durationEquals = (condition.Value as TimeSpan?)?.TotalSeconds ?? 0;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Duration == durationEquals;
+                            break;
+
+                        case FilterLabelType.Duration when condition.FilterOperator == FilterOperator.LessThan:
+                            double durationLessThan = (condition.Value as TimeSpan?)?.TotalSeconds ?? 0;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Duration > durationLessThan;
+                            break;
+
+                        case FilterLabelType.Duration when condition.FilterOperator == FilterOperator.GreaterThan:
+                            double durationGreaterThan = (condition.Value as TimeSpan?)?.TotalSeconds ?? 0;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Duration < durationGreaterThan;
+                            break;
+
+                        case FilterLabelType.Status when condition.FilterOperator == FilterOperator.Equals:
+                            TrackStatus? status = condition.Value as TrackStatus?;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Status == status;
+                            break;
+
+                        case FilterLabelType.Type when condition.FilterOperator == FilterOperator.Equals:
+                            TrackType? type = condition.Value as TrackType?;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Type == type;
+                            break;
+                    }
+                }
+            }
+
+            return filters;
+        }
         public IEnumerable<TrackListingDTO> GetTrackList(int skip, int take)
         {
             return GetTrackListAsync(skip, take).Result;
@@ -200,10 +316,10 @@ namespace RA.DAL
         {
             await using var dbContext = await dbContextFactory.CreateDbContextAsync();
             var tracks = trackDTOs.Select(t => TrackDTO.ToEntity(t)).ToList();
-            foreach(var t in tracks)
+            foreach (var t in tracks)
             {
                 var categories = t.Categories.ToList();
-                for(int i = 0; i < categories.Count; i++)
+                for (int i = 0; i < categories.Count; i++)
                 {
                     categories[i] = dbContext.AttachOrGetTrackedEntity<Category>(categories[i]);
                 }
@@ -253,8 +369,8 @@ namespace RA.DAL
             return track;
         }
 
-        
 
-        
+
+
     }
 }

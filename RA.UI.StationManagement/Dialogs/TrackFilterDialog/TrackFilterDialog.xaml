@@ -12,6 +12,7 @@
         Title="Filters" MinHeight="300" MinWidth="550" Height="500" Width="600" ResizeMode="NoResize">
     <Window.Resources>
         <localconverters:OperatorToSymbolConverter x:Key="OperatorToSymbolConverter"/>
+        <localconverters:FilterControlTypeToVisibilityConverter x:Key="FilterControlTypeToVisibilityConverter"/>
     </Window.Resources>
 
     <Grid Margin="5">
@@ -23,13 +24,13 @@
             <ItemsControl ItemsSource="{Binding Filters}" Margin="15,0,15,0">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderThickness="1" BorderBrush="DarkGray" Margin="0,0,0,10"
-                                Padding="3">
+                        <Border BorderThickness="1.1" BorderBrush="DarkGray" Margin="0,0,0,10"
+                                Padding="3" CornerRadius="1.6">
                             <Grid Margin="5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="60"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="100"/>
                                 </Grid.ColumnDefinitions>
@@ -52,8 +53,7 @@
                                     <syncfusion:ComboBoxAdv.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>
-                                                <TextBlock Text="{Binding Converter={StaticResource OperatorToSymbolConverter}}"
-                                                       HorizontalAlignment="Center"/>
+                                                <TextBlock Text="{Binding Converter={StaticResource OperatorToSymbolConverter}}"/>
                                             </Grid>
                                         </DataTemplate>
                                     </syncfusion:ComboBoxAdv.ItemTemplate>
@@ -63,46 +63,59 @@
                                 <!-- 1 - TEXTBOX -->
                                 <syncfusion:SfTextBoxExt Grid.Column="3" Margin="0,0,3,0"
                                      VerticalAlignment="Center" Height="24" 
-                                     Text="{Binding TextValue}">
-                                        <TextBox.Style>
-                                            <Style TargetType="{x:Type syncfusion:SfTextBoxExt}" BasedOn="{StaticResource {x:Type syncfusion:SfTextBoxExt}}">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ControlType}" Value="TextBox">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding ControlType}" Value="DatePicker">
-                                                    <Setter Property="Visibility" Value="Hidden"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding ControlType}" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Hidden"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBox.Style>
-                                </syncfusion:SfTextBoxExt>
+                                     Text="{Binding TextValue, Mode=TwoWay}"
+                                     Visibility="{Binding ControlType,
+                                            Converter={StaticResource FilterControlTypeToVisibilityConverter},
+                                            ConverterParameter=Textbox}"/>
 
-                                <!-- 2 - DATEPICKER -->
-                                <syncfusion:DateTimeEdit Grid.Column="3" 
-                                    VerticalAlignment="Center" Height="22">
-                                    <syncfusion:DateTimeEdit.Style>
-                                        <Style TargetType="{x:Type syncfusion:DateTimeEdit}" BasedOn="{StaticResource {x:Type syncfusion:DateTimeEdit}}">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ControlType}" Value="DatePicker">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding ControlType}" Value="TextBox">
-                                                    <Setter Property="Visibility" Value="Hidden"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding ControlType}" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Hidden"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </syncfusion:DateTimeEdit.Style>
+                                <!-- 2 - TIMESPAN -->
+                                <syncfusion:TimeSpanEdit Grid.Column="3" Margin="0,0,3,0"
+                                     VerticalAlignment="Center" Height="24" 
+                                     Text="{Binding TimeSpanValue, Mode=TwoWay}"
+                                     MinValue="0:0:0" Format="h 'h' m 'min' s 'sec'"
+                                     Visibility="{Binding ControlType,
+                                            Converter={StaticResource FilterControlTypeToVisibilityConverter},
+                                            ConverterParameter=TimeSpan}"/>
+
+                                <!-- 3 - DATEPICKER -->
+                                <syncfusion:DateTimeEdit Grid.Column="3" Margin="0,0,3,0"
+                                    VerticalAlignment="Center" Height="24"
+                                    Text="{Binding DateValue, Mode=TwoWay}"
+                                    Pattern="CustomPattern" CustomPattern="dd.MM.yyyy HH:mm"
+                                    Visibility="{Binding ControlType,
+                                            Converter={StaticResource FilterControlTypeToVisibilityConverter},
+                                            ConverterParameter=DatePicker}">
                                 </syncfusion:DateTimeEdit>
+                                <!-- 4 - CATEGORYPICKER -->
+                                <StackPanel Grid.Column="3" Margin="0,0,3,0" Orientation="Horizontal"
+                                            Visibility="{Binding ControlType,
+                                            Converter={StaticResource FilterControlTypeToVisibilityConverter},
+                                            ConverterParameter=CategoryPicker}">
+                                    <syncfusion:SfTextBoxExt IsReadOnly="True" Height="24" VerticalAlignment="Center"
+                                                             Width="135"
+                                                             Text="{Binding CategoryValue.Name}"/>
+                                    <syncfusion:ButtonAdv Grid.Column="1" Grid.Row="1"
+                                          VerticalAlignment="Center" Height="25" Margin="3,0,0,0"
+                                          Label="Pick"
+                                          SmallIcon="{StaticResource FolderTreeIcon}"
+                                          Command="{Binding OpenPickCategoryCommand}"/>
+                                </StackPanel>
+                                <!-- 5 - STATUSPICKER -->
+                                <syncfusion:ComboBoxAdv Grid.Column="3" Margin="0,0,3,0"
+                                       ItemsSource="{Binding Source={x:Static vm:FilterModel.TrackStatuses}}"
+                                       SelectedItem="{Binding TrackStatusValue}"
+                                       Visibility="{Binding ControlType,
+                                            Converter={StaticResource FilterControlTypeToVisibilityConverter},
+                                            ConverterParameter=StatusPicker}"/>
+                                <!-- 6 - TYPEPICKER -->
+                                <syncfusion:ComboBoxAdv Grid.Column="3" Margin="0,0,3,0"
+                                       ItemsSource="{Binding Source={x:Static vm:FilterModel.TrackTypes}}"
+                                       SelectedItem="{Binding TrackTypeValue}"
+                                       Visibility="{Binding ControlType,
+                                            Converter={StaticResource FilterControlTypeToVisibilityConverter},
+                                            ConverterParameter=TypePicker}"/>
 
+                                <!-- Remove filter btn -->
                                 <syncfusion:ButtonAdv Grid.Column="4"  Label="Remove" SmallIcon="{StaticResource RemoveIcon}" VerticalAlignment="Center"
                                                       HorizontalAlignment="Right" 
                                                       Command="{Binding DataContext.RemoveFilterCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
