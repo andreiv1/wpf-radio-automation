@@ -10,8 +10,7 @@ namespace RA.DAL
     public interface ITracksService
     {
         IEnumerable<TrackListingDTO> GetTrackList(int skip, int take);
-        Task<IEnumerable<TrackListingDTO>> GetTrackListAsync(int skip, int take);
-        Task<int> GetTrackCountAsync();
+        Task<int> GetTrackCountAsync(string query = "");
         Task<TrackDTO> GetTrack(int id);
         Task<IEnumerable<TrackListingDTO>> GetTrackListByArtistAsync(int artistId, int skip, int take);
         IEnumerable<TrackListingDTO> GetTrackListByArtist(int artistId, int skip, int take);
@@ -21,5 +20,6 @@ namespace RA.DAL
         Task<bool> TrackExistsByPath(string filePath);
         Task UpdateTrack(TrackDTO trackDTO);
         Task<bool> DeleteTrack(int trackId);
+        Task<IEnumerable<TrackListingDTO>> GetTrackListAsync(int skip, int take, string query = "");
     }
 }

@@ -38,7 +38,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists.Models
 
         public String? ErrorMessage { get; set; }
 
-        public static ScheduleOverviewModel FromDto(DateTime date, ScheduleDefaultItemDTO? dto)
+        public static ScheduleOverviewModel FromDto(DateTime date, IScheduleDTO? dto)
         {
             ScheduleOverviewModel model = new();
             model.Date = date;
@@ -48,20 +48,15 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists.Models
                 model.TemplateName = "-";
             } else
             {
+                if (dto is SchedulePlannedDTO dtoPlannedDTO)
+                {
+                    model.Type = ScheduleType.Planned;
+                }
+                else
                 model.Type = ScheduleType.Default;
                 model.TemplateName = dto.Template?.Name;
             }
             
-            return model;
-        }
-
-        public static ScheduleOverviewModel FromDto(DateTime date, SchedulePlannedDTO dto)
-        {
-            ScheduleOverviewModel model = new();
-            model.Date = date;
-            model.Type = ScheduleType.Planned;
-            //TODO
-            model.TemplateName = "Planned - to do";
             return model;
         }
     }

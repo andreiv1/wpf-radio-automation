@@ -16,20 +16,24 @@ namespace RA.DAL
             this.dbContextFactory = dbContextFactory;
         }
 
-        public async Task<int> GetTrackCountAsync()
+        public async Task<int> GetTrackCountAsync(string query = "")
         {
             using (var dbContext = dbContextFactory.CreateDbContext())
             {
-                return await dbContext.Tracks.CountAsync();
+                return await dbContext
+                    .GetTracks(query)
+                    .AsNoTracking()
+                    .CountAsync();
             }
         }
 
-        public async Task<IEnumerable<TrackListingDTO>> GetTrackListAsync(int skip, int take)
+        public async Task<IEnumerable<TrackListingDTO>> GetTrackListAsync(int skip, int take, string query = "")
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-                return await dbContext.GetTracks()
+                return await dbContext.GetTracks(query)
                     .Skip(skip)
                     .Take(take)
+                    .AsNoTracking()
                     .Select(t => TrackListingDTO.FromEntity(t))
                     .ToListAsync();
             
@@ -47,6 +51,7 @@ namespace RA.DAL
                 .Include(c => c.Categories)
                 .Include(tt => tt.TrackTags)
                 .ThenInclude(tt => tt.TagValue)
+                .AsNoTracking()
                 .Select(t => TrackDTO.FromEntity(t))
                 .FirstAsync();
         }

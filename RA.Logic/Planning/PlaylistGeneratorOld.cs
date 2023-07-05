@@ -30,7 +30,7 @@ namespace RA.Logic.Planning
         public PlaylistDTO GeneratePlaylistForDate(DateTime date)
         {
             PlaylistDTO playlist = PlaylistDTO.Initialise(date);
-            IScheduleDTO? schedule = schedulesService.GetScheduleByDate(date);
+            IScheduleDTO? schedule = schedulesService.GetScheduleByDate(date).Result;
 
             if(schedule != null)
             {

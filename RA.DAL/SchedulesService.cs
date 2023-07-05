@@ -20,9 +20,9 @@ namespace RA.DAL
             this.schedulesPlannedService = schedulesPlannedService;
         }
 
-        public IScheduleDTO? GetScheduleByDate(DateTime date)
+        public async Task<IScheduleDTO?> GetScheduleByDate(DateTime date)
         {
-            var defaultSchedule = schedulesDefaultService.GetDefaultSchedulesOverview(date, date);
+            var defaultSchedule = await this.GetSchedulesOverview(date, date);
             IScheduleDTO? result = defaultSchedule.FirstOrDefault().Value;
             return result;
         }

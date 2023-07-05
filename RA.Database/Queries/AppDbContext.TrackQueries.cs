@@ -19,20 +19,26 @@ namespace RA.Database
         {
             query = query.Trim();
             IQueryable<Track> result;
-            if(query != String.Empty)
-            {
-                result = Tracks.Include(t => t.TrackArtists)
-                         .ThenInclude(t => t.Artist)
-                         .Where(t => t.Title.ToLower().StartsWith(query) ||
-                             t.TrackArtists.Any(a => a.Artist.Name.ToLower().Contains(query)) || 
-                             t.FilePath.ToLower().Contains(query)
-                         );
-            } else
-            {
-                result = Tracks.Include(t => t.TrackArtists)
-                         .ThenInclude(t => t.Artist);
-            }
 
+            var searchTerms = query.Split(new[] { " - " }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (searchTerms.Any())
+            {
+                // Starting with all tracks
+                result = Tracks.Include(t => t.TrackArtists).ThenInclude(t => t.Artist);
+
+                foreach (var term in searchTerms)
+                {
+                    var lowerTerm = term.ToLower();
+
+                    result = result.Where(t => t.Title.ToLower().Contains(lowerTerm) ||
+                                         t.TrackArtists.Any(a => a.Artist.Name.ToLower().Contains(lowerTerm)));
+                }
+            }
+            else
+            {
+                result = Tracks.Include(t => t.TrackArtists).ThenInclude(t => t.Artist);
+            }
             return result;
         }
 
@@ -45,7 +51,8 @@ namespace RA.Database
         {
             return Tracks.Include(t => t.TrackArtists)
                 .ThenInclude(t => t.Artist)
-                .Where(t => t.Id.Equals(id));
+                .Where(t => t.Id.Equals(id))
+                .AsNoTracking();
         }
     }
 }

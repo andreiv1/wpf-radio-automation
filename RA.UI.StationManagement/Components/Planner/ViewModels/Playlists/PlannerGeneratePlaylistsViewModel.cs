@@ -21,11 +21,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
         private readonly IDispatcherService dispatcherService;
         private readonly IMessageBoxService messageBoxService;
         private readonly IPlaylistsService playlistsService;
-        private readonly ISchedulesDefaultService schedulesService;
+        private readonly ISchedulesService schedulesService;
         private readonly IPlaylistGenerator playlistGenerator;
         private bool isGeneratingPlaylist = false;
 
-        #region Properties
         public ObservableCollection<ScheduleOverviewModel> ScheduleOverview { get; set; } = new();
 
         [ObservableProperty]
@@ -44,13 +43,13 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
             _ = LoadOverview();
         }
 
-        #endregion
-
-        #region Constructor
-
-        public PlannerGeneratePlaylistsViewModel(IWindowService windowService, IDispatcherService dispatcherService,
-            IMessageBoxService messageBoxService, IPlaylistsService playlistsService,
-            ISchedulesDefaultService schedulesService, IPlaylistGenerator playlistGenerator) : base(windowService)
+ 
+        public PlannerGeneratePlaylistsViewModel(IWindowService windowService,
+                                                 IDispatcherService dispatcherService,
+                                                 IMessageBoxService messageBoxService,
+                                                 IPlaylistsService playlistsService,
+                                                 ISchedulesService schedulesService,
+                                                 IPlaylistGenerator playlistGenerator) : base(windowService)
         {
             this.dispatcherService = dispatcherService;
             this.messageBoxService = messageBoxService;
@@ -60,14 +59,14 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
             _ = LoadOverview();
         }
 
-        #endregion
 
-        #region Data fetching
+        //Data fetching
         private async Task LoadOverview()
         {
             ScheduleOverview.Clear();
-            var scheduleOverview = await Task.Run(() => 
-                schedulesService.GetDefaultSchedulesOverviewAsync(StartDate, StartDate.AddDays(NumberOfDaysToSchedule - 1)));
+            //var scheduleOverview = await Task.Run(() => 
+            //    schedulesService.GetDefaultSchedulesOverviewAsync(StartDate, StartDate.AddDays(NumberOfDaysToSchedule - 1)));
+            var scheduleOverview = await Task.Run(() => schedulesService.GetSchedulesOverview(StartDate, StartDate.AddDays(NumberOfDaysToSchedule - 1)));
 
             foreach(var schedule in scheduleOverview)
             {
@@ -80,7 +79,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
                 ScheduleOverview.Add(item);
             }
         }
-        #endregion
 
         private void GeneratePlaylists()
         {
