@@ -70,7 +70,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         public async Task LoadArtists(int skip, int take, string query = "")
         {
             this.Artists.Clear();
-            TotalArtists = await artistsService.GetArtistsCountAsync(skip, take, query);
+            TotalArtists = await artistsService.GetArtistsCountAsync(query);
             Pages = TotalArtists > 0 ? (TotalArtists - 1) / artistsPerPage + 1 : 0;
             var artists = await artistsService.GetArtistsAsync(skip, take, query);
             foreach(var artist in artists)

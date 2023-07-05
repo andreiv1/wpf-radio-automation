@@ -1,7 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DTO;
+using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
+using RA.UI.StationManagement.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,10 +18,15 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
     {
         private readonly ICategoriesService categoryService;
         private readonly ITracksService tracksService;
+        private readonly INavigationService<MediaLibraryMainViewModel> navigationService;
+        private readonly MediaLibraryTreeMenuService treeMenuService;
         private readonly int categoryId;
         public ObservableCollection<CategoryDTO> Subcategories { get; private set; } = new();
 
         public ObservableCollection<TrackListingDTO> CategoryTracks { get; private set; } = new();
+
+        [ObservableProperty]
+        private CategoryDTO? selectedSubcategory;
 
         [ObservableProperty]
         private CategoryHierarchyDTO? categoryHierarchy;
@@ -28,10 +36,16 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 
         [ObservableProperty]
         private bool hasSubcategories = false;
-        public CategoryItemsViewModel(ICategoriesService categoryService, ITracksService tracksService, int categoryId)
+        public CategoryItemsViewModel(ICategoriesService categoryService,
+                                      ITracksService tracksService,
+                                      INavigationService<MediaLibraryMainViewModel> navigationService,
+                                   MediaLibraryTreeMenuService treeMenuService,
+                                      int categoryId)
         {
             this.categoryService = categoryService;
             this.tracksService = tracksService;
+            this.navigationService = navigationService;
+            this.treeMenuService = treeMenuService;
             this.categoryId = categoryId;
             _ = LoadCategory();
             _ = LoadSubcategories();
@@ -63,6 +77,13 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             {
                 CategoryTracks.Add(track);
             }
+        }
+
+        [RelayCommand]
+        private void OpenSubcategory()
+        {
+            if (SelectedSubcategory == null || SelectedSubcategory.Id == null) return;
+            navigationService.NavigateTo<CategoryItemsViewModel>(SelectedSubcategory.Id);
         }
 
     }

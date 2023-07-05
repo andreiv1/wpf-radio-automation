@@ -20,6 +20,7 @@
             <!--<RowDefinition Height="{Binding Subcategories, Converter={StaticResource CollectionToGridLengthConverter}}"/>-->
             <RowDefinition Height="150"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <!-- Search bar & options -->
@@ -91,7 +92,7 @@
             </StackPanel>
         </Grid>
         <!-- Subcategories -->
-        <syncfusion:SfDataGrid Grid.Row="1" Margin="5,5,5,0"
+        <syncfusion:SfDataGrid x:Name="subcategoriesSfDataGrid" Grid.Row="1" Margin="5,5,5,0"
                        ColumnSizer="AutoWithLastColumnFill"
                        ItemsSource="{Binding Subcategories}"
                        SelectedItem="{Binding SelectedSubcategory}"
@@ -99,7 +100,8 @@
                        NavigationMode="Row"
                        AllowResizingColumns="True"
                        AutoGenerateColumns="False" AutoGenerateColumnsMode="None"
-                               RowHeight="30"
+                       RowHeight="30"
+                       CellDoubleTapped="subcategoriesSfDataGrid_CellDoubleTapped"
                             >
             <syncfusion:SfDataGrid.Columns>
                 <syncfusion:GridTemplateColumn Width="25" HeaderText="">
@@ -112,31 +114,33 @@
                 </syncfusion:GridTemplateColumn>
                 <syncfusion:GridTextColumn HeaderText="Subcategory Name" MappingName="Name" Width="300"/>
                 <syncfusion:GridTextColumn HeaderText="Description" MappingName="Description"/>
-                <syncfusion:GridTemplateColumn HeaderText="Action" Width="190">
-                    <syncfusion:GridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
-                                        HorizontalAlignment="Center">
-                                <syncfusion:ButtonAdv Label="Open" Margin="0,0,3,0"
-                                                      SmallIcon="{StaticResource OpenedFolderIcon}"/>
-                                <syncfusion:ButtonAdv Label="Edit" Margin="0,0,3,0"
-                                                      SmallIcon="{StaticResource EditIcon}"/>
-                                <syncfusion:ButtonAdv Label="Delete"
-                                                      SmallIcon="{StaticResource RemoveIcon}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </syncfusion:GridTemplateColumn.CellTemplate>
-                </syncfusion:GridTemplateColumn>
+               
             </syncfusion:SfDataGrid.Columns>
             <syncfusion:SfDataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Edit" Command="{Binding EditSubcategoryCommand}" />
+                    <MenuItem Header="Open" Command="{Binding OpenSubcategoryCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource OpenedFolderIcon}" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Edit" Command="{Binding EditSubcategoryCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource EditIcon}" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Delete" Command="{Binding DeleteItemCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource RemoveIcon}" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </ContextMenu>
             </syncfusion:SfDataGrid.ContextMenu>
+          
         </syncfusion:SfDataGrid>
 
         <!-- Category Items (Tracks)-->
-        <syncfusion:SfDataGrid Grid.Row="2"
+        <syncfusion:SfDataGrid x:Name="tracksSfDataGrid"
+                       Grid.Row="2"
                        Margin="5,3,5,0"
                        ColumnSizer="Auto"
                        ItemsSource="{Binding CategoryTracks}"
@@ -145,10 +149,12 @@
                        NavigationMode="Row"
                        AllowResizingColumns="True"
                        AutoGenerateColumns="False"
-                               RowHeight="30">
+                       RowHeight="30">
+
             <syncfusion:SfDataGrid.Columns>
                 <syncfusion:GridTemplateColumn MinimumWidth="50" HeaderText=" "
-                                                   MappingName="Type" Width="16" MaximumWidth="16">
+                                                   MappingName="Type" Width="16" MaximumWidth="16"
+                                               AllowSorting="False">
                     <syncfusion:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Image Width="24" Height="20">
@@ -181,16 +187,52 @@
                                            AllowResizing="True"
                                     ColumnSizer="Star"/>
                 <syncfusion:GridTextColumn HeaderText="Title" MappingName="Title" MinimumWidth="300"/>
-                <syncfusion:GridTextColumn HeaderText="Track Type" MappingName="Type" MinimumWidth="60"/>
+                <syncfusion:GridTextColumn HeaderText="Type" MappingName="Type" MinimumWidth="60"/>
                 <syncfusion:GridTextColumn HeaderText="Duration" MappingName="Duration" MinimumWidth="80"
                                            DisplayBinding="{Binding Path=Duration, Converter={StaticResource DoubleToTimeSpanConverter}, StringFormat={}{0:hh\\:mm\\:ss} }">
                 </syncfusion:GridTextColumn>
 
-                <syncfusion:GridDateTimeColumn HeaderText="Date Added" MappingName="DateAdded"
-                                    MinimumWidth="130"/>
-                <syncfusion:GridDateTimeColumn HeaderText="Date Modified" MappingName="DateModified"
-                                   MinimumWidth="130"/>
+                <syncfusion:GridTemplateColumn HeaderText="Date Added" Width="130" AllowSorting="True"
+                                               MappingName="DateAdded"
+                                                               ColumnSizer="Star">
+                    <syncfusion:GridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Text="{Binding DateAdded, StringFormat=dd.MM.yyyy HH:mm:ss}"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </syncfusion:GridTemplateColumn.CellTemplate>
+                </syncfusion:GridTemplateColumn>
+
+                <syncfusion:GridTemplateColumn HeaderText="Date Modified" Width="130" AllowSorting="True"
+                                               MappingName="DateModified"
+                                                               ColumnSizer="Star">
+                    <syncfusion:GridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Text="{Binding DateModified, StringFormat=dd.MM.yyyy HH:mm:ss}" 
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </syncfusion:GridTemplateColumn.CellTemplate>
+                </syncfusion:GridTemplateColumn>
             </syncfusion:SfDataGrid.Columns>
+            <syncfusion:SfDataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Edit" Command="{Binding EditItemCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource EditIcon}" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Delete" Command="{Binding DeleteItemCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource RemoveIcon}" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </syncfusion:SfDataGrid.ContextMenu>
+
 
         </syncfusion:SfDataGrid>
 
@@ -205,6 +247,29 @@
                            Width="400"
                            TextWrapping="Wrap" TextAlignment="Center" 
                            Margin="5,50,5,0" Foreground="Gray"/>
+        </Grid>
+
+        <Grid Grid.Row="3" Margin="5,0,5,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="Items found:" HorizontalAlignment="Left" VerticalAlignment="Center"
+                    FontSize="14"/>
+
+            <Label Grid.Column="1" FontSize="14"
+                   Content="{Binding TotalTracks}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <syncfusion:SfDataPager  Grid.Column="3" HorizontalAlignment="Right"
+                           PageCount="{Binding Pages}"
+                           PageIndex="{Binding PageIndex, Mode=TwoWay}"
+                           PageSize="100" 
+                           NumericButtonCount="10"
+                           AutoEllipsisMode="Both"
+                           UseOnDemandPaging="True"
+                           OnDemandLoading="SfDataPager_OnDemandLoading"/>
         </Grid>
     </Grid>
 </uicore:RAUserControl>

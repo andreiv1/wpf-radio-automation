@@ -1,14 +1,14 @@
 ﻿<uicore:RAWindow x:Class="RA.UI.StationManagement.Components.MediaLibrary.Views.MediaLibraryMainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
-        xmlns:localuc="clr-namespace:RA.UI.StationManagement.UserControls"
-        xmlns:views="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent"                     
-        xmlns:vm="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent"                     
-        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-        mc:Ignorable="d"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+                 xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+                 xmlns:vm="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent"
+                 xmlns:views="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent"
+                 xmlns:localuc="clr-namespace:RA.UI.StationManagement.UserControls"
+                 mc:Ignorable="d"
         Title="Media Library"
         MinHeight="450"
         MinWidth="900">
@@ -35,7 +35,8 @@
                 ChildPropertyName="Children"
                 IsAnimationEnabled="True"
                 BorderThickness="1"
-                LoadOnDemandCommand="{Binding TreeMenuService.ExecuteOnDemandLoadingCommand}">
+                LoadOnDemandCommand="{Binding TreeMenuService.ExecuteOnDemandLoadingCommand}"
+                ItemTapped="navigationTreeView_ItemTapped">
             
             <syncfusion:SfTreeView.ItemTemplate>
                 <DataTemplate>

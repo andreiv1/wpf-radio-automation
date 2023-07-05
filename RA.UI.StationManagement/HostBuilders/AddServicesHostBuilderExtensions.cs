@@ -32,13 +32,15 @@ namespace RA.UI.StationManagement.HostBuilders
                 services.AddSingleton<IDispatcherService, WpfDispatcherService>();
 
                 //Navigation services
-                services.AddScoped<INavigationService<MediaLibraryMainViewModel>,
+                //changed from scoped to singleton
+                services.AddSingleton<INavigationService<MediaLibraryMainViewModel>,
                     NavigationService<MediaLibraryMainViewModel>>();
 
                 services.AddTransient<INavigationService<MediaLibraryImportItemsViewModel>,
                     NavigationService<MediaLibraryImportItemsViewModel>>();
 
-                services.AddScoped<MediaLibraryTreeMenuService>();
+                //changed from scoped to singleton
+                services.AddSingleton<MediaLibraryTreeMenuService>();
 
                 // DAL services
                 services.AddTransient<IClocksService, ClocksService>();

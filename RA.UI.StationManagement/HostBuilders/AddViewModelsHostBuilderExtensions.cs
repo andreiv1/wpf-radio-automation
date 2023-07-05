@@ -60,7 +60,6 @@ namespace RA.UI.StationManagement.HostBuilders
             { typeof(ImportItemsSecondViewModel), typeof(ImportItemsSecondView) },
             { typeof(ImportItemsThirdViewModel), typeof(ImportItemsThirdView) },
             { typeof(MediaLibraryImportItemsViewModel), typeof(MediaLibraryImportItemsWindow) },
-            { typeof(MediaLibraryImportSingleItemViewModel), typeof(MediaLibraryImportSingleItemWindow)},
             { typeof(MediaLibraryMainViewModel), typeof(MediaLibraryMainWindow) },
             { typeof(MediaLibraryManageCategoryViewModel), typeof(MediaLibraryManageCategoryWindow) },
             { typeof(MediaLibraryManageTrackViewModel), typeof(MediaLibraryManageTrackWindow) },

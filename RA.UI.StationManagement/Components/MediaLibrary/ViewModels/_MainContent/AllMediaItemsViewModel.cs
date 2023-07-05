@@ -82,7 +82,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             Items.Clear();
             TotalTracks = await tracksService.GetTrackCountAsync(query);
             Pages = TotalTracks > 0 ? (TotalTracks - 1) / tracksPerPage + 1 : 0;
-            var tracks = await tracksService.GetTrackListAsync(skip, take, query);
+            var tracks = await tracksService.GetTrackListAsync(skip, take, query, includeDisabled: true);
             foreach (var track in tracks.ToList())
             {
                 Items.Add(track);
@@ -101,7 +101,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         [RelayCommand]
         private void AddItem()
         {
-            windowService.ShowDialog<MediaLibraryImportSingleItemViewModel>();
+            windowService.ShowDialog<MediaLibraryManageTrackViewModel>();
             LoadTracksFromStart();
         }
 

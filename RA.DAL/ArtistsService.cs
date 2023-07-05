@@ -18,9 +18,16 @@ namespace RA.DAL
             this.dbContextFactory = dbContextFactory;
         }
 
-        //This can be moved to RA.Database.Queries
-        private IQueryable<Artist> GetArtistQuery(AppDbContext dbContext, int skip, int take, string query)
+        public async Task<int> GetArtistsCountAsync(string query = "")
         {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var result = dbContext.Artists.Where(a => a.Name.ToLower().Contains(query));
+            return await result.CountAsync();
+        }
+
+        public async Task<IEnumerable<ArtistDTO>> GetArtistsAsync(int skip, int take, string query = "")
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
             IQueryable<Artist> result;
             query = query.Trim();
             if (string.IsNullOrEmpty(query))
@@ -36,19 +43,6 @@ namespace RA.DAL
                      .Take(take)
                      .Where(a => a.Name.ToLower().Contains(query));
             }
-            return result;
-        }
-        public async Task<int> GetArtistsCountAsync(int skip, int take, string query = "")
-        {
-            using var dbContext = dbContextFactory.CreateDbContext();
-            var result = GetArtistQuery(dbContext, skip, take, query);
-            return await result.CountAsync();
-        }
-
-        public async Task<IEnumerable<ArtistDTO>> GetArtistsAsync(int skip, int take, string query = "")
-        {
-            using var dbContext = dbContextFactory.CreateDbContext();
-            var result = GetArtistQuery(dbContext, skip, take, query);
             return await result.AsNoTracking()
                   .Select(a => ArtistDTO.FromEntity(a))
                   .ToListAsync();

@@ -2,11 +2,6 @@
 using RA.UI.Core.Factories;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RA.UI.Core.Services
 {

@@ -6,8 +6,8 @@ namespace RA.Logic.AudioPlayer
 {
     public class AudioPlayer : IAudioPlayer
     {
-        public event EventHandler PlaybackStopped;
-        public event EventHandler PlaybackPaused;
+        public event EventHandler? PlaybackStopped;
+        public event EventHandler? PlaybackPaused;
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private WaveOutEvent? waveOut;

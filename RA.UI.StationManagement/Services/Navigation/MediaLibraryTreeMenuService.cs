@@ -1,25 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
-using RA.Database.Models;
 using RA.DTO;
-using RA.Logic;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent;
 using Syncfusion.UI.Xaml.TreeView.Engine;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 
 namespace RA.UI.StationManagement.Services
 {
@@ -106,7 +100,7 @@ namespace RA.UI.StationManagement.Services
         private readonly ITagsService tagsService;
         private readonly INavigationService<MediaLibraryMainViewModel> navigationService;
 
-        public ObservableCollection<MenuItemModel> MenuItems { get; set; } = new();
+        public ObservableCollection<MenuItemModel> MenuItems { get; private set; } = new();
         [ObservableProperty]
         private MenuItemModel? selectedItem;
 
@@ -115,8 +109,10 @@ namespace RA.UI.StationManagement.Services
             value?.NavigationCommand?.Execute(null);
         }
 
-        public MediaLibraryTreeMenuService(IDispatcherService dispatcher, ICategoriesService categoriesService,
-            ITagsService tagsService, INavigationService<MediaLibraryMainViewModel> navigationService)
+        public MediaLibraryTreeMenuService(IDispatcherService dispatcher,
+                                           ICategoriesService categoriesService,
+                                           ITagsService tagsService,
+                                           INavigationService<MediaLibraryMainViewModel> navigationService)
         {
             this.dispatcher = dispatcher;
             this.categoriesService = categoriesService;
@@ -212,6 +208,14 @@ namespace RA.UI.StationManagement.Services
             return menuItems;
         }
 
+        public async Task ReloadCategories()
+        {
+            MenuItemModel? item = MenuItems.Where(x => x.DisplayName == "Categories").FirstOrDefault();
+            if (item == null) return;
+            item.Children?.Clear();
+            await LoadRootCategories(item);
+        }
+
         private async Task LoadRootCategories(MenuItemModel menuItem)
         {
             var categories = await categoriesService.GetRootCategoriesAsync();
@@ -226,7 +230,7 @@ namespace RA.UI.StationManagement.Services
                         IconKey = "FolderTreeIcon",
                         Tag = category,
                         Type = MenuItemType.Category,
-                        NavigationCommand =  new CategoryNavigationCommand(navigationService, (int)category.Id),
+                        NavigationCommand = new CategoryNavigationCommand(navigationService, (int)category.Id),
                     };
                     child.IconKey = child.HasChildNodes ? "FolderTreeIcon" : "MusicFolderIcon"; 
                     dispatcher.InvokeOnUIThread(() =>

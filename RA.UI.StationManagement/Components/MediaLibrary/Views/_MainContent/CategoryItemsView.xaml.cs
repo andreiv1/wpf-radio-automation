@@ -1,4 +1,5 @@
 ﻿using RA.DTO;
+using RA.Logic;
 using RA.UI.Core;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent;
 using System;
@@ -28,26 +29,18 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent
             InitializeComponent();
         }
 
-        private void SubcategoriesDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void SfDataPager_OnDemandLoading(object sender, Syncfusion.UI.Xaml.Controls.DataPager.OnDemandLoadingEventArgs e)
         {
-            if (sender is DataGrid dataGrid)
-            {
-                //if (dataGrid.SelectedItem is CategoryDto category)
-                //{
-                //    var vm = DataContext as CategoryItemsViewModel;
-                //    var subcategoryId = category.Id;
-                //    if (subcategoryId.HasValue)
-                //    {
-                //        vm?.NavigateToSubcategory(subcategoryId.Value);
-                //    }
-                    
-                //}
-            }
+            //TODO: load
+            //vm?.LoadTracks(e.StartIndex, e.PageSize);
         }
-
-        private void searchWatermarkTextbox_KeyDown(object sender, KeyEventArgs e)
+        private void subcategoriesSfDataGrid_CellDoubleTapped(object sender, Syncfusion.UI.Xaml.Grid.GridCellDoubleTappedEventArgs e)
         {
+            CategoryItemsViewModel? vm = DataContext as CategoryItemsViewModel;
+            if (vm == null) return;
 
+            CategoryDTO? category = e.Record as CategoryDTO;
+            vm.OpenSubcategoryCommand.Execute(null);
         }
     }
 }

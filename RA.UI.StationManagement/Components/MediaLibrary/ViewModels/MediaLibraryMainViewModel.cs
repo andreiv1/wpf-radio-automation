@@ -1,15 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using RA.Logic;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent;
 using RA.UI.StationManagement.Services;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
 {

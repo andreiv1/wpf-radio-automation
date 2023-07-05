@@ -60,6 +60,31 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         public ObservableCollection<TagValueDTO> Moods { get; set; } = new();
         public ObservableCollection<TagValueDTO> SelectedMoods { get; set; } = new();
 
+        //Create constructor
+        public MediaLibraryManageTrackViewModel(IWindowService windowService,
+                                                IFileBrowserDialogService fileBrowserDialogService,
+                                                IDispatcherService dispatcherService,
+                                                IMessageBoxService messageBoxService,
+                                                ITracksService tracksService,
+                                                ITagsService tagsService) : base(windowService)
+        {
+            this.tracksService = tracksService;
+            this.tagsService = tagsService;
+            this.fileBrowserDialogService = fileBrowserDialogService;
+            this.dispatcherService = dispatcherService;
+            this.messageBoxService = messageBoxService;
+        
+            var fetchTagsTask = FetchTags();
+
+            SelectedGenres.CollectionChanged += SelectedGenres_CollectionChanged;
+            SelectedLanguages.CollectionChanged += SelectedLanguages_CollectionChanged;
+            SelectedMoods.CollectionChanged += SelectedMoods_CollectionChanged;
+
+            fullImagePath = "pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png";
+            
+        }
+
+        //Edit constructor
         public MediaLibraryManageTrackViewModel(IWindowService windowService,
                                                 IFileBrowserDialogService fileBrowserDialogService,
                                                 IDispatcherService dispatcherService,

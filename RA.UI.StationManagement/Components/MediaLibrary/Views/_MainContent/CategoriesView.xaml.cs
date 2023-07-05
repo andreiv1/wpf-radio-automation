@@ -28,34 +28,11 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent
             InitializeComponent();
         }
 
-        private void CustomDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void SfDataGrid_CellDoubleTapped(object sender, Syncfusion.UI.Xaml.Grid.GridCellDoubleTappedEventArgs e)
         {
-            if (sender is DataGrid dataGrid)
-            {
-                //if (dataGrid.SelectedItem is CategoryDto category)
-                //{
-                //    var vm = DataContext as CategoriesViewModel;
-                //    var subcategoryId = category.Id;
-                //    if(subcategoryId.HasValue)
-                //    {
-                //        vm?.NavigateToSubcategory(subcategoryId.Value);
-                //    }
-                    
-                //}
-            }
-        }
-
-        private void searchWatermarkTextbox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                //CategoriesViewModel? vm = DataContext as CategoriesViewModel;
-                //if (vm is not null)
-                //{
-                //    throw new NotImplementedException();
-                //    e.Handled = true;
-                //}
-            }
+            var vm = DataContext as CategoriesViewModel;
+            if (vm == null) return;
+            vm.OpenCategoryCommand.Execute(null);
         }
     }
 }

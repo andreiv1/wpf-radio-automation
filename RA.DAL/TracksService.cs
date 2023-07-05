@@ -16,21 +16,21 @@ namespace RA.DAL
             this.dbContextFactory = dbContextFactory;
         }
 
-        public async Task<int> GetTrackCountAsync(string query = "")
+        public async Task<int> GetTrackCountAsync(string query = "", bool includeDisabled = false)
         {
             using (var dbContext = dbContextFactory.CreateDbContext())
             {
                 return await dbContext
-                    .GetTracks(query)
+                    .GetTracks(query, includeDisabled)
                     .AsNoTracking()
                     .CountAsync();
             }
         }
 
-        public async Task<IEnumerable<TrackListingDTO>> GetTrackListAsync(int skip, int take, string query = "")
+        public async Task<IEnumerable<TrackListingDTO>> GetTrackListAsync(int skip, int take, string query = "", bool includeDisabled = false)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-                return await dbContext.GetTracks(query)
+                return await dbContext.GetTracks(query, includeDisabled)
                     .Skip(skip)
                     .Take(take)
                     .AsNoTracking()
