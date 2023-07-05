@@ -5,6 +5,8 @@
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
                       xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+                      xmlns:maincontent="clr-namespace:RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent"
+                      d:DataContext="{d:DesignInstance Type=maincontent:ArtistsViewModel}"
                       mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -15,6 +17,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="25"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <StackPanel
@@ -86,7 +89,14 @@
                 </syncfusion:GridViewDefinition>
             </syncfusion:SfDataGrid.DetailsViewDefinition>
         </syncfusion:SfDataGrid>
-
+        <syncfusion:SfDataPager Grid.Row="2" HorizontalAlignment="Right"
+                           PageCount="{Binding Pages}"
+                           PageIndex="{Binding PageIndex, Mode=TwoWay}"
+                           PageSize="100" 
+                           NumericButtonCount="10"
+                           AutoEllipsisMode="Both"
+                           UseOnDemandPaging="True"
+                           OnDemandLoading="SfDataPager_OnDemandLoading"/>    
        
     </Grid>
 </uicore:RAUserControl>

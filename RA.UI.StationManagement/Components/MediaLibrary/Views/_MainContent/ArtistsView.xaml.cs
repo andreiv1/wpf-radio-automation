@@ -40,5 +40,11 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.Views.MainContent
                 artistTracksGrid.ExpandDetailsViewAt(recordIndex);
             }
         }
+
+        private void SfDataPager_OnDemandLoading(object sender, Syncfusion.UI.Xaml.Controls.DataPager.OnDemandLoadingEventArgs e)
+        {
+            ArtistsViewModel? vm = DataContext as ArtistsViewModel;
+            vm?.LoadArtists(e.StartIndex, e.PageSize);
+        }
     }
 }

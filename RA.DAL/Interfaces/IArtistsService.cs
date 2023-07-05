@@ -6,7 +6,7 @@ namespace RA.DAL
     {
         Task AddArtist(ArtistDTO artist);
         Task<ArtistDTO?> GetArtistByName(string name);
-        Task<IEnumerable<ArtistDTO>> GetArtistsAsync(int skip, int take);
-        Task<int> GetArtistsCountAsync();
+        Task<IEnumerable<ArtistDTO>> GetArtistsAsync(int skip, int take, string query = "");
+        Task<int> GetArtistsCountAsync(int skip, int take, string query = "");
     }
 }

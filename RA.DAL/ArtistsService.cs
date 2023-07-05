@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RA.Database;
+using RA.Database.Models;
 using RA.DTO;
 using System;
 using System.Collections.Generic;
@@ -17,22 +18,41 @@ namespace RA.DAL
             this.dbContextFactory = dbContextFactory;
         }
 
-        public async Task<int> GetArtistsCountAsync()
+        //This can be moved to RA.Database.Queries
+        private IQueryable<Artist> GetArtistQuery(AppDbContext dbContext, int skip, int take, string query)
+        {
+            IQueryable<Artist> result;
+            query = query.Trim();
+            if (string.IsNullOrEmpty(query))
+            {
+                result = dbContext.Artists
+                      .Skip(skip)
+                      .Take(take);
+            }
+            else
+            {
+                result = dbContext.Artists
+                     .Skip(skip)
+                     .Take(take)
+                     .Where(a => a.Name.ToLower().Contains(query));
+            }
+            return result;
+        }
+        public async Task<int> GetArtistsCountAsync(int skip, int take, string query = "")
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            return await dbContext.Artists.CountAsync();
+            var result = GetArtistQuery(dbContext, skip, take, query);
+            return await result.CountAsync();
         }
 
-        public async Task<IEnumerable<ArtistDTO>> GetArtistsAsync(int skip, int take)
+        public async Task<IEnumerable<ArtistDTO>> GetArtistsAsync(int skip, int take, string query = "")
         {
-            using (var dbContext = dbContextFactory.CreateDbContext())
-            {
-                return await dbContext.Artists
-                    .Skip(skip)
-                    .Take(take)
-                    .Select(a => ArtistDTO.FromEntity(a))
-                    .ToListAsync();
-            }
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var result = GetArtistQuery(dbContext, skip, take, query);
+            return await result.AsNoTracking()
+                  .Select(a => ArtistDTO.FromEntity(a))
+                  .ToListAsync();
+
         }
 
         public async Task<ArtistDTO?> GetArtistByName(string name)
@@ -49,7 +69,7 @@ namespace RA.DAL
             using var dbContext = dbContextFactory.CreateDbContext();
             var entity = ArtistDTO.ToEntity(artist);
             await dbContext.Artists.AddAsync(entity);
-            await dbContext.SaveChangesAsync(); 
+            await dbContext.SaveChangesAsync();
 
         }
     }
