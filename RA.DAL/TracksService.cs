@@ -126,18 +126,20 @@ namespace RA.DAL
                             break;
 
                         case FilterLabelType.Duration when condition.FilterOperator == FilterOperator.Equals:
-                            double durationEquals = (condition.Value as TimeSpan?)?.TotalSeconds ?? 0;
-                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Duration == durationEquals;
+                            var duration = (condition.Value as TimeSpan?);
+                            double durationEquals = duration?.TotalSeconds ?? 0;
+                            double durationUpper = durationEquals + 1;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Duration >= durationEquals && t.Duration < durationUpper;
                             break;
 
                         case FilterLabelType.Duration when condition.FilterOperator == FilterOperator.LessThan:
                             double durationLessThan = (condition.Value as TimeSpan?)?.TotalSeconds ?? 0;
-                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Duration > durationLessThan;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Duration < durationLessThan;
                             break;
 
                         case FilterLabelType.Duration when condition.FilterOperator == FilterOperator.GreaterThan:
                             double durationGreaterThan = (condition.Value as TimeSpan?)?.TotalSeconds ?? 0;
-                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Duration < durationGreaterThan;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Duration > durationGreaterThan;
                             break;
 
                         case FilterLabelType.Status when condition.FilterOperator == FilterOperator.Equals:
