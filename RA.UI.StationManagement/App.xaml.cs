@@ -15,6 +15,7 @@ using RA.UI.Core.Shared;
 using Microsoft.EntityFrameworkCore;
 using RA.Database;
 using OfficeOpenXml;
+using Microsoft.Extensions.Configuration;
 
 namespace RA.UI.StationManagement
 {
@@ -27,7 +28,10 @@ namespace RA.UI.StationManagement
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             SyncfusionLicense.Register();
             this.host = CreateHostBuilder()
-                .Build();    
+                .Build();
+
+            var configuration = host.Services.GetRequiredService<IConfiguration>();
+            string? imagePath = configuration["AppSettings:ImagePath"];
         }
 
         public static IHostBuilder CreateHostBuilder()

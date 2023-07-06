@@ -6,8 +6,10 @@
                  xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
                  xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
                  xmlns:localuc="clr-namespace:RA.UI.StationManagement.UserControls"
+                 xmlns:views="clr-namespace:RA.UI.StationManagement.Components.Settings.Views.MainContent"
+                 xmlns:vm="clr-namespace:RA.UI.StationManagement.Components.Settings.ViewModels.MainContent" xmlns:viewmodels="clr-namespace:RA.UI.StationManagement.Components.Settings.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:SettingsMainViewModel}"
                  mc:Ignorable="d"
-        Title="Settings" Height="450" Width="800"
+        Title="Settings" Height="600" Width="800"
                  ResizeMode="NoResize">
     <Grid KeyboardNavigation.TabNavigation="None">
         <Grid.RowDefinitions>
@@ -24,11 +26,50 @@
                                                  Description="Configure app settings and preferences."
                                                  BackgroundColor="#FF9B9B9B" />
 
-        <syncfusion:SfTreeNavigator Grid.Column="0" Grid.Row="1" Header="Settings">
-            <syncfusion:SfTreeNavigatorItem Header="General"/>
-            <syncfusion:SfTreeNavigatorItem Header="Database"/>
-            <syncfusion:SfTreeNavigatorItem Header="Users"/>
-            <syncfusion:SfTreeNavigatorItem Header="About"/>
+        <syncfusion:SfTreeNavigator Grid.Column="0" Grid.Row="1" 
+                                    ItemsSource="{Binding SettingsMenu}"
+                                    SelectedItem="{Binding SelectedSettings, Mode=TwoWay}">
+            <syncfusion:SfTreeNavigator.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="Manage settings" FontStyle="Italic"/>
+                </DataTemplate>
+            </syncfusion:SfTreeNavigator.HeaderTemplate>
+
+            <syncfusion:SfTreeNavigator.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="{Binding Icon}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Width="16" Height="16"/>
+                        <TextBlock Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="13"
+                            Text="{Binding Header}" FontWeight="DemiBold"/>
+                    </Grid>
+                </DataTemplate>
+            </syncfusion:SfTreeNavigator.ItemTemplate>
         </syncfusion:SfTreeNavigator>
+
+        <ContentControl
+            Grid.Row="1"
+            Grid.Column="2" 
+            Content="{Binding NavigationService.CurrentView}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type TypeName=vm:SettingsGeneralViewModel}">
+                    <views:SettingsGeneralView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type TypeName=vm:SettingsDatabaseViewModel}">
+                    <Label Content="DatabaseView"/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type TypeName=vm:SettingsSecurityViewModel}">
+                    <views:SettingsSecurityView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type TypeName=vm:SettingsAboutViewModel}">
+                    <views:SettingsAboutView/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
     </Grid>
 </uicore:RAWindow>

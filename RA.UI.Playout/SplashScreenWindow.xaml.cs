@@ -9,11 +9,14 @@ namespace RA.UI.Playout
 {
     public partial class SplashScreenWindow : RAWindow
     {
+        private static string assemblyVersion;
+
+        public static string AssemblyVersion => assemblyVersion;
         public SplashScreenWindow()
         {
             InitializeComponent();
-            string version = Assembly.GetCallingAssembly().GetName().Version.ToString(2);
-            appVersion.Text = $"Version {version}";
+            assemblyVersion = Assembly.GetCallingAssembly().GetName().Version.ToString(2);
+            appVersion.Text = $"Version {assemblyVersion}";
         }
 
         private void progressBar_Loaded(object sender, RoutedEventArgs e)

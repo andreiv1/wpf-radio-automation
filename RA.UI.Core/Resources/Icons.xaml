@@ -108,7 +108,13 @@
 
     <BitmapImage x:Key="ListViewIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-list-view-48.png"/>
     <BitmapImage x:Key="GraphReportIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-graph-report-48.png"/>
-    
-    
+
+    <BitmapImage x:Key="UserManualIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-user-manual-48.png"/>
+    <BitmapImage x:Key="SecurityConfigurationIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-security-configuration-48.png"/>
+    <BitmapImage x:Key="ArrowLeftIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-double-left-48.png"/>
+    <BitmapImage x:Key="ArrowRightIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-right-arrow-48.png"/>
+    <BitmapImage x:Key="AdministrativeToolsIcon" UriSource="pack://application:,,,/RA.UI.Core;component/Resources/Icons/icons8-administrative-tools-48.png"/>
+
+
 
 </ResourceDictionary>

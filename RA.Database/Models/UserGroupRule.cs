@@ -15,6 +15,7 @@ namespace RA.Database.Models
         ACCESS_PLANNER,
         ACCESS_REPORTS,
         ACCESS_SETTINGS,
+        ACCESS_PLAYOUT,
     }
 
     [Table("UserGroupRules")]

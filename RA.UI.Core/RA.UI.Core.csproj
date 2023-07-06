@@ -11,6 +11,7 @@
     <None Remove="Resources\Icons\FontAwesome-PlusSquareSolid.png" />
     <None Remove="Resources\Icons\icons8-add-folder-48.png" />
     <None Remove="Resources\Icons\icons8-add-list-48.png" />
+    <None Remove="Resources\Icons\icons8-administrative-tools-48.png" />
     <None Remove="Resources\Icons\icons8-audio-add-file-48.png" />
     <None Remove="Resources\Icons\icons8-audio-listen-48.png" />
     <None Remove="Resources\Icons\icons8-audio-remove-file-48.png" />
@@ -32,6 +33,7 @@
     <None Remove="Resources\Icons\icons8-day-view-48.png" />
     <None Remove="Resources\Icons\icons8-done-48.png" />
     <None Remove="Resources\Icons\icons8-double-down-48.png" />
+    <None Remove="Resources\Icons\icons8-double-left-48.png" />
     <None Remove="Resources\Icons\icons8-double-up-48.png" />
     <None Remove="Resources\Icons\icons8-downward-arrow-96.png" />
     <None Remove="Resources\Icons\icons8-edit-48.png" />
@@ -70,9 +72,11 @@
     <None Remove="Resources\Icons\icons8-remove-96.png" />
     <None Remove="Resources\Icons\icons8-replay-48.png" />
     <None Remove="Resources\Icons\icons8-resume-button-48.png" />
+    <None Remove="Resources\Icons\icons8-right-arrow-48.png" />
     <None Remove="Resources\Icons\icons8-save-48.png" />
     <None Remove="Resources\Icons\icons8-scroll-down-48.png" />
     <None Remove="Resources\Icons\icons8-scroll-up-48.png" />
+    <None Remove="Resources\Icons\icons8-security-configuration-48.png" />
     <None Remove="Resources\Icons\icons8-send-file-48.png" />
     <None Remove="Resources\Icons\icons8-smart-playlist-48.png" />
     <None Remove="Resources\Icons\icons8-stop-48.png" />
@@ -82,6 +86,7 @@
     <None Remove="Resources\Icons\icons8-template-48.png" />
     <None Remove="Resources\Icons\icons8-timetable-48.png" />
     <None Remove="Resources\Icons\icons8-us-dollar-circled-48.png" />
+    <None Remove="Resources\Icons\icons8-user-manual-48.png" />
     <None Remove="Resources\Icons\icons8-voice-48.png" />
     <None Remove="Resources\Icons\icons8-voice-recorder-48.png" />
     <None Remove="Resources\Icons\icons8-warning-48.png" />
@@ -93,7 +98,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Icons\icons8-administrative-tools-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Icons\icons8-csv-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\icons8-double-left-48.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\icons8-excel-48.png">
@@ -296,6 +307,9 @@
     <Resource Include="Resources\Icons\icons8-resume-button-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Icons\icons8-right-arrow-48.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Icons\icons8-save-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -304,6 +318,9 @@
     </Resource>
     <Resource Include="Resources\Icons\icons8-scroll-up-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\icons8-security-configuration-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\icons8-send-file-48.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -330,6 +347,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\icons8-us-dollar-circled-48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\icons8-user-manual-48.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\icons8-voice-48.png">

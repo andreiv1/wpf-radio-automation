@@ -12,7 +12,7 @@ namespace RA.UI.Core
         {
             ThemeManager.ApplyTheme(this);
             this.ResizeBorderThickness = new Thickness(0);
-            this.CornerRadius = new CornerRadius(0);
+            this.CornerRadius = new CornerRadius(3);
 
             Closed += RAWindow_Closed;
         }

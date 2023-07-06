@@ -27,7 +27,11 @@ using RA.UI.StationManagement.Components.Planner.Views.Templates;
 using RA.UI.StationManagement.Components.Reports.ViewModels;
 using RA.UI.StationManagement.Components.Reports.Views;
 using RA.UI.StationManagement.Components.Settings.ViewModels;
+using RA.UI.StationManagement.Components.Settings.ViewModels.MainContent;
+using RA.UI.StationManagement.Components.Settings.ViewModels.Security;
 using RA.UI.StationManagement.Components.Settings.Views;
+using RA.UI.StationManagement.Components.Settings.Views.MainContent;
+using RA.UI.StationManagement.Components.Settings.Views.Security;
 using RA.UI.StationManagement.Dialogs.ArtistSelectDialog;
 using RA.UI.StationManagement.Dialogs.CategorySelectDialog;
 using RA.UI.StationManagement.Dialogs.TemplateSelectDialog;
@@ -82,6 +86,12 @@ namespace RA.UI.StationManagement.HostBuilders
             { typeof(TrackSelectViewModel), typeof(TrackSelectDialog) },
             { typeof(PlannerPreviewClockViewModel), typeof(PlannerPreviewClockWindow) },
             { typeof(TrackFilterViewModel), typeof(TrackFilterDialog) },
+            { typeof(SettingsAboutViewModel), typeof(SettingsAboutView) },
+            { typeof(SettingsDatabaseViewModel), typeof(SettingsAboutView) },
+            { typeof(SettingsGeneralViewModel), typeof(SettingsGeneralView) },
+            { typeof(SettingsSecurityViewModel), typeof(SettingsSecurityView) },
+            { typeof(SettingsManageGroupViewModel), typeof(SettingsManageGroupDialog) },
+            { typeof(SettingsManageUserViewModel), typeof(SettingsManageUserDialog) }
         };
         public static IHostBuilder AddViewModels(this IHostBuilder host)
         {

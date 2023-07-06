@@ -8,6 +8,7 @@ using RA.UI.Core.Factories;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels;
+using RA.UI.StationManagement.Components.Settings.ViewModels;
 using RA.UI.StationManagement.Services;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,9 @@ namespace RA.UI.StationManagement.HostBuilders
 
                 services.AddTransient<INavigationService<MediaLibraryImportItemsViewModel>,
                     NavigationService<MediaLibraryImportItemsViewModel>>();
+
+                services.AddTransient<INavigationService<SettingsMainViewModel>,
+                    NavigationService<SettingsMainViewModel>>();
 
                 //changed from scoped to singleton
                 services.AddSingleton<MediaLibraryTreeMenuService>();

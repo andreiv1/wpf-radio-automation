@@ -1,0 +1,104 @@
+﻿<uicore:RAUserControl x:Class="RA.UI.StationManagement.Components.Settings.Views.MainContent.SettingsSecurityView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+             xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core" xmlns:maincontent="clr-namespace:RA.UI.StationManagement.Components.Settings.ViewModels.MainContent" d:DataContext="{d:DesignInstance Type=maincontent:SettingsSecurityViewModel}"
+                      mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <!--GROUPS GRID -->
+        <syncfusion:SfDataGrid Grid.Column="0" 
+                       ColumnSizer="Auto"
+                       ItemsSource="{Binding Artists}"
+                       SelectedItem="{Binding SelectedArtist}"
+                       SelectionUnit="Row"
+                       NavigationMode="Row"
+                       AllowResizingColumns="True"
+                       AutoGenerateColumns="False">
+            <syncfusion:SfDataGrid.Columns>
+                <syncfusion:GridTextColumn MappingName="Name" 
+                           HeaderText="Group"
+                           MinimumWidth="200"
+                           AllowResizing="True"
+                           ColumnSizer="Star">
+                    <syncfusion:GridTextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" FontWeight="Bold"/>
+                        </DataTemplate>
+                    </syncfusion:GridTextColumn.HeaderTemplate>
+                </syncfusion:GridTextColumn>
+
+            </syncfusion:SfDataGrid.Columns>
+            <syncfusion:SfDataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Edit" Command="{Binding EditItemCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource EditIcon}" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </syncfusion:SfDataGrid.ContextMenu>
+        </syncfusion:SfDataGrid>
+        
+        <!-- USERS GRID -->
+        <syncfusion:SfDataGrid Grid.Column="2" 
+                       ColumnSizer="Auto"
+                       SelectionUnit="Row"
+                       NavigationMode="Row"
+                       AllowResizingColumns="True"
+                       AutoGenerateColumns="False">
+            <syncfusion:SfDataGrid.Columns>
+                <syncfusion:GridTextColumn MappingName="Name" 
+                           HeaderText="User"
+                           MinimumWidth="200"
+                           AllowResizing="True"
+                           ColumnSizer="Star">
+                    <syncfusion:GridTextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" FontWeight="Bold"/>
+                        </DataTemplate>
+                    </syncfusion:GridTextColumn.HeaderTemplate>
+                </syncfusion:GridTextColumn>
+
+            </syncfusion:SfDataGrid.Columns>
+            <syncfusion:SfDataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Edit" Command="{Binding EditItemCommand}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource EditIcon}" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </syncfusion:SfDataGrid.ContextMenu>
+        </syncfusion:SfDataGrid>
+
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,5,0,0">
+            <syncfusion:ButtonAdv Label="Add" SmallIcon="{StaticResource PlusSquareIcon}"
+                                  Command="{Binding AddGroupCommand}"/>
+            <syncfusion:ButtonAdv Label="Edit" Margin="5,0,0,0" SmallIcon="{StaticResource EditIcon}"
+                                  Command="{Binding EditGroupCommand}"/>
+            <syncfusion:ButtonAdv Label="Delete" Margin="5,0,0,0" SmallIcon="{StaticResource RemoveTrashIcon}"
+                                  Command="{Binding RemoveGroupCommand}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" Margin="0,5,0,0">
+            <syncfusion:ButtonAdv Label="Add" SmallIcon="{StaticResource PlusSquareIcon}"
+                                  Command="{Binding AddUserCommand}"/>
+            <syncfusion:ButtonAdv Label="Edit" Margin="5,0,0,0" SmallIcon="{StaticResource EditIcon}"
+                                  Command="{Binding EditUserCommand}"/>
+            <syncfusion:ButtonAdv Label="Delete" Margin="5,0,0,0" SmallIcon="{StaticResource RemoveTrashIcon}"
+                                  Command="{Binding RemoveUserCommand}"/>
+        </StackPanel>
+    </Grid>
+</uicore:RAUserControl>
