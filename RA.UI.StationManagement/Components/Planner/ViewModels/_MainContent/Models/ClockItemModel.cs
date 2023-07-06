@@ -125,6 +125,13 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
             }
         }
 
+        public bool IsEvent {
+            get
+            {
+                return Item is ClockItemEventDTO;
+            }
+        }
+
         public Brush? ItemColor
         {
             get

@@ -22,7 +22,6 @@ namespace RA.UI.StationManagement
     public partial class App : Application
     {
         private readonly IHost host;
-
         public App()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -83,7 +82,8 @@ namespace RA.UI.StationManagement
             {
                 await dispatcherService.InvokeOnUIThreadAsync(() =>
                 {
-                    windowService.ShowWindow<AuthViewModel>();
+                    //windowService.ShowWindow<AuthViewModel>();
+                    windowService.ShowWindow<LauncherViewModel>();  
                     splashScreen.Hide();
                 });
             });

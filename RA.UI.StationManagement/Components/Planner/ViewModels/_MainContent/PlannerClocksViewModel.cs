@@ -51,7 +51,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private TimeSpan totalDuration;
 
         public PlannerClocksViewModel(IWindowService windowService,
-            IMessageBoxService messageBoxService,
+                                      IMessageBoxService messageBoxService,
                                       IDispatcherService dispatcherService,
                                       IClocksService clocksService)
         {
@@ -236,7 +236,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             }
         }
 
-        #region Commands
+        //Commands
         [RelayCommand]
         private async void InsertTrackToSelectedClock()
         {
@@ -266,7 +266,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             var vm = windowService.ShowDialog<PlannerManageClockCategoryRuleViewModel>(SelectedClock.Id);
             if (vm.SelectedCategory == null) return;
 
-            DebugHelper.WriteLine(this, $"To add clock rule - {vm.SelectedCategory.Id}");
+            //DebugHelper.WriteLine(this, $"To add clock rule - {vm.SelectedCategory.Id}");
             int latestIndex = ClockItemsForSelectedClock
                 .Where(x => x.Item.OrderIndex > -1)
                 .Count();
@@ -394,6 +394,49 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             IsRuleSelectionEnabled = false;
         }
 
+        [RelayCommand]
+        private async void InsertTrackInSelectedEvent()
+        {
+            if (SelectedClock == null) return;
+            var vm = windowService.ShowDialog<TrackSelectViewModel>();
+
+            if (vm.SelectedTrack == null) return;
+
+            if(SelectedClockItem == null) return;
+            
+            var isEvent = SelectedClockItem.Item is ClockItemEventDTO;
+            if(!isEvent) return;
+
+            var latestEventIndex = ClockItemsForSelectedClock?
+                            .Where(ci => ci.Item.OrderIndex == -1)
+                            .Where(ci => ci.Item.ClockItemEventId == SelectedClockItem.Item.Id)
+                            .Where(ci => ci.Item.EventOrderIndex != null)
+                            .Select(x => x.Item.EventOrderIndex)
+                            .LastOrDefault();
+
+            int newIndex = latestEventIndex != null ? latestEventIndex.Value + 1 : 0;
+
+            ClockItemTrackDTO newClockItem = new ClockItemTrackDTO
+            {
+                ClockId = SelectedClock.Id,
+                OrderIndex = -1,
+                ClockItemEventId = SelectedClockItem.Item.Id,
+                EventOrderIndex = newIndex,
+                TrackId = vm.SelectedTrack.Id,
+            };
+
+            await clocksService.AddClockItem(newClockItem);
+
+            //Reload
+            _ = LoadClockItemsForSelectedClock();
+        }
+
+        [RelayCommand]
+        private void InsertCategoryInSelectedEvent()
+        {
+
+        }
+
         [RelayCommand(CanExecute = nameof(CanUseHeaderButtons))]
         private void PreviewClock()
         {
@@ -412,7 +455,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             EditSelectedItemInSelectedClockCommand.NotifyCanExecuteChanged();
             RemoveSelectedItemsInSelectedClockCommand.NotifyCanExecuteChanged();
         }
-        #endregion
+
+ 
+        
 
     }
 }

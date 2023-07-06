@@ -182,15 +182,31 @@ namespace RA.DAL
                 dbContext.Remove(entity);
                 await dbContext.SaveChangesAsync();
 
-                var otherItems = await dbContext.ClockItems
-                    .Where(ci => ci.ClockId == entity.ClockId && ci.OrderIndex > -1)
-                    .OrderBy(ci => ci.OrderIndex)
-                    .ToListAsync();
-                for (int i = 0; i < otherItems.Count(); i++)
+
+                if (entity.OrderIndex != -1)
                 {
-                    var itm = otherItems.ElementAt(i);
-                    itm.OrderIndex = i;
-                    dbContext.Update(itm);
+                    var otherNormalItems = await dbContext.ClockItems
+                        .Where(ci => ci.ClockId == entity.ClockId && ci.OrderIndex > -1)
+                        .OrderBy(ci => ci.OrderIndex)
+                        .ToListAsync();
+                    for (int i = 0; i < otherNormalItems.Count(); i++)
+                    {
+                        var itm = otherNormalItems.ElementAt(i);
+                        itm.OrderIndex = i;
+                        dbContext.Update(itm);
+                    }
+                } else if(entity.OrderIndex == -1 && entity.ClockItemEventId != null)
+                {
+                    var otherEventItems = await dbContext.ClockItems
+                        .Where(ci => ci.OrderIndex == -1 && ci.ClockItemEventId == entity.ClockItemEventId)
+                        .OrderBy(ci => ci.EventOrderIndex)
+                        .ToListAsync();
+                    for(int i = 0; i < otherEventItems.Count(); i++)
+                    {
+                        var itm = otherEventItems.ElementAt(i);
+                        itm.EventOrderIndex = i;
+                        dbContext.Update(itm);
+                    }
                 }
 
                 await dbContext.SaveChangesAsync();

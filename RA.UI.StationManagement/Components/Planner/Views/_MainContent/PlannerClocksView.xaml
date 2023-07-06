@@ -152,7 +152,7 @@
                                       Command="{Binding EditSelectedItemInSelectedClockCommand}"
                                       SmallIcon="{StaticResource EditIcon}"/>
 
-                <syncfusion:ButtonAdv Label="Delete item(s)" Height="25" Margin="0,0,3,0"
+                <syncfusion:ButtonAdv Label="Delete item" Height="25" Margin="0,0,3,0"
                                       Command="{Binding RemoveSelectedItemsInSelectedClockCommand}"
                                       SmallIcon="{StaticResource RemoveIcon}"/>
             </StackPanel>
@@ -170,7 +170,7 @@
                        SelectedItem="{Binding SelectedClockItem}"
                        SelectedItems="{Binding SelectedClockItems,Mode=TwoWay}"
                        SelectionUnit="Row" NavigationMode="Row"
-                       SelectionMode="Multiple" AllowSorting="False"
+                       SelectionMode="Single" AllowSorting="False"
                         RowHeight="29" AllowResizingColumns="True"
                        AutoGenerateColumns="False">
                     <syncfusion:SfDataGrid.Columns>
@@ -417,24 +417,28 @@
                     <!-- Context menu for CLOCK ITEMS -->
                     <syncfusion:SfDataGrid.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Copy item(s)">
-								<MenuItem.Icon>
-									<Image Source="{StaticResource CopyIcon}" Width="16" Height="16" />
-								</MenuItem.Icon>
-							</MenuItem>
-							<MenuItem Header="Paste item(s)">
-								<MenuItem.Icon>
-									<Image Source="{StaticResource PasteIcon}" Width="16" Height="16" />
-								</MenuItem.Icon>
-							</MenuItem>
-                            <MenuItem Header="Delete item(s)" Command="{Binding RemoveSelectedItemsInSelectedClockCommand}">
+
+                            <MenuItem  x:Name="InsertTrackMenuItem" Header="Insert Track in Event"
+                                       Command="{Binding InsertTrackInSelectedEventCommand}">
                                 <MenuItem.Icon>
-                                    <Image Source="{StaticResource RemoveIcon}" Width="16" Height="16" />
+                                    <Image Source="{StaticResource SongIcon}" Width="16" Height="16" />
                                 </MenuItem.Icon>
                             </MenuItem>
+                            <MenuItem x:Name="InsertCategoryMenuItem" Header="Insert Category in Event"
+                                      Command="{Binding InsertCategoryInSelectedEventCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="{StaticResource MusicFolderIcon}" Width="16" Height="16" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <Separator x:Name="InsertSeparator"/>
                             <MenuItem Header="Edit item" Command="{Binding EditSelectedItemInSelectedClockCommand}">
                                 <MenuItem.Icon>
                                     <Image Source="{StaticResource EditIcon}" Width="16" Height="16" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Delete item" Command="{Binding  RemoveSelectedItemsInSelectedClockCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="{StaticResource RemoveIcon}" Width="16" Height="16" />
                                 </MenuItem.Icon>
                             </MenuItem>
                         </ContextMenu>
@@ -475,9 +479,9 @@
                 <syncfusion:SfChart Grid.Row="0" Margin="0,25,0,25">
                     <syncfusion:SfChart.Resources>
                         <DataTemplate x:Key="AdornmentTemplate">
-                            <StackPanel>
-                                <TextBlock Text="{Binding Item.ItemName}" FontSize="12" FontWeight="DemiBold"/>
-                            </StackPanel>
+                            
+                              <TextBlock Text="{Binding Item.ItemName}" FontSize="12" FontWeight="DemiBold"/>
+                            
                         </DataTemplate>
                     </syncfusion:SfChart.Resources>
                     <syncfusion:PieSeries x:Name="clockItemsChart"
@@ -493,7 +497,6 @@
                                 ShowLabel="True"
                                 LabelPosition="Center"
                                 LabelRotationAngle="0"
-                               
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 LabelTemplate="{StaticResource AdornmentTemplate}"/>

@@ -50,6 +50,9 @@ namespace RA.DTO
 
                 TrackId = dto.TrackId,
 
+                EventOrderIndex = dto.EventOrderIndex,
+                ClockItemEventId = dto.ClockItemEventId,
+
             };
         }
     }
