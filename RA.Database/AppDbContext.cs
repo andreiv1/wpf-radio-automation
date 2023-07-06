@@ -88,7 +88,7 @@ namespace RA.Database
             );
 
             modelBuilder.Entity<UserGroup>().HasData(
-                new UserGroup { Id = 1, Name = "Administrator"}
+                new UserGroup { Id = 1, Name = "Administrators", IsBuiltIn = true}
             );
 
             modelBuilder.Entity<UserGroupRule>().HasData(new UserGroupRule[]
@@ -97,6 +97,7 @@ namespace RA.Database
                 new UserGroupRule { Id = 2, RuleValue = UserRuleType.ACCESS_PLANNER, UserGroupId = 1 },
                 new UserGroupRule { Id = 3, RuleValue = UserRuleType.ACCESS_REPORTS, UserGroupId = 1 },
                 new UserGroupRule { Id = 4, RuleValue = UserRuleType.ACCESS_SETTINGS, UserGroupId = 1 },
+                new UserGroupRule { Id = 5, RuleValue = UserRuleType.ACCESS_PLAYOUT, UserGroupId = 1 },
             });
 
             modelBuilder.Entity<User>().HasData(new User()

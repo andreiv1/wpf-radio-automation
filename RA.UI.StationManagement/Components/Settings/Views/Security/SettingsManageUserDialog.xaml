@@ -4,9 +4,9 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-                 xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+                 xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core" xmlns:security="clr-namespace:RA.UI.StationManagement.Components.Settings.ViewModels.Security" d:DataContext="{d:DesignInstance Type=security:SettingsManageUserViewModel}"
                  mc:Ignorable="d"
-        Title="SettingsManageUserDialog" Height="260" Width="400">
+        Title="Manage user" Height="260" Width="400">
     <Grid Margin="15">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -39,7 +39,9 @@
         <Label Content="Confirm Password: " Grid.Row="4" Grid.Column="0" FontWeight="DemiBold"  VerticalAlignment="Center"/>
         <PasswordBox Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left" Height="24"/>
         <Label Content="Group: " Grid.Row="6" Grid.Column="0" FontWeight="DemiBold" VerticalAlignment="Center"/>
-        <syncfusion:ComboBoxAdv Grid.Row="6" Grid.Column="2" Width="200" VerticalAlignment="Center" HorizontalAlignment="Left" Height="24"/>
+        <syncfusion:ComboBoxAdv Grid.Row="6" Grid.Column="2" Width="200" VerticalAlignment="Center" HorizontalAlignment="Left" Height="24"
+                                ItemsSource="{Binding Groups}"
+                                DisplayMemberPath="Name"/>
 
         <StackPanel Grid.Row="8" Grid.ColumnSpan="3" HorizontalAlignment="Right" Orientation="Horizontal"
                     Margin="0,10,0,0">

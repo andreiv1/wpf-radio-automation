@@ -14,6 +14,7 @@ namespace RA.Database.Models
     {
         [MaxLength(100)]
         public String Name { get; set; }
+        public bool IsBuiltIn { get; set; }
         public ICollection<User> Users { get; set; }
         public ICollection<UserGroupRule> Rules { get; set; }
     }

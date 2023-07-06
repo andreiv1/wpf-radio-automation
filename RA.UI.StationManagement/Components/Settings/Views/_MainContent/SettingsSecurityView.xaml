@@ -20,12 +20,13 @@
         <!--GROUPS GRID -->
         <syncfusion:SfDataGrid Grid.Column="0" 
                        ColumnSizer="Auto"
-                       ItemsSource="{Binding Artists}"
-                       SelectedItem="{Binding SelectedArtist}"
                        SelectionUnit="Row"
                        NavigationMode="Row"
                        AllowResizingColumns="True"
-                       AutoGenerateColumns="False">
+                       AutoGenerateColumns="False"
+                       ItemsSource="{Binding Groups}"
+                       SelectedItem="{Binding SelectedGroup}"
+                       RowHeight="32">
             <syncfusion:SfDataGrid.Columns>
                 <syncfusion:GridTextColumn MappingName="Name" 
                            HeaderText="Group"
@@ -40,15 +41,6 @@
                 </syncfusion:GridTextColumn>
 
             </syncfusion:SfDataGrid.Columns>
-            <syncfusion:SfDataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Edit" Command="{Binding EditItemCommand}">
-                        <MenuItem.Icon>
-                            <Image Source="{StaticResource EditIcon}" Width="16" Height="16"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </ContextMenu>
-            </syncfusion:SfDataGrid.ContextMenu>
         </syncfusion:SfDataGrid>
         
         <!-- USERS GRID -->
@@ -57,9 +49,11 @@
                        SelectionUnit="Row"
                        NavigationMode="Row"
                        AllowResizingColumns="True"
-                       AutoGenerateColumns="False">
+                       AutoGenerateColumns="False"
+                       ItemsSource="{Binding UsersForSelectedGroup}"
+                       RowHeight="32">
             <syncfusion:SfDataGrid.Columns>
-                <syncfusion:GridTextColumn MappingName="Name" 
+                <syncfusion:GridTextColumn MappingName="Username" 
                            HeaderText="User"
                            MinimumWidth="200"
                            AllowResizing="True"
@@ -72,15 +66,6 @@
                 </syncfusion:GridTextColumn>
 
             </syncfusion:SfDataGrid.Columns>
-            <syncfusion:SfDataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Edit" Command="{Binding EditItemCommand}">
-                        <MenuItem.Icon>
-                            <Image Source="{StaticResource EditIcon}" Width="16" Height="16"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </ContextMenu>
-            </syncfusion:SfDataGrid.ContextMenu>
         </syncfusion:SfDataGrid>
 
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,5,0,0">

@@ -13,11 +13,10 @@ namespace RA.DTO
         public string Username { get; set; }
         public string Password { get; set; }
         public string FullName { get; set; }
-
-        public string GroupName { get; set; }
         public int GroupId { get; set; }
 
-        public List<UserRuleType> GroupRules { get; set; }
+        public string GroupName { get; set; } = string.Empty;
+        public List<UserRuleType>? GroupRules { get; set; }
 
         public static UserDTO FromEntity(User user)
         {
@@ -26,9 +25,9 @@ namespace RA.DTO
                 Id = user.Id,
                 Username = user.Username,
                 FullName = user.FullName,
-                GroupName = user.UserGroup.Name,
-                GroupId = user.UserGroup.Id,
-                GroupRules = user.UserGroup.Rules.Select(r => r.RuleValue).ToList()
+                GroupId = user.UserGroupId,
+                GroupName = user.UserGroup?.Name != null ? user.UserGroup.Name : string.Empty,
+                GroupRules = user.UserGroup?.Rules != null ? user.UserGroup.Rules.Select(r => r.RuleValue).ToList() : null,
             };
         }
 

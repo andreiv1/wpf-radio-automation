@@ -1,4 +1,7 @@
 ﻿using RA.DAL;
+using RA.DAL.Interfaces;
+using RA.Database.Models;
+using System.Text.RegularExpressions;
 
 namespace RA.ConsoleApp
 {
@@ -8,8 +11,13 @@ namespace RA.ConsoleApp
         static void Main(string[] args)
         {
             //_ = TestPlannedOverview();
-            _ = TestScheduleService();
-
+            //_ = TestScheduleService();
+            UserGroupsService s = new UserGroupsService(dbFactory);
+            foreach (var g in s.GetGroups().Result)
+            {
+                Console.WriteLine($"{g.Id} - {g.Name} - {g.IsBuiltin.ToString()}");
+            }
+            var gr = s.GetGroup(2).Result;
             Console.ReadKey();
             
         }
