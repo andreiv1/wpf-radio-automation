@@ -14,19 +14,59 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <syncfusion:SfTextBoxExt Height="24" VerticalAlignment="Center"
+        <Grid Margin="0,5,0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <syncfusion:SfTextBoxExt Height="24" VerticalAlignment="Center"
                                  Watermark="Search ..."
-                                 Margin="0,0,0,5"
                                  Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
                                  ShowClearButton="True"/>
+            <syncfusion:ButtonAdv Grid.Column="1" VerticalAlignment="Center" Height="23" Margin="5,0,0,0"
+                Command="{Binding FilterItemsCommand}"
+                SmallIcon="{StaticResource FilterIcon}"
+                Label="Filter"/>
+        </Grid>
+        
 
         <syncfusion:SfDataGrid Grid.Row="1" ItemsSource="{Binding Tracks}" SelectionMode="Single"
                                SelectedItem="{Binding SelectedTrack}" AutoGenerateColumns="False"
                                AllowSorting="False" ColumnSizer="AutoLastColumnFill"
                                SelectionUnit="Row" NavigationMode="Row"
-                               RowHeight="30"
+                               RowHeight="34"
                                >
             <syncfusion:SfDataGrid.Columns>
+                <syncfusion:GridTemplateColumn MinimumWidth="50" HeaderText=" "
+                                                   MappingName="Type" Width="16" MaximumWidth="16"
+                                               AllowSorting="False">
+                    <syncfusion:GridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Width="24" Height="20">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Source" Value="{StaticResource OtherTrackIcon}"/>
+                                        <!-- Default icon -->
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Type}" Value="Jingle">
+                                                <Setter Property="Source" Value="{StaticResource JingleIcon}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="Song">
+                                                <Setter Property="Source" Value="{StaticResource SongIcon}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="Commercial">
+                                                <Setter Property="Source" Value="{StaticResource CommercialPaidIcon}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="Voiceover">
+                                                <Setter Property="Source" Value="{StaticResource VoiceOverIcon}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DataTemplate>
+                    </syncfusion:GridTemplateColumn.CellTemplate>
+                </syncfusion:GridTemplateColumn>
                 <syncfusion:GridTextColumn HeaderText="Artists" HorizontalHeaderContentAlignment="Left"
                                            MappingName="Artists" MinimumWidth="100" ColumnSizer="Star"/>
                 <syncfusion:GridTextColumn HeaderText="Title" HorizontalHeaderContentAlignment="Left"
@@ -44,19 +84,24 @@
 
         <Grid Grid.Row="2" Margin="5,0,5,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="95"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="70"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Label Content="Total items:" HorizontalAlignment="Left" VerticalAlignment="Center"
+            <Label Content="Found items:" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="DemiBold"
                     FontSize="14"/>
 
-            <Label Grid.Column="1" FontSize="14"
+            <Label Grid.Column="1" FontSize="14" Margin="0,0,20,0"
                    Content="{Binding TotalTracks}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+            <TextBlock Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="{Binding IsFiltersApplied, Converter={StaticResource BooleanToCollapsedVisibilityConverter}}">
+                <Hyperlink Command="{Binding RemoveFiltersCommand}"><Hyperlink.Inlines><Run Text="Clear filters"/></Hyperlink.Inlines></Hyperlink>
+            </TextBlock>
             <syncfusion:SfDataPager  Grid.Column="3" HorizontalAlignment="Right"
                            PageCount="{Binding Pages}"
+                           PageIndex="{Binding PageIndex, Mode=TwoWay}"
                            PageSize="100" 
                            NumericButtonCount="10"
                            AutoEllipsisMode="Both"

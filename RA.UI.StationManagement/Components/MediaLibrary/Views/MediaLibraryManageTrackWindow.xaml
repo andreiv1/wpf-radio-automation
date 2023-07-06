@@ -287,7 +287,7 @@
                                     Mask="[A-Z]{2}-[A-Z\d]{3}-\d{2}-\d{5}"
                                     MaskType="Regex"
                                     Watermark="e.g. US-ABC12-34-00001"
-                                    Value="{Binding Track.ISRC}"
+                                    Value="{Binding Track.ISRC, Mode=TwoWay}"
                                     CharacterCasing="Upper"/>
 
 

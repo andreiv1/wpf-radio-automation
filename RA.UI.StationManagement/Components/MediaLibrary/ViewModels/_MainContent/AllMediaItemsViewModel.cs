@@ -88,7 +88,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         {
             if (!value)
             {
-                _ = LoadTracks(0, tracksPerPage);
+                _ = LoadTracks(0, tracksPerPage, SearchQuery);
                 FilterConditions = null;
             }
         }
@@ -106,10 +106,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 
         private void LoadTracksFromStart()
         {
-            _ = LoadTracks(0, tracksPerPage, conditions: FilterConditions);
-            SearchQuery = string.Empty;
+            _ = LoadTracks(0, tracksPerPage, SearchQuery, conditions: FilterConditions);
             PageIndex = 0;
-            
         }
         
         //Commands

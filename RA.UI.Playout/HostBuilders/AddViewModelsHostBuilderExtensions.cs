@@ -11,6 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using RA.UI.Playout.Dialogs.TrackFilterDialog;
+using RA.UI.Playout.Dialogs.CategorySelectDialog;
 
 namespace RA.UI.Playout.HostBuilders
 {
@@ -30,7 +32,8 @@ namespace RA.UI.Playout.HostBuilders
                 };
                 Dictionary<Type, Type> viewModelToTransientWindowMap = new()
                 {
-                    
+                    {typeof(TrackFilterViewModel), typeof(TrackFilterDialog) },
+                    {typeof(CategorySelectViewModel), typeof(CategorySelectDialog) },
                 };
             
 

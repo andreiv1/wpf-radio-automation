@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
-        mc:Ignorable="d"
+        xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core" xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+                 mc:Ignorable="d"
         Title="Splash Window" Height="350" Width="500" ShowTitle="False" ShowIcon="False" TitleBarHeight="0" Icon="/Resources/playout_icon.ico"
         WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Window.Background>
@@ -94,5 +94,11 @@
                      Loaded="progressBar_Loaded"
                      Margin="0,20,0,20" Height="10" VerticalAlignment="Bottom" 
                      Visibility="Visible" Minimum="0" Maximum="100" IsIndeterminate="True"/>
+
+        <!-- Preload controls -->
+        <syncfusion:SfMaskedEdit Visibility="Hidden"/>
+        <syncfusion:ComboBoxAdv Visibility="Hidden"/>
+        <syncfusion:TimeSpanEdit Visibility="Hidden"/>
+        <syncfusion:DateTimeEdit Visibility="Hidden"/>
     </Grid>
 </uicore:RAWindow>

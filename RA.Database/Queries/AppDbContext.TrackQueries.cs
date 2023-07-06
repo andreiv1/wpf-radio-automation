@@ -15,7 +15,7 @@ namespace RA.Database
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public IQueryable<Track> GetTracks(String query = "", bool includeDisabled = false)
+        public IQueryable<Track> GetTracks(String query = "")
         {
             query = query.Trim();
             IQueryable<Track> result;
@@ -39,15 +39,6 @@ namespace RA.Database
             else
             {
                 result = Tracks.Include(t => t.TrackArtists).ThenInclude(t => t.Artist);
-            }
-
-            
-            if (includeDisabled)
-            {
-                result = result.Where(t => t.Status == Models.Enums.TrackStatus.Enabled || t.Status == Models.Enums.TrackStatus.Disabled);
-            } else
-            {
-                result = result.Where(t => t.Status == Models.Enums.TrackStatus.Enabled);
             }
             return result;
         }

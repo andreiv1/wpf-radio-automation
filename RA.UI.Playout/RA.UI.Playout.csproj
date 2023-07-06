@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -26,9 +26,11 @@
     <PackageReference Include="Syncfusion.SfInput.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.SfProgressBar.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="21.1.35" />
+    <PackageReference Include="Syncfusion.SfTreeView.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.Shared.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.Themes.Windows11Dark.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.Themes.Windows11Light.WPF" Version="21.1.35" />
+	  <PackageReference Include="Syncfusion.SfTreeNavigator.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.Tools.WPF" Version="21.1.35" />
     <PackageReference Include="Syncfusion.SfGauge.WPF" Version="21.1.35" />
 </ItemGroup>

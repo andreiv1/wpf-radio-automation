@@ -25,7 +25,7 @@ namespace RA.DAL
             using var dbContext = dbContextFactory.CreateDbContext();
 
             var query = dbContext
-                .GetTracks(searchQuery, includeDisabled: true)
+                .GetTracks(searchQuery)
                 .IgnoreQueryFilters()
                 .AsNoTracking();
 
@@ -49,7 +49,7 @@ namespace RA.DAL
                                                                           ICollection<TrackFilterCondition>? conditions = null)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            var query = dbContext.GetTracks(searchQuery, includeDisabled: true)
+            var query = dbContext.GetTracks(searchQuery)
                     .Include(t => t.Categories)
                     .AsNoTracking();
 

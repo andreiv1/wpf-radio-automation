@@ -1,10 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DAL.Models;
 using RA.Database.Models.Enums;
 using RA.DTO;
 using RA.UI.Core.Services;
+using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
+using RA.UI.Playout.Dialogs.TrackFilterDialog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,9 +20,9 @@ namespace RA.UI.Playout.ViewModels.Components
 {
     public partial class MediaItemsViewModel : ViewModelBase
     {
+        private readonly IWindowService windowService;
         private readonly IDispatcherService dispatcherService;
         private readonly ITracksService tracksService;
-
         public MainViewModel? MainVm { get; set; }
         public ObservableCollection<TrackListingDTO> Tracks { get; set; } = new();
 
@@ -53,37 +56,73 @@ namespace RA.UI.Playout.ViewModels.Components
         [ObservableProperty]
         private int pages;
 
+        [ObservableProperty]
+        private int pageIndex = 0;
+
         private const int tracksPerPage = 100;
+
+        public readonly static List<TrackFilterCondition> defaultFilterConditions = new()
+        {
+            new TrackFilterCondition(FilterLabelType.Status,FilterOperator.Equals,TrackStatus.Enabled),
+        };
+        public List<TrackFilterCondition>? FilterConditions { get; private set; } = defaultFilterConditions;
+
+        [ObservableProperty]
+        private bool isFiltersApplied;
+
+        partial void OnIsFiltersAppliedChanged(bool value)
+        {
+            if (!value)
+            {
+                FilterConditions = defaultFilterConditions;
+                _ = LoadTracks(0, tracksPerPage, SearchQuery);
+            }
+        }
 
         [ObservableProperty]
         private TrackListingDTO? selectedTrack;
 
-        public MediaItemsViewModel(IDispatcherService dispatcherService,
+        public MediaItemsViewModel(IWindowService windowService,
+                                   IDispatcherService dispatcherService,
                                    ITracksService tracksService)
         {
+            this.windowService = windowService;
             this.dispatcherService = dispatcherService;
             this.tracksService = tracksService;
             _ = LoadTracks(0, 100);
         }
-
-        ICollection<TrackFilterCondition>? conditions = new List<TrackFilterCondition>()
-        {
-            new TrackFilterCondition(FilterLabelType.Status,FilterOperator.Equals,TrackStatus.Enabled),
-        };
         //Data fetching
         public async Task LoadTracks(int skip, int take, string query = "")
         {
             Tracks.Clear();
-            TotalTracks = await tracksService.GetTrackCountAsync(query, conditions: conditions);
+            TotalTracks = await tracksService.GetTrackCountAsync(query, conditions: FilterConditions);
             Pages = TotalTracks > 0 ? (TotalTracks - 1) / tracksPerPage + 1 : 0;
-            var tracks = await tracksService.GetTrackListAsync(skip, take, query, conditions: conditions);
+            var tracks = await tracksService.GetTrackListAsync(skip, take, query, conditions: FilterConditions);
 
             foreach (var track in tracks.ToList())
             {
                 Tracks.Add(track);
             }
-
         }
-      
+
+        //Commands
+        [RelayCommand]
+        private void FilterItems()
+        {
+            var vm = windowService.ShowDialog<TrackFilterViewModel>();
+            FilterConditions = vm?.Conditions;
+            FilterConditions?.Add(new TrackFilterCondition(FilterLabelType.Status, FilterOperator.Equals, TrackStatus.Enabled));
+            if (FilterConditions?.Count > 1) IsFiltersApplied = true;
+            else IsFiltersApplied = false;
+            _ = LoadTracks(0, tracksPerPage);
+        }
+
+        [RelayCommand]
+        private void RemoveFilters()
+        {
+            IsFiltersApplied = false;
+        }
+
+
     }
 }
