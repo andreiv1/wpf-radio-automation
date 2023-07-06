@@ -26,7 +26,6 @@ namespace RA.DAL
 
             var query = dbContext
                 .GetTracks(searchQuery)
-                .IgnoreQueryFilters()
                 .AsNoTracking();
 
             if (conditions != null)
