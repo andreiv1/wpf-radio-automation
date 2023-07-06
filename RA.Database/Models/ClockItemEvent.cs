@@ -14,5 +14,6 @@ namespace RA.Database.Models
         public string EventLabel { get; set; }
         public TimeSpan EstimatedEventStart { get; set; }
         public TimeSpan? EstimatedEventDuration { get; set; }
+        public ICollection<ClockItemBase>? EventSubitems { get; set; }
     }
 }

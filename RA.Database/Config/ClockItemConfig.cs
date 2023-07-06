@@ -18,6 +18,11 @@ namespace RA.Database.Config
                 .HasValue<ClockItemTrack>(0)
                 .HasValue<ClockItemCategory>(1)
                 .HasValue<ClockItemEvent>(2);
+
+            builder.HasOne(ci => ci.ClockItemEvent)
+                .WithMany(cie => cie.EventSubitems)
+                .HasForeignKey(ci => ci.ClockItemEventId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

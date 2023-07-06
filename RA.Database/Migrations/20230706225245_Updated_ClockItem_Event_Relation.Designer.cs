@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RA.Database;
 
@@ -10,9 +11,11 @@ using RA.Database;
 namespace RA.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230706225245_Updated_ClockItem_Event_Relation")]
+    partial class Updated_ClockItem_Event_Relation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +46,14 @@ namespace RA.Database.Migrations
                     b.Property<int>("ClockId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ClockItemCategoryId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ClockItemEventId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ClockItemTrackId")
                         .HasColumnType("int");
 
                     b.Property<int>("ClockItemType")
@@ -59,7 +69,11 @@ namespace RA.Database.Migrations
 
                     b.HasIndex("ClockId");
 
+                    b.HasIndex("ClockItemCategoryId");
+
                     b.HasIndex("ClockItemEventId");
+
+                    b.HasIndex("ClockItemTrackId");
 
                     b.ToTable("ClockItems");
 
@@ -852,10 +866,19 @@ namespace RA.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RA.Database.Models.ClockItemCategory", null)
+                        .WithMany("EventSubitems")
+                        .HasForeignKey("ClockItemCategoryId");
+
                     b.HasOne("RA.Database.Models.ClockItemEvent", "ClockItemEvent")
                         .WithMany("EventSubitems")
                         .HasForeignKey("ClockItemEventId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RA.Database.Models.ClockItemTrack", null)
+                        .WithMany("EventSubitems")
+                        .HasForeignKey("ClockItemTrackId");
 
                     b.Navigation("Clock");
 
@@ -1130,9 +1153,16 @@ namespace RA.Database.Migrations
             modelBuilder.Entity("RA.Database.Models.ClockItemCategory", b =>
                 {
                     b.Navigation("ClockItemCategoryTags");
+
+                    b.Navigation("EventSubitems");
                 });
 
             modelBuilder.Entity("RA.Database.Models.ClockItemEvent", b =>
+                {
+                    b.Navigation("EventSubitems");
+                });
+
+            modelBuilder.Entity("RA.Database.Models.ClockItemTrack", b =>
                 {
                     b.Navigation("EventSubitems");
                 });
