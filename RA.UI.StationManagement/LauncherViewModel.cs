@@ -84,7 +84,14 @@ namespace RA.UI.StationManagement
         [RelayCommand]
         private void LockSession()
         {
-            
+            foreach(var window in Application.Current.Windows)
+            {
+                if (window is not LauncherWindow)
+                {
+                    var windowToClose = window as Window;
+                    windowToClose?.Close();
+                }
+            }
             userStore.LoggedUser = null;
             userStore.SessionLocked = true;
             windowService.ShowDialog<AuthViewModel>();

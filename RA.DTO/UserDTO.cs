@@ -10,12 +10,12 @@ namespace RA.DTO
     public class UserDTO
     {
         public int? Id { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string FullName { get; set; }
+        public string? Username { get; set; }
+        public string? Password { get; set; }
+        public string? FullName { get; set; }
         public int GroupId { get; set; }
 
-        public string GroupName { get; set; } = string.Empty;
+        public string? GroupName { get; set; }
         public List<UserRuleType>? GroupRules { get; set; }
 
         public static UserDTO FromEntity(User user)
