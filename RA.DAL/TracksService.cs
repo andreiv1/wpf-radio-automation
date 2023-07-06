@@ -25,15 +25,18 @@ namespace RA.DAL
             using var dbContext = dbContextFactory.CreateDbContext();
 
             var query = dbContext
-                .GetTracks(includeDisabled: true)
+                .GetTracks(searchQuery, includeDisabled: true)
                 .IgnoreQueryFilters()
                 .AsNoTracking();
 
-            var filters = GenerateFilters(conditions);
-
-            foreach (var filter in filters)
+            if (conditions != null)
             {
-                query = query.Where(filter.Value);
+                var filters = GenerateFilters(conditions);
+
+                foreach (var filter in filters)
+                {
+                    query = query.Where(filter.Value);
+                }
             }
 
             return await query.CountAsync();
@@ -46,19 +49,22 @@ namespace RA.DAL
                                                                           ICollection<TrackFilterCondition>? conditions = null)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            var query = dbContext.GetTracks(includeDisabled: true)
-                    .IgnoreQueryFilters()
+            var query = dbContext.GetTracks(searchQuery, includeDisabled: true)
+                    .Include(t => t.Categories)
                     .AsNoTracking();
 
-
-            var filters = GenerateFilters(conditions);
-
-            foreach (var filter in filters)
+            if (conditions != null)
             {
-                query = query.Where(filter.Value);
+                var filters = GenerateFilters(conditions);
+                foreach (var filter in filters)
+                {
+                    query = query.Where(filter.Value);
+                }
             }
 
-            query = query.Skip(skip).Take(take);
+            query = query
+                .OrderBy(t => t.Id)
+                .Skip(skip).Take(take);
 
             return await query.Select(t => TrackListingDTO.FromEntity(t)).ToListAsync();
         }
@@ -75,14 +81,15 @@ namespace RA.DAL
                     {
                         case FilterLabelType.Album when condition.FilterOperator == FilterOperator.Equals:
                             string? albumEquals = condition.Value as string;
-                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Album.ToLower() == albumEquals.ToLower();
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Album!.ToLower() == albumEquals!.ToLower();
                             break;
                         case FilterLabelType.Album when condition.FilterOperator == FilterOperator.Like:
                             string? albumLike = condition.Value as string;
-                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Album.ToLower().Contains(albumLike.ToLower());
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Album!.ToLower().Contains(albumLike!.ToLower());
                             break;
-                        case FilterLabelType.Category when condition.FilterOperator == FilterOperator.Like:
-                            int? categoryId = condition.Value as int?;
+                        case FilterLabelType.Category when condition.FilterOperator == FilterOperator.Equals:
+                            var categoryDTO = condition.Value as CategoryDTO;
+                            int? categoryId = categoryDTO?.Id as int?;
                             filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Categories.Any(tc => tc.Id == categoryId);
                             break;
 
@@ -150,6 +157,15 @@ namespace RA.DAL
                         case FilterLabelType.Type when condition.FilterOperator == FilterOperator.Equals:
                             TrackType? type = condition.Value as TrackType?;
                             filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Type == type;
+                            break;
+
+                        case FilterLabelType.Title when condition.FilterOperator == FilterOperator.Equals:
+                            var titleEquals = condition.Value as string;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Title.ToLower() == titleEquals!.ToLower();
+                            break;
+                        case FilterLabelType.Title when condition.FilterOperator == FilterOperator.Like:
+                            var titleLike = condition.Value as string;
+                            filters[(condition.FilterLabelType, condition.FilterOperator)] = (t) => t.Title.ToLower().Contains(titleLike!.ToLower());
                             break;
                     }
                 }

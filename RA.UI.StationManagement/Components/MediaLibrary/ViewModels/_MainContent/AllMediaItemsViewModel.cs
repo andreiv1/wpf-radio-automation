@@ -50,7 +50,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
                 if (task.IsCompletedSuccessfully && !cancellationToken.IsCancellationRequested)
                 {
                     DebugHelper.WriteLine(this, $"Performing search query: {value}");
-                    _ = LoadTracks(0, tracksPerPage, value);
+                    _ = LoadTracks(0, tracksPerPage, value, FilterConditions);
                 }
             });
         }
@@ -79,10 +79,19 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             this.messageBoxService = messageBoxService;
             this.tracksService = tracksService;
         }
-
-
-
         public List<TrackFilterCondition>? FilterConditions { get; private set; }
+
+        [ObservableProperty]
+        private bool isFiltersApplied;
+
+        partial void OnIsFiltersAppliedChanged(bool value)
+        {
+            if (!value)
+            {
+                _ = LoadTracks(0, tracksPerPage);
+                FilterConditions = null;
+            }
+        }
         public async Task LoadTracks(int skip, int take, string query = "", List<TrackFilterCondition>? conditions = null)
         {
             Items.Clear();
@@ -152,7 +161,16 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         {
             var vm = windowService.ShowDialog<TrackFilterViewModel>();
             FilterConditions = vm?.Conditions;
+            if (FilterConditions?.Count > 0) IsFiltersApplied = true;
+            else IsFiltersApplied = false;
             _ = LoadTracks(0, tracksPerPage, conditions: FilterConditions);
+        }
+
+
+        [RelayCommand]
+        private void RemoveFilters()
+        {
+            IsFiltersApplied = false;
         }
 
     }

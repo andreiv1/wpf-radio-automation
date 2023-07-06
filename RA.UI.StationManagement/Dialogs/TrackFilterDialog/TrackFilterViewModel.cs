@@ -1,11 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using RA.DAL;
 using RA.DAL.Models;
 using RA.Database.Models.Enums;
 using RA.DTO;
 using RA.Logic;
+using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
+using RA.UI.StationManagement.Dialogs.CategorySelectDialog;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -47,7 +50,7 @@ namespace RA.UI.StationManagement.Dialogs.TrackFilterDialog
         public static readonly ImmutableDictionary<FilterLabelType, FilterControlType> controlByLabel = ImmutableDictionary.CreateRange(
             new[]
             {
-                KeyValuePair.Create(FilterLabelType.Album, FilterControlType.Textbox),
+                    KeyValuePair.Create(FilterLabelType.Album, FilterControlType.Textbox),
                     KeyValuePair.Create(FilterLabelType.Category, FilterControlType.CategoryPicker),
                     KeyValuePair.Create(FilterLabelType.DateAdded, FilterControlType.DatePicker),
                     KeyValuePair.Create(FilterLabelType.DateModified, FilterControlType.DatePicker),
@@ -58,6 +61,8 @@ namespace RA.UI.StationManagement.Dialogs.TrackFilterDialog
                     KeyValuePair.Create(FilterLabelType.Title, FilterControlType.Textbox),
             }
         );
+        private readonly IWindowService windowService;
+        private readonly ICategoriesService categoriesService;
 
         public static TrackStatus[] TrackStatuses => Enum.GetValues(typeof(TrackStatus)).Cast<TrackStatus>().ToArray();
 
@@ -68,6 +73,8 @@ namespace RA.UI.StationManagement.Dialogs.TrackFilterDialog
 
         partial void OnSelectedLabelTypeChanged(FilterLabelType value)
         {
+            ClearAllValues();
+  
             Operators.Clear();
             if (allowedOperatorsByLabel.TryGetValue(value, out var existingOperators))
             {
@@ -82,7 +89,11 @@ namespace RA.UI.StationManagement.Dialogs.TrackFilterDialog
             {
                 ControlType = controlItem;
             }
-            ClearAllValues();
+
+            if(ControlType == FilterControlType.DatePicker)
+            {
+                DateValue = DateTime.Now.Date;
+            }
         }
 
         public ObservableCollection<FilterOperator> Operators { get; private set; } = new ObservableCollection<FilterOperator>();
@@ -93,10 +104,12 @@ namespace RA.UI.StationManagement.Dialogs.TrackFilterDialog
         [ObservableProperty]
         private FilterControlType controlType;
 
-        public FilterModel()
+        public FilterModel(IWindowService windowService, ICategoriesService categoriesService)
         {
             SelectedLabelType = FilterLabelType.Album;
             OnSelectedLabelTypeChanged(SelectedLabelType);
+            this.windowService = windowService;
+            this.categoriesService = categoriesService;
         }
 
         [ObservableProperty]
@@ -127,9 +140,14 @@ namespace RA.UI.StationManagement.Dialogs.TrackFilterDialog
         }
 
         [RelayCommand]
-        private void OpenPickCategory()
+        private async void OpenPickCategory()
         {
-            throw new NotImplementedException();
+            var vm = windowService.ShowDialog<CategorySelectViewModel>();
+            var selectedCategoryId = vm?.SelectedCategory?.CategoryId;
+            if (selectedCategoryId != null)
+            {
+                CategoryValue = await categoriesService.GetCategory(selectedCategoryId.GetValueOrDefault());
+            }
         }
 
 
@@ -141,10 +159,7 @@ namespace RA.UI.StationManagement.Dialogs.TrackFilterDialog
         public static FilterLabelType[] FilterLabelTypes { get; } = (FilterLabelType[])Enum.GetValues(typeof(FilterLabelType)).Cast<FilterLabelType>()
             .OrderBy(type => type.ToString())
             .ToArray();
-        public ObservableCollection<FilterModel> Filters { get; set; } = new()
-        {
-            new FilterModel()
-        };
+        public ObservableCollection<FilterModel> Filters { get; set; } = new();
 
         public List<TrackFilterCondition>? Conditions { get; private set; } = null;
 
@@ -153,20 +168,33 @@ namespace RA.UI.StationManagement.Dialogs.TrackFilterDialog
 
         [ObservableProperty]
         private bool isMatchAny = false;
+        private readonly IMessageBoxService messageBoxService;
+        private readonly ICategoriesService categoriesService;
 
-        public TrackFilterViewModel(IWindowService windowService) : base(windowService) 
+        public TrackFilterViewModel(IWindowService windowService,
+                                    IMessageBoxService messageBoxService,
+                                    ICategoriesService categoriesService) : base(windowService) 
         {
+            this.messageBoxService = messageBoxService;
+            this.categoriesService = categoriesService;
+
+            Filters.Add(new FilterModel(windowService, categoriesService));
         }
 
         [RelayCommand]
         private void AddFilter()
         {
-            Filters.Add(new FilterModel());
+            Filters.Add(new FilterModel(windowService, categoriesService));
         }
 
         [RelayCommand]
         private void RemoveFilter(object parameter)
         {
+            if(Filters.Count == 1)
+            {
+                messageBoxService.ShowError($"You must have at least one filter.");
+                return;
+            }
             if (parameter is FilterModel filter)
             {
                 Filters.Remove(filter);

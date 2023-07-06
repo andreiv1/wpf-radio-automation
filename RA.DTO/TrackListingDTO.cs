@@ -20,7 +20,8 @@ namespace RA.DTO
         public DateTime DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
         public DateTime? DateDeleted { get; set; }
-
+        public string? Status { get; set; }
+        public string? Categories { get; set; }
         public static TrackListingDTO FromEntity(Track track)
         {
             return new TrackListingDTO
@@ -36,6 +37,8 @@ namespace RA.DTO
                 DateAdded = track.DateAdded,
                 DateModified = track.DateModified,
                 DateDeleted = track.DateDeleted,
+                Status = track.Status.ToString(),
+                Categories = track.Categories != null ? string.Join(", ", track.Categories.Select(c => c.Name)) : String.Empty,
             };
         }
     }

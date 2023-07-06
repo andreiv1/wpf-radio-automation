@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DTO;
 using RA.Logic;
+using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Categories;
@@ -12,12 +13,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System;
 
 namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
 {
     public partial class CategoryItemsViewModel : ViewModelBase
     {
         private readonly IWindowService windowService;
+        private readonly IMessageBoxService messageBoxService;
         private readonly ICategoriesService categoryService;
         private readonly ITracksService tracksService;
         private readonly INavigationService<MediaLibraryMainViewModel> navigationService;
@@ -79,7 +82,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         [ObservableProperty]
         private int pageIndex = 0;
 
-        public CategoryItemsViewModel(IWindowService windowService, 
+        public CategoryItemsViewModel(IWindowService windowService,
+                                      IMessageBoxService messageBoxService,
                                       ICategoriesService categoryService,
                                       ITracksService tracksService,
                                       INavigationService<MediaLibraryMainViewModel> navigationService,
@@ -87,6 +91,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
                                       int categoryId)
         {
             this.windowService = windowService;
+            this.messageBoxService = messageBoxService;
             this.categoryService = categoryService;
             this.tracksService = tracksService;
             this.navigationService = navigationService;
@@ -156,10 +161,36 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         }
 
         [RelayCommand]
+        private void EditSubcategory()
+        {
+            throw new NotImplementedException();
+        }
+
+        [RelayCommand]
         private void ImportItems()
         {
             windowService.ShowDialog<MediaLibraryImportItemsViewModel>(categoryId);
             _ = LoadTracksFromStart();
+        }
+
+        [RelayCommand]
+        private async void DeleteItem()
+        {
+            if (SelectedTrack == null) return;
+            var isDeleted = await tracksService.DeleteTrack(SelectedTrack.Id);
+            var trackString = $"{(string.IsNullOrWhiteSpace(SelectedTrack.Artists) ?
+                string.Empty : $"{SelectedTrack.Artists} - ")}";
+            if (isDeleted)
+            {
+                messageBoxService.ShowInfo($"Selected track '{trackString}{SelectedTrack.Title}' deleted succesfully!");
+                LoadTracksFromStart();
+            }
+            else
+            {
+                messageBoxService.ShowError($"Selected track '{trackString}{SelectedTrack.Title}' can't be deleted.\n" +
+                    $"It might be used somewhere else (in a clock or playlist).");
+            }
+
         }
 
     }
