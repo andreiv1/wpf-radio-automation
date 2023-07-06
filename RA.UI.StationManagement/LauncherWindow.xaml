@@ -79,7 +79,9 @@
 
         <StackPanel Grid.Row="0">
             <TextBlock FontSize="20" FontWeight="DemiBold" Margin="5,0,0,5"> 
-                    Welcome, admin!
+                    <Run Text="Welcome, "/>
+                    <Run Text="{Binding DisplayName}" d:Text="USERNAME"/>
+                    <Run Text="!"/>
             </TextBlock>
         </StackPanel>
         <StackPanel Grid.Row="1">

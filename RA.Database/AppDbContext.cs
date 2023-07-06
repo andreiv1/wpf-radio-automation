@@ -103,9 +103,9 @@ namespace RA.Database
             modelBuilder.Entity<User>().HasData(new User()
             {
                 Id = 1,
-                FullName = "Andrei",
-                Username = "andrei",
-                Password = "$2a$11$SWq88W6Q77w7sanz7HrxbexnTN0nLq8XB70lLFrSDQbddPzmnQdIK",
+                FullName = "Administrator",
+                Username = "admin",
+                Password = "$2a$11$XLzkiZw03i/cqn90F8cgr.EjrnXds.O7quStlYO7RI0H3BFxwg59e",
                 UserGroupId = 1
             });
         }

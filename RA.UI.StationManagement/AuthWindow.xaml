@@ -6,9 +6,9 @@
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:stationmanagement="clr-namespace:RA.UI.StationManagement" 
         d:DataContext="{d:DesignInstance Type=stationmanagement:AuthViewModel}"
-        mc:Ignorable="d"
-        Title="RA | Authentication" Icon="/Resources/icon.ico"
-        Height="200" Width="350" ResizeMode="NoResize" TitleBarHeight="1"
+        mc:Ignorable="d" WindowStyle="ToolWindow" ResizeMode="CanMinimize" 
+        Title="RA | Authentication" Icon="/Resources/icon.ico" 
+        Height="230" Width="350"
         WindowStartupLocation="CenterScreen">
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -17,11 +17,11 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="RA | Authentication" Grid.Row="0" FontSize="20" 
+        <TextBlock Text="Station Management" Grid.Row="0" FontSize="20" 
                    FontWeight="DemiBold" HorizontalAlignment="Center"
                    Margin="0,0,0,20"/>
         <TextBlock Grid.Row="1" HorizontalAlignment="Left"
-                   Margin="0,0,0,5"
+                   Margin="5,0,0,10" FontWeight="DemiBold"
                    Text="Please enter your credentials:"/>
         <Grid Grid.Row="2"
             VerticalAlignment="Center">

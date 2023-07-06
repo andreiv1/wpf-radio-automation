@@ -1,6 +1,7 @@
 ﻿using RA.UI.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,27 @@ namespace RA.UI.StationManagement
             if(passwordBox == null) return; 
             vm.Password = passwordBox.Password;
         }
-        
+
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            if (e.Key == Key.System && e.SystemKey == Key.F4)
+            {
+                Application.Current.Shutdown();
+            }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            var vm = DataContext as AuthViewModel;
+            if (vm?.UserStore.LoggedUser != null)
+            {
+                
+            } else
+            {
+                e.Cancel = true;
+                Application.Current.Shutdown();
+            }
+            
+        }
     }
 }

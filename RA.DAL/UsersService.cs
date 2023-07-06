@@ -19,16 +19,18 @@ namespace RA.DAL
             this.dbContextFactory = dbContextFactory;
         }
 
-        public async Task<bool> CanUserLogIn(string username, string password)
+        public async Task<UserDTO?> LogIn(string username, string password)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             var user = await dbContext.Users
+                .Include(u => u.UserGroup)
+                .ThenInclude(ug => ug.Rules)
                 .Where(u => u.Username == username)
                 .FirstOrDefaultAsync();
-            if (user == null) return false;
-
+            if (user == null) return null;
             bool isPasswordValid = PasswordEncryptor.VerifyPassword(password, user.Password);
-            return isPasswordValid;
+
+            return isPasswordValid ? UserDTO.FromEntity(user) : null;
         }
 
         public async Task<bool> AddUser(UserDTO userDTO)

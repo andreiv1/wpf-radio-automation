@@ -1,10 +1,12 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels;
 using RA.UI.StationManagement.Components.Planner.ViewModels;
 using RA.UI.StationManagement.Components.Reports.ViewModels;
 using RA.UI.StationManagement.Components.Settings.ViewModels;
+using RA.UI.StationManagement.Stores;
 using System.Windows;
 
 namespace RA.UI.StationManagement
@@ -12,9 +14,17 @@ namespace RA.UI.StationManagement
     public partial class LauncherViewModel : ViewModelBase
     {
         private readonly IWindowService windowService;
-        public LauncherViewModel(IWindowService windowService)
+        private readonly UserStore userStore;
+
+        [ObservableProperty]
+        private string? displayName;
+
+        public LauncherViewModel(IWindowService windowService,
+                                 UserStore userStore)
         {
             this.windowService = windowService;
+            this.userStore = userStore;
+            DisplayName = userStore.LoggedUser?.FullName;
         }
 
         [RelayCommand]
@@ -45,7 +55,9 @@ namespace RA.UI.StationManagement
         [RelayCommand]
         private void LockSession()
         {
+            userStore.LoggedUser = null;
             windowService.ShowDialog<AuthViewModel>();
+            DisplayName = userStore.LoggedUser?.FullName;
         }
 
         [RelayCommand]

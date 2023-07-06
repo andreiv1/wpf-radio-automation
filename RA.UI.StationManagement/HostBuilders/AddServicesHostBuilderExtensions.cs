@@ -10,6 +10,7 @@ using RA.UI.Core.Services.Interfaces;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels;
 using RA.UI.StationManagement.Components.Settings.ViewModels;
 using RA.UI.StationManagement.Services;
+using RA.UI.StationManagement.Stores;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,9 @@ namespace RA.UI.StationManagement.HostBuilders
                 services.AddSingleton<IFileBrowserDialogService, FileBrowserDialogService>();
                 services.AddSingleton<IMessageBoxService, MessageBoxService>();
                 services.AddSingleton<IDispatcherService, WpfDispatcherService>();
+
+                //Stores
+                services.AddSingleton<UserStore>();
 
                 //Navigation services
                 //changed from scoped to singleton

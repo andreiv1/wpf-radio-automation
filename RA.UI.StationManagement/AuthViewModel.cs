@@ -4,6 +4,7 @@ using RA.DAL.Interfaces;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
+using RA.UI.StationManagement.Stores;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,9 @@ namespace RA.UI.StationManagement
         private readonly IWindowService windowService;
         private readonly IMessageBoxService messageBoxService;
         private readonly IUsersService usersService;
+        private readonly UserStore userStore;
 
-        private static bool isFirstOpened = true;
+        public UserStore UserStore => userStore;
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(LogInCommand))]
@@ -31,26 +33,27 @@ namespace RA.UI.StationManagement
         public AuthViewModel(
             IWindowService windowService,
             IMessageBoxService messageBoxService,
-            IUsersService usersService)
+            IUsersService usersService,
+            UserStore userStore)
         {
             this.windowService = windowService;
             this.messageBoxService = messageBoxService;
             this.usersService = usersService;
+            this.userStore = userStore;
         }
 
         [RelayCommand(CanExecute = nameof(CanLogIn))]
         private async void LogIn() {
             if (Username == null || Password == null) return;
-            var canThisUserLogin = await usersService.CanUserLogIn(Username, Password);
+            userStore.LoggedUser = await usersService.LogIn(Username, Password);
 
-            if (canThisUserLogin)
+            bool loggedIn = userStore.LoggedUser != null;
+            if (loggedIn)
             {
                 windowService.CloseWindow(this);
-                if (isFirstOpened)
-                {
-                    isFirstOpened = false;
-                    windowService.ShowWindow<LauncherViewModel>();
-                }
+                Password = string.Empty;
+                windowService.ShowWindow<LauncherViewModel>();
+                
             }
             else
             {

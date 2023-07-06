@@ -10,6 +10,6 @@ namespace RA.DAL.Interfaces
     public interface IUsersService
     {
         Task<bool> AddUser(UserDTO userDTO);
-        Task<bool> CanUserLogIn(string username, string password);
+        Task<UserDTO?> LogIn(string username, string password);
     }
 }

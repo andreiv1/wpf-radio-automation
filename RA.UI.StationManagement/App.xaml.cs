@@ -83,7 +83,7 @@ namespace RA.UI.StationManagement
             {
                 await dispatcherService.InvokeOnUIThreadAsync(() =>
                 {
-                    windowService.ShowWindow<LauncherViewModel>();
+                    windowService.ShowWindow<AuthViewModel>();
                     splashScreen.Hide();
                 });
             });
