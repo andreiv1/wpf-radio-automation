@@ -185,6 +185,21 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
             await clocksService.AddClockItem(newClockItemDto);
         }
 
+        public async Task AddClockItemToEvent(int eventOrderIndex, int eventId)
+        {
+            if(SelectedCategory == null) return;
+            if (Result == RADialogResult.Cancel) return;
+
+            var newClockItemDto = ManageClockCategoryModel.ToDto(CategoryModel);
+            newClockItemDto.CategoryId = SelectedCategory.Id;
+            newClockItemDto.ClockId = clockId;
+            newClockItemDto.OrderIndex = -1;
+            newClockItemDto.EventOrderIndex = eventOrderIndex;
+            newClockItemDto.ClockItemEventId = eventId;
+            await clocksService.AddClockItem(newClockItemDto);
+
+        }
+
         public async Task UpdateClockItem()
         {
             if (SelectedCategory == null) return;

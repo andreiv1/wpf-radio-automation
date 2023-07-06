@@ -53,11 +53,19 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks.Models
 
         public List<ClockItemCategoryTagDTO>? Tags { get; set; } = new();
 
+        private int? clockItemEventId;
+        private int? eventOrderIndex;
+
         public static ManageClockCategoryModel FromDto(ClockItemCategoryDTO dto)
         {
             return new ManageClockCategoryModel
             {
                 orderIndex = dto.OrderIndex,
+
+                clockItemEventId = dto.ClockItemEventId,
+                eventOrderIndex = dto.EventOrderIndex,
+
+
                 FromReleaseDate = dto.MinReleaseDate,
                 ToReleaseDate = dto.MaxReleaseDate,
                 MinDuration = dto.MinDuration.HasValue ? dto.MinDuration : new TimeSpan(0, 0, 0),
@@ -68,6 +76,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks.Models
                 TrackSeparation = new TimeSpan(0,dto.TrackSeparation.GetValueOrDefault(),0),
                 IsFiller = dto.IsFiller,
                 Tags = dto.Tags,
+                
             };
         }
 
@@ -77,6 +86,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks.Models
             return new ClockItemCategoryDTO
             {
                 OrderIndex = model.orderIndex.GetValueOrDefault(),
+                ClockItemEventId = model.clockItemEventId,
+                EventOrderIndex = model.eventOrderIndex,
                 MinReleaseDate = model.FromReleaseDate,
                 MaxReleaseDate = model.ToReleaseDate,
                 MinDuration = model.EnforceDurationLimits ? model.MinDuration.GetValueOrDefault() : null,

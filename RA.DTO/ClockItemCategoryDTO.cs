@@ -69,6 +69,9 @@ namespace RA.DTO
                 ClockItemCategoryTags = dto.Tags != null ?
                     dto.Tags.Select(t => ClockItemCategoryTagDTO.ToEntity(t)).ToList() : new(),
 
+                ClockItemEventId = dto.ClockItemEventId,
+                EventOrderIndex = dto.EventOrderIndex,
+
             };
         }
     }

@@ -298,8 +298,11 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             if(SelectedClockItem.Item is ClockItemCategoryDTO itemCategory)
             {
                 var vm = windowService.ShowDialog<PlannerManageClockCategoryRuleViewModel>(SelectedClock.Id, itemCategory.Id);
-                //messageBoxService.ShowWarning("TO DO UPDATE");
-                if (vm != null) await vm.UpdateClockItem();
+
+                if (vm != null)
+                {
+                    await vm.UpdateClockItem();
+                }
             } else if(SelectedClockItem.Item is ClockItemEventDTO itemEvent)
             {
                 var vm = windowService.ShowDialog<PlannerManageClockEventRuleViewModel>(SelectedClock.Id, itemEvent.Id);
@@ -397,16 +400,18 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         [RelayCommand]
         private async void InsertTrackInSelectedEvent()
         {
-            if (SelectedClock == null) return;
-            var vm = windowService.ShowDialog<TrackSelectViewModel>();
+            if (SelectedClockItem == null || SelectedClock == null) return;
 
-            if (vm.SelectedTrack == null) return;
-
-            if(SelectedClockItem == null) return;
-            
             var isEvent = SelectedClockItem.Item is ClockItemEventDTO;
-            if(!isEvent) return;
+            if (!isEvent || SelectedClockItem.Item == null)
+            {
+                messageBoxService.ShowWarning($"You can attach a track only to an event!");
+                return;
+            }
+            if (SelectedClockItem.Item.Id == null) return;
 
+            var vm = windowService.ShowDialog<TrackSelectViewModel>();
+            if (vm.SelectedTrack == null) return;
             var latestEventIndex = ClockItemsForSelectedClock?
                             .Where(ci => ci.Item.OrderIndex == -1)
                             .Where(ci => ci.Item.ClockItemEventId == SelectedClockItem.Item.Id)
@@ -432,9 +437,28 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         }
 
         [RelayCommand]
-        private void InsertCategoryInSelectedEvent()
+        private async void InsertCategoryInSelectedEvent()
         {
+            if (SelectedClockItem == null || SelectedClock == null) return;
 
+            var isEvent = SelectedClockItem.Item is ClockItemEventDTO;
+            if (!isEvent || SelectedClockItem.Item == null)
+            {
+                messageBoxService.ShowWarning($"You can attach a category selection rule only to an event!");
+                return;
+            }
+            if (SelectedClockItem.Item.Id == null) return;
+            var latestEventIndex = ClockItemsForSelectedClock?
+                            .Where(ci => ci.Item.OrderIndex == -1)
+                            .Where(ci => ci.Item.ClockItemEventId == SelectedClockItem.Item.Id)
+                            .Where(ci => ci.Item.EventOrderIndex != null)
+                            .Select(x => x.Item.EventOrderIndex)
+                            .LastOrDefault();
+            int newIndex = latestEventIndex != null ? latestEventIndex.Value + 1 : 0;
+            var vm = windowService.ShowDialog<PlannerManageClockCategoryRuleViewModel>(SelectedClock.Id);
+            await vm.AddClockItemToEvent(newIndex, SelectedClockItem.Item.Id);
+
+            _ = LoadClockItemsForSelectedClock();
         }
 
         [RelayCommand(CanExecute = nameof(CanUseHeaderButtons))]
