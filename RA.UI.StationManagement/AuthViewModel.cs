@@ -50,10 +50,18 @@ namespace RA.UI.StationManagement
             bool loggedIn = userStore.LoggedUser != null;
             if (loggedIn)
             {
-                windowService.CloseWindow(this);
+                //windowService.HideLastWindow(this);
                 Password = string.Empty;
-                windowService.ShowWindow<LauncherViewModel>();
-                
+
+                if (userStore.SessionLocked)
+                {
+                    windowService.CloseDialog();
+                }
+                else
+                {
+                    windowService.HideLastWindow(this);
+                    windowService.ShowWindow<LauncherViewModel>();
+                }
             }
             else
             {

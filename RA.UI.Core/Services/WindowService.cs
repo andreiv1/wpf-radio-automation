@@ -107,6 +107,26 @@ namespace RA.UI.Core.Services
                 window.Close();
             }
         }
+
+        private Window? lastWindow = null;
+        public void HideLastWindow(ViewModelBase viewModel)
+        {
+            lastWindow = windowFactory.GetWindow(viewModel);
+            if (lastWindow != null)
+            {
+                lastWindow.Hide();
+            }
+        }
+
+        public void CloseLastHiddenWindow()
+        {
+            if (lastWindow != null)
+            {
+                lastWindow.DataContext = null;
+                lastWindow?.Close();
+                lastWindow = null;
+            }
+        }
     }
 
 }

@@ -15,5 +15,7 @@ namespace RA.UI.Core.Services.Interfaces
         void CloseDialog();
         void CloseWindow(ViewModelBase viewModel);
         TViewModel ShowDialog<TViewModel>(params object[] parameters) where TViewModel : ViewModelBase;
+        void HideLastWindow(ViewModelBase viewModel);
+        void CloseLastHiddenWindow();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using RA.Database.Models;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels;
@@ -19,44 +20,78 @@ namespace RA.UI.StationManagement
         [ObservableProperty]
         private string? displayName;
 
+        partial void OnDisplayNameChanged(string? value)
+        {
+            OpenMediaLibraryComponentCommand.NotifyCanExecuteChanged();
+            OpenPlannerComponentCommand.NotifyCanExecuteChanged();
+            OpenReportsComponentCommand.NotifyCanExecuteChanged();
+            OpenSettingsComponentCommand.NotifyCanExecuteChanged();
+        }
+
         public LauncherViewModel(IWindowService windowService,
                                  UserStore userStore)
         {
             this.windowService = windowService;
             this.userStore = userStore;
             DisplayName = userStore.LoggedUser?.FullName;
+            
         }
 
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanOpenMediaLibrary))]
         private void OpenMediaLibraryComponent()
         {
             windowService.ShowWindow<MediaLibraryMainViewModel>();
         }
 
-        [RelayCommand]
+        private bool CanOpenMediaLibrary()
+        {
+            return userStore.CheckPermissions(UserRuleType.ACCESS_MEDIA_LIBRARY);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanOpenPlanner))]
         private void OpenPlannerComponent()
         {
             windowService.ShowWindow<PlannerMainViewModel>();
         }
 
+        private bool CanOpenPlanner()
+        {
+          return userStore.CheckPermissions(UserRuleType.ACCESS_PLANNER);
+        }
 
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanOpenReports))]
         private void OpenReportsComponent()
         {
             windowService.ShowWindow<ReportsMainViewModel>();
         }
 
-        [RelayCommand]
+        private bool CanOpenReports()
+        {
+            return userStore.CheckPermissions(UserRuleType.ACCESS_REPORTS);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanOpenSettings))]
         private void OpenSettingsComponent()
         {
             windowService.ShowWindow<SettingsMainViewModel>();
         }
 
+        private bool CanOpenSettings()
+        {
+            return userStore.CheckPermissions(UserRuleType.ACCESS_SETTINGS);
+        }
+
         [RelayCommand]
         private void LockSession()
         {
+            
             userStore.LoggedUser = null;
+            userStore.SessionLocked = true;
             windowService.ShowDialog<AuthViewModel>();
+            if (!userStore.SessionLocked)
+            {
+                windowService.CloseLastHiddenWindow();
+            }
             DisplayName = userStore.LoggedUser?.FullName;
         }
 

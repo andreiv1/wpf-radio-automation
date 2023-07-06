@@ -1,4 +1,5 @@
-﻿using RA.DTO;
+﻿using RA.Database.Models;
+using RA.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,12 @@ namespace RA.UI.StationManagement.Stores
     public class UserStore
     {
         public UserDTO? LoggedUser { get; set; }
+
+        public bool SessionLocked { get; set; }
+
+        public bool CheckPermissions(UserRuleType rule)
+        {
+            return LoggedUser?.GroupRules.Any(r => r == rule) ?? false;
+        }
     }
 }
