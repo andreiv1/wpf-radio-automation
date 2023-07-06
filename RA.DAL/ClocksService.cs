@@ -95,40 +95,14 @@ namespace RA.DAL
 
                 if (categoryIds.Count > 0)
                 {
-                    var categoryAvgDurations = dbContext.Categories
-                        .Where(c => categoryIds.Contains(c.Id) || categoryIds.Contains(c.ParentId))
-                        .Select(c => new
-                        {
-                            CategoryId = c.Id,
-                            ParentId = c.ParentId,
-                            AvgDuration = c.Tracks.Average(t => (double?)t.Duration)
-                        })
-                        .ToList();
-
-                    foreach (var item in categoryAvgDurations)
+                    foreach(var id in categoryIds)
                     {
                         TimeSpan avgDuration = TimeSpan.Zero;
-                        if (item.AvgDuration.HasValue)
+                        if (id != null)
                         {
-                            avgDuration = TimeSpan.FromSeconds(item.AvgDuration.Value);
+                            avgDuration = await dbContext.GetCategoryAvgDuration(id.Value);
+                            result.Add(id.Value, avgDuration);
                         }
-
-                        if (item.ParentId == null)
-                        {
-                            // If the category is a parent, calculate the average duration of its subcategories.
-                            var subCategories = categoryAvgDurations.Where(x => x.ParentId == item.CategoryId).ToList();
-                            TimeSpan totalDuration = avgDuration;
-                            int count = 1; // 1 to include the parent itself
-
-                            foreach (var subItem in subCategories)
-                            {
-                                totalDuration += TimeSpan.FromSeconds(subItem.AvgDuration ?? 0);
-                                count++;
-                            }
-                            avgDuration = totalDuration / count;
-                        }
-
-                        result.Add(item.CategoryId, avgDuration);
                     }
 
                 }
