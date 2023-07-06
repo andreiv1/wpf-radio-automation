@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using RA.DAL;
+using RA.DAL.Models;
+using RA.Database.Models.Enums;
 using RA.DTO;
 using RA.UI.Core.Services;
 using RA.UI.Core.ViewModels;
@@ -64,13 +66,17 @@ namespace RA.UI.Playout.ViewModels.Components
             _ = LoadTracks(0, 100);
         }
 
+        ICollection<TrackFilterCondition>? conditions = new List<TrackFilterCondition>()
+        {
+            new TrackFilterCondition(FilterLabelType.Status,FilterOperator.Equals,TrackStatus.Enabled),
+        };
         //Data fetching
         public async Task LoadTracks(int skip, int take, string query = "")
         {
             Tracks.Clear();
-            TotalTracks = await tracksService.GetTrackCountAsync(query);
+            TotalTracks = await tracksService.GetTrackCountAsync(query, conditions: conditions);
             Pages = TotalTracks > 0 ? (TotalTracks - 1) / tracksPerPage + 1 : 0;
-            var tracks = await tracksService.GetTrackListAsync(skip, take, query);
+            var tracks = await tracksService.GetTrackListAsync(skip, take, query, conditions: conditions);
 
             foreach (var track in tracks.ToList())
             {

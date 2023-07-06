@@ -4,7 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-	xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+	xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core" xmlns:trackselectdialog="clr-namespace:RA.UI.StationManagement.Dialogs.TrackSelectDialog" d:DataContext="{d:DesignInstance Type=trackselectdialog:TrackSelectViewModel}"
                  mc:Ignorable="d"
         Title="{Binding DialogName}" Height="600" Width="800"
                  MinHeight="600" MinWidth="600">
@@ -18,7 +18,7 @@
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+   
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <!-- Search and filter-->
@@ -29,7 +29,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <syncfusion:SfTextBoxExt x:Name="searchTextbox" Height="25" VerticalAlignment="Center" Margin="0,0,5,0"
+            <syncfusion:SfTextBoxExt x:Name="searchTextbox" Height="25" VerticalAlignment="Center" Margin="5,0,7,0"
                                      Watermark="Search tracks..."
                                      Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
                                      ShowClearButton="True"
@@ -38,10 +38,10 @@
                 Margin="0,0,5,0" Height="25"
                 Command="{Binding FilterItemsCommand}"
                 SmallIcon="{StaticResource FilterIcon}"
-                Label="Filter"/>
+                Label="Filters"/>
         </Grid>
         <!-- Categories tree -->
-        <syncfusion:SfTreeView x:Name="categoriesTreeView" Grid.Row="2" Grid.Column="0"
+        <!--<syncfusion:SfTreeView x:Name="categoriesTreeView" Grid.Row="2" Grid.Column="0"
             BorderThickness="1"
             FocusVisualStyle="{x:Null}"
             IsAnimationEnabled="True"
@@ -71,7 +71,7 @@
                     </Grid>
                 </DataTemplate>
             </syncfusion:SfTreeView.ItemTemplate>
-        </syncfusion:SfTreeView>
+        </syncfusion:SfTreeView>-->
         <!-- Tracks data grid (with pagination) -->
         <syncfusion:SfDataGrid Grid.Row="2" Grid.Column="1" Margin="5,0,0,0"
                        ColumnSizer="Auto"
@@ -80,20 +80,76 @@
                        SelectionUnit="Row"
                        NavigationMode="Row"
                        AllowResizingColumns="True"
-                       AutoGenerateColumns="False">
+                       AutoGenerateColumns="False"
+                               RowHeight="26">
             <syncfusion:SfDataGrid.Columns>
-                <syncfusion:GridTextColumn HeaderText="Artists" MappingName="Artists"
+       
+                    <syncfusion:GridTemplateColumn MinimumWidth="50" HeaderText=" "
+                                                   MappingName="Type" Width="16" MaximumWidth="16"
+                                               AllowSorting="False">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Width="24" Height="20">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="{StaticResource OtherTrackIcon}"/>
+                                            <!-- Default icon -->
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Type}" Value="Jingle">
+                                                    <Setter Property="Source" Value="{StaticResource JingleIcon}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Type}" Value="Song">
+                                                    <Setter Property="Source" Value="{StaticResource SongIcon}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Type}" Value="Commercial">
+                                                    <Setter Property="Source" Value="{StaticResource CommercialPaidIcon}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Type}" Value="Voiceover">
+                                                    <Setter Property="Source" Value="{StaticResource VoiceOverIcon}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+                    <syncfusion:GridTextColumn HeaderText="Artists" MappingName="Artists"
                                            MinimumWidth="200"
                                            AllowResizing="True"
                                     ColumnSizer="Star"/>
-                <syncfusion:GridTextColumn HeaderText="Title" MappingName="Title" MinimumWidth="300"/>
-                <syncfusion:GridTextColumn HeaderText="Type" MappingName="Type" MinimumWidth="60"/>
-                <syncfusion:GridTextColumn HeaderText="Duration" MappingName="Duration" MinimumWidth="80"
-                                           DisplayBinding="{Binding Path=Duration, Converter={StaticResource DoubleToTimeSpanConverter}, StringFormat={}{0:hh\\:mm\\:ss} }"></syncfusion:GridTextColumn>
-                <syncfusion:GridDateTimeColumn HeaderText="Date Added" MappingName="DateAdded"
-                                    MinimumWidth="130"/>
-                <syncfusion:GridDateTimeColumn HeaderText="Date Modified" MappingName="DateModified"
-                                   MinimumWidth="130"/>
+                    <syncfusion:GridTextColumn HeaderText="Title" MappingName="Title" MinimumWidth="300"/>
+                    <syncfusion:GridTextColumn HeaderText="Type" MappingName="Type" MinimumWidth="60"/>
+                    <syncfusion:GridTextColumn HeaderText="Duration" MappingName="Duration" MinimumWidth="80"
+                                           DisplayBinding="{Binding Path=Duration, Converter={StaticResource DoubleToTimeSpanConverter}, StringFormat={}{0:hh\\:mm\\:ss} }">
+                    </syncfusion:GridTextColumn>
+
+                    <syncfusion:GridTemplateColumn HeaderText="Date Added" Width="130" AllowSorting="True"
+                                               MappingName="DateAdded"
+                                                               ColumnSizer="Star">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock Text="{Binding DateAdded, StringFormat=dd.MM.yyyy HH:mm:ss}"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+
+                    <syncfusion:GridTemplateColumn HeaderText="Date Modified" Width="130" AllowSorting="True"
+                                               MappingName="DateModified"
+                                                               ColumnSizer="Star">
+                        <syncfusion:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock Text="{Binding DateModified, StringFormat=dd.MM.yyyy HH:mm:ss}" 
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </syncfusion:GridTemplateColumn.CellTemplate>
+                    </syncfusion:GridTemplateColumn>
+  
             </syncfusion:SfDataGrid.Columns>
             <syncfusion:SfDataGrid.ContextMenu>
                 <ContextMenu>
