@@ -6,7 +6,7 @@
                  xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
                  xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core" xmlns:security="clr-namespace:RA.UI.StationManagement.Components.Settings.ViewModels.Security" d:DataContext="{d:DesignInstance Type=security:SettingsManageUserViewModel}"
                  mc:Ignorable="d"
-        Title="Manage user" Height="260" Width="400">
+        Title="Manage user" Height="260" Width="320">
     <Grid Margin="15">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -31,22 +31,30 @@
         </Grid.RowDefinitions>
 
         <Label Content="Username: " Grid.Row="0" Grid.Column="0" FontWeight="DemiBold" VerticalAlignment="Center"/>
-        <syncfusion:SfTextBoxExt Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left" Height="24"/>
+        <syncfusion:SfTextBoxExt Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left" Height="24"
+                                 Text="{Binding Username}"/>
 
-        <Label Content="Password: " Grid.Row="2" Grid.Column="0" FontWeight="DemiBold"  VerticalAlignment="Center" />
-        <PasswordBox Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left" Height="24"/>
+        <Label Content="Full Name: " Grid.Row="2" Grid.Column="0" FontWeight="DemiBold"  VerticalAlignment="Center" />
+        <syncfusion:SfTextBoxExt Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left" Height="24"
+                                 Text="{Binding FullName}"/>
 
-        <Label Content="Confirm Password: " Grid.Row="4" Grid.Column="0" FontWeight="DemiBold"  VerticalAlignment="Center"/>
-        <PasswordBox Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left" Height="24"/>
+        <Label Content="Password: " Grid.Row="4" Grid.Column="0" FontWeight="DemiBold"  VerticalAlignment="Center"/>
+        <PasswordBox x:Name="passwordBox"
+            Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left" Height="24"
+                     PasswordChanged="PasswordBox_PasswordChanged"/>
+        
         <Label Content="Group: " Grid.Row="6" Grid.Column="0" FontWeight="DemiBold" VerticalAlignment="Center"/>
         <syncfusion:ComboBoxAdv Grid.Row="6" Grid.Column="2" Width="200" VerticalAlignment="Center" HorizontalAlignment="Left" Height="24"
                                 ItemsSource="{Binding Groups}"
+                                SelectedItem="{Binding SelectedGroup}"
                                 DisplayMemberPath="Name"/>
 
         <StackPanel Grid.Row="8" Grid.ColumnSpan="3" HorizontalAlignment="Right" Orientation="Horizontal"
-                    Margin="0,10,0,0">
-            <syncfusion:ButtonAdv Label="Cancel" Margin="0,0,5,0" SmallIcon="{StaticResource CloseIcon}"/>
-            <syncfusion:ButtonAdv Label="Add user" SmallIcon="{StaticResource PlusSquareIcon}"/>
+                    Margin="0,10,10,0">
+            <syncfusion:ButtonAdv Label="Cancel" Margin="0,0,5,0" SmallIcon="{StaticResource CloseIcon}"
+                                  Command="{Binding CancelDialogCommand}"/>
+            <syncfusion:ButtonAdv Label="Add user" SmallIcon="{StaticResource PlusSquareIcon}"
+                                  Command="{Binding FinishDialogCommand}"/>
         </StackPanel>
     </Grid>
 </uicore:RAWindow>

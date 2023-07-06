@@ -66,9 +66,15 @@ namespace RA.UI.StationManagement.Components.Settings.ViewModels.MainContent
         }
 
         [RelayCommand]
-        private void AddUser()
+        private async void AddUser()
         {
-            windowService.ShowDialog<SettingsManageUserViewModel>();
+            var vm = windowService.ShowDialog<SettingsManageUserViewModel>();
+            UsersForSelectedGroup.Clear();
+            if (vm != null && vm.SelectedGroup != null)
+            {
+                await LoadGroups();
+                SelectedGroup = Groups.Where(g => g.Id == vm.SelectedGroup.Id.GetValueOrDefault()).FirstOrDefault();
+            }
         }
 
         [RelayCommand]

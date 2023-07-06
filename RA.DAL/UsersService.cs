@@ -35,7 +35,8 @@ namespace RA.DAL
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Username == userDTO.Username);
-            if (existingUser != null) return false;
+            if (existingUser != null) 
+                return false;
 
             string encryptedPassword = PasswordEncryptor.EncryptPassword(userDTO.Password);
             var userEntity = UserDTO.ToEntity(userDTO);
