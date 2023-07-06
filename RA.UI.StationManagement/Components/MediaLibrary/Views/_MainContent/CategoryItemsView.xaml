@@ -284,16 +284,23 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Label Content="Items found:" HorizontalAlignment="Left" VerticalAlignment="Center"
+            <Label Content="Items found:" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="DemiBold"
                     FontSize="14"/>
 
             <Label Grid.Column="1" FontSize="14"
                    Content="{Binding TotalTracks}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <syncfusion:SfDataPager  Grid.Column="3" HorizontalAlignment="Right"
+
+            <Label Grid.Column="2" Content="Avg duration:" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="DemiBold"
+                   FontSize="14"/>
+            <TextBlock Grid.Column="3" FontSize="14"
+                   Text="{Binding AvgDuration, StringFormat={}{0:hh\\:mm\\:ss}}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <syncfusion:SfDataPager  Grid.Column="5" HorizontalAlignment="Right"
                            PageCount="{Binding Pages}"
                            PageIndex="{Binding PageIndex, Mode=TwoWay}"
                            PageSize="100" 

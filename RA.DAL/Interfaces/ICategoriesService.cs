@@ -10,6 +10,7 @@ namespace RA.DAL
     public interface ICategoriesService
     {
         Task AddCategory(CategoryDTO category);
+        Task<TimeSpan> GetAverageDuration(int categoryId);
         Task<CategoryDTO> GetCategory(int categoryId);
         Task<CategoryHierarchyDTO> GetCategoryHierarchy(int categoryId);
         Task<IEnumerable<CategoryDTO>> GetChildrenCategoriesAsync(int parentCategoryId);

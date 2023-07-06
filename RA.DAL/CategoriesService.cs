@@ -95,5 +95,11 @@ namespace RA.DAL
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<TimeSpan> GetAverageDuration(int categoryId)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            return await dbContext.GetCategoryAvgDuration(categoryId);
+        }
+
     }
 }

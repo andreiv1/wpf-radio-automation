@@ -82,6 +82,9 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         [ObservableProperty]
         private int pageIndex = 0;
 
+        [ObservableProperty]
+        private TimeSpan avgDuration = TimeSpan.Zero;
+
         public CategoryItemsViewModel(IWindowService windowService,
                                       IMessageBoxService messageBoxService,
                                       ICategoriesService categoryService,
@@ -134,6 +137,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
             {
                 CategoryTracks.Add(track);
             }
+            AvgDuration = await categoryService.GetAverageDuration(categoryId);
         }
 
         [RelayCommand]

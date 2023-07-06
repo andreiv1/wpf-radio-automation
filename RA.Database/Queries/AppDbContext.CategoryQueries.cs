@@ -35,18 +35,35 @@ namespace RA.Database
                                                     );");
         }
 
-        public TimeSpan GetCategoryAvgDuration(int categoryId)
+        public async Task<TimeSpan> GetCategoryAvgDuration(int categoryId)
         {
             double averageDurationInSeconds = 0;
-            string sqlQuery = @$"SELECT AVG(Duration) FROM Categories_Tracks ct 
-                                        JOIN Tracks t ON ct.TrackId = t.Id
-                                        WHERE CategoryId={categoryId};";
+
+            string sqlQuery = $@"WITH RECURSIVE CategoryHierarchy AS (
+                                SELECT Id
+                                FROM Categories
+                                WHERE Id = @categoryId
+                                UNION ALL
+                                SELECT c.Id
+                                FROM Categories c
+                                INNER JOIN CategoryHierarchy ch ON c.ParentId = ch.Id
+                                )
+
+                                SELECT AVG(Duration) FROM Categories_Tracks ct
+                                JOIN Tracks t ON ct.TrackId = t.Id
+                                WHERE CategoryId IN(Select Id FROM CategoryHierarchy);";
             using (var command = Database.GetDbConnection().CreateCommand())
             {
+                var parameter = command.CreateParameter();
+                parameter.ParameterName = "@categoryId";
+                parameter.Value = categoryId;
+
+                command.Parameters.Add(parameter);
+
                 command.CommandText = sqlQuery;
                 Database.OpenConnection();
 
-                var result = command.ExecuteScalar();
+                var result = await command.ExecuteScalarAsync();
                 averageDurationInSeconds = result != DBNull.Value ? Convert.ToDouble(result) : 0;
                 Database.CloseConnection();
             }

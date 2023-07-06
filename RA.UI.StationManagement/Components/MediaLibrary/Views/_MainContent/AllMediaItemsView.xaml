@@ -191,7 +191,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Label Content="Items found:" HorizontalAlignment="Left" VerticalAlignment="Center"
+            <Label Content="Items found:" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="DemiBold"
                     FontSize="14"/>
 
             <Label Grid.Column="1" FontSize="14"

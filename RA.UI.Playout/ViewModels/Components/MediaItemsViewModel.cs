@@ -59,6 +59,7 @@ namespace RA.UI.Playout.ViewModels.Components
         [ObservableProperty]
         private int pageIndex = 0;
 
+
         private const int tracksPerPage = 100;
 
         public readonly static List<TrackFilterCondition> defaultFilterConditions = new()
