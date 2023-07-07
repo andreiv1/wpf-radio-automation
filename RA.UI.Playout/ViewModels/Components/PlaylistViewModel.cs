@@ -99,9 +99,9 @@ namespace RA.UI.Playout.ViewModels.Components
                 var playlistItems = playlistsService.GetPlaylistItemsByDateTime(date, maxHours);
                 foreach (var item in playlistItems)
                 {
-                    if (item?.GetType() == typeof(PlaylistItemTrackDTO))
+                    if (item?.GetType() == typeof(PlaylistItemDTO))
                     {
-                        var trackDto = (PlaylistItemTrackDTO)item;
+                        var trackDto = (PlaylistItemDTO)item;
                         PlaybackAddItem(new TrackPlaylistPlayerItem(trackDto));
                     }
 

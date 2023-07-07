@@ -47,11 +47,7 @@ namespace RA.UI.StationManagement.Components.Planner.Views.MainContent
             }
         }
 
-        private void playlistsToAirDataGrid_DeleteItem_Click(object sender, RoutedEventArgs e)
-        {
-            var vm = (PlannerPlaylistsViewModel)DataContext;
-            //vm?.DeletePlaylistCommand.Execute(null);
-        }
+     
     }
 }
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RA.Database;
 
@@ -10,9 +11,11 @@ using RA.Database;
 namespace RA.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230707054815_Added_PlaylistItem_NiceETA")]
+    partial class Added_PlaylistItem_NiceETA
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,9 +275,6 @@ namespace RA.Database.Migrations
 
                     b.Property<DateTime>("ETA")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<int?>("EventType")
-                        .HasColumnType("int");
 
                     b.Property<string>("Label")
                         .HasMaxLength(400)

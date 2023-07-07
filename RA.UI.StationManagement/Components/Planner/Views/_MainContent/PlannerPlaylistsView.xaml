@@ -4,7 +4,7 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-                      xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+                      xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core" xmlns:maincontent="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.MainContent" d:DataContext="{d:DesignInstance Type=maincontent:PlannerPlaylistsViewModel}"
                       mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -50,7 +50,7 @@
                                Width="24" Height="24" />
                             </Border>
 
-                            <TextBlock Text="Playlists" Grid.Column="1" 
+                            <TextBlock Text="Playlists to air" Grid.Column="1" 
                                    FontWeight="DemiBold" FontSize="13"
                                    VerticalAlignment="Center"/>
                         </Grid>
@@ -66,30 +66,26 @@
                            AutoGenerateColumns="False"
                            ColumnSizer="AutoWithLastColumnFill"
                            SortClickAction="DoubleClick">
-                            <syncfusion:SfDataGrid.RecordContextMenu>
+                            <syncfusion:SfDataGrid.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem x:Name="playlistsToAirDataGrid_DeleteItem" Header="Delete"
-                                              Click="playlistsToAirDataGrid_DeleteItem_Click">
+                                    <MenuItem Header="Regenerate" Command="{Binding RegenerateSelectedPlaylist}">
+                                        <MenuItem.Icon>
+                                            <Image Source="{StaticResource PlaylistGenerateIcon}" Width="16" Height="16"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <Separator/>
+                                    <MenuItem Header="Delete" Command="{Binding DeleteSelectedPlaylistCommand}">
                                         <MenuItem.Icon>
                                             <Image Source="{StaticResource RemoveIcon}" Width="16" Height="16"/>
                                         </MenuItem.Icon>
                                     </MenuItem>
                                 </ContextMenu>
 
-                            </syncfusion:SfDataGrid.RecordContextMenu>
+                            </syncfusion:SfDataGrid.ContextMenu>
                             <syncfusion:SfDataGrid.Columns>
                                 <syncfusion:GridTextColumn HeaderText="Status" MappingName="Id" Width="50"/>
                                 <syncfusion:GridDateTimeColumn HeaderText="Air Date" MappingName="AirDate"/>
                             </syncfusion:SfDataGrid.Columns>
-
-                            <!--<syncfusion:SfDataGrid.RecordContextMenu>
-                                <MenuItem x:Name="Delete" Header="Delete"
-                                              Command="{Binding DeletePlaylistCommand}">
-                                    <MenuItem.Icon>
-                                        <Image Source="{StaticResource RemoveIcon}" Width="16" Height="16"/>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                            </syncfusion:SfDataGrid.RecordContextMenu>-->
                         </syncfusion:SfDataGrid>
 
                         <Grid x:Name="NoPlaylistsToAirFound"
@@ -195,32 +191,134 @@
             <!-- Buttons -->
             <StackPanel Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal"
                         Margin="5,5,5,0">
-                <syncfusion:DropDownButtonAdv Label="Item" SmallIcon="{StaticResource EditFileIcon}"/>
-
+                <syncfusion:ButtonAdv Label="Insert track" Height="25" Margin="0,0,4,0" IsEnabled="{Binding IsPlaylistSelected}"
+                                      Command="{Binding InsertTrackToPlaylistCommand}"
+                                      SmallIcon="{StaticResource PlusSquareIcon}"/>
+                <syncfusion:ButtonAdv Label="Insert marker" Height="25" Margin="0,0,4,0" IsEnabled="{Binding IsPlaylistSelected}"
+                                      Command="{Binding InsertMarkerToPlaylistCommand}"
+                                      SmallIcon="{StaticResource PinIcon}"/>
+                <syncfusion:ButtonAdv Label="Delete item" Height="25" Margin="0,0,4,0" IsEnabled="{Binding IsPlaylistSelected}"
+                                      Command="{Binding DeleteItemFromPlaylistCommand}"
+                                      SmallIcon="{StaticResource RemoveIcon}"/>
+                <syncfusion:ButtonAdv Label="Regenerate playlist" Height="25" Margin="0,0,4,0" IsEnabled="{Binding IsPlaylistSelected}"
+                                      Command="{Binding RegenerateSelectedPlaylistCommand}"
+                                      SmallIcon="{StaticResource PlaylistGenerateIcon}"/>
             </StackPanel>
 
             <!-- Items for selected playlist -->
-            <syncfusion:SfDataGrid Grid.Row="1"
+            <syncfusion:SfDataGrid Grid.Row="1" IsEnabled="{Binding IsPlaylistSelected}"
                        Margin="5,5,5,0"
                        ColumnSizer="Auto"
                        ItemsSource="{Binding SelectedPlaylistItems}"
                        SelectionUnit="Row" NavigationMode="Row"
-                       RowHeight="30" AllowSorting="False"
+                       RowHeight="35" AllowSorting="False"
                        AllowResizingColumns="True"
-                       AutoGenerateColumns="False">
+                       AutoGenerateColumns="False"
+                                   >
                 <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTextColumn HeaderText="#" MappingName="Index" DisplayBinding="{Binding Path=Index}" 
+                                               Width="35">
+                        <syncfusion:GridTextColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Index}" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           FontWeight="DemiBold"/>
+                            </DataTemplate>
+                        </syncfusion:GridTextColumn.CellTemplate>
+                    </syncfusion:GridTextColumn>
                     <syncfusion:GridTextColumn HeaderText="ETA" MappingName="ETA" DisplayBinding="{Binding Path=ETA, StringFormat={}{0:HH\\:mm\\:ss.fff}}"
                                                Width="75"/>
-                    <!--<syncfusion:GridTextColumn HeaderText="Type" MappingName="Type" Width="100"
-                                               DisplayBinding="{Binding Path=Track.Type}"/>-->
-                    <syncfusion:GridTextColumn HeaderText="Item Details" MappingName="Title" ColumnSizer="Star"
-                                               DisplayBinding="{Binding Path=ItemDetails}"/>
+                    <!--<syncfusion:GridTextColumn HeaderText="Item Details" MappingName="Title" ColumnSizer="Star"
+                                               DisplayBinding="{Binding Path=ItemDetails}"/>-->
+                    <syncfusion:GridTextColumn HeaderText="Item Details" MappingName="ItemsDetails" DisplayBinding="{Binding Path=ItemDetails}" 
+                                               ColumnSizer="Star">
+                        <syncfusion:GridTextColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Width="24" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <!--<Setter Property="Source" Value="{StaticResource OtherTrackIcon}"/>-->
+                                                <!-- Default icon -->
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Track.Type}" Value="Jingle">
+                                                        <Setter Property="Source" Value="{StaticResource JingleIcon}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Track.Type}" Value="Song">
+                                                        <Setter Property="Source" Value="{StaticResource SongIcon}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Track.Type}" Value="Commercial">
+                                                        <Setter Property="Source" Value="{StaticResource CommercialPaidIcon}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Track.Type}" Value="Voiceover">
+                                                        <Setter Property="Source" Value="{StaticResource VoiceOverIcon}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Track.Type}" Value="Other">
+                                                        <Setter Property="Source" Value="{StaticResource OtherTrackIcon}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="1"
+                                               FontWeight="DemiBold"
+                                               Margin="5,0,0,0"
+                                               Text="{Binding ItemDetails}"/>
+          
+                                </Grid>
+                            </DataTemplate>
+                        </syncfusion:GridTextColumn.CellTemplate>
+                    </syncfusion:GridTextColumn>
                     <syncfusion:GridTextColumn HeaderText="Length" MappingName="Length" Width="75"
                                                DisplayBinding="{Binding Path=Length, Converter={StaticResource DoubleToFormattedTimeSpanConverter}}" />
                 </syncfusion:SfDataGrid.Columns>
                 <syncfusion:SfDataGrid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Edit" Command="{Binding OpenItemDetailsCommand}" />
+                        <MenuItem Header="Insert track after" Command="{Binding InsertTrackToPlaylistCommand}">
+                            <MenuItem.Icon>
+                                <Image
+                                    Width="16"
+                                    Height="16"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                     Source="{StaticResource PlusSquareIcon}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Insert marker after" Command="{Binding EditClockDialogCommand}">
+                            <MenuItem.Icon>
+                                <Image
+                                    Width="16"
+                                    Height="16"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                     Source="{StaticResource PinIcon}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator/>
+                        <MenuItem Header="Edit item" Command="{Binding EditClockDialogCommand}">
+                            <MenuItem.Icon>
+                                <Image
+                                    Width="16"
+                                    Height="16"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                     Source="{StaticResource EditIcon}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Delete item" Command="{Binding EditClockDialogCommand}">
+                            <MenuItem.Icon>
+                                <Image
+                                    Width="16"
+                                    Height="16"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                     Source="{StaticResource RemoveIcon}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </ContextMenu>
                 </syncfusion:SfDataGrid.ContextMenu>
             </syncfusion:SfDataGrid>

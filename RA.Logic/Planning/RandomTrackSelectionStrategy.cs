@@ -18,11 +18,11 @@ namespace RA.Logic.Planning
             this.categoryId = categoryId;
         }
 
-        public override PlaylistItemTrackDTO SelectTrack(PlaylistDTO playlist)
+        public override PlaylistItemDTO SelectTrack(PlaylistDTO playlist)
         {
             if (playlist == null) throw new ArgumentNullException($"{nameof(playlist)} must be initialised.");
             var lastItem = playlist.Items?.LastOrDefault();
-            PlaylistItemTrackDTO item = new();
+            PlaylistItemDTO item = new();
             if (lastItem == null)
             {
                 item.ETA = new DateTime(playlist.AirDate.Year, playlist.AirDate.Month, playlist.AirDate.Day);
@@ -32,8 +32,8 @@ namespace RA.Logic.Planning
             }
 
             var lastTracks = playlist.Items?
-                .Where(it => it.GetType() == typeof(PlaylistItemTrackDTO))
-                .Select(it => (PlaylistItemTrackDTO)it).ToList();
+                .Where(it => it.GetType() == typeof(PlaylistItemDTO))
+                .Select(it => (PlaylistItemDTO)it).ToList();
 
             List<int>? recentlyPlayedTrackIds = lastTracks?.Where(i => i.ETA > item.ETA.AddMinutes(-trackSeparation))
                 .Select(it => it.Track.Id)

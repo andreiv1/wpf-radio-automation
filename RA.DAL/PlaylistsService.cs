@@ -79,7 +79,7 @@ namespace RA.DAL
 
         }
 
-        public IEnumerable<PlaylistItemBaseDTO> GetPlaylistItems(int playlistId)
+        public IEnumerable<PlaylistItemDTO> GetPlaylistItems(int playlistId)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
 
@@ -88,7 +88,7 @@ namespace RA.DAL
                 .ThenInclude(pi => pi.TrackArtists)
                 .ThenInclude(ta => ta.Artist)
                 .Where(pi => pi.PlaylistId == playlistId)
-                .Select(pi => PlaylistItemTrackDTO.FromEntity(pi));
+                .Select(pi => PlaylistItemDTO.FromEntity(pi));
 
             foreach(var item in query)
             {
@@ -96,7 +96,7 @@ namespace RA.DAL
             }
         }
 
-        public IEnumerable<PlaylistItemBaseDTO> GetPlaylistItemsByDateTime(DateTime dateTimeStart, int maxHours = 1)
+        public IEnumerable<PlaylistItemDTO> GetPlaylistItemsByDateTime(DateTime dateTimeStart, int maxHours = 1)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             var activePlaylist = GetPlaylistsToAirAfterDate(dateTimeStart.Date).FirstOrDefault();
@@ -113,7 +113,7 @@ namespace RA.DAL
                      .Where(pi => pi.PlaylistId == activePlaylist.Id)
                      .Where(pi => pi.ETA >= dateTimeStart)
                      .Where(pi => pi.ETA <= dateTimeEnd)
-                     .Select(pi => PlaylistItemTrackDTO.FromEntity(pi));
+                     .Select(pi => PlaylistItemDTO.FromEntity(pi));
                 foreach(var item in query)
                 {
                     yield return item;

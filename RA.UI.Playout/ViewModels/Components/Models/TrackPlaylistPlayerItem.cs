@@ -14,7 +14,7 @@ namespace RA.UI.Playout.ViewModels.Components.Models
 {
     public class TrackPlaylistPlayerItem : ObservableObject, IPlayerItem
     {
-        private readonly PlaylistItemTrackDTO playlistItemTrackDTO;
+        private readonly PlaylistItemDTO playlistItemTrackDTO;
 
         public string FilePath => playlistItemTrackDTO.Track.FilePath;
 
@@ -47,7 +47,7 @@ namespace RA.UI.Playout.ViewModels.Components.Models
 
         public int TrackId => playlistItemTrackDTO.Track.Id;
 
-        public TrackPlaylistPlayerItem(PlaylistItemTrackDTO playlistItemTrackDTO)
+        public TrackPlaylistPlayerItem(PlaylistItemDTO playlistItemTrackDTO)
         {
             this.playlistItemTrackDTO = playlistItemTrackDTO;
         }

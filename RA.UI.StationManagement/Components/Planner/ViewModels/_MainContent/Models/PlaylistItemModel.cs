@@ -11,6 +11,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
 {
     public class PlaylistItemModel : ObservableObject
     {
+        public int Index { get; set; }
         public int Id { get; set; }
         public DateTime ETA { get; set; }
         public double Length { get; set; }
@@ -35,7 +36,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
             }
         }
 
-        public static PlaylistItemModel FromDTO(PlaylistItemTrackDTO dto)
+        public static PlaylistItemModel FromDTO(PlaylistItemDTO dto)
         {
             return new PlaylistItemModel
             {

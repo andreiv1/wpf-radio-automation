@@ -16,7 +16,7 @@ namespace RA.DTO
         public DateTime DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
 
-        public List<PlaylistItemBaseDTO>? Items { get; set; }
+        public List<PlaylistItemDTO>? Items { get; set; }
 
         public static PlaylistDTO FromEntity(Playlist entity)
         {
@@ -39,14 +39,15 @@ namespace RA.DTO
                 Id = dto.Id,
                 AirDate = dto.AirDate,
                 DateAdded = dto.DateAdded,
-                PlaylistItems = dto.Items?.Select(x =>
-                {
-                    if (x.GetType() == typeof(PlaylistItemTrackDTO))
-                    {
-                        return PlaylistItemTrackDTO.ToEntity(x as PlaylistItemTrackDTO);
-                    }
-                    return null;
-                }).ToList() ?? null,
+                //PlaylistItems = dto.Items?.Select(x =>
+                //{
+                //    if (x.GetType() == typeof(PlaylistItemDTO))
+                //    {
+                //        return PlaylistItemDTO.ToEntity(x as PlaylistItemDTO);
+                //    }
+                //    return null;
+                //}).ToList() ?? null,
+                PlaylistItems = dto.Items?.Select(x => PlaylistItemDTO.ToEntity(x)).ToList() ?? null,
             };
 
             return entity;
@@ -57,7 +58,7 @@ namespace RA.DTO
             var playlist = new PlaylistDTO();
             playlist.AirDate = date;
             playlist.DateAdded = DateTime.Now;
-            playlist.Items = new List<PlaylistItemBaseDTO>();
+            playlist.Items = new List<PlaylistItemDTO>();
 
             return playlist;
         }

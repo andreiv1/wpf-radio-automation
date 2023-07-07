@@ -9,6 +9,8 @@
         <entry key="Common:noBuild" value="false" />
         <entry key="Common:noTransactions" value="false" />
         <entry key="Common:outputFilePath" value="script.sql" />
+        <entry key="Common:outputFolder" value="Migrations" />
+        <entry key="Common:useDefaultConnection" value="true" />
       </map>
     </option>
   </component>

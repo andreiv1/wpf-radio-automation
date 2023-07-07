@@ -42,6 +42,6 @@ namespace RA.Logic.Planning.Abstract
             this.titleSeparation = titleSeparation;
         }
 
-        public abstract PlaylistItemTrackDTO SelectTrack(PlaylistDTO currentPlaylist);
+        public abstract PlaylistItemDTO SelectTrack(PlaylistDTO currentPlaylist);
     }
 }

@@ -21,7 +21,15 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         public ObservableCollection<PlaylistListingDTO> PlaylistsToAir { get; set; } = new();
 
         [ObservableProperty]
+        private bool isPlaylistSelected = false;
+
+        [ObservableProperty]
         private PlaylistListingDTO? selectedPlaylistToAir;
+
+        partial void OnSelectedPlaylistToAirChanging(PlaylistListingDTO? value)
+        {
+            IsPlaylistSelected = value != null;
+        }
 
         [ObservableProperty]
         private DateTime selectedDate = DateTime.Now.Date;
@@ -46,9 +54,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         partial void OnSelectedPlaylistToAirChanged(PlaylistListingDTO? value)
         {
             _ = LoadSelectedPlaylistItems();
+            IsPlaylistSelected = true;
         }
 
-        #region Data fetching
+        //Data fetching
         private async Task LoadPlaylistsToAir()
         {
             PlaylistsToAir.Clear();
@@ -82,21 +91,25 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             {
                 SelectedPlaylistItems.Clear();
                 var data = playlistsService.GetPlaylistItems(SelectedPlaylistToAir.Id).ToList();
+                int index = 0;
                 foreach (var item in data)
                 {
-                    if (item.GetType() == typeof(PlaylistItemTrackDTO))
+                    if (item.GetType() == typeof(PlaylistItemDTO))
                     {
-                        var plTrackItem = item as PlaylistItemTrackDTO;
-                        if (plTrackItem != null)
+                        PlaylistItemDTO? dto = item as PlaylistItemDTO;
+                        
+                        if (dto != null)
                         {
-                            SelectedPlaylistItems.Add(PlaylistItemModel.FromDTO(plTrackItem));
+                            PlaylistItemModel model = PlaylistItemModel.FromDTO(dto);
+                            model.Index = index++;
+                            SelectedPlaylistItems.Add(model);
                         }
                     }
                 }
             });
         }
-        #endregion
-        #region Commands
+   
+        // Commands
         [RelayCommand]
         private void OpenGeneratePlaylists()
         {
@@ -115,6 +128,38 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         {
             SelectedDate = SelectedDate.AddDays(1);
         }
-        #endregion
+
+
+        [RelayCommand]
+        private void DeleteSelectedPlaylist()
+        {
+            throw new NotImplementedException();
+        }
+
+        //Selected playlist operations
+        [RelayCommand]
+        private void InsertTrackToPlaylist()
+        {
+            throw new NotImplementedException();
+        }
+
+        [RelayCommand] 
+        private void InsertMarkerToPlaylist(object? param)
+        {
+            throw new NotImplementedException();
+        }
+
+        [RelayCommand]
+        private void DeleteItemFromPlaylist()
+        {
+            throw new NotImplementedException();
+        }
+
+        [RelayCommand]
+        private void RegenerateSelectedPlaylist()
+        {
+              throw new NotImplementedException();
+        }
+       
     }
 }
