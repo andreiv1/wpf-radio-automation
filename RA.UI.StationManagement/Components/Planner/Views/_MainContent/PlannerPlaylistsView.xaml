@@ -65,7 +65,7 @@
                            NavigationMode="Row"
                            AutoGenerateColumns="False"
                            ColumnSizer="AutoWithLastColumnFill"
-                           SortClickAction="DoubleClick">
+                           SortClickAction="DoubleClick" RowHeight="30">
                             <syncfusion:SfDataGrid.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="Regenerate" Command="{Binding RegenerateSelectedPlaylist}">
@@ -83,8 +83,29 @@
 
                             </syncfusion:SfDataGrid.ContextMenu>
                             <syncfusion:SfDataGrid.Columns>
-                                <syncfusion:GridTextColumn HeaderText="Status" MappingName="Id" Width="50"/>
-                                <syncfusion:GridDateTimeColumn HeaderText="Air Date" MappingName="AirDate"/>
+                                <!-- STATUS -->
+                                <syncfusion:GridTextColumn HeaderText="Status" MappingName="ItemsDetails" DisplayBinding="{Binding Path=ItemDetails}" 
+                                               ColumnSizer="Star" Width="60">
+                                    <syncfusion:GridTextColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <TextBlock Text="OK" Foreground="Green" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </syncfusion:GridTextColumn.CellTemplate>
+                                </syncfusion:GridTextColumn>
+                                <!-- AIR DATE -->
+                                <syncfusion:GridTextColumn HeaderText="Air Date" MappingName="AirDate" DisplayBinding="{Binding Path=AirDate}" 
+                                               ColumnSizer="Star">
+                                    <syncfusion:GridTextColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <TextBlock Text="{Binding AirDate, StringFormat=dd.MM.yyyy (dddd)}" FontWeight="DemiBold"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </syncfusion:GridTextColumn.CellTemplate>
+                                </syncfusion:GridTextColumn>
                             </syncfusion:SfDataGrid.Columns>
                         </syncfusion:SfDataGrid>
 
@@ -144,7 +165,8 @@
                                                   Command="{Binding GoNextDateCommand}"/>
 
                         </Grid>
-
+                    
+                        <!-- DAY PLANNING (By hour) -->
                         <Grid Grid.Row="2">
                             <syncfusion:SfDataGrid 
                            Margin="0,3,0,0"
@@ -154,15 +176,32 @@
                            NavigationMode="Row"
                            AutoGenerateColumns="False"
                            ColumnSizer="AutoWithLastColumnFill"
-                           SortClickAction="DoubleClick">
+                           SortClickAction="DoubleClick" RowHeight="31">
 
                                 <syncfusion:SfDataGrid.Columns>
-                                    <syncfusion:GridTextColumn HeaderText="Hour" MappingName="HourAsTimeSpan" Width="50"
-                                                               DisplayBinding="{Binding Path=HourAsTimeSpan, StringFormat=hh\\:mm}"
-                                                               
-                                                               />
-                                    <syncfusion:GridTextColumn HeaderText="Length" MappingName="LengthAsTimeSpan"
-                                                               DisplayBinding="{Binding Path=LengthAsTimeSpan, StringFormat=hh\\:mm\\:ss}"/>
+                                    <syncfusion:GridTextColumn HeaderText="HOUR" MappingName="HourAsTimeSpan" DisplayBinding="{Binding Path=HourAsTimeSpan}" 
+                                               ColumnSizer="Star" Width="80">
+                                        <syncfusion:GridTextColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <TextBlock Text="{Binding HourAsTimeSpan,StringFormat=hh\\:mm}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </syncfusion:GridTextColumn.CellTemplate>
+                                    </syncfusion:GridTextColumn>
+
+                                    <syncfusion:GridTextColumn HeaderText="Length" MappingName="LengthAsTimeSpan" DisplayBinding="{Binding Path=LengthAsTimeSpan}" 
+                                               ColumnSizer="Star" >
+                                        <syncfusion:GridTextColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <TextBlock Text="{Binding HourAsTimeSpan,StringFormat=hh\\:mm\\:ss}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </syncfusion:GridTextColumn.CellTemplate>
+                                    </syncfusion:GridTextColumn>
+                                    
+     
                                 </syncfusion:SfDataGrid.Columns>
                             </syncfusion:SfDataGrid>
 
@@ -205,15 +244,17 @@
                                       SmallIcon="{StaticResource PlaylistGenerateIcon}"/>
             </StackPanel>
 
-            <!-- Items for selected playlist -->
-            <syncfusion:SfDataGrid Grid.Row="1" IsEnabled="{Binding IsPlaylistSelected}"
+            <!-- PLAYLIST ITEMS -->
+            <syncfusion:SfDataGrid x:Name="playlistItems"
+                      Grid.Row="1" IsEnabled="{Binding IsPlaylistSelected}"
                        Margin="5,5,5,0"
                        ColumnSizer="Auto"
-                       ItemsSource="{Binding SelectedPlaylistItems}"
+                       ItemsSource="{Binding SelectedPlaylistItems, Mode=TwoWay}"
                        SelectionUnit="Row" NavigationMode="Row"
                        RowHeight="35" AllowSorting="False"
                        AllowResizingColumns="True"
                        AutoGenerateColumns="False"
+                       AllowDraggingRows="True" AllowDrop="True"
                                    >
                 <syncfusion:SfDataGrid.Columns>
                     <syncfusion:GridTextColumn HeaderText="#" MappingName="Index" DisplayBinding="{Binding Path=Index}" 

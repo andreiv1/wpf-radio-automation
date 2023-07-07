@@ -34,7 +34,7 @@ namespace RA.DAL
         }
 
         public async Task<IDictionary<DateTime, SchedulePlannedDTO?>> GetPlannedSchedulesOverviewAsync(DateTime searchDateStart,
-                                                                                                          DateTime searchDateEnd)
+                                                                                                       DateTime searchDateEnd)
         {
             var result = new Dictionary<DateTime, SchedulePlannedDTO?>();
             using var dbContext = dbContextFactory.CreateDbContext();
@@ -58,17 +58,7 @@ namespace RA.DAL
                 .Select(item => SchedulePlannedDTO.FromEntity(item))
                 .ToListAsync();
 
-            foreach (var onetime in oneTimeSchedulesInRange)
-            {
-                if (onetime.StartDate != null)
-                {
-                    result.Add(onetime.StartDate.Value, onetime);
-                }
-                else
-                {
-                    Debug.WriteLine($"PlannedSchedule: Id={onetime.Id} does not have start date (one time)");
-                }
-            }
+           
             foreach(var recurrent in recurrentSchedulesInRange)
             {
                 if (recurrent.StartDate.HasValue && recurrent.EndDate.HasValue)
@@ -88,9 +78,32 @@ namespace RA.DAL
 
                     foreach(var day in recurrentCalculatedDates)
                     {
-                        result.Add(day, recurrent);
+                        if (day >= searchDateStart && day <= searchDateEnd)
+                        {
+                            result.Add(day, recurrent);
+                        }
                     }
 
+                }
+            }
+
+            foreach (var onetime in oneTimeSchedulesInRange)
+            {
+                if (onetime.StartDate != null)
+                {
+                    if(result.ContainsKey(onetime.StartDate.Value))
+                    {
+                        result[onetime.StartDate.Value] = onetime;
+                    }
+                    else
+                    {
+                        result.Add(onetime.StartDate.Value, onetime);
+                    }
+
+                }
+                else
+                {
+                    Debug.WriteLine($"PlannedSchedule: Id={onetime.Id} does not have start date (one time)");
                 }
             }
             return result;

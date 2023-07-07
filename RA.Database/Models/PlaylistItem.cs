@@ -20,7 +20,13 @@ namespace RA.Database.Models
         public DateTime? NiceETA { get; set; }
         public int PlaylistId { get; set; }
         public Playlist Playlist { get; set; }
+        public int? BaseClockItemId { get; set; }
+        public ClockItemBase? BaseClockItem { get; set; }
+        public int? BaseTemplateId { get; set; }
+        public Template? BaseTemplate { get; set; }
         public virtual PlaylistItem? ParentPlaylistItem { get; set; }
         public int? ParentPlaylistItemId { get; set; }
+
+       
     }
 }

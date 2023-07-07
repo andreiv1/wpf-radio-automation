@@ -44,6 +44,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             this.playlistsService = playlistsService;
             _ = LoadPlaylistsToAir();
             _ = LoadPlaylistsByHour(SelectedDate);
+            SelectedPlaylistItems.CollectionChanged += SelectedPlaylistItems_CollectionChanged;
+        }
+
+        private void SelectedPlaylistItems_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            //throw new NotImplementedException();
         }
 
         partial void OnSelectedDateChanged(DateTime value)
@@ -61,9 +67,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private async Task LoadPlaylistsToAir()
         {
             PlaylistsToAir.Clear();
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
-                foreach (var playlist in playlistsService.GetPlaylistsToAirAfterDate())
+                foreach (var playlist in await playlistsService.GetPlaylistsToAirAfterDate())
                 {
                     PlaylistsToAir.Add(playlist);
                 }
@@ -87,10 +93,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private async Task LoadSelectedPlaylistItems()
         {
             if (SelectedPlaylistToAir == null) return;
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 SelectedPlaylistItems.Clear();
-                var data = playlistsService.GetPlaylistItems(SelectedPlaylistToAir.Id).ToList();
+                var data = await playlistsService.GetPlaylistItems(SelectedPlaylistToAir.Id);
                 int index = 0;
                 foreach (var item in data)
                 {

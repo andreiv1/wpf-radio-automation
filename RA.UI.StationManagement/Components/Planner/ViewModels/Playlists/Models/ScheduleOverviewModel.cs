@@ -21,6 +21,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists.Models
     {
         NoScheduleFound,
         NotGenerated,
+        AlreadyExists,
         Generating,
         Generated,
         Error
@@ -30,6 +31,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists.Models
         public DateTime Date { get; private set; }
 
         public ScheduleType Type { get; private set; }
+
+
 
         public String? TemplateName { get; private set; } 
 

@@ -4,7 +4,7 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-                      xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+                      xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core" xmlns:schedule="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.Schedule" d:DataContext="{d:DesignInstance Type=schedule:PlannerScheduleCalendarViewModel}"
                       mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -16,11 +16,22 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="4,5,0,10">
             <syncfusion:ButtonAdv Label="Add schedule" SmallIcon="{StaticResource CalendarPlusIcon}"
                                   Command="{Binding AddScheduleItemCommand}"/>
+            <TextBlock Text="Legend: " VerticalAlignment="Center" Margin="20,0,0,0"
+                       FontWeight="Bold" FontSize="15"/>
+            <TextBlock Text="Default" VerticalAlignment="Center" Margin="5,0,10,0"
+                       FontStyle="Italic" FontSize="13" Foreground="DarkGray"/>
+            <TextBlock Text="Planned (recurrent)" VerticalAlignment="Center" Margin="5,0,10,0"
+                       FontStyle="Italic" FontSize="13" Foreground="Green"/>
+            <TextBlock Text="Planned (one-time)" VerticalAlignment="Center" Margin="5,0,10,0"
+                       FontStyle="Italic" FontSize="13" Foreground="Red"/>
+            <TextBlock Text="(priority ascending)" VerticalAlignment="Center" Margin="20,0,0,0"
+                       FontWeight="DemiBold" FontSize="12"/>
+            
         </StackPanel>
         <syncfusion:SfScheduler Grid.Row="1" x:Name="calendar" 
                                 BorderThickness="0" 
                                 AllowViewNavigation="True"
-                                ViewType="Month"
+                                ViewType="Month" AllowDrop="False"
                                 ItemsSource="{Binding CalendarItems}" FirstDayOfWeek="Monday"
                                 LoadOnDemandCommand="{Binding LoadScheduleOnDemandCommand}"
                                 ShowBusyIndicator="{Binding IsLoadingCalendar}"
@@ -45,7 +56,31 @@
                                                  MinimumAppointmentDuration="1:0:0" TimeInterval="1:0:0">
                 </syncfusion:DaysViewSettings>
             </syncfusion:SfScheduler.DaysViewSettings>
- 
+            <syncfusion:SfScheduler.AppointmentContextMenu>
+                <ContextMenu>
+                    <!--<MenuItem Command="{Binding Source={x:Static Member=syncfusion:SchedulerCommands.Edit}}"
+                        CommandParameter ="{Binding}" CommandTarget="{Binding ElementName=Schedule}"
+                        Header="View">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource E}" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>-->
+                    <MenuItem Command="{Binding EditItemCommand}"
+                        CommandParameter ="{Binding}" CommandTarget="{Binding ElementName=Schedule}"
+                        Header="Edit">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource EditIcon}" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding DeleteItemCommand}"
+                        CommandParameter ="{Binding}"
+                        Header="Delete">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource RemoveIcon}" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </syncfusion:SfScheduler.AppointmentContextMenu>
         </syncfusion:SfScheduler>
     </Grid>
 </uicore:RAUserControl>

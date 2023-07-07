@@ -38,9 +38,18 @@ namespace RA.DAL
                 result.Add(itm.Key, itm.Value);
             }
 
-            foreach(var itm in plannedSchedules)
+            //Planned schedule override existing default
+            foreach (var itm in plannedSchedules)
             {
-                result[itm.Key] = itm.Value;
+                if(result.ContainsKey(itm.Key))
+                {
+                    result[itm.Key] = itm.Value;
+                }
+                else
+                {
+                    result.Add(itm.Key, itm.Value);
+                }
+
             }
 
             return result;

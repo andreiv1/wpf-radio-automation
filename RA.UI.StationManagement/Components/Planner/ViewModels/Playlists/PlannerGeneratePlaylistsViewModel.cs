@@ -63,21 +63,26 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
         //Data fetching
         private async Task LoadOverview()
         {
-            ScheduleOverview.Clear();
-            //var scheduleOverview = await Task.Run(() => 
-            //    schedulesService.GetDefaultSchedulesOverviewAsync(StartDate, StartDate.AddDays(NumberOfDaysToSchedule - 1)));
+            
+          
             var scheduleOverview = await Task.Run(() => schedulesService.GetSchedulesOverview(StartDate, StartDate.AddDays(NumberOfDaysToSchedule - 1)));
-
+            ScheduleOverview.Clear();
+            await Task.Delay(10);
             foreach(var schedule in scheduleOverview)
             {
                 var item = ScheduleOverviewModel.FromDto(schedule.Key, schedule.Value);
-
-                if (schedule.Value == null)
+                bool exists = await playlistsService.PlaylistExists(schedule.Key);
+                if (exists)
                 {
-                    item.GenerationStatus = ScheduleGenerationStatus.NoScheduleFound;
+                    item.GenerationStatus = ScheduleGenerationStatus.AlreadyExists;
+                } 
+                else if (schedule.Value == null)
+                {
+                        item.GenerationStatus = ScheduleGenerationStatus.NoScheduleFound;
                 }
                 ScheduleOverview.Add(item);
             }
+            FinishDialogCommand.NotifyCanExecuteChanged();
         }
 
         private void GeneratePlaylists()
@@ -114,9 +119,21 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
             FinishDialogCommand.NotifyCanExecuteChanged();
             GeneratePlaylists();
         }
+
+        private bool CanGenerateAny()
+        {
+            foreach(var item in ScheduleOverview)
+            {
+                if (item.GenerationStatus == ScheduleGenerationStatus.NotGenerated)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         protected override bool CanFinishDialog()
         {
-            return !isGeneratingPlaylist;
+            return !isGeneratingPlaylist && CanGenerateAny();
         }
     }
 }

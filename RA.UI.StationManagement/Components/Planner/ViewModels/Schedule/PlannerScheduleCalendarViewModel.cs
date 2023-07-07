@@ -99,5 +99,25 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             _ = LoadSchedule(new DateTimeRange (vm.StartDate.AddDays(-60), vm.EndDate.AddDays(60)));
         }
 
+        [RelayCommand]
+        private void EditItem()
+        {
+            //TODO
+            throw new NotImplementedException();
+        }
+
+        [RelayCommand]
+        private void DeleteItem()
+        {
+            //TODO
+            throw new NotImplementedException();
+        }
+
+        [RelayCommand]
+        private void ViewItem()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

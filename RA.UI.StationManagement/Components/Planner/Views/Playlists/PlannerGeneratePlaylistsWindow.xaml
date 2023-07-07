@@ -1,14 +1,16 @@
 ﻿<uicore:RAWindow x:Class="RA.UI.StationManagement.Components.Planner.View.Playlists.PlannerGeneratePlaylistsWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
-        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:numberformat="clr-namespace:System.Globalization;assembly=mscorlib"
-        mc:Ignorable="d"
-        Title="PlannerGeneratePlaylistsWindow" Height="650" Width="500" ResizeMode="NoResize">
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+                 xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+                 xmlns:playlists="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.Playlists"
+                 xmlns:numberformat="clr-namespace:System.Globalization;assembly=mscorlib"
+                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                 d:DataContext="{d:DesignInstance Type=playlists:PlannerGeneratePlaylistsViewModel}"
+                 mc:Ignorable="d"
+        Title="Generate playlists" Height="650" Width="500" ResizeMode="NoResize">
     <Border Padding="15">
         <Grid>
             <Grid.RowDefinitions>
@@ -70,9 +72,11 @@
                            ColumnSizer="AutoWithLastColumnFill"
                            AllowSorting="False" RowHeight="30">
                     <syncfusion:SfDataGrid.Columns>
-                        <syncfusion:GridTextColumn HeaderText="Air Date" MappingName="Date" Width="130" HorizontalHeaderContentAlignment="Left"
+                        <syncfusion:GridTextColumn HeaderText="Air Date" MappingName="Date" Width="100" HorizontalHeaderContentAlignment="Left"
                                                DisplayBinding="{Binding Path=Date, StringFormat=dd.MM.yyyy (ddd)}"/>
-                        <syncfusion:GridTextColumn HeaderText="Template Name" MappingName="TemplateName" HorizontalHeaderContentAlignment="Left"/>
+                        <!--<syncfusion:GridTextColumn HeaderText="Schedule" HorizontalHeaderContentAlignment="Left"/>-->
+                        <syncfusion:GridTextColumn HeaderText="Template" MappingName="TemplateName" HorizontalHeaderContentAlignment="Left"/>
+                        
                         <syncfusion:GridTemplateColumn HeaderText="Status" HorizontalHeaderContentAlignment="Left"
                                                        Width="120">
                             <syncfusion:GridTemplateColumn.CellTemplate>
@@ -82,12 +86,16 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
 
-                                        <TextBlock VerticalAlignment="Center"
-                                                   >
+                                        <TextBlock VerticalAlignment="Center">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="Foreground" Value="Black"/>
                                                     <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding GenerationStatus}" Value="AlreadyExists">
+                                                            <Setter Property="Text" Value="Playlist exists"/>
+                                                            <Setter Property="Foreground" Value="DarkOrange"/>
+                                                            <Setter Property="FontWeight" Value="Bold"/>
+                                                        </DataTrigger>
                                                         <DataTrigger Binding="{Binding GenerationStatus}" Value="NoScheduleFound">
                                                             <Setter Property="Text" Value="No schedule found"/>
                                                             <Setter Property="Foreground" Value="#E51400"/>

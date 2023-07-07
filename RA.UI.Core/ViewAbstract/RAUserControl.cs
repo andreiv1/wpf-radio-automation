@@ -15,7 +15,13 @@ namespace RA.UI.Core
 
         public void Dispose()
         {
+            ToDispose();
             Unloaded -= RAUserControl_Unloaded;
+        }
+
+        protected virtual void ToDispose()
+        {
+
         }
 
         private void RAUserControl_Unloaded(object sender, System.Windows.RoutedEventArgs e)

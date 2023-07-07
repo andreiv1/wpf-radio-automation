@@ -11,9 +11,11 @@ namespace RA.DAL
     public interface IPlaylistsService
     {
         Task AddPlaylistAsync(PlaylistDTO playlistDTO);
-        IEnumerable<PlaylistItemDTO> GetPlaylistItems(int playlistId);
+
+        Task<IEnumerable<PlaylistItemDTO>> GetPlaylistItems(int playlistId);
         IEnumerable<PlaylistItemDTO> GetPlaylistItemsByDateTime(DateTime date, int maxHours = 1);
         IEnumerable<PlaylistByHourDTO> GetPlaylistsByHour(DateTime airDate);
-        IEnumerable<PlaylistListingDTO> GetPlaylistsToAirAfterDate(DateTime? date = null);
+        Task<IEnumerable<PlaylistListingDTO>> GetPlaylistsToAirAfterDate(DateTime? date = null);
+        Task<bool> PlaylistExists(DateTime date);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using RA.UI.Core;
 using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Schedule;
+using Syncfusion.UI.Xaml.Scheduler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,19 @@ namespace RA.UI.StationManagement.Components.Planner.View.Schedule
             InitializeComponent(); 
             DataContextChanged += PlannerScheduleCalendarView_DataContextChanged;
             calendar.AppointmentEditorOpening += Calendar_AppointmentEditorOpening;
+         
+            calendar.AppointmentDropping += Calendar_AppointmentDropping;
+            calendar.AppointmentDragStarting += Calendar_AppointmentDragStarting;
+        }
+
+        private void Calendar_AppointmentDragStarting(object? sender, AppointmentDragStartingEventArgs e)
+        {
+            e.Cancel = true;
+        }
+
+        private void Calendar_AppointmentDropping(object? sender, AppointmentDroppingEventArgs e)
+        {
+            e.Cancel = true;
         }
 
         private void Calendar_AppointmentEditorOpening(object? sender, Syncfusion.UI.Xaml.Scheduler.AppointmentEditorOpeningEventArgs e)

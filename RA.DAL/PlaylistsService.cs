@@ -32,19 +32,17 @@ namespace RA.DAL
             await dbContext.SaveChangesAsync();
         }
 
-        public IEnumerable<PlaylistListingDTO> GetPlaylistsToAirAfterDate(DateTime? date = null)
+        public async Task<IEnumerable<PlaylistListingDTO>> GetPlaylistsToAirAfterDate(DateTime? date = null)
         {
             if (date == null) date = DateTime.Now.Date;
             using var dbContext = dbContextFactory.CreateDbContext();
-            var query = dbContext.Playlists.Where(p => p.AirDate >= date)
+
+            var query = await dbContext.Playlists.Where(p => p.AirDate >= date)
                 .OrderBy(p => p.AirDate)
-                .Select(p => PlaylistListingDTO.FromEntity(p));
+                .Select(p => PlaylistListingDTO.FromEntity(p))
+                .ToListAsync();
 
-
-            foreach (var item in query)
-            {
-                yield return item;
-            }
+            return query;
         }
 
         public IEnumerable<PlaylistByHourDTO> GetPlaylistsByHour(DateTime airDate)
@@ -79,28 +77,26 @@ namespace RA.DAL
 
         }
 
-        public IEnumerable<PlaylistItemDTO> GetPlaylistItems(int playlistId)
+        public async Task<IEnumerable<PlaylistItemDTO>> GetPlaylistItems(int playlistId)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
 
-            var query = dbContext.PlaylistItems
+            var query = await dbContext.PlaylistItems
                 .Include(pi => pi.Track)
                 .ThenInclude(pi => pi.TrackArtists)
                 .ThenInclude(ta => ta.Artist)
                 .Where(pi => pi.PlaylistId == playlistId)
-                .Select(pi => PlaylistItemDTO.FromEntity(pi));
+                .Select(pi => PlaylistItemDTO.FromEntity(pi))
+                .ToListAsync();
 
-            foreach(var item in query)
-            {
-                yield return item;
-            }
+            return query;
         }
 
         public IEnumerable<PlaylistItemDTO> GetPlaylistItemsByDateTime(DateTime dateTimeStart, int maxHours = 1)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            var activePlaylist = GetPlaylistsToAirAfterDate(dateTimeStart.Date).FirstOrDefault();
-            var pl = GetPlaylistsToAirAfterDate(dateTimeStart).ToList();
+            var activePlaylist = GetPlaylistsToAirAfterDate(dateTimeStart.Date).Result.FirstOrDefault();
+            var pl = GetPlaylistsToAirAfterDate(dateTimeStart).Result.ToList();
             if(activePlaylist != null)
             {
                 dateTimeStart = new DateTime(dateTimeStart.Year, dateTimeStart.Month, dateTimeStart.Day, dateTimeStart.Hour,dateTimeStart.Minute,0);
@@ -119,10 +115,14 @@ namespace RA.DAL
                     yield return item;
                 }
             } 
-
-           
         }
 
+        public async Task<bool> PlaylistExists(DateTime date)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var query = await dbContext.Playlists.AnyAsync(p => p.AirDate == date);
+            return query;
+        }
 
     }
 }

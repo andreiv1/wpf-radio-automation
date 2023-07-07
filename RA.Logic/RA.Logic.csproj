@@ -31,4 +31,8 @@
     <ProjectReference Include="..\RA.Dto\RA.Dto.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Planning\NewFolder\" />
+  </ItemGroup>
+
 </Project>
