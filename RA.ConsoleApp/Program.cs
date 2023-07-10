@@ -1,4 +1,5 @@
-﻿using RA.DAL;
+﻿using Microsoft.EntityFrameworkCore;
+using RA.DAL;
 using RA.DAL.Interfaces;
 using RA.Database.Models;
 using System.Text.RegularExpressions;
@@ -12,14 +13,27 @@ namespace RA.ConsoleApp
         {
             //_ = TestPlannedOverview();
             //_ = TestScheduleService();
-            UserGroupsService s = new UserGroupsService(dbFactory);
-            foreach (var g in s.GetGroups().Result)
-            {
-                Console.WriteLine($"{g.Id} - {g.Name} - {g.IsBuiltin.ToString()}");
-            }
-            var gr = s.GetGroup(2).Result;
-            Console.ReadKey();
+            //UserGroupsService s = new UserGroupsService(dbFactory);
+            //foreach (var g in s.GetGroups().Result)
+            //{
+            //    Console.WriteLine($"{g.Id} - {g.Name} - {g.IsBuiltin.ToString()}");
+            //}
+            //var gr = s.GetGroup(2).Result;
+            //Console.ReadKey();
+            TestAllSongsIncat();
             
+        }
+
+        static void TestAllSongsIncat()
+        {
+            var db = dbFactory.CreateDbContext();
+            var tracks = db.GetTracksByCategoryId(1)
+                .Include(t => t.TrackArtists)
+                .ThenInclude(t => t.Artist);
+            foreach(var t in tracks)
+            {
+                Console.WriteLine($"{t.Id} - {t.TrackArtists.Count}");
+            }
         }
 
         static async Task TestScheduleService()

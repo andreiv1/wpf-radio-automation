@@ -113,7 +113,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         [RelayCommand]
         private void DeleteItem()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         
 

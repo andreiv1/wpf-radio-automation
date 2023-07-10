@@ -167,7 +167,8 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         [RelayCommand]
         private void EditSubcategory()
         {
-            throw new NotImplementedException();
+            if (SelectedSubcategory == null || SelectedSubcategory.Id == null) return;
+            windowService.ShowDialog<MediaLibraryManageCategoryViewModel>(SelectedSubcategory.Id);
         }
 
         [RelayCommand]

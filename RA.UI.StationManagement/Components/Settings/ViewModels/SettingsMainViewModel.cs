@@ -33,7 +33,7 @@ namespace RA.UI.StationManagement.Components.Settings.ViewModels
         public ObservableCollection<SettingsMenuModel> SettingsMenu { get; set; } = new()
         {
             new SettingsMenuModel("General", typeof(SettingsGeneralViewModel), (ImageSource)Application.Current.Resources["AdministrativeToolsIcon"]),
-            new SettingsMenuModel("Database", typeof(SettingsDatabaseViewModel), (ImageSource)Application.Current.Resources["DatabaseAdministratorIcon"]),
+            //new SettingsMenuModel("Database", typeof(SettingsDatabaseViewModel), (ImageSource)Application.Current.Resources["DatabaseAdministratorIcon"]),
             new SettingsMenuModel("Security", typeof(SettingsSecurityViewModel), (ImageSource)Application.Current.Resources["SecurityConfigurationIcon"]),
             new SettingsMenuModel("About", typeof(SettingsAboutViewModel), (ImageSource)Application.Current.Resources["UserManualIcon"]),
         };

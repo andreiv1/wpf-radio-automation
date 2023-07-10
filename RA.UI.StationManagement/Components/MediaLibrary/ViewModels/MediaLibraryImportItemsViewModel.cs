@@ -8,6 +8,7 @@ using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.ImportItems;
 using RA.UI.StationManagement.Components.MediaLibrary.ViewModels.Models;
+using RA.UI.StationManagement.Stores;
 using System;
 using System.IO;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         private readonly IMessageBoxService messageBoxService;
         private readonly ITrackFilesProcessor trackFilesProcessor;
         private readonly ITrackFilesImporter trackFilesImporter;
-
+        private readonly ConfigurationStore configurationStore;
         [ObservableProperty]
         private ImportItemsModel model = new();
         public MediaLibraryImportItemsViewModel(IWindowService windowService,
@@ -33,6 +34,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
                                                 INavigationService<MediaLibraryImportItemsViewModel> navigationService,
                                                 ITrackFilesProcessor trackFilesProcessor,
                                                 ITrackFilesImporter trackFilesImporter,
+                                                ConfigurationStore configurationStore,
                                                 ImportItemsFirstViewModel importItemsFirstViewModel,
                                                 ImportItemsSecondViewModel importItemsSecondViewModel,
                                                 ImportItemsThirdViewModel importItemsThirdViewModel,
@@ -45,7 +47,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             this.messageBoxService = messageBoxService;
             this.trackFilesProcessor = trackFilesProcessor;
             this.trackFilesImporter = trackFilesImporter;
-
+            this.configurationStore = configurationStore;
             viewModels.Add(importItemsFirstViewModel);
             viewModels.Add(importItemsSecondViewModel);
             viewModels.Add(importItemsThirdViewModel);
@@ -115,7 +117,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             }
         }
 
-        private TrackFilesProcessorOptions options;
+        private TrackFilesProcessorOptions? options;
         private async Task HandleProcessTracks()
         {
             
@@ -124,7 +126,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
                 Model.IsTrackProcessRunning = true;
  
                 string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                TrackMetadataReader.ImagePath = Path.Combine(appDataFolder, "RadioAutomationSystem", "images");
+                TrackMetadataReader.ImagePath = configurationStore.ImagePath;
 
                 SubfolderScanOption scanOption;
                 switch (Model.ScanOptions)

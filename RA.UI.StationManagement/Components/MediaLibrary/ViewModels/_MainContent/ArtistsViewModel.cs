@@ -20,7 +20,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         private readonly IArtistsService artistsService;
         private readonly ITracksService tracksService;
 
-        private const int artistsPerPage = 200;
+        private const int artistsPerPage = 100;
         public ObservableCollection<ArtistModel> Artists { get; private set; } = new();
 
         [ObservableProperty]
@@ -64,7 +64,6 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels.MainContent
         {
             this.artistsService = artistsService;
             this.tracksService = tracksService;
-            _ = LoadArtists(0, 100);
  
         }
         public async Task LoadArtists(int skip, int take, string query = "")

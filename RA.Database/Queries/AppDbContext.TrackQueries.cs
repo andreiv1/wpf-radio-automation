@@ -55,5 +55,33 @@ namespace RA.Database
                 .Where(t => t.Id.Equals(id))
                 .AsNoTracking();
         }
+
+        /// <summary>
+        /// Get all tracks for a category (including subcategories)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IQueryable<Track> GetTracksByCategoryId(int id)
+        {
+            string rawQuery = @"
+                WITH RECURSIVE CategoryHierarchy AS (
+                    SELECT Id
+                    FROM Categories
+                    WHERE Id = {0} -- Specify the starting CategoryId
+                    UNION ALL
+                    SELECT c.Id
+                    FROM Categories c
+                    INNER JOIN CategoryHierarchy ch ON c.ParentId = ch.Id
+                )
+        
+                SELECT t.*, c.Id AS CategoryId, c.Name AS CategoryName
+                FROM Tracks t
+                JOIN categories_tracks ct on t.Id = ct.TrackId
+                JOIN categories c on ct.CategoryId = c.Id
+                WHERE ct.CategoryId IN(SELECT Id FROM CategoryHierarchy)
+            ";
+
+            return Tracks.FromSqlRaw(rawQuery, id);
+        }
     }
 }

@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using RA.Database;
 using OfficeOpenXml;
 using Microsoft.Extensions.Configuration;
+using RA.UI.StationManagement.Stores;
 
 namespace RA.UI.StationManagement
 {
@@ -29,8 +30,6 @@ namespace RA.UI.StationManagement
             this.host = CreateHostBuilder()
                 .Build();
 
-            var configuration = host.Services.GetRequiredService<IConfiguration>();
-            string? imagePath = configuration["AppSettings:ImagePath"];
         }
 
         public static IHostBuilder CreateHostBuilder()
@@ -68,6 +67,17 @@ namespace RA.UI.StationManagement
 
                 try
                 {
+                    var configuration = host.Services.GetRequiredService<ConfigurationStore>();
+
+                }
+                catch (Exception ex)
+                {
+                    messageBoxService.ShowError(ex.Message);
+                    await dispatcherService.InvokeOnUIThreadAsync(() => Application.Current.Shutdown());
+                }
+
+                try
+                {
                     canConnect = await DatabaseConnectionTester.CanConnectToDatabase(dbContext);
                 }
                 catch(DatabaseConnectionException ex)
@@ -75,6 +85,8 @@ namespace RA.UI.StationManagement
                     messageBoxService.ShowError(ex.Message);
                     await dispatcherService.InvokeOnUIThreadAsync(() => Application.Current.Shutdown());
                 }
+
+               
                 
             });
 

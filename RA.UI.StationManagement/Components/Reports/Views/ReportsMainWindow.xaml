@@ -55,7 +55,7 @@
                                   SmallIcon="{StaticResource ListViewIcon}"
                                   Command="{Binding GenerateReportCommand}"/>
             </StackPanel>
-            <StackPanel Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center">
+            <!--<StackPanel Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center">
                 <Label Content="Other reports" FontWeight="DemiBold" FontSize="17"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -74,7 +74,7 @@
                 </Grid>
                
                 
-            </StackPanel>
+            </StackPanel>-->
         </Grid>
        
         <Grid Grid.Row="1" Grid.Column="2">

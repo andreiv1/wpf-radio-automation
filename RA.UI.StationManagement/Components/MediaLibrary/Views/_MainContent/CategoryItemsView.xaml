@@ -35,6 +35,7 @@
                    Margin="8,0,0,0"
                    d:Text="Breadcrumb" 
                    FontSize="17"
+                   FontStyle="Italic"
                    FontWeight="DemiBold" Height="25"/>
 
             <StackPanel
@@ -58,12 +59,12 @@
                                      />
 
                 <syncfusion:ButtonAdv
-                Margin="0,0,5,0"
-                Command="{Binding AddSubcategoryCommand}"
-                SmallIcon="{StaticResource AddFolderIcon}"
-                Label="Add subcategory"/>
-                
-                
+                    Margin="0,0,5,0"
+                    Command="{Binding AddSubcategoryCommand}"
+                    SmallIcon="{StaticResource AddFolderIcon}"
+                    Label="Add subcategory"/>
+
+
                 <!-- Buttons shown only for items -->
                 <StackPanel Orientation="Horizontal">
                     <!--<syncfusion:ButtonAdv
@@ -101,9 +102,8 @@
                        NavigationMode="Row"
                        AllowResizingColumns="True"
                        AutoGenerateColumns="False" AutoGenerateColumnsMode="None"
-                       RowHeight="30"
-                       CellDoubleTapped="subcategoriesSfDataGrid_CellDoubleTapped"
-                            >
+                       RowHeight="32"
+                       CellDoubleTapped="subcategoriesSfDataGrid_CellDoubleTapped">
             <syncfusion:SfDataGrid.Columns>
                 <syncfusion:GridTemplateColumn Width="25" HeaderText="">
                     <syncfusion:GridTemplateColumn.CellTemplate>
@@ -113,9 +113,23 @@
                         </DataTemplate>
                     </syncfusion:GridTemplateColumn.CellTemplate>
                 </syncfusion:GridTemplateColumn>
-                <syncfusion:GridTextColumn HeaderText="Subcategory Name" MappingName="Name" Width="300"/>
-                <syncfusion:GridTextColumn HeaderText="Description" MappingName="Description"/>
-               
+                <syncfusion:GridTextColumn HeaderText="Subcategory Name" MappingName="Name" Width="300">
+                    
+                </syncfusion:GridTextColumn>
+                <!--<syncfusion:GridTextColumn HeaderText="Description" MappingName="Description"/>-->
+                <syncfusion:GridTemplateColumn MinimumWidth="50" HeaderText="Description"
+                                                   MappingName="Type" 
+                                               AllowSorting="False">
+                    <syncfusion:GridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Text="{Binding Description}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,10,0"
+                                           TextWrapping="Wrap"/>
+                            </Grid>
+                        </DataTemplate>
+                    </syncfusion:GridTemplateColumn.CellTemplate>
+                </syncfusion:GridTemplateColumn>
+
             </syncfusion:SfDataGrid.Columns>
             <syncfusion:SfDataGrid.ContextMenu>
                 <ContextMenu>

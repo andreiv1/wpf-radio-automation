@@ -35,6 +35,7 @@ namespace RA.UI.StationManagement.HostBuilders
 
                 //Stores
                 services.AddSingleton<UserStore>();
+                services.AddSingleton<ConfigurationStore>();
 
                 //Navigation services
                 //changed from scoped to singleton

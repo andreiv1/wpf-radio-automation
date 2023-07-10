@@ -40,13 +40,13 @@ namespace RA.Database
             double averageDurationInSeconds = 0;
 
             string sqlQuery = $@"WITH RECURSIVE CategoryHierarchy AS (
-                                SELECT Id
-                                FROM Categories
-                                WHERE Id = @categoryId
-                                UNION ALL
-                                SELECT c.Id
-                                FROM Categories c
-                                INNER JOIN CategoryHierarchy ch ON c.ParentId = ch.Id
+                                    SELECT Id
+                                    FROM Categories
+                                    WHERE Id = @categoryId
+                                    UNION ALL
+                                    SELECT c.Id
+                                    FROM Categories c
+                                    INNER JOIN CategoryHierarchy ch ON c.ParentId = ch.Id
                                 )
 
                                 SELECT AVG(Duration) FROM Categories_Tracks ct

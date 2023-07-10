@@ -84,15 +84,17 @@
                     <Label Grid.Row="2" Grid.Column="0" Content="Start Date:" FontWeight="DemiBold"
                        VerticalAlignment="Center" Grid.ColumnSpan="2"/>
 
-                    <syncfusion:DateTimeEdit Grid.Row="2" Grid.Column="1" DateTime="{Binding NewScheduleStartDate,Mode=TwoWay}"
-                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)" 
+                    <syncfusion:DateTimeEdit Grid.Row="2" Grid.Column="1" DateTime="{Binding NewScheduleStartDate,Mode=TwoWay, 
+                        UpdateSourceTrigger=LostFocus}"
+                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)" CanEdit="False"
                         MinDateTime="{x:Static sys:DateTime.Today}"/>
 
                     <Label Grid.Row="4" Grid.Column="0" Content="End Date:" FontWeight="DemiBold"
                        VerticalAlignment="Center" Grid.ColumnSpan="2"/>
 
-                    <syncfusion:DateTimeEdit Grid.Row="4" Grid.Column="1" DateTime="{Binding NewScheduleEndDate,Mode=TwoWay}"
-                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)"
+                    <syncfusion:DateTimeEdit Grid.Row="4" Grid.Column="1" DateTime="{Binding NewScheduleEndDate,Mode=TwoWay,
+                        UpdateSourceTrigger=LostFocus}"
+                        Pattern="CustomPattern" CustomPattern="dd.MM.yyyy (dddd, MMM)" CanEdit="False"
                                              MinDateTime="{x:Static sys:DateTime.Today}"/>
 
                     <TextBlock Grid.Row="6" Grid.ColumnSpan="2" Text="Existing schedule overlaps with this interval."

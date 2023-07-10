@@ -9,6 +9,7 @@ using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.MediaLibrary.Models;
 using RA.UI.StationManagement.Dialogs.ArtistSelectDialog;
 using RA.UI.StationManagement.Dialogs.CategorySelectDialog;
+using RA.UI.StationManagement.Stores;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -22,6 +23,7 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         private readonly int trackId;
         private readonly ITracksService tracksService;
         private readonly ITagsService tagsService;
+        private readonly ConfigurationStore configurationStore;
         private readonly IMessageBoxService messageBoxService;
         private readonly IFileBrowserDialogService fileBrowserDialogService;
         private readonly IDispatcherService dispatcherService;
@@ -62,10 +64,12 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
                                                 IDispatcherService dispatcherService,
                                                 IMessageBoxService messageBoxService,
                                                 ITracksService tracksService,
-                                                ITagsService tagsService) : base(windowService)
+                                                ITagsService tagsService,
+                                                 ConfigurationStore configurationStore) : base(windowService)
         {
             this.tracksService = tracksService;
             this.tagsService = tagsService;
+            this.configurationStore = configurationStore;
             this.fileBrowserDialogService = fileBrowserDialogService;
             this.dispatcherService = dispatcherService;
             this.messageBoxService = messageBoxService;
@@ -87,11 +91,13 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
                                                 IMessageBoxService messageBoxService,
                                                 ITracksService tracksService,
                                                 ITagsService tagsService,
+                                                ConfigurationStore configurationStore,
                                                 int trackId) : base(windowService) 
         {
             this.trackId = trackId;
             this.tracksService = tracksService;
             this.tagsService = tagsService;
+            this.configurationStore = configurationStore;
             this.fileBrowserDialogService = fileBrowserDialogService;
             this.dispatcherService = dispatcherService;
             this.messageBoxService = messageBoxService;
@@ -168,11 +174,11 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
             if (!string.IsNullOrEmpty(Track.ImageName))
             {
                 string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                FullImagePath = Path.Combine(appDataFolder, "RadioAutomationSystem", "images", Track.ImageName);
+                FullImagePath = configurationStore.GetFullImagePath(Track.ImageName);
             }
             else
             {
-                FullImagePath = "pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png";
+                FullImagePath = ConfigurationStore.GetDefaultImagePath();
             }
 
             //Load audio file metadata
@@ -210,25 +216,33 @@ namespace RA.UI.StationManagement.Components.MediaLibrary.ViewModels
         private void AsignTagsToTrack()
         {
             if (Track == null || Track.Tags == null) throw new Exception("t or tt can't be null");
-            foreach(var genre in Genres)
+
+            foreach (var tagValue in Track.Tags)
             {
-                if(Track.Tags.Where(t => t.TagValueId == genre.Id).Any())
+                //Genre
+                switch (tagValue.TagCategoryId)
                 {
-                    dispatcherService.InvokeOnUIThread(() => SelectedGenres.Add(genre));
-                }
-            }
-            foreach(var language in Languages)
-            {
-                if(Track.Tags.Where(t => t.TagValueId ==  language.Id).Any())
-                {
-                    dispatcherService.InvokeOnUIThread(() => SelectedLanguages.Add(language));
-                }
-            }
-            foreach(var  mood in Moods)
-            {
-                if(Track.Tags.Where(t => t.TagValueId == mood.Id).Any())
-                {
-                    dispatcherService.InvokeOnUIThread(() => SelectedMoods.Add(mood));
+                    case 1:
+                        var genre = Genres.Where(g => g.Id == tagValue.TagValueId).FirstOrDefault();
+                        if (genre != null)
+                        {
+                            dispatcherService.InvokeOnUIThread(() => SelectedGenres.Add(genre));
+                        }
+                        break;
+                    case 2:
+                        var language = Languages.Where(g => g.Id == tagValue.TagValueId).FirstOrDefault();
+                        if (language != null)
+                        {
+                            dispatcherService.InvokeOnUIThread(() => SelectedLanguages.Add(language));
+                        }
+                        break;
+                    case 3:
+                        var mood = Moods.Where(g => g.Id == tagValue.TagValueId).FirstOrDefault();
+                        if (mood != null)
+                        {
+                            dispatcherService.InvokeOnUIThread(() => SelectedMoods.Add(mood));
+                        }
+                        break;
                 }
             }
         }

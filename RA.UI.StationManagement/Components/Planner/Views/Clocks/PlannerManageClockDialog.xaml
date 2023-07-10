@@ -6,7 +6,7 @@
         xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
         xmlns:syncfusion="http://schemas.syncfusion.com/wpf" 
         mc:Ignorable="d"
-        Title="PlannerManageClockDialog" Width="320" Height="200">
+        Title="Manage clock" Width="320" Height="200">
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

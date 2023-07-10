@@ -68,7 +68,7 @@ namespace RA.DAL
             return await query.Select(t => TrackListingDTO.FromEntity(t)).ToListAsync();
         }
 
-        private Dictionary<(FilterLabelType, FilterOperator), Expression<Func<Track, bool>>> GenerateFilters(ICollection<TrackFilterCondition>? conditions)
+        private static Dictionary<(FilterLabelType, FilterOperator), Expression<Func<Track, bool>>> GenerateFilters(ICollection<TrackFilterCondition>? conditions)
         {
             var filters = new Dictionary<(FilterLabelType, FilterOperator), Expression<Func<Track, bool>>>();
 
@@ -280,16 +280,6 @@ namespace RA.DAL
         public async Task<IEnumerable<TrackListingDTO>> GetTrackListByArtistAsync(int artistId, int skip, int take)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
-            //return await dbContext.GetTracks()
-            //    .Skip(skip).Take(take)
-            //    .Where(t => t.TrackArtists.Contains(new ArtistTrack
-            //    {
-            //        ArtistId = artistId,
-            //        TrackId = t.Id,
-            //    }))
-            //    .Select(t => TrackListingDTO.FromEntity(t))
-            //    .ToListAsync();
-            //TODO: Bug
             var result = dbContext.GetTracks()
                 .Skip(skip).Take(take)
                 .Where(t => t.TrackArtists.Any(ta => ta.ArtistId == artistId))
@@ -306,12 +296,13 @@ namespace RA.DAL
         public async Task<IEnumerable<TrackListingDTO>> GetTrackListByCategoryAsync(int categoryId, int skip, int take)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
-            var result = await dbContext.GetTracks()
-               .Include(c => c.Categories)
-               .Where(t => t.Categories.Any(x => x.Id == categoryId))
+            var result = await dbContext.GetTracksByCategoryId(categoryId)
+               .Include(t => t.TrackArtists).ThenInclude(t => t.Artist)
+               .Include(t => t.Categories)
+               .OrderBy(t => t.Id)
                .Skip(skip).Take(take)
-               .Select(t => TrackListingDTO.FromEntity(t))
                .AsNoTracking()
+               .Select(t => TrackListingDTO.FromEntity(t))
                .ToListAsync();
 
             return result;
@@ -320,12 +311,9 @@ namespace RA.DAL
         public async Task<int> GetTrackCountByCategoryAsync(int categoryId)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
-            return await dbContext.GetTracks()
-                .Include(c => c.Categories)
-                .Where(t => t.Categories.Contains(new Category()
-                {
-                    Id = categoryId,
-                }))
+            return await dbContext.GetTracksByCategoryId(categoryId)
+                .OrderBy(t => t.Id)
+                .AsNoTracking()
                 .CountAsync();
         }
 
