@@ -124,5 +124,12 @@ namespace RA.DAL
             return query;
         }
 
+        public async Task DeletePlaylist(int id)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            await dbContext.Playlists
+                .Where(p => p.Id == id)
+                .ExecuteDeleteAsync();
+        }
     }
 }

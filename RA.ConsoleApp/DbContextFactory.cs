@@ -10,7 +10,7 @@ namespace RA.ConsoleApp
 {
     public class DbContextFactory : IDbContextFactory<AppDbContext>
     {
-        private static String connString = "server=localhost;Port=3306;database=ratest2;user=root;password=";
+        private static String connString = "server=localhost;Port=3306;database=ra_prod1;user=root;password=";
         public AppDbContext CreateDbContext()
         {
             DbContextOptionsBuilder<AppDbContext> optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();

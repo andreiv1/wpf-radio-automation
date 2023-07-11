@@ -170,9 +170,10 @@
                        SelectedItem="{Binding SelectedClockItem}"
                        SelectedItems="{Binding SelectedClockItems,Mode=TwoWay}"
                        SelectionUnit="Row" NavigationMode="Row"
-                       SelectionMode="Single" AllowSorting="False"
+                       SelectionMode="Multiple" AllowSorting="False"
                         RowHeight="29" AllowResizingColumns="True"
-                       AutoGenerateColumns="False">
+                       AutoGenerateColumns="False" 
+                       KeyDown="selectedClockItemsDataGrid_KeyDown">
                     <syncfusion:SfDataGrid.Columns>
                         <!--Estimated Start Time-->
                         <syncfusion:GridTemplateColumn HeaderText="Start Time"
@@ -431,6 +432,11 @@
                                 </MenuItem.Icon>
                             </MenuItem>
                             <Separator x:Name="InsertSeparator"/>
+                            <MenuItem Header="Duplicate item(s)" Command="{Binding DuplicateItemsInSelectedClockCommand}">
+                                <MenuItem.Icon>
+                                    <Image Source="{StaticResource CopyIcon}" Width="16" Height="16" />
+                                </MenuItem.Icon>
+                            </MenuItem>
                             <MenuItem Header="Edit item" Command="{Binding EditSelectedItemInSelectedClockCommand}">
                                 <MenuItem.Icon>
                                     <Image Source="{StaticResource EditIcon}" Width="16" Height="16" />

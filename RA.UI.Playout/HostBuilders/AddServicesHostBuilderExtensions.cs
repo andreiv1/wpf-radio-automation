@@ -3,11 +3,11 @@ using Microsoft.Extensions.Hosting;
 using RA.DAL;
 using RA.Logic.AudioPlayer;
 using RA.Logic.AudioPlayer.Interfaces;
-using RA.Logic.Planning;
 using RA.Logic.Tracks;
 using RA.UI.Core.Factories;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
+using RA.UI.Playout.Stores;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +22,8 @@ namespace RA.UI.Playout.HostBuilders
         {
             host.ConfigureServices(services =>
             {
+                services.AddSingleton<ConfigurationStore>();
+
                 services.AddSingleton<IWindowService, WindowService>();
                 services.AddSingleton<IViewModelFactory, ViewModelFactory>();
 

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RA.UI.StationManagement.Stores
+namespace RA.UI.Playout.Stores
 {
     public class ConfigurationStore
     {

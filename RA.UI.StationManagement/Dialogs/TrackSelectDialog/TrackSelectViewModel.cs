@@ -84,7 +84,7 @@ namespace RA.UI.StationManagement.Dialogs.TrackSelectDialog
             Tracks.Clear();
             TotalTracks = await tracksService.GetTrackCountAsync(query, conditions: FilterConditions);
             Pages = TotalTracks > 0 ? (TotalTracks - 1) / tracksPerPage + 1 : 0;
-            var tracks = await tracksService.GetTrackListAsync(skip, take, conditions: FilterConditions);
+            var tracks = await tracksService.GetTrackListAsync(skip, take, query, conditions: FilterConditions);
 
             foreach (var track in tracks.ToList())
             {

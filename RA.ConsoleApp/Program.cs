@@ -2,6 +2,7 @@
 using RA.DAL;
 using RA.DAL.Interfaces;
 using RA.Database.Models;
+using RA.Logic.Planning;
 using System.Text.RegularExpressions;
 
 namespace RA.ConsoleApp
@@ -11,19 +12,22 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
-            //_ = TestPlannedOverview();
-            //_ = TestScheduleService();
-            //UserGroupsService s = new UserGroupsService(dbFactory);
-            //foreach (var g in s.GetGroups().Result)
-            //{
-            //    Console.WriteLine($"{g.Id} - {g.Name} - {g.IsBuiltin.ToString()}");
-            //}
-            //var gr = s.GetGroup(2).Result;
-            //Console.ReadKey();
-            TestAllSongsIncat();
-            
+            TestPlaylistGenerator();
+            Console.ReadLine();
         }
 
+
+        static async void TestPlaylistGenerator()
+        {
+            var playlistGen = new PlaylistGenerator(dbFactory,
+                                                    new SchedulesService(new SchedulesDefaultService(dbFactory), new SchedulesPlannedService(dbFactory)),
+                                                    new ClocksService(dbFactory),
+                                                    new TemplatesService(dbFactory));
+            PlaylistGenerator.DefaultArtistSeparation = 30;
+            PlaylistGenerator.DefaultTitleSeparation = 30;
+            PlaylistGenerator.DefaultTrackSeparation = 60;
+            await playlistGen.GeneratePlaylistForDate(DateTime.Now.Date);
+        }
         static void TestAllSongsIncat()
         {
             var db = dbFactory.CreateDbContext();

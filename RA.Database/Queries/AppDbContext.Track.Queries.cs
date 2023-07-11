@@ -52,8 +52,7 @@ namespace RA.Database
         {
             return Tracks.Include(t => t.TrackArtists)
                 .ThenInclude(t => t.Artist)
-                .Where(t => t.Id.Equals(id))
-                .AsNoTracking();
+                .Where(t => t.Id.Equals(id));
         }
 
         /// <summary>

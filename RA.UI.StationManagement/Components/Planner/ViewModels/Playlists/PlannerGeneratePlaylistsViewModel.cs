@@ -63,11 +63,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
         //Data fetching
         private async Task LoadOverview()
         {
-            
-          
             var scheduleOverview = await Task.Run(() => schedulesService.GetSchedulesOverview(StartDate, StartDate.AddDays(NumberOfDaysToSchedule - 1)));
             ScheduleOverview.Clear();
-            await Task.Delay(10);
             foreach(var schedule in scheduleOverview)
             {
                 var item = ScheduleOverviewModel.FromDto(schedule.Key, schedule.Value);
@@ -78,7 +75,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
                 } 
                 else if (schedule.Value == null)
                 {
-                        item.GenerationStatus = ScheduleGenerationStatus.NoScheduleFound;
+                    item.GenerationStatus = ScheduleGenerationStatus.NoScheduleFound;
                 }
                 ScheduleOverview.Add(item);
             }
@@ -88,7 +85,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
         private void GeneratePlaylists()
         {
             List<PlaylistDTO> generatedPlaylists = new();
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 foreach (var item in ScheduleOverview)
                 {
@@ -97,10 +94,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
                         item.GenerationStatus = ScheduleGenerationStatus.Generating;
                         try
                         {
-                            var p = playlistGenerator.GeneratePlaylistForDate(item.Date);
+                            var p = await playlistGenerator.GeneratePlaylistForDate(item.Date);
                             item.GenerationStatus = ScheduleGenerationStatus.Generated;
                             generatedPlaylists.Add(p);
-                            _ = playlistsService.AddPlaylistAsync(p);
+                            await playlistsService.AddPlaylistAsync(p);
                         }
                         catch (Exception ex)
                         {

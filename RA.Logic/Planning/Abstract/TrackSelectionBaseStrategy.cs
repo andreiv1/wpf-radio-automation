@@ -1,4 +1,5 @@
-﻿using RA.DAL;
+﻿using Microsoft.EntityFrameworkCore;
+using RA.Database;
 using RA.DTO;
 using System;
 using System.Collections.Generic;
@@ -8,38 +9,27 @@ using System.Threading.Tasks;
 
 namespace RA.Logic.Planning.Abstract
 {
+    public class TrackSelectionOptions
+    {
+        public int? ArtistSeparation { get; set; }
+        public int? TitleSeparation { get; set; }
+        public int? TrackSeparation { get; set; }
+        public TimeSpan? MinDuration { get; set; }
+        public TimeSpan? MaxDuration { get; set; }
+        public DateTime? MinReleaseDate { get; set; }
+        public DateTime? MaxReleaseDate { get; set; }
+        public List<int>? TagValuesIds { get; set; }
+
+    }
     public abstract class TrackSelectionBaseStrategy
     {
-        protected readonly IPlaylistsService playlistsService;
-        protected readonly ITracksService tracksService;
+        protected readonly IDbContextFactory<AppDbContext> dbContextFactory;
+        protected readonly TrackSelectionOptions options;
 
-        /// <summary>
-        /// Minimum time in minutes that must pass before a track with the same artist can be selected again 
-        /// </summary>
-        protected int artistSeparation;
-
-        /// <summary>
-        /// Minimum time in minutes that must pass before the same track can be selected again
-        /// </summary>
-        protected int trackSeparation;
-
-        /// <summary>
-        /// Minimum time in minutes that must pass before a track with the same title can be selected again
-        /// </summary>
-        protected int titleSeparation;
-
-        public TrackSelectionBaseStrategy(IPlaylistsService playlistsService,
-                                          ITracksService tracksService,
-                                          int artistSeparation,
-                                          int trackSeparation,
-                                          int titleSeparation)
+        protected TrackSelectionBaseStrategy(IDbContextFactory<AppDbContext> dbContextFactory, TrackSelectionOptions options)
         {
-            this.playlistsService = playlistsService;
-            this.tracksService = tracksService;
-
-            this.artistSeparation = artistSeparation;
-            this.trackSeparation = trackSeparation;
-            this.titleSeparation = titleSeparation;
+            this.dbContextFactory = dbContextFactory;
+            this.options = options;
         }
 
         public abstract PlaylistItemDTO SelectTrack(PlaylistDTO currentPlaylist);

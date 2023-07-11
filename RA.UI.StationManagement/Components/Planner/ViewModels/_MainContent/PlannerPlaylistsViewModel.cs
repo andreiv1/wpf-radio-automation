@@ -139,7 +139,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         [RelayCommand]
         private void DeleteSelectedPlaylist()
         {
-            throw new NotImplementedException();
+            if(SelectedPlaylistToAir == null) return;
+            int id = SelectedPlaylistToAir.Id;
+            playlistsService.DeletePlaylist(id);
+            SelectedPlaylistToAir = null;
+            _ = LoadPlaylistsToAir();
+
         }
 
         //Selected playlist operations

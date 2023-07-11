@@ -12,7 +12,6 @@ namespace RA.DAL
         IEnumerable<TrackListingDTO> GetTrackListByArtist(int artistId, int skip, int take);
         Task<IEnumerable<TrackListingDTO>> GetTrackListByCategoryAsync(int categoryId, int skip, int take);
         Task<int> AddTracks(IEnumerable<TrackDTO> trackDTOs);
-        Task<TrackListingDTO?> GetRandomTrack(int categoryId, List<int>? trackIdsToExclude = null);
         Task<bool> TrackExistsByPath(string filePath);
         Task UpdateTrack(TrackDTO trackDTO);
         Task<bool> DeleteTrack(int trackId);

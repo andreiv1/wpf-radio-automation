@@ -3,6 +3,7 @@ using MySqlConnector;
 using RA.DAL.Exceptions;
 using RA.Database;
 using RA.Database.Models;
+using RA.Database.Models.Abstract;
 using RA.DTO;
 using RA.DTO.Abstract;
 using System.Diagnostics;
@@ -95,7 +96,7 @@ namespace RA.DAL
 
                 if (categoryIds.Count > 0)
                 {
-                    foreach(var id in categoryIds)
+                    foreach (var id in categoryIds)
                     {
                         TimeSpan avgDuration = TimeSpan.Zero;
                         if (id != null)
@@ -151,17 +152,18 @@ namespace RA.DAL
                 // Remove tags no longer associated
                 foreach (var existingTag in existingClockItem.ClockItemCategoryTags.ToList())
                 {
-                    if(!clockItemCategoryDto.Tags
-                        .Any(t => t.TagValueId == existingTag.TagValueId)){
+                    if (!clockItemCategoryDto.Tags
+                        .Any(t => t.TagValueId == existingTag.TagValueId))
+                    {
                         existingClockItem.ClockItemCategoryTags.Remove(existingTag);
                     }
-                   
+
                 }
 
                 // Add new tags
                 foreach (var newTag in clockItem.ClockItemCategoryTags)
                 {
-                    if(!existingClockItem.ClockItemCategoryTags
+                    if (!existingClockItem.ClockItemCategoryTags
                         .Any(t => t.TagValueId == newTag.TagValueId))
                     {
                         existingClockItem.ClockItemCategoryTags.Add(newTag);
@@ -169,7 +171,7 @@ namespace RA.DAL
                 }
             }
 
-   
+
             await dbContext.SaveChangesAsync();
         }
 
@@ -195,13 +197,14 @@ namespace RA.DAL
                         itm.OrderIndex = i;
                         dbContext.Update(itm);
                     }
-                } else if(entity.OrderIndex == -1 && entity.ClockItemEventId != null)
+                }
+                else if (entity.OrderIndex == -1 && entity.ClockItemEventId != null)
                 {
                     var otherEventItems = await dbContext.ClockItems
                         .Where(ci => ci.OrderIndex == -1 && ci.ClockItemEventId == entity.ClockItemEventId)
                         .OrderBy(ci => ci.EventOrderIndex)
                         .ToListAsync();
-                    for(int i = 0; i < otherEventItems.Count(); i++)
+                    for (int i = 0; i < otherEventItems.Count(); i++)
                     {
                         var itm = otherEventItems.ElementAt(i);
                         itm.EventOrderIndex = i;
@@ -211,6 +214,69 @@ namespace RA.DAL
 
                 await dbContext.SaveChangesAsync();
             }
+        }
+
+        public async Task DuplicateClockItems(ICollection<int> clockItemsIds, int clockId)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+
+
+            var clockItems = await dbContext.ClockItems
+                //.Include(ci => ci.)
+                .Where(ci => ci.OrderIndex > -1) //todo: handle also event items + subitems
+                .AsNoTracking()
+                .ToListAsync();
+
+            var lastItem = clockItems.LastOrDefault();
+            int maxOrderIndex = 0;
+            if (lastItem != null)
+            {
+                maxOrderIndex = lastItem.OrderIndex;
+            }
+
+            var itemsToDuplicate = clockItems.Where(ci => clockItemsIds.Contains(ci.Id)).ToList();
+            List<ClockItemBase> duplicatedItems = new();
+            foreach (var item in itemsToDuplicate)
+            {
+                if (item is ClockItemCategory itmCategory)
+                {
+                    duplicatedItems.Add(new ClockItemCategory
+                    {
+                        OrderIndex = ++maxOrderIndex,
+                        ClockId = itmCategory.ClockId,
+                        CategoryId = itmCategory.CategoryId,
+                        MinDuration = itmCategory.MinDuration,
+                        MaxDuration = itmCategory.MaxDuration,
+                        ArtistSeparation = itmCategory.ArtistSeparation,
+                        TitleSeparation = itmCategory.TitleSeparation,
+                        TrackSeparation = itmCategory.TrackSeparation,
+                        MinReleaseDate = itmCategory.MinReleaseDate,
+                        MaxReleaseDate = itmCategory.MaxReleaseDate,
+                        IsFiller = itmCategory.IsFiller,
+                        //ClockItemCategoryTags = itmCategory.ClockItemCategoryTags.Select(t => new ClockItemCategoryTag
+                        //{
+                        //    TagValueId = t.TagValueId
+                        //}).ToList()
+
+                    });
+
+                }
+                else if (item is ClockItemTrack itmTrack)
+                {
+                    duplicatedItems.Add(new ClockItemTrack
+                    {
+                        OrderIndex = ++maxOrderIndex,
+                        ClockId = itmTrack.ClockId,
+                        TrackId = itmTrack.TrackId,
+
+                    });
+                }
+
+            }
+
+
+            await dbContext.ClockItems.AddRangeAsync(duplicatedItems);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task<ClockItemBaseDTO> GetClockItemAsync(int clockItemId)

@@ -1,22 +1,18 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OfficeOpenXml;
+using RA.Database;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
+using RA.UI.Core.Shared;
 using RA.UI.Core.Themes;
 using RA.UI.StationManagement.HostBuilders;
+using RA.UI.StationManagement.Stores;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using RA.UI.Core.Shared;
-using Microsoft.EntityFrameworkCore;
-using RA.Database;
-using OfficeOpenXml;
-using Microsoft.Extensions.Configuration;
-using RA.UI.StationManagement.Stores;
 
 namespace RA.UI.StationManagement
 {
@@ -55,7 +51,8 @@ namespace RA.UI.StationManagement
             var windowService = host.Services.GetRequiredService<IWindowService>();
             var dispatcherService = host.Services.GetRequiredService<IDispatcherService>();
             var messageBoxService = host.Services.GetRequiredService<IMessageBoxService>();
-            
+            ConfigurationStore? configurationStore = null;
+
             var splashScreen = new SplashScreenWindow();
             splashScreen.Show();
 
@@ -67,7 +64,7 @@ namespace RA.UI.StationManagement
 
                 try
                 {
-                    var configuration = host.Services.GetRequiredService<ConfigurationStore>();
+                    configurationStore = host.Services.GetRequiredService<ConfigurationStore>();
 
                 }
                 catch (Exception ex)
@@ -94,8 +91,14 @@ namespace RA.UI.StationManagement
             {
                 await dispatcherService.InvokeOnUIThreadAsync(() =>
                 {
-                    //windowService.ShowWindow<AuthViewModel>();
-                    windowService.ShowWindow<LauncherViewModel>();  
+                    if (configurationStore?.IsDevEnvironment() ?? false)
+                    {
+                        windowService.ShowWindow<LauncherViewModel>();
+                    } else
+                    {
+                        windowService.ShowWindow<AuthViewModel>();
+                    }
+                      
                     splashScreen.Hide();
                 });
             });

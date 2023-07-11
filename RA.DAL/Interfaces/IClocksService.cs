@@ -24,5 +24,6 @@ namespace RA.DAL
 
         Task<bool> RemoveClock(int clockId);
         Task UpdateClockItem(ClockItemCategoryDTO clockItemCategoryDto);
+        Task DuplicateClockItems(ICollection<int> clockItemsIds, int clockId);
     }
 }

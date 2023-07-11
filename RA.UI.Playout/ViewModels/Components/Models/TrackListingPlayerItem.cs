@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using RA.DTO;
 using RA.Logic.AudioPlayer.Interfaces;
+using RA.UI.Playout.Stores;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +14,8 @@ namespace RA.UI.Playout.ViewModels.Components.Models
     public class TrackListingPlayerItem : ObservableObject, IPlayerItem
     {
         private readonly TrackListingDTO trackListingDTO;
+        private readonly ConfigurationStore configurationStore;
+
         public string FilePath => trackListingDTO.FilePath;
 
         public string ImagePath
@@ -21,12 +24,11 @@ namespace RA.UI.Playout.ViewModels.Components.Models
             {
                 if (!string.IsNullOrEmpty(trackListingDTO.ImageName))
                 {
-                    string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                    return Path.Combine(appDataFolder, "RadioAutomationSystem", "images", trackListingDTO.ImageName);
+                    return configurationStore.GetFullImagePath(trackListingDTO.ImageName);
                 }
                 else
                 {
-                    return "pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png";
+                    return ConfigurationStore.GetDefaultImagePath();
                 }
 
             }
@@ -39,15 +41,16 @@ namespace RA.UI.Playout.ViewModels.Components.Models
 
         public string? Artists => trackListingDTO?.Artists;
 
-        public string Title => trackListingDTO.Title;
+        public string Title => trackListingDTO!.Title;
 
         public string? TrackType => trackListingDTO.Type;
 
         public int TrackId => trackListingDTO.Id;
 
-        public TrackListingPlayerItem(TrackListingDTO trackListingDTO)
+        public TrackListingPlayerItem(TrackListingDTO trackListingDTO, ConfigurationStore configurationStore)
         {
             this.trackListingDTO = trackListingDTO;
+            this.configurationStore = configurationStore;
         }
     }
 }

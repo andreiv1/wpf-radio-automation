@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Planning\Exceptions\**" />
-    <EmbeddedResource Remove="Planning\Exceptions\**" />
-    <None Remove="Planning\Exceptions\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="Tracks\TrackFilesImporter.cs" />
   </ItemGroup>
 
@@ -29,10 +23,6 @@
     <ProjectReference Include="..\RA.DAL\RA.DAL.csproj" />
     <ProjectReference Include="..\RA.Database\RA.Database.csproj" />
     <ProjectReference Include="..\RA.Dto\RA.Dto.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Planning\NewFolder\" />
   </ItemGroup>
 
 </Project>

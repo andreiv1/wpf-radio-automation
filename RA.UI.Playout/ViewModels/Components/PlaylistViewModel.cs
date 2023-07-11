@@ -7,6 +7,7 @@ using RA.Logic;
 using RA.Logic.AudioPlayer.Interfaces;
 using RA.UI.Core.Services;
 using RA.UI.Core.ViewModels;
+using RA.UI.Playout.Stores;
 using RA.UI.Playout.ViewModels.Components.Models;
 using System;
 using System.Collections.ObjectModel;
@@ -22,6 +23,7 @@ namespace RA.UI.Playout.ViewModels.Components
         private readonly IPlaybackQueue playbackQueue;
         private readonly IPlaylistsService playlistsService;
         private readonly ITrackHistoryService trackHistoryService;
+        private readonly ConfigurationStore configurationStore;
         private IPlayerItem? playerItemNow;
 
         [ObservableProperty]
@@ -55,12 +57,14 @@ namespace RA.UI.Playout.ViewModels.Components
         public PlaylistViewModel(IDispatcherService dispatcherService,
                                  IPlaybackQueue playbackQueue,
                                  IPlaylistsService playlistsService,
-                                 ITrackHistoryService trackHistoryService)
+                                 ITrackHistoryService trackHistoryService,
+                                 ConfigurationStore configurationStore)
         {
             this.dispatcherService = dispatcherService;
             this.playbackQueue = playbackQueue;
             this.playlistsService = playlistsService;
             this.trackHistoryService = trackHistoryService;
+            this.configurationStore = configurationStore;
             playbackQueue.PlaybackStarted += PlaybackQueue_PlaybackStarted;
             playbackQueue.PlaybackStopped += PlaybackQueue_PlaybackStopped;
             playbackQueue.PlaybackItemChange += PlaybackQueue_PlaybackItemChange;
@@ -298,7 +302,7 @@ namespace RA.UI.Playout.ViewModels.Components
         private void AddTrackToTop()
         {
             if (MainVm!.MediaItemsVm.SelectedTrack == null) return;
-            IPlayerItem newItem = new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack);
+            IPlayerItem newItem = new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack, configurationStore);
             PlaybackAddItem(newItem, 0);
             SelectedPlaylistItem = newItem;
         }
@@ -307,7 +311,7 @@ namespace RA.UI.Playout.ViewModels.Components
         private void AddTrackToBottom()
         {
             if (MainVm!.MediaItemsVm.SelectedTrack == null) return;
-            IPlayerItem newItem = new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack);
+            IPlayerItem newItem = new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack, configurationStore);
             PlaybackAddItem(newItem);
             SelectedPlaylistItem = newItem;
         }
@@ -318,7 +322,7 @@ namespace RA.UI.Playout.ViewModels.Components
             if(SelectedPlaylistItem == null) return;
             if (MainVm!.MediaItemsVm.SelectedTrack == null) return;
             int index = PlayerItems.IndexOf(SelectedPlaylistItem) + 1;
-            IPlayerItem newItem = new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack);
+            IPlayerItem newItem = new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack, configurationStore);
             PlaybackAddItem(newItem, index);
             SelectedPlaylistItem = newItem;
         }
@@ -330,7 +334,7 @@ namespace RA.UI.Playout.ViewModels.Components
             if (MainVm!.MediaItemsVm.SelectedTrack == null) return;
             int originalIndex = PlayerItems.IndexOf(SelectedPlaylistItem);
             PlaybackRemoveItem(SelectedPlaylistItem);
-            IPlayerItem newItem = new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack);
+            IPlayerItem newItem = new TrackListingPlayerItem(MainVm.MediaItemsVm.SelectedTrack, configurationStore);
             PlaybackAddItem(newItem, originalIndex);
             SelectedPlaylistItem = newItem;
         }
