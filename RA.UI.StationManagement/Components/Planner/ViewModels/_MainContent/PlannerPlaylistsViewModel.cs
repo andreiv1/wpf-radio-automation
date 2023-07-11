@@ -7,6 +7,7 @@ using RA.UI.Core.ViewModels;
 using RA.UI.StationManagement.Components.Planner.ViewModels._MainContent.Models;
 using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Models;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Playlists;
+using RA.UI.StationManagement.Dialogs.TrackSelectDialog;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -107,8 +108,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                         if (dto != null)
                         {
                             PlaylistItemModel model = PlaylistItemModel.FromDTO(dto);
+                            model.UpdateItemDetails();
                             model.Index = index++;
                             SelectedPlaylistItems.Add(model);
+                            
                         }
                     }
                 }
@@ -151,7 +154,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         [RelayCommand]
         private void InsertTrackToPlaylist()
         {
-            throw new NotImplementedException();
+            var vm = windowService.ShowDialog<TrackSelectViewModel>();
         }
 
         [RelayCommand] 

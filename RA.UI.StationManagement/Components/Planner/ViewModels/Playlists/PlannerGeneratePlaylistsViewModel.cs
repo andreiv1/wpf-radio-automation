@@ -89,7 +89,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
             {
                 foreach (var item in ScheduleOverview)
                 {
-                    if (item.GenerationStatus != ScheduleGenerationStatus.NoScheduleFound)
+                    if (item.GenerationStatus != ScheduleGenerationStatus.NoScheduleFound && item.GenerationStatus != ScheduleGenerationStatus.AlreadyExists)
                     {
                         item.GenerationStatus = ScheduleGenerationStatus.Generating;
                         try

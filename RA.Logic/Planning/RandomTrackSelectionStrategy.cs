@@ -20,6 +20,8 @@ namespace RA.Logic.Planning
         public override PlaylistItemDTO SelectTrack(PlaylistDTO currentPlaylist)
         {
             if (currentPlaylist == null) throw new ArgumentNullException($"{nameof(currentPlaylist)} must be initialised.");
+            if (options == null || options.TrackSeparation == null || options.ArtistSeparation == null || options.TitleSeparation == null)
+                throw new ArgumentNullException($"{nameof(options.TrackSeparation)},{nameof(options.ArtistSeparation)},{nameof(options.TitleSeparation)} must be initialised.");
             var lastItem = currentPlaylist.Items?.LastOrDefault();
             PlaylistItemDTO item = new();
             if (lastItem == null)

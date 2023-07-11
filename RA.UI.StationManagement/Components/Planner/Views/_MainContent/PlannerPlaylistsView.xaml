@@ -57,6 +57,7 @@
                     </Expander.Header>
 
                     <Grid>
+                        <!-- Expanded 1 - PLAYLISTS TO AIR -->
                         <syncfusion:SfDataGrid x:Name="playlistsToAirDataGrid"
                            Margin="0,3,0,0"
                            ItemsSource="{Binding PlaylistsToAir}"
@@ -101,7 +102,7 @@
                                         <DataTemplate>
                                             <Grid>
                                                 <TextBlock Text="{Binding AirDate, StringFormat=dd.MM.yyyy (dddd)}" FontWeight="DemiBold"
-                                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                           HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                             </Grid>
                                         </DataTemplate>
                                     </syncfusion:GridTextColumn.CellTemplate>
@@ -195,7 +196,7 @@
                                         <syncfusion:GridTextColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid>
-                                                    <TextBlock Text="{Binding HourAsTimeSpan,StringFormat=hh\\:mm\\:ss}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding LengthAsTimeSpan,StringFormat=hh\\:mm\\:ss}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                 </Grid>
                                             </DataTemplate>
                                         </syncfusion:GridTextColumn.CellTemplate>
@@ -268,8 +269,6 @@
                     </syncfusion:GridTextColumn>
                     <syncfusion:GridTextColumn HeaderText="ETA" MappingName="ETA" DisplayBinding="{Binding Path=ETA, StringFormat={}{0:HH\\:mm\\:ss.fff}}"
                                                Width="75"/>
-                    <!--<syncfusion:GridTextColumn HeaderText="Item Details" MappingName="Title" ColumnSizer="Star"
-                                               DisplayBinding="{Binding Path=ItemDetails}"/>-->
                     <syncfusion:GridTextColumn HeaderText="Item Details" MappingName="ItemsDetails" DisplayBinding="{Binding Path=ItemDetails}" 
                                                ColumnSizer="Star">
                         <syncfusion:GridTextColumn.CellTemplate>
@@ -279,11 +278,10 @@
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
+                                    <!-- ICON -->
                                     <Image Width="24" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <Image.Style>
                                             <Style TargetType="Image">
-                                                <!--<Setter Property="Source" Value="{StaticResource OtherTrackIcon}"/>-->
-                                                <!-- Default icon -->
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Track.Type}" Value="Jingle">
                                                         <Setter Property="Source" Value="{StaticResource JingleIcon}"/>

@@ -30,24 +30,27 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
 
         public PlaylistItemModel()
         {
-
+            
         }
 
-        private string GetItemDetails()
+        public void UpdateItemDetails()
         {
-            if (Track != null)
+            if(Track != null)
             {
                 if (Track.Artists == String.Empty)
                 {
-                    return $"{Track.Title}";
+                    ItemDetails = $"{Track.Title}";
                 }
-                return $"{Track.Artists} - {Track.Title}";
+                else
+                {
+                    ItemDetails = $"{Track.Artists} - {Track.Title}";
+                }
             }
-
-            return string.Empty;
+            else
+            {
+                ItemDetails = string.Empty;
+            }
         }
-
-   
 
         public static PlaylistItemModel FromDTO(PlaylistItemDTO dto)
         {
