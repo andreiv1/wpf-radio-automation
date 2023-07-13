@@ -55,7 +55,7 @@
                     </Grid.ColumnDefinitions>
 
                     <syncfusion:ButtonAdv Grid.Column="0" SizeMode="Large" Margin="0,0,5,0"
-                                          Label="Loop" IsCheckable="True" 
+                                          Label="Loop" IsCheckable="True" IsChecked="{Binding PlaylistVm.IsLoopable,Mode=TwoWay}" 
                                           LargeIcon="{StaticResource LoopIcon}"/>
                     <syncfusion:ButtonAdv Grid.Column="1" SizeMode="Large" Margin="0,0,5,0"
                                           Label="Pause"
@@ -116,7 +116,8 @@
                     </StackPanel>
                     <syncfusion:ButtonAdv Label="RELOAD PLAYLIST" Grid.Column="1" Height="45" Margin="0,0,5,0"
                                           SmallIcon="{x:Null}" FontWeight="Black"
-                                          VerticalAlignment="Center"/>
+                                          VerticalAlignment="Center"
+                                          Command="{Binding PlaylistVm.ReloadPlaylistCommand}"/>
                     <syncfusion:ButtonAdv Grid.Column="2" Height="45" Margin="0,0,5,0"
                                           IsCheckable="True" IsChecked="{Binding PlaylistVm.IsAutoReload}"
                                           SmallIcon="{x:Null}" FontWeight="Black" 

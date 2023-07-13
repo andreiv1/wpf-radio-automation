@@ -38,6 +38,8 @@ namespace RA.UI.Playout.ViewModels.Components
         [ObservableProperty]
         private bool isAutoReload = true;
 
+       
+
         partial void OnIsAutoPlayChanged(bool value)
         {
             if(value)
@@ -50,6 +52,20 @@ namespace RA.UI.Playout.ViewModels.Components
             } else
             {
                 playbackQueue.Mode = PlaybackMode.Manual;
+            }
+        } 
+        [ObservableProperty]
+        private bool isLoopable = false;
+
+        partial void OnIsLoopableChanged(bool value)
+        {
+            if (value)
+            {
+                playbackQueue.Mode = PlaybackMode.Loop;
+            }
+            else
+            {
+                playbackQueue.Mode = IsAutoPlay ? PlaybackMode.Auto : PlaybackMode.Manual;
             }
         }
         public MainViewModel? MainVm { get; set; }
@@ -95,7 +111,7 @@ namespace RA.UI.Playout.ViewModels.Components
 
         private void PlaybackQueue_PlaybackItemChange(object? sender, EventArgs e)
         {
-            DebugHelper.WriteLine(this, $"Playback item changed");
+            
         }
         private async Task LoadPlaylist(DateTime date, int maxHours = 1)
         {
@@ -106,7 +122,7 @@ namespace RA.UI.Playout.ViewModels.Components
                     if (item?.GetType() == typeof(PlaylistItemDTO))
                     {
                         var trackDto = (PlaylistItemDTO)item;
-                        PlaybackAddItem(new TrackPlaylistPlayerItem(trackDto));
+                        PlaybackAddItem(new TrackPlaylistPlayerItem(trackDto, configurationStore));
                     }
 
                 }
@@ -176,13 +192,26 @@ namespace RA.UI.Playout.ViewModels.Components
         }
         private void PlaybackQueue_PlaybackStarted(object? sender, EventArgs e)
         {
-            if (PlayerItems.ElementAt(0) is not null)
+            if (PlayerItems.ElementAt(0) != null)
             {
-                playerItemNow = PlayerItems.ElementAt(0);
-                PlayerItems.RemoveAt(0);
-
+                if (!IsLoopable)
+                {
+                    playerItemNow = PlayerItems.ElementAt(0);
+                    PlayerItems.RemoveAt(0);
+                }
                 UpdateNowPlaying();
                 AddNowToHistory();
+            }
+
+            AutoReload();
+        }
+
+        //Auto reload when less than 6 items in playlist
+        private void AutoReload()
+        {
+            if (IsAutoReload && PlayerItems.Count < 6)
+            {
+                _ = LoadPlaylist(DateTime.Now, maxHours: 1);
             }
         }
         private void UpdateNowPlaying()
@@ -253,12 +282,6 @@ namespace RA.UI.Playout.ViewModels.Components
 
         [RelayCommand]
         private void Next()
-        {
-
-        }
-
-        [RelayCommand]
-        private void Loop()
         {
 
         }
@@ -345,6 +368,7 @@ namespace RA.UI.Playout.ViewModels.Components
             IPlayerItem? playerItem = parameter as IPlayerItem;
             if (playerItem == null) return;
             PlaybackRemoveItem(playerItem);
+            AutoReload();
         }
 
         [RelayCommand]
@@ -374,7 +398,26 @@ namespace RA.UI.Playout.ViewModels.Components
         [RelayCommand]
         private void PlayNext()
         {
+            playbackQueue.Stop();
+            Play();
+        }
 
+        [RelayCommand]
+        private async void ReloadPlaylist()
+        {
+            PlaybackClearItems();
+            await Task.Run(() => {
+                var playlistItems = playlistsService.GetPlaylistItemsByDateTime(DateTime.Now.Date,1);
+                foreach (var item in playlistItems)
+                {
+                    if (item?.GetType() == typeof(PlaylistItemDTO))
+                    {
+                        var trackDto = (PlaylistItemDTO)item;
+                        PlaybackAddItem(new TrackPlaylistPlayerItem(trackDto, configurationStore));
+                    }
+
+                }
+            });
         }
     }
 

@@ -16,8 +16,8 @@ namespace RA.UI.StationManagement.Stores
 
         public bool CheckPermissions(UserRuleType rule)
         {
-            //return LoggedUser?.GroupRules.Any(r => r == rule) ?? false;
-            return true;
+            if (ConfigurationStore.IsDevEnvironment()) return true;
+            return LoggedUser?.GroupRules?.Any(r => r == rule) ?? false;
         }
     }
 }

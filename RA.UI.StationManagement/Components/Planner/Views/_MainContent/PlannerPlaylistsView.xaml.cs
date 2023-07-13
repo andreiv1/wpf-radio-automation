@@ -1,5 +1,9 @@
-﻿using RA.UI.Core;
+﻿using RA.Logic;
+using RA.UI.Core;
 using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent;
+using RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Models;
+using Syncfusion.Data;
+using Syncfusion.UI.Xaml.Grid;
 using System;
 using System.Windows;
 
@@ -10,12 +14,6 @@ namespace RA.UI.StationManagement.Components.Planner.Views.MainContent
         public PlannerPlaylistsView()
         {
             InitializeComponent();
-            playlistItems.RowDragDropController.Drop += RowDragDropController_Drop;
-        }
-
-        private void RowDragDropController_Drop(object? sender, Syncfusion.UI.Xaml.Grid.GridRowDropEventArgs e)
-        {
-            throw new System.NotImplementedException();
         }
 
         private void Expander_Expanded_1(object sender, RoutedEventArgs e)
@@ -53,14 +51,6 @@ namespace RA.UI.StationManagement.Components.Planner.Views.MainContent
                 Expander1.IsExpanded = true;
             }
         }
-
-        protected override void ToDispose()
-        {
-            playlistItems.RowDragDropController.Drop -= RowDragDropController_Drop;
-        }
-
-
-
     }
 }
 

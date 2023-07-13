@@ -3,6 +3,7 @@ using RA.Database.Models.Enums;
 using RA.DTO;
 using RA.Logic.AudioPlayer.Interfaces;
 using RA.Logic.Tracks;
+using RA.UI.Playout.Stores;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +16,7 @@ namespace RA.UI.Playout.ViewModels.Components.Models
     public class TrackPlaylistPlayerItem : ObservableObject, IPlayerItem
     {
         private readonly PlaylistItemDTO playlistItemTrackDTO;
+        private readonly ConfigurationStore configurationStore;
 
         public string FilePath => playlistItemTrackDTO.Track.FilePath;
 
@@ -34,8 +36,9 @@ namespace RA.UI.Playout.ViewModels.Components.Models
             {
                 if (!string.IsNullOrEmpty(playlistItemTrackDTO.Track.ImageName))
                 {
-                    string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                    return Path.Combine(appDataFolder, "RadioAutomationSystem", "images", playlistItemTrackDTO.Track.ImageName);
+                    //string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                    //return Path.Combine(appDataFolder, "RadioAutomationSystem", "images", playlistItemTrackDTO.Track.ImageName);
+                    return Path.Combine(configurationStore.ImagePath, playlistItemTrackDTO.Track.ImageName);
                 }
                 else
                 {
@@ -47,9 +50,10 @@ namespace RA.UI.Playout.ViewModels.Components.Models
 
         public int TrackId => playlistItemTrackDTO.Track.Id;
 
-        public TrackPlaylistPlayerItem(PlaylistItemDTO playlistItemTrackDTO)
+        public TrackPlaylistPlayerItem(PlaylistItemDTO playlistItemTrackDTO, ConfigurationStore configurationStore)
         {
             this.playlistItemTrackDTO = playlistItemTrackDTO;
+            this.configurationStore = configurationStore;
         }
     }
 }

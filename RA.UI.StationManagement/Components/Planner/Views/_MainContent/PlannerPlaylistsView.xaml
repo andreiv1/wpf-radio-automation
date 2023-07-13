@@ -4,7 +4,9 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-                      xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core" xmlns:maincontent="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.MainContent" d:DataContext="{d:DesignInstance Type=maincontent:PlannerPlaylistsViewModel}"
+                      xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
+                      xmlns:maincontent="clr-namespace:RA.UI.StationManagement.Components.Planner.ViewModels.MainContent"
+                      d:DataContext="{d:DesignInstance Type=maincontent:PlannerPlaylistsViewModel}"
                       mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -240,9 +242,9 @@
                 <syncfusion:ButtonAdv Label="Delete item" Height="25" Margin="0,0,4,0" IsEnabled="{Binding IsPlaylistSelected}"
                                       Command="{Binding DeleteItemFromPlaylistCommand}"
                                       SmallIcon="{StaticResource RemoveIcon}"/>
-                <syncfusion:ButtonAdv Label="Regenerate playlist" Height="25" Margin="0,0,4,0" IsEnabled="{Binding IsPlaylistSelected}"
+                <!--<syncfusion:ButtonAdv Label="Regenerate playlist" Height="25" Margin="0,0,4,0" IsEnabled="{Binding IsPlaylistSelected}"
                                       Command="{Binding RegenerateSelectedPlaylistCommand}"
-                                      SmallIcon="{StaticResource PlaylistGenerateIcon}"/>
+                                      SmallIcon="{StaticResource PlaylistGenerateIcon}"/>-->
             </StackPanel>
 
             <!-- PLAYLIST ITEMS -->
@@ -251,12 +253,12 @@
                        Margin="5,5,5,0"
                        ColumnSizer="Auto"
                        ItemsSource="{Binding SelectedPlaylistItems, Mode=TwoWay}"
+                       SelectedItem="{Binding SelectedPlaylistItem}"
                        SelectionUnit="Row" NavigationMode="Row"
                        RowHeight="35" AllowSorting="False"
                        AllowResizingColumns="True"
                        AutoGenerateColumns="False"
-                       AllowDraggingRows="True" AllowDrop="True"
-                                   >
+                       >
                 <syncfusion:SfDataGrid.Columns>
                     <syncfusion:GridTextColumn HeaderText="#" MappingName="Index" DisplayBinding="{Binding Path=Index}" 
                                                Width="35">

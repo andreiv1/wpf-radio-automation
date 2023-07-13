@@ -91,7 +91,7 @@ namespace RA.UI.StationManagement
             {
                 await dispatcherService.InvokeOnUIThreadAsync(() =>
                 {
-                    if (configurationStore?.IsDevEnvironment() ?? false)
+                    if (ConfigurationStore.IsDevEnvironment())
                     {
                         windowService.ShowWindow<LauncherViewModel>();
                     } else

@@ -131,5 +131,32 @@ namespace RA.DAL
                 .Where(p => p.Id == id)
                 .ExecuteDeleteAsync();
         }
+
+        public async Task AddPlaylistItem(PlaylistItemDTO playlistItemDTO)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var entity = PlaylistItemDTO.ToEntity(playlistItemDTO);
+
+            var lastItem = await dbContext.PlaylistItems
+                .Where(pi => pi.PlaylistId == entity.PlaylistId)
+                .OrderByDescending(pi => pi.ETA)
+                .FirstOrDefaultAsync();
+            if (lastItem != null)
+            {
+                entity.ETA = lastItem.ETA.AddSeconds(lastItem.Length);
+                entity.Track = dbContext.AttachOrGetTrackedEntity(entity.Track);
+                entity.Length = entity.Track.Duration;
+                dbContext.PlaylistItems.Add(entity);
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeletePlaylistItem(int id)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();  
+            await dbContext.PlaylistItems
+                .Where(pi => pi.Id == id)
+                .ExecuteDeleteAsync();
+        }
     }
 }

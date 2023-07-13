@@ -143,6 +143,8 @@ namespace RA.Logic.AudioPlayer
                     if (nowPlaying != null)
                         UpdateETAs(nowPlaying.Duration); // Update ETAs after playing a new item.
                 });
+
+                PlaybackStarted?.Invoke(this, EventArgs.Empty);
             }
         }
 

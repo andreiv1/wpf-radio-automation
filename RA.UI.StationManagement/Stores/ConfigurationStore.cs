@@ -11,7 +11,7 @@ namespace RA.UI.StationManagement.Stores
 {
     public class ConfigurationStore
     {
-        public string Environment { get; private set; }
+        public static string Environment { get; private set; }
         public string AudioPath { get; private set; }
         public string ImagePath { get; private set; }
 
@@ -65,7 +65,7 @@ namespace RA.UI.StationManagement.Stores
             return "pack://application:,,,/RA.UI.Core;component/Resources/Images/track_default_image.png";
         }
 
-        public bool IsDevEnvironment()
+        public static bool IsDevEnvironment()
         {
             return Environment == "dev";
         }

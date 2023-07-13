@@ -12,7 +12,9 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
-            TestPlaylistGenerator();
+            //TestPlaylistGenerator();
+            PlaylistsService plService = new PlaylistsService(dbFactory);
+            //plService.MoveItem(5758, new DateTime(2023, 7, 13, 23, 20, 20, 642));
             Console.ReadLine();
         }
 

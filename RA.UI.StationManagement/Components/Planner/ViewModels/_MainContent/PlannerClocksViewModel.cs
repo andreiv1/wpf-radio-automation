@@ -226,10 +226,11 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             int totalSeconds = 0;
             foreach (var clock in ClockItemsForSelectedClock)
             {
-                if (!clock.Item.ClockItemEventId.HasValue)
+                int duration = (int)clock.Duration.TotalSeconds;
+                if (!clock.Item.ClockItemEventId.HasValue && duration > 10)
                 {
-                    ClockItemsPieChart.Add(new ClockPieChartModel(clock.DisplayName, (int)clock.Duration.TotalSeconds));
-                    totalSeconds += (int)clock.Duration.TotalSeconds;
+                    ClockItemsPieChart.Add(new ClockPieChartModel(clock.DisplayName, duration));
+                    totalSeconds += duration;
                 }
             }
             if (totalSeconds <= 3600)

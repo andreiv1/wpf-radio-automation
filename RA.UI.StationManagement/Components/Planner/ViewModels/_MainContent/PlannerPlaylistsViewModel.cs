@@ -39,6 +39,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
         public ObservableCollection<PlaylistItemModel> SelectedPlaylistItems { get; set; } = new();
 
+        [ObservableProperty]
+        private PlaylistItemModel? selectedPlaylistItem;
+
         public PlannerPlaylistsViewModel(IWindowService windowService, IPlaylistsService playlistsService)
         {
             this.windowService = windowService;
@@ -155,6 +158,16 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private void InsertTrackToPlaylist()
         {
             var vm = windowService.ShowDialog<TrackSelectViewModel>();
+            if (SelectedPlaylistToAir != null && vm.SelectedTrack != null)
+            {
+                PlaylistItemDTO newItem = new()
+                {
+                    PlaylistId = SelectedPlaylistToAir.Id,
+                    Track = new TrackListingDTO() { Id = vm.SelectedTrack.Id }
+                };
+                playlistsService.AddPlaylistItem(newItem);
+                _ = LoadSelectedPlaylistItems();
+            }
         }
 
         [RelayCommand] 
@@ -166,7 +179,11 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         [RelayCommand]
         private void DeleteItemFromPlaylist()
         {
-            throw new NotImplementedException();
+            if(SelectedPlaylistItem != null)
+            {
+                playlistsService.DeletePlaylistItem(SelectedPlaylistItem.Id);
+                _ = LoadSelectedPlaylistItems();
+            }
         }
 
         [RelayCommand]
@@ -174,6 +191,11 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         {
               throw new NotImplementedException();
         }
+
+        public void MoveItem(int originalIndex, int newIndex)
+        {
+            var item = SelectedPlaylistItems.ElementAt(newIndex);
+        }
        
-    }
+    } 
 }
