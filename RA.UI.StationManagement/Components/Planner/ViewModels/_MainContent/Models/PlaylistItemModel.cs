@@ -15,6 +15,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
 
         public int PlaylistId { get; set; }
 
+        public string? Label { get; set; }
+
         [ObservableProperty]
         private int index;
 
@@ -48,6 +50,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
             }
             else
             {
+                if (Label != null) ItemDetails = Label;
+                else
                 ItemDetails = string.Empty;
             }
         }
@@ -61,6 +65,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent.Mode
                 Length = dto.Length,
                 PlaylistId = dto.PlaylistId,
                 Track = dto.Track,
+                Label = dto.Label,
             };
         }
 

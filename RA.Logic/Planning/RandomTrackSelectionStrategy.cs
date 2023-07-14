@@ -11,8 +11,9 @@ namespace RA.Logic.Planning
     {
         private readonly int categoryId;
 
-        public RandomTrackSelectionStrategy(IDbContextFactory<AppDbContext> dbContextFactory, TrackSelectionOptions options,
-            int categoryId) : base(dbContextFactory, options)
+        public RandomTrackSelectionStrategy(IDbContextFactory<AppDbContext> dbContextFactory,
+                                            TrackSelectionOptions options,
+                                            int categoryId) : base(dbContextFactory, options)
         {
             this.categoryId = categoryId;
         }
@@ -35,16 +36,32 @@ namespace RA.Logic.Planning
 
             var lastTracks = currentPlaylist.Items?
                 .Where(it => it.GetType() == typeof(PlaylistItemDTO))
-                .Select(it => (PlaylistItemDTO)it).ToList();
-
-            List<int>? recentlyPlayedTrackIds = lastTracks?.Where(i => i.ETA > item.ETA.AddMinutes(-options.TrackSeparation.Value))
-                .Select(it => it.Track.Id)
                 .ToList();
 
-            var track = GetRandomTrack(categoryId, recentlyPlayedTrackIds).Result;
+            List<int>? recentlyPlayedTrackIds = lastTracks?.Where(i => i.ETA > item.ETA.AddMinutes(-options.TrackSeparation.Value))
+                .Select(it => it.Track?.Id ?? 0)
+                .ToList();
+
+            List<List<int>?>? recentlyPlayedArtistIdsByTrack = lastTracks?.Where(i => i.ETA > item.ETA.AddMinutes(-options.ArtistSeparation.Value))
+                .Select(it => it.Track?.ArtistsId ?? null)
+                .ToList();
+
+            HashSet<int> recentlyPlayedArtists = new HashSet<int>();
+            if (recentlyPlayedArtistIdsByTrack != null)
+            {
+                foreach (var artistIds in recentlyPlayedArtistIdsByTrack)
+                {
+                    if(artistIds != null)
+                        foreach (var artistId in artistIds)
+                        {
+                            recentlyPlayedArtists.Add(artistId);
+                        }
+                }
+            }
+
+            var track = GetRandomTrack(categoryId, recentlyPlayedTrackIds, recentlyPlayedArtists).Result;
             if (track != null)
             {
-                currentPlaylist?.Items?.Add(item);
                 item.Length = track.Duration;
                 item.Track = track;
             }
@@ -52,7 +69,9 @@ namespace RA.Logic.Planning
         }
 
         private static readonly Random random = new Random();
-        public async Task<TrackListingDTO?> GetRandomTrack(int categoryId, List<int>? trackIdsToExclude = null)
+        public async Task<TrackListingDTO?> GetRandomTrack(int categoryId,
+                                                           List<int>? trackIdsToExclude = null,
+                                                           HashSet<int>? artistIdsToExclude = null)
         {
             using var dbContext = await dbContextFactory.CreateDbContextAsync();
 
@@ -68,6 +87,12 @@ namespace RA.Logic.Planning
             {
                 query = query.Where(t => !trackIdsToExclude.Contains(t.Id));
                 noOfTracksQuery = noOfTracksQuery.Where(t => !trackIdsToExclude.Contains(t.Id));
+            }
+
+            if(artistIdsToExclude != null)
+            {
+                query = query.Where(t => !t.TrackArtists.Any(ta => artistIdsToExclude.Contains(ta.ArtistId)));
+                noOfTracksQuery = noOfTracksQuery.Where(t => !t.TrackArtists.Any(ta => artistIdsToExclude.Contains(ta.ArtistId)));
             }
 
             var noOfTracks = await noOfTracksQuery.CountAsync();

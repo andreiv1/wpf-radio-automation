@@ -81,17 +81,21 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
             foreach(var schedule in scheduleOverview)
             {
                 var item = ScheduleOverviewModel.FromDto(schedule.Key, schedule.Value);
-                bool exists = await playlistsService.PlaylistExists(schedule.Key);
-                if (exists)
-                {
-                    item.GenerationStatus = ScheduleGenerationStatus.AlreadyExists;
-                } 
-                else if (schedule.Value == null)
+                if (schedule.Value == null)
                 {
                     item.GenerationStatus = ScheduleGenerationStatus.NoScheduleFound;
                 }
                 ScheduleOverview.Add(item);
             }
+
+            foreach(var schedule in ScheduleOverview)
+            {
+                var exists = await playlistsService.PlaylistExists(schedule.Date);
+                if (exists)
+                {
+                    schedule.GenerationStatus = ScheduleGenerationStatus.AlreadyExists;
+                }
+            }   
 
 
             FinishDialogCommand.NotifyCanExecuteChanged();

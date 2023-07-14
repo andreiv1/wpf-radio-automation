@@ -26,7 +26,10 @@ namespace RA.DAL
             var entity = PlaylistDTO.ToEntity(playlistDTO);
             foreach (var item in entity.PlaylistItems)
             {
-                item.Track = dbContext.AttachOrGetTrackedEntity(item.Track);
+                if (item.Track != null)
+                {
+                    item.Track = dbContext.AttachOrGetTrackedEntity(item.Track);
+                }
             }
             dbContext.Playlists.Add(entity);
             await dbContext.SaveChangesAsync();

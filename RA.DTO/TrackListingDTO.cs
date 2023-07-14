@@ -11,6 +11,7 @@ namespace RA.DTO
     {
         public int Id { get; set; }
         public string? Artists { get; set; }
+        public List<int>? ArtistsId { get; set; }
         public string? Title { get; set; }
         public string? Type { get; set; }
         public string? FilePath { get; set; }
@@ -28,6 +29,7 @@ namespace RA.DTO
             {
                 Id = track.Id,
                 Artists = track.TrackArtists != null ? string.Join(" / ", track.TrackArtists.Select(ta => ta.Artist.Name)) : String.Empty,
+                ArtistsId = track.TrackArtists != null ? track.TrackArtists.Select(ta => ta.ArtistId).ToList() : null,
                 Title = track.Title,
                 Type = track.Type.ToString(),
                 FilePath = track.FilePath,

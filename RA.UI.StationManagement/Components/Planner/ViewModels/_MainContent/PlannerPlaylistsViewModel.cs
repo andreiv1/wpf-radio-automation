@@ -17,6 +17,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 {
     public partial class PlannerPlaylistsViewModel : ViewModelBase
     {
+
         private readonly IWindowService windowService;
         private readonly IPlaylistsService playlistsService;
         public ObservableCollection<PlaylistListingDTO> PlaylistsToAir { get; set; } = new();
@@ -30,6 +31,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         partial void OnSelectedPlaylistToAirChanging(PlaylistListingDTO? value)
         {
             IsPlaylistSelected = value != null;
+            if(!IsPlaylistSelected)
+            {
+                SelectedPlaylistItems.Clear();
+            }
         }
 
         [ObservableProperty]
@@ -125,8 +130,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         [RelayCommand]
         private void OpenGeneratePlaylists()
         {
-            windowService.ShowDialog<PlannerGeneratePlaylistsViewModel>();
-            _ = LoadPlaylistsToAir();
+            var vm = windowService.ShowWindow<PlannerGeneratePlaylistsViewModel>(
+                new PlannerGeneratePlaylistsViewModel.GeneratePlaylistsCallback(() =>
+                {
+                    _ = LoadPlaylistsToAir();
+                }));
+            
         }
 
         [RelayCommand]

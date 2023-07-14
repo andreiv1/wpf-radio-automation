@@ -12,9 +12,8 @@ namespace RA.ConsoleApp
         static DbContextFactory dbFactory = new DbContextFactory();
         static void Main(string[] args)
         {
-            //TestPlaylistGenerator();
-            PlaylistsService plService = new PlaylistsService(dbFactory);
-            //plService.MoveItem(5758, new DateTime(2023, 7, 13, 23, 20, 20, 642));
+            TestPlaylistGenerator();
+            
             Console.ReadLine();
         }
 
@@ -28,7 +27,7 @@ namespace RA.ConsoleApp
             PlaylistGenerator.DefaultArtistSeparation = 30;
             PlaylistGenerator.DefaultTitleSeparation = 30;
             PlaylistGenerator.DefaultTrackSeparation = 60;
-            await playlistGen.GeneratePlaylistForDate(DateTime.Now.Date);
+            var pl = await playlistGen.GeneratePlaylistForDate(DateTime.Now.Date.AddDays(1));
         }
         static void TestAllSongsIncat()
         {

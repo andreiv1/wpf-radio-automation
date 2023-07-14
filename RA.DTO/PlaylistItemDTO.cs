@@ -20,6 +20,9 @@ namespace RA.DTO
         public TrackListingDTO? Track { get; set; }
         public string? Label { get; set; } 
         public int? ParentId { get; set; }
+
+        public int? BaseClockItemId { get; set; }
+        public int? BaseTemplateId { get; set; }
         public static PlaylistItem ToEntity(PlaylistItemDTO dto)
         {
             var entity = new PlaylistItem()
@@ -33,6 +36,8 @@ namespace RA.DTO
                 Label = dto.Label,
                 ParentPlaylistItemId = dto.ParentId,
                 EventType = dto.EventType,
+                BaseClockItemId = dto.BaseClockItemId,
+                BaseTemplateId = dto.BaseTemplateId,
             };
             return entity;
         }
@@ -50,6 +55,8 @@ namespace RA.DTO
                 ParentId = entity.ParentPlaylistItemId,
                 NiceETA = entity.NiceETA,
                 EventType = entity.EventType,
+                BaseClockItemId = entity.BaseClockItemId,
+                BaseTemplateId = entity.BaseTemplateId,
             };
         }
     }

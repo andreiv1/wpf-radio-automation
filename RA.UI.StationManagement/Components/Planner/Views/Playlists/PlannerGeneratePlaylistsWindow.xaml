@@ -71,6 +71,17 @@
                            AutoGenerateColumns="False"
                            ColumnSizer="AutoWithLastColumnFill"
                            AllowSorting="False" RowHeight="30">
+                    <syncfusion:SfDataGrid.Resources>
+                        <DataTemplate x:Key="DetailsViewTemplate">
+                            <Grid>
+                                <TextBlock Text="{Binding Path=Data.ErrorMessage}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </syncfusion:SfDataGrid.Resources>
+                    <!-- Expanded -->
+                    <syncfusion:SfDataGrid.DetailsViewDefinition>
+                        <syncfusion:TemplateViewDefinition  RowTemplate="{StaticResource DetailsViewTemplate}"/>
+                    </syncfusion:SfDataGrid.DetailsViewDefinition>
                     <syncfusion:SfDataGrid.Columns>
                         <syncfusion:GridTextColumn HeaderText="Air Date" MappingName="Date" Width="100" HorizontalHeaderContentAlignment="Left"
                                                DisplayBinding="{Binding Path=Date, StringFormat=dd.MM.yyyy (ddd)}"/>
@@ -115,7 +126,7 @@
                                                             <Setter Property="FontWeight" Value="Bold"/>
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding GenerationStatus}" Value="Error">
-                                                            <Setter Property="Text" Value="Error"/>
+                                                            <Setter Property="Text" Value="Error (expand for msg)"/>
                                                             <Setter Property="Foreground" Value="#E51400"/>
                                                             <Setter Property="FontWeight" Value="Bold"/>
                                                         </DataTrigger>

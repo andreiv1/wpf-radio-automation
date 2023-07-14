@@ -5,8 +5,14 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:uicore="clr-namespace:RA.UI.Core;assembly=RA.UI.Core"
                  mc:Ignorable="d"
-        Title="PlannerPreviewClock" Height="450" Width="800">
-    <Grid>
-        
+        Title="Preview clock" Height="700" Width="600" Icon="{StaticResource ClockIcon}">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Foreground="Red" FontWeight="DemiBold"
+                   Text="The following generated hour is only a preview!"/>
     </Grid>
 </uicore:RAWindow>

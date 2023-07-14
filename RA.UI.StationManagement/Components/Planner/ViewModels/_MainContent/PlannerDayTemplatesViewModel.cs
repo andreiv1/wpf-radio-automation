@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DTO;
-using RA.Logic;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
@@ -11,10 +10,8 @@ using RA.UI.StationManagement.Components.Planner.ViewModels.Templates;
 using RA.UI.StationManagement.Components.Planner.ViewModels.Templates.Models;
 using Syncfusion.UI.Xaml.Scheduler;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
@@ -22,6 +19,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
     public partial class PlannerDayTemplatesViewModel : ViewModelBase
     {
         private readonly IWindowService windowService;
+        private readonly IMessageBoxService messageBoxService;
         private readonly ITemplatesService templatesService;
         private readonly IDispatcherService dispatcherService;
 
@@ -36,10 +34,13 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             _ = LoadClocksForSelectedTemplate();
         }
 
-        public PlannerDayTemplatesViewModel(IWindowService windowService, ITemplatesService templatesService, 
-            IDispatcherService dispatcherService)
+        public PlannerDayTemplatesViewModel(IWindowService windowService,
+                                            IMessageBoxService messageBoxService,
+                                            ITemplatesService templatesService,
+                                            IDispatcherService dispatcherService)
         {
             this.windowService = windowService;
+            this.messageBoxService = messageBoxService;
             this.templatesService = templatesService;
             this.dispatcherService = dispatcherService;
 
@@ -94,6 +95,13 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         public async Task UpdateClockToTemplate(int clockId, DateTime oldStart, DateTime newStart, DateTime newEnd)
         {
             if (SelectedTemplate == null) return;
+            if (IsOverlapping(oldStart, newStart, newEnd, clockId))
+            {
+                // You may need to communicate this back to the user in your UI
+                messageBoxService.ShowWarning("The new time overlaps with an existing clock. Please resize it without overlapping existing clock(s).");
+                _ = LoadClocksForSelectedTemplate();
+                return;
+            }
             var clockTemplate = new ClockTemplateDTO()
             {
                 ClockId = clockId,
@@ -102,6 +110,28 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
                 TemplateId = SelectedTemplate.Id,
             };
             await templatesService.UpdateClockInTemplate(oldStart.TimeOfDay, clockTemplate);
+            _ = LoadClocksForSelectedTemplate();
+        }
+
+        private bool IsOverlapping(DateTime oldStart, DateTime newStart, DateTime newEnd, int clockIdToExclude)
+        {
+            foreach (var clock in ClocksForSelectedTemplate)
+            {
+                if (clock.ClockId == clockIdToExclude && clock.StartTime == oldStart)
+                {
+                    // Ignore the clock that's being updated
+                    continue;
+                }
+
+                if ((clock.StartTime < newEnd && clock.EndTime > newStart) || (clock.EndTime > newStart && clock.EndTime < newEnd))
+                {
+                    // Overlapping found
+                    return true;
+                }
+            }
+
+            // No overlapping found
+            return false;
         }
 
         #region Commands
