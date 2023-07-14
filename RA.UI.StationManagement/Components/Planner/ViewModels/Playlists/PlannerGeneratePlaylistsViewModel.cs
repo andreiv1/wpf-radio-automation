@@ -18,11 +18,14 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
 {
     public partial class PlannerGeneratePlaylistsViewModel : DialogViewModelBase
     {
+        public delegate void GeneratePlaylistsCallback();
+
         private readonly IDispatcherService dispatcherService;
         private readonly IMessageBoxService messageBoxService;
         private readonly IPlaylistsService playlistsService;
         private readonly ISchedulesService schedulesService;
         private readonly IPlaylistGenerator playlistGenerator;
+        private readonly GeneratePlaylistsCallback callback;
         private bool isGeneratingPlaylist = false;
 
         public ObservableCollection<ScheduleOverviewModel> ScheduleOverview { get; set; } = new();
@@ -40,7 +43,15 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
 
         partial void OnNumberOfDaysToScheduleChanged(int value)
         {
-            _ = LoadOverview();
+            var loadTask = LoadOverview();
+
+            loadTask.ContinueWith((t) =>
+            {
+                dispatcherService.InvokeOnUIThread(() =>
+                {
+                    FinishDialogCommand.NotifyCanExecuteChanged();
+                });
+            });
         }
 
  
@@ -49,13 +60,15 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
                                                  IMessageBoxService messageBoxService,
                                                  IPlaylistsService playlistsService,
                                                  ISchedulesService schedulesService,
-                                                 IPlaylistGenerator playlistGenerator) : base(windowService)
+                                                 IPlaylistGenerator playlistGenerator,
+                                                 GeneratePlaylistsCallback callback) : base(windowService)
         {
             this.dispatcherService = dispatcherService;
             this.messageBoxService = messageBoxService;
             this.playlistsService = playlistsService;
             this.schedulesService = schedulesService;
             this.playlistGenerator = playlistGenerator;
+            this.callback = callback;
             _ = LoadOverview();
         }
 
@@ -79,6 +92,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
                 }
                 ScheduleOverview.Add(item);
             }
+
+
             FinishDialogCommand.NotifyCanExecuteChanged();
         }
 
@@ -105,9 +120,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
                             item.ErrorMessage = ex.Message;
                         }
                     }
+
                 }
 
-
+                callback?.Invoke();
             });
         }
         protected override void FinishDialog()
@@ -115,6 +131,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
             isGeneratingPlaylist = true;
             FinishDialogCommand.NotifyCanExecuteChanged();
             GeneratePlaylists();
+            isGeneratingPlaylist = false;
         }
 
         private bool CanGenerateAny()
