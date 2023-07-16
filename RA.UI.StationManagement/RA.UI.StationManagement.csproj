@@ -15,9 +15,13 @@
 
   <ItemGroup>
     <Compile Remove="Components\Planner\ViewModels\DayTemplates\**" />
+    <Compile Remove="Services\Data\**" />
     <EmbeddedResource Remove="Components\Planner\ViewModels\DayTemplates\**" />
+    <EmbeddedResource Remove="Services\Data\**" />
     <None Remove="Components\Planner\ViewModels\DayTemplates\**" />
+    <None Remove="Services\Data\**" />
     <Page Remove="Components\Planner\ViewModels\DayTemplates\**" />
+    <Page Remove="Services\Data\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -73,7 +77,6 @@
 
     <ItemGroup>
       <Folder Include="Components\Reports\Views\Content\" />
-      <Folder Include="Services\Data\" />
     </ItemGroup>
 
     <ItemGroup>
