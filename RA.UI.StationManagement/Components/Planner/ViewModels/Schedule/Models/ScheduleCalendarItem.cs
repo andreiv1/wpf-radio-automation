@@ -16,7 +16,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule.Models
             {"PlannedRecurrent", new SolidColorBrush(Colors.Green) },
             {"None", new SolidColorBrush(Colors.Blue) },
         };
-        private int? scheduleId;
+        private int? scheduleDefaultItemId;
+        private int? schedulePlannedId;
 
         private string scheduleType = "";
 
@@ -48,30 +49,41 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule.Models
         }
         public Brush Foreground => new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.White);
 
+        public string ScheduleType => scheduleType;
+
+        public int SchedulePlannedId => schedulePlannedId ?? -1;
+
         public ScheduleCalendarItem()
         {
         }
 
-        public ScheduleCalendarItem(DateTime date, string templateName, int templateId)
+        public ScheduleCalendarItem(DateTime date, string scheduleName, string templateName, int templateId)
         {
             this.date = date;
-            this.itemDisplay = templateName;
+            //TODO item display format: Schedule name (using template 'Template name') 
+            this.itemDisplay = $"{scheduleName}\n(Template: {templateName})";
             this.templateId = templateId;
         }
 
         public static ScheduleCalendarItem FromDto(ScheduleDefaultItemDTO dto, DateTime date)
         {
-            var item = new ScheduleCalendarItem(date, dto.Template?.Name,
+            var item = new ScheduleCalendarItem(date, 
+                dto.Schedule?.Name ?? "unknown",
+                dto.Template?.Name ?? "unknown",
                 dto.Template?.Id ?? -1);
             item.scheduleType = "default";
+            item.scheduleDefaultItemId = dto.Id;
             return item;
         }
 
         public static ScheduleCalendarItem FromDto(SchedulePlannedDTO dto, DateTime date)
         {
-            var item = new ScheduleCalendarItem(date, dto.Template?.Name,
+            var item = new ScheduleCalendarItem(date,
+               dto.Name ?? "unknown",
+               dto.Template?.Name ?? "unknown",
                dto.Template?.Id ?? -1);
             item.scheduleType = dto.Type == Database.Models.SchedulePlannedType.OneTime ? "onetime" : "recurrent";
+            item.schedulePlannedId = dto.Id;
             return item;
         }
 

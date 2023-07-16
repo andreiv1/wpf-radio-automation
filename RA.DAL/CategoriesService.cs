@@ -87,12 +87,9 @@ namespace RA.DAL
         public async Task<int> NoOfTracksMatchingConditions(int categoryId)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            //TODO: search also in subcategories
-            return await dbContext.Categories
-                .Where(c => c.Id == categoryId)
-                .Include(c => c.Tracks)
-                .Select(c => c.Tracks.Count())
-                .FirstOrDefaultAsync();
+            //GetTracksByCategoryId also searches for tracks in child categories
+            return await dbContext.GetTracksByCategoryId(categoryId)
+                .CountAsync();
         }
 
         public async Task<TimeSpan> GetAverageDuration(int categoryId)

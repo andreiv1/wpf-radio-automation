@@ -59,7 +59,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Clocks
             InitTagsCollectionEvents();
         }
 
-        //TODO: Edit ctr
         public PlannerManageClockCategoryRuleViewModel(IWindowService windowService,
                                                        IDispatcherService dispatcherService,
                                                        ICategoriesService categoriesService,

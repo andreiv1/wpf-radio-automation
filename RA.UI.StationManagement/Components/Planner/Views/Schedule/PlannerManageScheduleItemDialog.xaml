@@ -10,7 +10,7 @@
                  xmlns:sys="clr-namespace:System;assembly=mscorlib"
                  d:DataContext="{d:DesignInstance Type=schedule:PlannerManageScheduleItemViewModel}"
                  mc:Ignorable="d"
-                 Title="Add planned schedule" Height="440" Width="500"
+                 Title="{Binding DialogName}" Height="440" Width="500"
         ResizeMode="NoResize">
     <Window.Resources>
         <!-- Temporary card -->
@@ -82,7 +82,7 @@
                    Content="Name:" FontWeight="DemiBold"
                    />
             <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
-                     Height="24" Text="{Binding Name}"/>
+                     Height="24" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
             <!-- Schedule type -->
             <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"
                    Content="Schedule type:" FontWeight="DemiBold"
@@ -300,10 +300,26 @@
                                       SmallIcon="{StaticResource CloseIcon}"
                                       Label="Cancel" 
                                       Command="{Binding CancelDialogCommand}"/>
-            <syncfusion:ButtonAdv  Width="70"
+            <!--<syncfusion:ButtonAdv  Width="70"
                                       SmallIcon="{StaticResource CalendarPlusIcon}"
                                       Label="Add" 
-                                      Command="{Binding FinishDialogCommand}"/>
+                                      Command="{Binding FinishDialogCommand}"/>-->
+            <syncfusion:ButtonAdv Width="70"
+                      Command="{Binding FinishDialogCommand}">
+                <syncfusion:ButtonAdv.Style>
+                    <Style TargetType="syncfusion:ButtonAdv" BasedOn="{StaticResource {x:Type syncfusion:ButtonAdv}}">
+                        <Setter Property="Label" Value="Add" />
+                        <Setter Property="SmallIcon" Value="{StaticResource CalendarPlusIcon}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                                <Setter Property="Label" Value="Edit" />
+                                <Setter Property="SmallIcon" Value="{StaticResource EditIcon}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </syncfusion:ButtonAdv.Style>
+            </syncfusion:ButtonAdv>
+
         </StackPanel>
     </Grid>
 </uicore:RAWindow>

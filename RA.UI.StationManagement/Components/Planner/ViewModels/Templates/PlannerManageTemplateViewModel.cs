@@ -17,31 +17,28 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Templates
         private TemplateModel managedTemplate;
         private readonly ITemplatesService templatesService;
 
-        #region Constructors
-        public PlannerManageTemplateViewModel(IWindowService windowService, ITemplatesService templatesService) : base(windowService)
+        public PlannerManageTemplateViewModel(IWindowService windowService,
+                                              ITemplatesService templatesService) : base(windowService)
         {
             DialogName = "Add new template";
             ManagedTemplate = new();
             this.templatesService = templatesService;
         }
 
-        public PlannerManageTemplateViewModel(IWindowService windowService, int templateId,
-             ITemplatesService templatesService) : base(windowService)
+        public PlannerManageTemplateViewModel(IWindowService windowService,
+                                              ITemplatesService templatesService,
+                                              int templateId) : base(windowService)
         {
             DialogName = "Edit template";
             this.templatesService = templatesService;
             _ = LoadTemplate(templateId);
         }
 
-        #endregion
-
-        #region Data fetching
         private async Task LoadTemplate(int templateId)
         {
             var template = await templatesService.GetTemplate(templateId);
             ManagedTemplate = TemplateModel.FromDto(template);
         }
-        #endregion
 
         protected override bool CanFinishDialog()
         {

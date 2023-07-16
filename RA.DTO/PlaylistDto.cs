@@ -20,7 +20,6 @@ namespace RA.DTO
 
         public static PlaylistDTO FromEntity(Playlist entity)
         {
-            //TODO: get items
             var dto = new PlaylistDTO { 
                 Id = entity.Id, 
                 AirDate = entity.AirDate, 
@@ -33,20 +32,11 @@ namespace RA.DTO
 
         public static Playlist ToEntity(PlaylistDTO dto)
         {
-            //TODO: add items
             var entity = new Playlist
             {
                 Id = dto.Id,
                 AirDate = dto.AirDate,
                 DateAdded = dto.DateAdded,
-                //PlaylistItems = dto.Items?.Select(x =>
-                //{
-                //    if (x.GetType() == typeof(PlaylistItemDTO))
-                //    {
-                //        return PlaylistItemDTO.ToEntity(x as PlaylistItemDTO);
-                //    }
-                //    return null;
-                //}).ToList() ?? null,
                 PlaylistItems = dto.Items?.Select(x => PlaylistItemDTO.ToEntity(x)).ToList() ?? null,
             };
 
