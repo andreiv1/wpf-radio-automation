@@ -142,7 +142,8 @@ namespace RA.Logic.Planning
                     TagValuesIds = itemCategory.Tags?.Count > 0 ? itemCategory.Tags.Select(t => t.TagValueId).ToList() : null,
                 };
                 RandomTrackSelectionStrategy selectionStrategy = new RandomTrackSelectionStrategy(dbContextFactory, options, itemCategory.CategoryId!.Value);
-                selectionStrategy.SelectTrack(playlistDTO);
+                var selectedItem = selectionStrategy.SelectTrack(playlistDTO);
+                playlistDTO.Items?.Add(selectedItem);
             } else if (clockItem is ClockItemTrackDTO itemTrack)
             {
                 Console.WriteLine("* Track");
