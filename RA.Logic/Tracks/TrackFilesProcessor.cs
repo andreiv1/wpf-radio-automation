@@ -49,7 +49,7 @@ namespace RA.Logic.Tracks
             ITrackMetadataReader? metaReader = null;
             try
             {
-                metaReader = new TrackMetadataReader(path);
+                metaReader = new TrackMetadataReader(track.OriginalPath);
                 double duration = (double)(metaReader.GetField(TrackMetadataField.Duration) ?? 0);
                 dto.Duration = duration;
             }
@@ -106,7 +106,7 @@ namespace RA.Logic.Tracks
             {
                 if (options.ScanSubfolders && options.SubfolderScanOption == SubfolderScanOption.CreateNewChildrenCategoryForEachExistingCategory)
                 {
-                    throw new NotImplementedException();
+                    //throw new NotImplementedException();
                 }
                 else
                 {
