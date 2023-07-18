@@ -210,18 +210,24 @@ namespace RA.Logic.Planning
                 };
             }
 
-            // Check if there is any close event
-            //var eventFound = ProcessNearestEvent(playlist, lastItem, selectedItem,
-            //    eventsByHour, specialClockItems, ref clockDuration);
+            var eventItems = ProcessNearestEventItems(playlist, lastItem, selectedItem,
+                               eventsByHour, specialClockItems, ref clockDuration);
 
             if (selectedItem == null) throw new PlaylistException($"Playlist failed because there was an error when selecting an item.");
             if (selectedItem.Track == null && selectedItem.Label == null) return;
 
-            //if (eventFound)
-            //{
-            //    lastItem = playlist.Items?.LastOrDefault();
-            //}
-            // Calculate ETA only once here
+            if(eventItems.Count > 0)
+            {
+                foreach(var eventItem in eventItems)
+                {
+                    eventItem.ETA = lastItem.ETA.AddSeconds(lastItem.Length);
+                    playlist.Items?.Add(eventItem);
+                    lastItem = playlist.Items?.LastOrDefault();
+                }
+                
+            }
+
+
             if (lastItem != null)
             {
                 selectedItem.ETA = lastItem.ETA.AddSeconds(lastItem.Length);
@@ -236,8 +242,8 @@ namespace RA.Logic.Planning
             playlist.Items?.Add(selectedItem);
         }
 
-        private bool ProcessNearestEvent(PlaylistDTO playlist, PlaylistItemDTO? lastItem, PlaylistItemDTO? selectedItem,
-                                   IDictionary<TimeSpan, ClockItemEventDTO?> eventsByHour, 
+        private bool ProcessNearestEventDep(PlaylistDTO playlist, PlaylistItemDTO? lastItem, PlaylistItemDTO? selectedItem,
+                                   IDictionary<TimeSpan, ClockItemEventDTO?> eventsByHour,
                                    ICollection<ClockItemBaseDTO> specialClockItems,
                                    ref TimeSpan clockDuration)
         {
@@ -307,7 +313,7 @@ namespace RA.Logic.Planning
                                 //Add event item duration to clock duration
                                 eventETAStart = eventETAStart.AddSeconds(selectedByEvent.Length);
                                 //clockDuration = clockDuration.Add(TimeSpan.FromSeconds(selectedByEvent.Length));
-                                
+
                             }
                         }
                         //Event found and filled, no need to continue  
@@ -316,6 +322,84 @@ namespace RA.Logic.Planning
                 }
             }
             return eventFound;
+        }
+
+        private List<PlaylistItemDTO> ProcessNearestEventItems(PlaylistDTO playlist, PlaylistItemDTO? lastItem, PlaylistItemDTO? selectedItem,
+                                   IDictionary<TimeSpan, ClockItemEventDTO?> eventsByHour,
+                                   ICollection<ClockItemBaseDTO> specialClockItems,
+                                   ref TimeSpan clockDuration)
+        {
+            var result = new List<PlaylistItemDTO>();
+            if (lastItem != null && selectedItem != null)
+            {
+                TimeSpan lastItemTime = new TimeSpan(0, lastItem.ETA.Minute, lastItem.ETA.Second);
+                TimeSpan selectedItemTime = new TimeSpan(0, selectedItem.ETA.Minute, selectedItem.ETA.Second);
+
+                DateTime eventETAStart = lastItem.ETA;
+
+                foreach (var kvp in eventsByHour)
+                {
+                    if (kvp.Key >= lastItemTime && kvp.Key <= selectedItemTime && kvp.Value != null)
+                    {
+                        DebugHelper.WriteLine(this, $"Close event found at time: {kvp.Key}; added at {eventETAStart}");
+                        var parentEvent = new PlaylistItemDTO
+                        {
+                          
+                            Length = 0,
+                            EventType = kvp.Value.EventType,
+                            Label = kvp.Value.EventLabel
+                        };
+                        result.Add(parentEvent);
+                        var eventItems = specialClockItems.Where(ci => ci.ClockItemEventId == kvp.Value.Id)
+                            .OrderBy(ci => ci.EventOrderIndex).ToList();
+
+                        foreach (var eventItem in eventItems)
+                        {
+                            DebugHelper.WriteLine(this, "Adding event item: " + eventItem.Id);
+                            if (eventItem is ClockItemTrackDTO itemEventTrack)
+                            {
+                                result.Add(new PlaylistItemDTO
+                                {
+                                   
+                                    Length = itemEventTrack.TrackDuration.TotalSeconds,
+                                    Track = new TrackListingDTO()
+                                    {
+                                        Id = itemEventTrack.TrackId,
+                                        Artists = itemEventTrack.Artists,
+                                        Title = itemEventTrack.Title,
+                                    },
+                                    ParentPlaylistItem = parentEvent,
+                                });
+
+                            }
+                            else if (eventItem is ClockItemCategoryDTO itemEventCategory)
+                            {
+                                TrackSelectionOptions optionsEventItem = new()
+                                {
+                                    ArtistSeparation = 0, //Ignore artist sep for event items
+                                    TrackSeparation = itemEventCategory.TrackSeparation.HasValue ? itemEventCategory.TrackSeparation : DefaultTrackSeparation,
+                                    TitleSeparation = itemEventCategory.TitleSeparation.HasValue ? itemEventCategory.TitleSeparation : DefaultTitleSeparation,
+                                    MinDuration = itemEventCategory.MinDuration,
+                                    MaxDuration = itemEventCategory.MaxDuration,
+                                    MinReleaseDate = itemEventCategory.MinReleaseDate,
+                                    MaxReleaseDate = itemEventCategory.MaxReleaseDate,
+                                    TagValuesIds = itemEventCategory.Tags?.Count > 0 ? itemEventCategory.Tags.Select(t => t.TagValueId).ToList() : null,
+                                };
+
+                                RandomTrackSelectionStrategy selectionEventStrategy = new RandomTrackSelectionStrategy(dbContextFactory, optionsEventItem,
+                                    itemEventCategory.CategoryId.GetValueOrDefault());
+                                var selectedByEvent = selectionEventStrategy.SelectTrack(playlist);
+                                selectedByEvent.ParentPlaylistItem = parentEvent;
+                                result.Add(selectedByEvent);
+                                
+                            }
+                        }
+                        //Event found and filled, no need to continue  
+                        break;
+                    }
+                }
+            }
+            return result;
         }
 
         private void ShowClockItems(ICollection<ClockItemBaseDTO> regularClockItems, ICollection<ClockItemBaseDTO> specialClockItems)
