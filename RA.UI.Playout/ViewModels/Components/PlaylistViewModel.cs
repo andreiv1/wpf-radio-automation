@@ -47,7 +47,10 @@ namespace RA.UI.Playout.ViewModels.Components
                 playbackQueue.Mode = PlaybackMode.Auto;
                 if (playbackQueue.NowPlaying == null)
                 {
-                    Play();
+                    if (playbackQueue.GetQueueLength() > 0)
+                    {
+                        Play();
+                    }
                 }
             } else
             {
@@ -119,7 +122,7 @@ namespace RA.UI.Playout.ViewModels.Components
                 var playlistItems = playlistsService.GetPlaylistItemsByDateTime(date, maxHours);
                 foreach (var item in playlistItems)
                 {
-                    if (item.Track?.Id == playbackQueue.NowPlaying?.TrackId) 
+                    if (item.Track?.Id == playbackQueue.NowPlaying?.TrackId || item.Track.FilePath == null) 
                         continue;
                     PlaybackAddItem(new TrackPlaylistPlayerItem(item, configurationStore));
 
@@ -258,10 +261,16 @@ namespace RA.UI.Playout.ViewModels.Components
 
         private void Play()
         {
-            MainVm!.NowPlayingVm.IsPaused = false;
-            MainVm!.NowPlayingVm.IsItemLoaded = true;
-            playbackQueue.Play();
-            CalculateRemaining();
+            try
+            {
+                MainVm!.NowPlayingVm.IsPaused = false;
+                MainVm!.NowPlayingVm.IsItemLoaded = true;
+                playbackQueue.Play();
+                CalculateRemaining();
+            } catch (Exception e)
+            {
+                DebugHelper.WriteLine(this, $"Error playing: {e.Message}");
+            }
         }
 
         private void AddNowToHistory()

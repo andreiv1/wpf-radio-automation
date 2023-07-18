@@ -33,10 +33,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             if (value != null)
             {
                 _ = LoadSelectedPlaylistItems();
-            } else
-            {
-                SelectedPlaylistItems.Clear();
-            }
+            } 
         }
 
         [ObservableProperty]
@@ -154,9 +151,11 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         {
             if(SelectedPlaylistToAir == null) return;
             int id = SelectedPlaylistToAir.Id;
-            await playlistsService.DeletePlaylist(id);
+            SelectedPlaylistItems.Clear();
             SelectedPlaylistToAir = null;
+            await playlistsService.DeletePlaylist(id);
             IsPlaylistSelected = false;
+            
             await LoadPlaylistsToAir();
 
         }
