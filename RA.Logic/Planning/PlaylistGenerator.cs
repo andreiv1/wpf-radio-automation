@@ -63,6 +63,9 @@ namespace RA.Logic.Planning
             {
                 throw new PlaylistException($"Can't generate playlist for date {date.ToString("dd.MM.yyyy")} without any schedule");
             }
+            var totalDuration = TimeSpan.FromSeconds(playlist.Items?.Sum(i => i.Length) ?? 0);
+            if (totalDuration == TimeSpan.Zero) throw new PlaylistException($"Playlist is empty.");
+            if (totalDuration < TimeSpan.FromHours(24)) throw new PlaylistException($"Playlist is not filled entirely. Total duration: {totalDuration.ToString(@"hh\:mm\:ss")}.");
             return playlist;
         }
 
@@ -134,7 +137,10 @@ namespace RA.Logic.Planning
 
                     ProcessClockItem(clockItem, playlist, eventsByHour, specialClockItems, ref clockDuration);
 
-                    if (clockDuration >= clockMinLength) break;
+                    if (clockDuration >= clockMinLength)
+                    {
+                        break;
+                    }
                 }
 
                 if (clockDuration < clockMinLength && !clockItems.OfType<ClockItemCategoryDTO>().Any()
@@ -147,16 +153,19 @@ namespace RA.Logic.Planning
                 {
                     var fillers = regularClockItems.OfType<ClockItemCategoryDTO>().Where(c => c.IsFiller == true).ToList();
 
-                    for (int f = 0; i < fillers.Count && clockDuration < clockMinLength; f++)
+                    int f = 0;
+                    do
                     {
                         ProcessClockItem(fillers[f], playlist, eventsByHour, specialClockItems, ref clockDuration);
                         if (clockDuration >= clockMinLength) break;
-                        //If clock duration does not exceed the minimum length and we are at the last filler, start over
-                        if (clockDuration < clockMinLength && f == fillers.Count - 1)
+
+                        f++;
+                        if (f >= fillers.Count)
                         {
                             f = 0;
                         }
-                    }
+                    } while (clockDuration < clockMinLength);
+
                 }
             }
         }

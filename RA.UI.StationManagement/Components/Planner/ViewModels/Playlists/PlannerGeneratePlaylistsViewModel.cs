@@ -13,6 +13,7 @@ using RA.UI.Core.Services;
 using RA.DAL;
 using RA.Logic.Planning;
 using RA.DTO;
+using System.Threading;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
 {
@@ -101,8 +102,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
             FinishDialogCommand.NotifyCanExecuteChanged();
         }
 
+        private CancellationTokenSource? cancellationTokenSource;
         private void GeneratePlaylists()
         {
+            cancellationTokenSource = new CancellationTokenSource();
             List<PlaylistDTO> generatedPlaylists = new();
             Task.Run(async () =>
             {
@@ -114,6 +117,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
                         try
                         {
                             var p = await playlistGenerator.GeneratePlaylistForDate(item.Date);
+                            if (cancellationTokenSource.Token.IsCancellationRequested)
+                            {
+                                generatedPlaylists.Clear();
+                                break;
+                            }
+
                             item.GenerationStatus = ScheduleGenerationStatus.Generated;
                             generatedPlaylists.Add(p);
                             await playlistsService.AddPlaylistAsync(p);
@@ -129,6 +138,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Playlists
 
                 callback?.Invoke();
             });
+        }
+
+        protected override void CancelDialog()
+        {
+            cancellationTokenSource?.Cancel();
+            windowService.CloseWindow(this);
         }
         protected override void FinishDialog()
         {
