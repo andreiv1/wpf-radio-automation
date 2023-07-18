@@ -25,6 +25,7 @@ namespace RA.Logic.Planning
                 throw new ArgumentNullException($"{nameof(options.TrackSeparation)},{nameof(options.ArtistSeparation)},{nameof(options.TitleSeparation)} must be initialised.");
             var lastItem = currentPlaylist.Items?.LastOrDefault();
             PlaylistItemDTO item = new();
+            //Maybe to move?
             if (lastItem == null)
             {
                 item.ETA = new DateTime(currentPlaylist.AirDate.Year, currentPlaylist.AirDate.Month, currentPlaylist.AirDate.Day);

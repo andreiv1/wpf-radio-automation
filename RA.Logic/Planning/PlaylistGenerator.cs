@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RA.DAL;
 using RA.Database;
+using RA.Database.Models;
 using RA.DTO;
 using RA.DTO.Abstract;
 using RA.Logic.Planning.Abstract;
@@ -24,6 +25,7 @@ namespace RA.Logic.Planning
         private readonly ISchedulesService schedulesService;
         private readonly IClocksService clocksService;
         private readonly ITemplatesService templatesService;
+        private static TimeSpan clockMinLength = new TimeSpan(1, 0, 0);
 
         public static int DefaultArtistSeparation { get; set; }
         public static int DefaultTrackSeparation { get; set; }
@@ -111,26 +113,65 @@ namespace RA.Logic.Planning
                 .ToDictionary(ci => ci!.EstimatedEventStart, ci => ci);
 
 
+            if (regularClockItems.Count == 0)
+            {
+                var emptyClock = clocksService.GetClock(clock.ClockId).Result;
+                var start = clock.StartTime.ToString(@"hh\:mm");
+                var end = clock.StartTime.Add(TimeSpan.FromHours(clock.ClockSpan)).ToString(@"hh\:mm");
+                throw new PlaylistException($"This template has a clock '{emptyClock.Name}' without any items;\n" +
+                    $"it starts at {start} and it ends at {end}");
+            }
+
             int h = 0;
+            
             for (int i = 1; i <= clock.ClockSpan; i++)
             {
-                Console.WriteLine($"Generating for hour {h++}");
+                DebugHelper.WriteLine(this,$"Generating for hour {h++}");
+                TimeSpan clockDuration = TimeSpan.Zero;
                 foreach (ClockItemBaseDTO clockItem in regularClockItems)
                 {
-                    Console.WriteLine($"Id={clockItem.Id},OrderIndex={clockItem.OrderIndex}");
-                    ProcessClockItem(clockItem, playlist, eventsByHour, specialClockItems);
+                    DebugHelper.WriteLine(this, $"Id={clockItem.Id},OrderIndex={clockItem.OrderIndex}");
+                   
+                    ProcessClockItem(clockItem, playlist, eventsByHour, specialClockItems, ref clockDuration);
+                }
+
+                if (clockDuration < clockMinLength && !clockItems.OfType<ClockItemCategoryDTO>().Any() 
+                    && clockItems.Cast<ClockItemCategoryDTO?>().Any(c => c?.IsFiller ?? false))
+                {
+                    var relatedClock = clocksService.GetClock(clock.ClockId).Result;
+                    throw new PlaylistException($"The clock '{relatedClock.Name}' duration is not an hour or there isn't any filler!");
+                } else
+                {
+                    //Fillers exist
+                    //throw new PlaylistException($"Fillers exist"); 
+                    var fillers = clockItems.OfType<ClockItemCategoryDTO>().Where(c => c.IsFiller).ToList();
+
+                    for(int f = 0; i < fillers.Count && clockDuration < clockMinLength; f++)
+                    {
+                        ProcessClockItem(fillers[f], playlist, eventsByHour, specialClockItems, ref clockDuration);
+
+                        //If clock duration does not exceds the min length, readd fillers
+                        if (clockDuration < clockMinLength && f == fillers.Count - 1)
+                        {
+                            f = 0;
+                        }
+                    }
                 }
             }
         }
 
-        private void ProcessClockItem(ClockItemBaseDTO clockItem, PlaylistDTO playlistDTO,
+        private void ProcessClockItem(ClockItemBaseDTO clockItem, PlaylistDTO playlist,
                                       IDictionary<TimeSpan, ClockItemEventDTO?> eventsByHour,
-                                      ICollection<ClockItemBaseDTO> specialClockItems)
+                                      ICollection<ClockItemBaseDTO> specialClockItems,
+                                      ref TimeSpan clockDuration)
         {
+            PlaylistItemDTO? lastItem = playlist.Items?.LastOrDefault();
+            PlaylistItemDTO? selectedItem = null;
+
             if (clockItem is ClockItemCategoryDTO itemCategory)
             {
-                Console.WriteLine("* Category");
-                TrackSelectionOptions options = new TrackSelectionOptions
+                DebugHelper.WriteLine(this, "*** Processing category ***");
+                TrackSelectionOptions options = new()
                 {
                     ArtistSeparation = itemCategory.ArtistSeparation.HasValue ? itemCategory.ArtistSeparation : DefaultArtistSeparation,
                     TrackSeparation = itemCategory.TrackSeparation.HasValue ? itemCategory.TrackSeparation : DefaultTrackSeparation,
@@ -142,12 +183,129 @@ namespace RA.Logic.Planning
                     TagValuesIds = itemCategory.Tags?.Count > 0 ? itemCategory.Tags.Select(t => t.TagValueId).ToList() : null,
                 };
                 RandomTrackSelectionStrategy selectionStrategy = new RandomTrackSelectionStrategy(dbContextFactory, options, itemCategory.CategoryId!.Value);
-                var selectedItem = selectionStrategy.SelectTrack(playlistDTO);
-                playlistDTO.Items?.Add(selectedItem);
-            } else if (clockItem is ClockItemTrackDTO itemTrack)
+                selectedItem = selectionStrategy.SelectTrack(playlist);
+            } 
+            else if(clockItem is ClockItemTrackDTO itemTrack)
             {
-                Console.WriteLine("* Track");
+                DebugHelper.WriteLine(this, "*** Processing track ***");
+                selectedItem = new PlaylistItemDTO
+                {
+                    Length = itemTrack.TrackDuration.TotalSeconds,
+                    Track = new TrackListingDTO()
+                    {
+                        Id = itemTrack.TrackId,
+                        Artists = itemTrack.Artists,
+                        Title = itemTrack.Title,
+                    }
+                };
             }
+
+            var eventFound = ProcessEvents(playlist, eventsByHour, specialClockItems, ref clockDuration);
+            // Check if there is any close event
+          
+            if (eventFound)
+            {
+                if(lastItem != null && selectedItem != null)
+                {
+                    selectedItem.ETA = lastItem.ETA.AddSeconds(selectedItem.Length);
+                } else
+                {
+                    if (selectedItem == null) throw new PlaylistException($"Playlist failed because there was an error when selecting an item.");
+                    else
+                    {
+                        selectedItem.ETA = new DateTime(playlist.AirDate.Year, playlist.AirDate.Month, playlist.AirDate.Day);
+                    }
+                    
+                }
+            }
+
+            clockDuration = clockDuration + TimeSpan.FromSeconds(selectedItem?.Length ?? 0);
+            playlist.Items?.Add(selectedItem);
+        }
+
+        private bool ProcessEvents(PlaylistDTO playlist, 
+                                   IDictionary<TimeSpan, ClockItemEventDTO?> eventsByHour, 
+                                   ICollection<ClockItemBaseDTO> specialClockItems,
+                                   ref TimeSpan clockDuration)
+        {
+            bool eventFound = false;
+            PlaylistItemDTO? lastItem = playlist.Items?.LastOrDefault();
+            PlaylistItemDTO? selectedItem = null;
+            if (lastItem != null && selectedItem != null)
+            {
+                TimeSpan lastItemTime = new TimeSpan(0, lastItem.ETA.Minute, lastItem.ETA.Second);
+                TimeSpan selectedItemTime = new TimeSpan(0, selectedItem.ETA.Minute, selectedItem.ETA.Second);
+
+                DateTime lastDateTime = selectedItem.ETA;
+
+                foreach (var kvp in eventsByHour)
+                {
+                    if (kvp.Key > lastItemTime && kvp.Key <= selectedItemTime && kvp.Value != null)
+                    {
+                        DebugHelper.WriteLine(this, $"Close event found at time: {kvp.Key}; added at {lastDateTime}");
+                        eventFound = true;
+                        var parentEvent = new PlaylistItemDTO
+                        {
+                            ETA = lastDateTime,
+                            EventType = kvp.Value.EventType,
+                            Label = kvp.Value.EventLabel,
+                        };
+                        playlist.Items?.Add(parentEvent);
+                        var eventItems = specialClockItems.Where(ci => ci.ClockItemEventId == kvp.Value.Id)
+                            .OrderBy(ci => ci.EventOrderIndex).ToList();
+
+                        foreach (var eventItem in eventItems)
+                        {
+                            DebugHelper.WriteLine(this, "Adding event item: " + eventItem.Id);
+                            if (eventItem is ClockItemTrackDTO itemEventTrack)
+                            {
+                                playlist.Items?.Add(new PlaylistItemDTO
+                                {
+                                    ETA = lastDateTime,
+                                    Length = itemEventTrack.TrackDuration.TotalSeconds,
+                                    Track = new TrackListingDTO()
+                                    {
+                                        Id = itemEventTrack.TrackId,
+                                        Artists = itemEventTrack.Artists,
+                                        Title = itemEventTrack.Title,
+                                    },
+                                    ParentPlaylistItem = parentEvent,
+                                });
+                            }
+                            else if (eventItem is ClockItemCategoryDTO itemEventCategory)
+                            {
+                                TrackSelectionOptions optionsEventItem = new()
+                                {
+                                    ArtistSeparation = 0, //Ignore artist sep for event items
+                                    TrackSeparation = itemEventCategory.TrackSeparation.HasValue ? itemEventCategory.TrackSeparation : DefaultTrackSeparation,
+                                    TitleSeparation = itemEventCategory.TitleSeparation.HasValue ? itemEventCategory.TitleSeparation : DefaultTitleSeparation,
+                                    MinDuration = itemEventCategory.MinDuration,
+                                    MaxDuration = itemEventCategory.MaxDuration,
+                                    MinReleaseDate = itemEventCategory.MinReleaseDate,
+                                    MaxReleaseDate = itemEventCategory.MaxReleaseDate,
+                                    TagValuesIds = itemEventCategory.Tags?.Count > 0 ? itemEventCategory.Tags.Select(t => t.TagValueId).ToList() : null,
+                                };
+
+                                RandomTrackSelectionStrategy selectionEventStrategy = new RandomTrackSelectionStrategy(dbContextFactory, optionsEventItem,
+                                    itemEventCategory.CategoryId.GetValueOrDefault());
+                                var selectedByEvent = selectionEventStrategy.SelectTrack(playlist);
+                                selectedByEvent.ParentPlaylistItem = parentEvent;
+                                playlist.Items?.Add(selectedByEvent);
+                            }
+
+                            //??
+                            var lastItemAdded = playlist.Items?.LastOrDefault();
+                            if (lastItemAdded != null)
+                            {
+                                lastDateTime = lastItemAdded.ETA.AddSeconds(lastItemAdded.Length);
+                            }
+                        }
+                        //Event found and filled, no need to continue  
+                        break;
+                    }
+                }
+            }
+            return eventFound;
         }
 
         private void ShowClockItems(ICollection<ClockItemBaseDTO> regularClockItems, ICollection<ClockItemBaseDTO> specialClockItems)
@@ -169,5 +327,7 @@ namespace RA.Logic.Planning
                 Console.WriteLine($"Id={clockItem.Id},OrderIndex={clockItem.OrderIndex}");
             }
         }
+
+        //private DateTime? GetLastPlaylist
     }
 }

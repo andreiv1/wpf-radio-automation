@@ -240,7 +240,7 @@
                     <component:HistoryView DataContext="{Binding HistoryVm}"/>
                 </syncfusion:TabItemExt>
 
-                <syncfusion:TabItemExt>
+                <!--<syncfusion:TabItemExt>
                     <syncfusion:TabItemExt.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -252,7 +252,7 @@
                                 Content="Details" FontWeight="Bold"/>
                         </Grid>
                     </syncfusion:TabItemExt.Header>
-                </syncfusion:TabItemExt>
+                </syncfusion:TabItemExt>-->
 
 
             </syncfusion:TabControlExt>
