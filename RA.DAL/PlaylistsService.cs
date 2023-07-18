@@ -25,6 +25,7 @@ namespace RA.DAL
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             var entity = PlaylistDTO.ToEntity(playlistDTO);
+            var nextDay = entity.AirDate.AddDays(1).Date;
             entity.PlaylistItems = new List<PlaylistItem>();
             if (playlistDTO.Items != null)
             {
@@ -32,8 +33,10 @@ namespace RA.DAL
                 {
                     var currentItem = playlistDTO.Items.ElementAt(i);
                     var nextItem = playlistDTO.Items.ElementAtOrDefault(i + 1);
-                    
-                    if(currentItem.Label != null && nextItem != null 
+
+                    //weird logic, but it works
+                    if (currentItem.ETA > nextDay) break;
+                    if (currentItem.Label != null && nextItem != null 
                         && nextItem.ParentPlaylistItem == currentItem)
                     {
                         var parent = PlaylistItemDTO.ToEntity(currentItem);
@@ -118,6 +121,7 @@ namespace RA.DAL
                 .ThenInclude(pi => pi.TrackArtists)
                 .ThenInclude(ta => ta.Artist)
                 .Where(pi => pi.PlaylistId == playlistId)
+                .OrderBy(pi => pi.ETA)
                 .Select(pi => PlaylistItemDTO.FromEntity(pi))
                 .ToListAsync();
 

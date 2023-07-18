@@ -151,7 +151,15 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         {
             if(SelectedPlaylistToAir == null) return;
             int id = SelectedPlaylistToAir.Id;
-            SelectedPlaylistItems.Clear();
+            try
+            {
+                SelectedPlaylistItems.Clear();
+            }
+            catch(Exception e)
+            {
+
+            }
+            
             SelectedPlaylistToAir = null;
             await playlistsService.DeletePlaylist(id);
             IsPlaylistSelected = false;

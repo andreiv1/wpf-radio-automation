@@ -211,12 +211,16 @@ namespace RA.Logic.Planning
             }
 
             // Check if there is any close event
-            var eventFound = ProcessNearestEvent(playlist, lastItem, selectedItem,
-                eventsByHour, specialClockItems, ref clockDuration);
+            //var eventFound = ProcessNearestEvent(playlist, lastItem, selectedItem,
+            //    eventsByHour, specialClockItems, ref clockDuration);
 
             if (selectedItem == null) throw new PlaylistException($"Playlist failed because there was an error when selecting an item.");
             if (selectedItem.Track == null && selectedItem.Label == null) return;
 
+            //if (eventFound)
+            //{
+            //    lastItem = playlist.Items?.LastOrDefault();
+            //}
             // Calculate ETA only once here
             if (lastItem != null)
             {
@@ -243,17 +247,17 @@ namespace RA.Logic.Planning
                 TimeSpan lastItemTime = new TimeSpan(0, lastItem.ETA.Minute, lastItem.ETA.Second);
                 TimeSpan selectedItemTime = new TimeSpan(0, selectedItem.ETA.Minute, selectedItem.ETA.Second);
 
-                DateTime NewETA = lastItem.ETA + TimeSpan.FromSeconds(lastItem.Length);
+                DateTime eventETAStart = lastItem.ETA;
 
                 foreach (var kvp in eventsByHour)
                 {
                     if (kvp.Key >= lastItemTime && kvp.Key <= selectedItemTime && kvp.Value != null)
                     {
-                        DebugHelper.WriteLine(this, $"Close event found at time: {kvp.Key}; added at {NewETA}");
+                        DebugHelper.WriteLine(this, $"Close event found at time: {kvp.Key}; added at {eventETAStart}");
                         eventFound = true;
                         var parentEvent = new PlaylistItemDTO
                         {
-                            ETA = NewETA,
+                            ETA = eventETAStart,
                             EventType = kvp.Value.EventType,
                             Label = kvp.Value.EventLabel,
                         };
@@ -266,21 +270,20 @@ namespace RA.Logic.Planning
                             DebugHelper.WriteLine(this, "Adding event item: " + eventItem.Id);
                             if (eventItem is ClockItemTrackDTO itemEventTrack)
                             {
-                                playlist.Items?.Add(new PlaylistItemDTO
-                                {
-                                    ETA = NewETA,
-                                    Length = itemEventTrack.TrackDuration.TotalSeconds,
-                                    Track = new TrackListingDTO()
-                                    {
-                                        Id = itemEventTrack.TrackId,
-                                        Artists = itemEventTrack.Artists,
-                                        Title = itemEventTrack.Title,
-                                    },
-                                    ParentPlaylistItem = parentEvent,
-                                });
-
-                                NewETA = NewETA.AddSeconds(itemEventTrack.TrackDuration.TotalSeconds);
-                                clockDuration = clockDuration.Add(TimeSpan.FromSeconds(itemEventTrack.TrackDuration.TotalSeconds));
+                                //playlist.Items?.Add(new PlaylistItemDTO
+                                //{
+                                //    ETA = eventETAStart,
+                                //    Length = itemEventTrack.TrackDuration.TotalSeconds,
+                                //    Track = new TrackListingDTO()
+                                //    {
+                                //        Id = itemEventTrack.TrackId,
+                                //        Artists = itemEventTrack.Artists,
+                                //        Title = itemEventTrack.Title,
+                                //    },
+                                //    ParentPlaylistItem = parentEvent,
+                                //});
+                                eventETAStart = eventETAStart.AddSeconds(itemEventTrack.TrackDuration.TotalSeconds);
+                                //clockDuration = clockDuration.Add(TimeSpan.FromSeconds(itemEventTrack.TrackDuration.TotalSeconds));
                             }
                             else if (eventItem is ClockItemCategoryDTO itemEventCategory)
                             {
@@ -300,10 +303,11 @@ namespace RA.Logic.Planning
                                     itemEventCategory.CategoryId.GetValueOrDefault());
                                 var selectedByEvent = selectionEventStrategy.SelectTrack(playlist);
                                 selectedByEvent.ParentPlaylistItem = parentEvent;
-                                playlist.Items?.Add(selectedByEvent);
+                                //playlist.Items?.Add(selectedByEvent);
                                 //Add event item duration to clock duration
-                                clockDuration = clockDuration.Add(TimeSpan.FromSeconds(selectedByEvent.Length));
-                                NewETA = NewETA.AddSeconds(selectedByEvent.Length);
+                                eventETAStart = eventETAStart.AddSeconds(selectedByEvent.Length);
+                                //clockDuration = clockDuration.Add(TimeSpan.FromSeconds(selectedByEvent.Length));
+                                
                             }
                         }
                         //Event found and filled, no need to continue  

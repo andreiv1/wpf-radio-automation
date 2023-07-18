@@ -83,6 +83,7 @@ namespace RA.Logic.Planning
                 .Include(t => t.TrackArtists)
                 .ThenInclude(ta => ta.Artist)
                 .Include(t => t.TrackTags)
+                .Where(t => t.Status == Database.Models.Enums.TrackStatus.Enabled)
                 .AsQueryable();
 
             if (trackIdsToExclude != null)
