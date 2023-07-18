@@ -81,6 +81,7 @@ namespace RA.Logic.Planning
             var query = dbContext.GetTracksByCategoryId(categoryId).Include(t => t.Categories)
                 .Include(t => t.TrackArtists)
                 .ThenInclude(ta => ta.Artist)
+                .Include(t => t.TrackTags)
                 .AsQueryable();
 
             if (trackIdsToExclude != null)

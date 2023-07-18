@@ -600,11 +600,11 @@
             </syncfusion:TabItemExt>
 
             <!-- Statistics TAB -->
-            <syncfusion:TabItemExt>
+            <!--<syncfusion:TabItemExt>
                 <syncfusion:TabItemExt.Header>
                     <Label FontWeight="Bold" Content="Statistics"/>
                 </syncfusion:TabItemExt.Header>
-            </syncfusion:TabItemExt>
+            </syncfusion:TabItemExt>-->
         </syncfusion:TabControlExt>
 
         <StackPanel Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal">

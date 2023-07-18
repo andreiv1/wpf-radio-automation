@@ -17,7 +17,6 @@ namespace RA.Database.Models
 
         [MaxLength(400)]
         public string? Label { get; set; }
-        public DateTime? NiceETA { get; set; }
         public int PlaylistId { get; set; }
         public Playlist Playlist { get; set; }
         public int? BaseClockItemId { get; set; }

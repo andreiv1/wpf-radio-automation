@@ -42,7 +42,9 @@
 
             <!-- Search box-->
             <syncfusion:SfTextBoxExt Grid.Row="1" Margin="0,2,0,0" VerticalAlignment="Center" Height="23"
-                                     Watermark="Search clocks..."/>
+                                     Watermark="Search clocks..."
+                                     Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                                     ShowClearButton="True"/>
 
 
             <!-- Clocks list -->

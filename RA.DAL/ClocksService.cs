@@ -71,15 +71,22 @@ namespace RA.DAL
 
             return result;
         }
-        public IEnumerable<ClockDTO> GetClocks()
+        public IEnumerable<ClockDTO> GetClocks(string? query = null)
         {
-            return GetClocksAsync().Result;
+            return GetClocksAsync(query).Result;
         }
-        public async Task<IEnumerable<ClockDTO>> GetClocksAsync()
+        public async Task<IEnumerable<ClockDTO>> GetClocksAsync(string? searchQuery = null)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            return await dbContext.Clocks
-                .Select(c => ClockDTO.FromEntity(c))
+            var query = dbContext.Clocks
+                .OrderByDescending(c => c.Id)
+                .AsQueryable();
+            if(!string.IsNullOrEmpty(searchQuery))
+            {
+                searchQuery = searchQuery.ToLower().Trim();
+                query = query.Where(c => c.Name.ToLower().Contains(searchQuery));
+            }
+            return await query.Select(c => ClockDTO.FromEntity(c))
                 .AsNoTracking()
                 .ToListAsync();
         }

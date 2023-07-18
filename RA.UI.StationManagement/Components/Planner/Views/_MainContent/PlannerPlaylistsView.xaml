@@ -117,9 +117,9 @@
                               VerticalAlignment="Top" 
                               HorizontalAlignment="Center" 
                               Panel.ZIndex="1">
-                            <TextBlock Text="There are no playlists to air found for the next days (including today)."
+                            <!--<TextBlock Text="There are no playlists to air found for the next days (including today)."
                                TextWrapping="Wrap" TextAlignment="Center" 
-                               Margin="5,50,5,0" Foreground="Gray"/>
+                               Margin="5,50,5,0" Foreground="Gray"/>-->
                         </Grid>
                     </Grid>
 
@@ -209,7 +209,7 @@
                             </syncfusion:SfDataGrid>
 
                             <Grid x:Name="NoPlaylistsFound"
-                              Visibility="{Binding PlaylistsToAir.Count,Converter={StaticResource CountToVisibilityConverter}}"
+                              Visibility="{Binding PlaylistsByHour.Count,Converter={StaticResource CountToVisibilityConverter}}"
                               VerticalAlignment="Top" 
                               HorizontalAlignment="Center" 
                               Panel.ZIndex="1">
@@ -236,9 +236,9 @@
                 <syncfusion:ButtonAdv Label="Insert track" Height="25" Margin="0,0,4,0" IsEnabled="{Binding IsPlaylistSelected}"
                                       Command="{Binding InsertTrackToPlaylistCommand}"
                                       SmallIcon="{StaticResource PlusSquareIcon}"/>
-                <syncfusion:ButtonAdv Label="Insert marker" Height="25" Margin="0,0,4,0" IsEnabled="{Binding IsPlaylistSelected}"
+                <!--<syncfusion:ButtonAdv Label="Insert marker" Height="25" Margin="0,0,4,0" IsEnabled="{Binding IsPlaylistSelected}"
                                       Command="{Binding InsertMarkerToPlaylistCommand}"
-                                      SmallIcon="{StaticResource PinIcon}"/>
+                                      SmallIcon="{StaticResource PinIcon}"/>-->
                 <syncfusion:ButtonAdv Label="Delete item" Height="25" Margin="0,0,4,0" IsEnabled="{Binding IsPlaylistSelected}"
                                       Command="{Binding DeleteItemFromPlaylistCommand}"
                                       SmallIcon="{StaticResource RemoveIcon}"/>

@@ -23,6 +23,7 @@ namespace RA.Logic.AudioPlayer
         public void Play(IPlayerItem item)
         {
             Stop();
+            
             audioFileReader = new AudioFileReader(item.FilePath);
             waveOut = new WaveOutEvent();
             waveOut.Init(audioFileReader);
@@ -102,8 +103,6 @@ namespace RA.Logic.AudioPlayer
         {
             if (audioFileReader != null && waveOut != null)
             {
-                //audioFileReader.Position = (long)(position.TotalSeconds * audioFileReader.WaveFormat.SampleRate * audioFileReader.WaveFormat.Channels * audioFileReader.WaveFormat.BitsPerSample / 8);
-                //waveOut.Play();
                 var pos = (long)(position.TotalSeconds * audioFileReader.WaveFormat.SampleRate * audioFileReader.WaveFormat.Channels * audioFileReader.WaveFormat.BitsPerSample / 8);
                 audioFileReader.Seek(pos, SeekOrigin.Begin);
             }

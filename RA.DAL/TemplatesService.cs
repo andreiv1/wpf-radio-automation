@@ -11,11 +11,19 @@ namespace RA.DAL
         {
             this.dbContextFactory = dbContextFactory;
         }
-        public async Task<IEnumerable<TemplateDTO>> GetTemplatesAsync()
+        public async Task<IEnumerable<TemplateDTO>> GetTemplatesAsync(string? searchQuery = null)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            return await dbContext.Templates
-                .Select(t => TemplateDTO.FromEntity(t))
+            var query = dbContext.Templates
+               .OrderByDescending(t => t.Id)
+               .AsQueryable();
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                searchQuery = searchQuery.ToLower().Trim();
+                query = query.Where(t => t.Name.ToLower().Contains(searchQuery));
+            }
+            return await query.Select(t => TemplateDTO.FromEntity(t))
+                .AsNoTracking()
                 .ToListAsync();
         }
 

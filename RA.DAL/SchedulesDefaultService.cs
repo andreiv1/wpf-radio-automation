@@ -60,21 +60,46 @@ namespace RA.DAL
         {
             return GetDefaultSchedulesOverviewAsync(searchDateStart, searchDateEnd).Result;
         }
-        public IEnumerable<ScheduleDefaultDTO> GetDefaultSchedules(int skip = 0, int limit = 100, bool ascending = false)
+        //public IEnumerable<ScheduleDefaultDTO> GetDefaultSchedules(string? searchQuery = null, int skip = 0, int limit = 100, bool ascending = false)
+        //{
+        //    using var dbContext = dbContextFactory.CreateDbContext();
+        //    var schedules = dbContext.SchedulesDefault
+        //        .Skip(skip)
+        //        .Take(limit)
+        //        .AsEnumerable();
+        //    schedules = ascending ?
+        //        schedules.OrderBy(s => s.StartDate).ThenBy(s => s.EndDate) :
+        //        schedules.OrderByDescending(s => s.StartDate).ThenBy(s => s.EndDate);
+        //    foreach(var schedule in schedules)
+        //    {
+        //        yield return ScheduleDefaultDTO.FromEntity(schedule);
+        //    }
+        //}
+
+        public async Task<IEnumerable<ScheduleDefaultDTO>> GetDefaultSchedules(string? searchQuery = null, int skip = 0, int limit = 100, bool ascending = false)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
-            var schedules = dbContext.SchedulesDefault
+            IQueryable<ScheduleDefault> query = dbContext.SchedulesDefault;
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                searchQuery = searchQuery.ToLower().Trim();
+                query = query.Where(s => s.Name.ToLower().Contains(searchQuery));
+            }
+
+            query = ascending ?
+                query.OrderBy(s => s.StartDate).ThenBy(s => s.EndDate) :
+                query.OrderByDescending(s => s.StartDate).ThenBy(s => s.EndDate);
+
+            var schedules = await query
                 .Skip(skip)
                 .Take(limit)
-                .AsEnumerable();
-            schedules = ascending ?
-                schedules.OrderBy(s => s.StartDate).ThenBy(s => s.EndDate) :
-                schedules.OrderByDescending(s => s.StartDate).ThenBy(s => s.EndDate);
-            foreach(var schedule in schedules)
-            {
-                yield return ScheduleDefaultDTO.FromEntity(schedule);
-            }
+                .Select(s => ScheduleDefaultDTO.FromEntity(s))
+                .ToListAsync();
+
+            return schedules;
         }
+
 
         public async Task<IDictionary<DayOfWeek, ScheduleDefaultItemDTO?>> GetDefaultScheduleItems(ScheduleDefaultDTO parentDefaultScheduleDto)
         {

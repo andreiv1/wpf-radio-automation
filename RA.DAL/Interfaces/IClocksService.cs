@@ -10,8 +10,8 @@ namespace RA.DAL
 {
     public interface IClocksService
     {
-        IEnumerable<ClockDTO> GetClocks();
-        Task<IEnumerable<ClockDTO>> GetClocksAsync();
+        IEnumerable<ClockDTO> GetClocks(string? query = null);
+        Task<IEnumerable<ClockDTO>> GetClocksAsync(string? query = null);
         IEnumerable<ClockItemBaseDTO> GetClockItems(int clockId);
         Task<IEnumerable<ClockItemBaseDTO>> GetClockItemsAsync(int clockId);
         Task<Dictionary<int, TimeSpan>> CalculateAverageDurationsForCategoriesInClockWithId(int clockId);

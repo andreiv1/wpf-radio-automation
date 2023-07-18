@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using RA.Database;
+using RA.Database.Models;
 using RA.DTO;
 using RA.DTO.Abstract;
 using System;
@@ -24,13 +25,41 @@ namespace RA.DAL
         {
             using var dbContext = dbContextFactory.CreateDbContext();
             var entity = PlaylistDTO.ToEntity(playlistDTO);
-            foreach (var item in entity.PlaylistItems)
+            entity.PlaylistItems = new List<PlaylistItem>();
+            if (playlistDTO.Items != null)
             {
-                if (item.Track != null)
+                for (int i = 0; i < playlistDTO.Items?.Count; i++)
                 {
-                    item.Track = dbContext.AttachOrGetTrackedEntity(item.Track);
+                    var currentItem = playlistDTO.Items.ElementAt(i);
+                    var nextItem = playlistDTO.Items.ElementAtOrDefault(i + 1);
+                    
+                    if(currentItem.Label != null && nextItem != null 
+                        && nextItem.ParentPlaylistItem == currentItem)
+                    {
+                        var parent = PlaylistItemDTO.ToEntity(currentItem);
+                        entity.PlaylistItems.Add(parent);
+
+                        int index = i + 1;
+                        int childrenNo = 1;
+                        while(playlistDTO.Items?.ElementAtOrDefault(index++)?.ParentPlaylistItem == currentItem)
+                        {
+                            var child = PlaylistItemDTO.ToEntity(playlistDTO.Items.ElementAt(index));
+                            if(child.Track != null)
+                                child.Track = dbContext.AttachOrGetTrackedEntity(child.Track);
+                            child.ParentPlaylistItem = parent;
+                            entity.PlaylistItems.Add(child);
+                            childrenNo++;
+                        }
+                    } else
+                    {
+                        var playlistItem = PlaylistItemDTO.ToEntity(currentItem);
+                        if(playlistItem.Track != null)
+                            playlistItem.Track = dbContext.AttachOrGetTrackedEntity(playlistItem.Track);
+                       entity.PlaylistItems.Add(playlistItem);
+                    }
                 }
             }
+            
             dbContext.Playlists.Add(entity);
             await dbContext.SaveChangesAsync();
         }

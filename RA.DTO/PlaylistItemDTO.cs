@@ -13,14 +13,13 @@ namespace RA.DTO
     {
         public int Id { get; set; }
         public DateTime ETA { get; set; }
-        public DateTime? NiceETA { get; set; }
         public double Length { get; set; }
         public int PlaylistId { get; set; }
         public EventType? EventType { get; set; }
         public TrackListingDTO? Track { get; set; }
         public string? Label { get; set; } 
         public int? ParentId { get; set; }
-
+        public PlaylistItemDTO? ParentPlaylistItem { get; set; }
         public int? BaseClockItemId { get; set; }
         public int? BaseTemplateId { get; set; }
         public static PlaylistItem ToEntity(PlaylistItemDTO dto)
@@ -53,7 +52,6 @@ namespace RA.DTO
                 Track = entity.Track != null ? TrackListingDTO.FromEntity(entity.Track) : null,
                 Label = entity.Label,
                 ParentId = entity.ParentPlaylistItemId,
-                NiceETA = entity.NiceETA,
                 EventType = entity.EventType,
                 BaseClockItemId = entity.BaseClockItemId,
                 BaseTemplateId = entity.BaseTemplateId,

@@ -28,10 +28,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         [ObservableProperty]
         private PlaylistListingDTO? selectedPlaylistToAir;
 
-        partial void OnSelectedPlaylistToAirChanging(PlaylistListingDTO? value)
+        partial void OnSelectedPlaylistToAirChanged(PlaylistListingDTO? value)
         {
-            IsPlaylistSelected = value != null;
-            if(!IsPlaylistSelected)
+            if (value != null)
+            {
+                _ = LoadSelectedPlaylistItems();
+            } else
             {
                 SelectedPlaylistItems.Clear();
             }
@@ -64,12 +66,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         partial void OnSelectedDateChanged(DateTime value)
         {
             _ = LoadPlaylistsByHour(value);
-        }
-
-        partial void OnSelectedPlaylistToAirChanged(PlaylistListingDTO? value)
-        {
-            _ = LoadSelectedPlaylistItems();
-            IsPlaylistSelected = true;
         }
 
         //Data fetching
@@ -105,6 +101,8 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             await Task.Run(async () =>
             {
                 SelectedPlaylistItems.Clear();
+
+                IsPlaylistSelected = true;
                 var data = await playlistsService.GetPlaylistItems(SelectedPlaylistToAir.Id);
                 int index = 0;
                 foreach (var item in data)
@@ -152,13 +150,14 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
 
 
         [RelayCommand]
-        private void DeleteSelectedPlaylist()
+        private async void DeleteSelectedPlaylist()
         {
             if(SelectedPlaylistToAir == null) return;
             int id = SelectedPlaylistToAir.Id;
-            playlistsService.DeletePlaylist(id);
+            await playlistsService.DeletePlaylist(id);
             SelectedPlaylistToAir = null;
-            _ = LoadPlaylistsToAir();
+            IsPlaylistSelected = false;
+            await LoadPlaylistsToAir();
 
         }
 
@@ -182,7 +181,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         [RelayCommand] 
         private void InsertMarkerToPlaylist(object? param)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         [RelayCommand]

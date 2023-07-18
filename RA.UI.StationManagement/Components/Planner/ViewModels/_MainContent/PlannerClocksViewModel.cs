@@ -12,6 +12,7 @@ using RA.UI.StationManagement.Dialogs.TrackSelectDialog;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
@@ -50,6 +51,30 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         [ObservableProperty]
         private TimeSpan totalDuration;
 
+        [ObservableProperty]
+        private string searchQuery = "";
+
+        private const int searchDelayMilliseconds = 500; // Set an appropriate delay time
+
+        private CancellationTokenSource? searchQueryToken;
+        partial void OnSearchQueryChanged(string value)
+        {
+            if (searchQueryToken != null)
+            {
+                searchQueryToken.Cancel();
+            }
+
+            searchQueryToken = new CancellationTokenSource();
+            var cancellationToken = searchQueryToken.Token;
+            Task.Delay(searchDelayMilliseconds, cancellationToken).ContinueWith(task =>
+            {
+                if (task.IsCompletedSuccessfully && !cancellationToken.IsCancellationRequested)
+                {
+                    DebugHelper.WriteLine(this, $"Performing search query: {value}");
+                    _ = LoadClocks(value);
+                }
+            });
+        }
         public PlannerClocksViewModel(IWindowService windowService,
                                       IMessageBoxService messageBoxService,
                                       IDispatcherService dispatcherService,
@@ -70,9 +95,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         }
 
         //Data fetching
-        private async Task LoadClocks()
+        private async Task LoadClocks(string? query = null)
         {
-            var clocks = await Task.Run(() => clocksService.GetClocksAsync());
+            var clocks = await Task.Run(() => clocksService.GetClocksAsync(query));
+            if (string.IsNullOrEmpty(query)) SearchQuery = string.Empty;
             Clocks.Clear();
             foreach (var clock in clocks)
             {
@@ -269,7 +295,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             var vm = windowService.ShowDialog<PlannerManageClockCategoryRuleViewModel>(SelectedClock.Id);
             if (vm.SelectedCategory == null) return;
 
-            //DebugHelper.WriteLine(this, $"To add clock rule - {vm.SelectedCategory.Id}");
             int latestIndex = ClockItemsForSelectedClock
                 .Where(x => x.Item.OrderIndex > -1)
                 .Count();
@@ -365,7 +390,9 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             var result = windowService.ShowDialog<PlannerManageClockViewModel>(SelectedClock.Id);
             var dto = ClockModel.ToDto(result.ManagedClock);
             clocksService.UpdateClock(dto);
+            SearchQuery = string.Empty;
             _ = LoadClocks();
+           
 
         }
 
@@ -385,6 +412,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             {
                 messageBoxService.ShowInfo($"Clock '{SelectedClock.Name}' deleted succcesfully.'");
                 SelectedClock = null;
+                SearchQuery = string.Empty;
                 _ = LoadClocks();
             }
             else
@@ -397,6 +425,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         private void RefreshClocks()
         {
             _ = LoadClocks();
+            SearchQuery = string.Empty;
             IsRuleSelectionEnabled = false;
         }
 

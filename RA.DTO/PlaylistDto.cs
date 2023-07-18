@@ -37,7 +37,7 @@ namespace RA.DTO
                 Id = dto.Id,
                 AirDate = dto.AirDate,
                 DateAdded = dto.DateAdded,
-                PlaylistItems = dto.Items?.Select(x => PlaylistItemDTO.ToEntity(x)).ToList() ?? null,
+                //PlaylistItems = dto.Items?.Select(x => PlaylistItemDTO.ToEntity(x)).ToList() ?? null,
             };
 
             return entity;

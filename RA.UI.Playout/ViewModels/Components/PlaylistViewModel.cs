@@ -119,11 +119,9 @@ namespace RA.UI.Playout.ViewModels.Components
                 var playlistItems = playlistsService.GetPlaylistItemsByDateTime(date, maxHours);
                 foreach (var item in playlistItems)
                 {
-                    if (item?.GetType() == typeof(PlaylistItemDTO))
-                    {
-                        var trackDto = (PlaylistItemDTO)item;
-                        PlaybackAddItem(new TrackPlaylistPlayerItem(trackDto, configurationStore));
-                    }
+                    if (item.Track?.Id == playbackQueue.NowPlaying?.TrackId) 
+                        continue;
+                    PlaybackAddItem(new TrackPlaylistPlayerItem(item, configurationStore));
 
                 }
             });
@@ -268,16 +266,25 @@ namespace RA.UI.Playout.ViewModels.Components
 
         private void AddNowToHistory()
         {
-            TrackType trackType = (TrackType)Enum.Parse(typeof(TrackType), playerItemNow.TrackType);
-            var trackHistory = new TrackHistoryDTO()
+            try
             {
-                DatePlayed = DateTime.Now,
-                TrackId = playerItemNow.TrackId,
-                TrackType = trackType,
-            };
+                TrackType trackType = (TrackType)Enum.Parse(typeof(TrackType), playerItemNow.TrackType);
+                var trackHistory = new TrackHistoryDTO()
+                {
+                    DatePlayed = DateTime.Now,
+                    TrackId = playerItemNow.TrackId,
+                    TrackType = trackType,
+                };
+
+                var addTask = trackHistoryService.AddTrackToHistory(trackHistory);
+                addTask.ContinueWith(async (t) => await MainVm!.HistoryVm.AddItem(trackHistory.DatePlayed));
+            }
+            catch(Exception e)
+            {
+                DebugHelper.WriteLine(this, $"Error parsing track type: {e.Message}");
+                return;
+            }
             
-            var addTask = trackHistoryService.AddTrackToHistory(trackHistory);
-            addTask.ContinueWith(async (t) => await MainVm!.HistoryVm.AddItem(trackHistory.DatePlayed));
         }
 
         [RelayCommand]
@@ -407,16 +414,7 @@ namespace RA.UI.Playout.ViewModels.Components
         {
             PlaybackClearItems();
             await Task.Run(() => {
-                var playlistItems = playlistsService.GetPlaylistItemsByDateTime(DateTime.Now.Date,1);
-                foreach (var item in playlistItems)
-                {
-                    if (item?.GetType() == typeof(PlaylistItemDTO))
-                    {
-                        var trackDto = (PlaylistItemDTO)item;
-                        PlaybackAddItem(new TrackPlaylistPlayerItem(trackDto, configurationStore));
-                    }
-
-                }
+                _ = LoadPlaylist(DateTime.Now, maxHours: 1);
             });
         }
     }

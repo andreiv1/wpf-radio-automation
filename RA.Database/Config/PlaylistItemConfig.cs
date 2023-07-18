@@ -20,6 +20,11 @@ namespace RA.Database.Config
             builder.HasOne(pi => pi.BaseTemplate)
                 .WithMany()
                 .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasOne(pi => pi.ParentPlaylistItem)
+                .WithMany()
+                .HasForeignKey(pi => pi.ParentPlaylistItemId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

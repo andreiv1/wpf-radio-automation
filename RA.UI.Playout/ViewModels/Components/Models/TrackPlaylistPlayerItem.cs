@@ -18,26 +18,24 @@ namespace RA.UI.Playout.ViewModels.Components.Models
         private readonly PlaylistItemDTO playlistItemTrackDTO;
         private readonly ConfigurationStore configurationStore;
 
-        public string FilePath => playlistItemTrackDTO.Track.FilePath;
+        public string FilePath => playlistItemTrackDTO.Track?.FilePath ?? "";
 
-        public TimeSpan Duration => TimeSpan.FromSeconds(playlistItemTrackDTO.Track.Duration);
+        public TimeSpan Duration => TimeSpan.FromSeconds(playlistItemTrackDTO.Track?.Duration ?? 0);
 
         private DateTime eta;
         public DateTime ETA { get => eta; set => SetProperty(ref eta, value); }
-        public string? Artists => playlistItemTrackDTO.Track.Artists;
+        public string? Artists => playlistItemTrackDTO.Track?.Artists ?? "unknown";
 
-        public string Title => playlistItemTrackDTO.Track.Title;
+        public string Title => playlistItemTrackDTO.Track?.Title ?? "unknown";
 
-        public string TrackType => playlistItemTrackDTO.Track.Type;
+        public string TrackType => playlistItemTrackDTO.Track?.Type ?? "unknown";
 
         public string ImagePath
         {
             get
             {
-                if (!string.IsNullOrEmpty(playlistItemTrackDTO.Track.ImageName))
+                if (!string.IsNullOrEmpty(playlistItemTrackDTO.Track?.ImageName))
                 {
-                    //string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                    //return Path.Combine(appDataFolder, "RadioAutomationSystem", "images", playlistItemTrackDTO.Track.ImageName);
                     return Path.Combine(configurationStore.ImagePath, playlistItemTrackDTO.Track.ImageName);
                 }
                 else
@@ -48,7 +46,7 @@ namespace RA.UI.Playout.ViewModels.Components.Models
             }
         }
 
-        public int TrackId => playlistItemTrackDTO.Track.Id;
+        public int TrackId => playlistItemTrackDTO.Track?.Id ?? 0;
 
         public TrackPlaylistPlayerItem(PlaylistItemDTO playlistItemTrackDTO, ConfigurationStore configurationStore)
         {

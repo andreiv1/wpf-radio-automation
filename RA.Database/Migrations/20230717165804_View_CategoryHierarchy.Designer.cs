@@ -11,8 +11,8 @@ using RA.Database;
 namespace RA.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230706225919_Updated_ClockItem_Event_Null")]
-    partial class Updated_ClockItem_Event_Null
+    [Migration("20230717165804_View_CategoryHierarchy")]
+    partial class View_CategoryHierarchy
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -254,7 +254,7 @@ namespace RA.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("AirDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("date");
 
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime(6)");
@@ -263,6 +263,9 @@ namespace RA.Database.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AirDate")
+                        .IsUnique();
 
                     b.ToTable("Playlists");
                 });
@@ -273,12 +276,21 @@ namespace RA.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int?>("BaseClockItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BaseTemplateId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("ETA")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int?>("EventType")
+                        .HasColumnType("int");
+
                     b.Property<string>("Label")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(400)
+                        .HasColumnType("varchar(400)");
 
                     b.Property<double>("Length")
                         .HasColumnType("double(11,5)");
@@ -289,10 +301,14 @@ namespace RA.Database.Migrations
                     b.Property<int>("PlaylistId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TrackId")
+                    b.Property<int?>("TrackId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BaseClockItemId");
+
+                    b.HasIndex("BaseTemplateId");
 
                     b.HasIndex("ParentPlaylistItemId");
 
@@ -933,9 +949,20 @@ namespace RA.Database.Migrations
 
             modelBuilder.Entity("RA.Database.Models.PlaylistItem", b =>
                 {
+                    b.HasOne("RA.Database.Models.Abstract.ClockItemBase", "BaseClockItem")
+                        .WithMany()
+                        .HasForeignKey("BaseClockItemId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("RA.Database.Models.Template", "BaseTemplate")
+                        .WithMany()
+                        .HasForeignKey("BaseTemplateId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("RA.Database.Models.PlaylistItem", "ParentPlaylistItem")
                         .WithMany()
-                        .HasForeignKey("ParentPlaylistItemId");
+                        .HasForeignKey("ParentPlaylistItemId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("RA.Database.Models.Playlist", "Playlist")
                         .WithMany("PlaylistItems")
@@ -945,9 +972,11 @@ namespace RA.Database.Migrations
 
                     b.HasOne("RA.Database.Models.Track", "Track")
                         .WithMany()
-                        .HasForeignKey("TrackId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TrackId");
+
+                    b.Navigation("BaseClockItem");
+
+                    b.Navigation("BaseTemplate");
 
                     b.Navigation("ParentPlaylistItem");
 

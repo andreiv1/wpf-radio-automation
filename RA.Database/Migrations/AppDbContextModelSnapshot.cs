@@ -251,7 +251,7 @@ namespace RA.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("AirDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("date");
 
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime(6)");
@@ -260,6 +260,9 @@ namespace RA.Database.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AirDate")
+                        .IsUnique();
 
                     b.ToTable("Playlists");
                 });
@@ -288,9 +291,6 @@ namespace RA.Database.Migrations
 
                     b.Property<double>("Length")
                         .HasColumnType("double(11,5)");
-
-                    b.Property<DateTime?>("NiceETA")
-                        .HasColumnType("datetime(6)");
 
                     b.Property<int?>("ParentPlaylistItemId")
                         .HasColumnType("int");
@@ -323,14 +323,14 @@ namespace RA.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("date");
 
                     b.Property<string>("Name")
                         .HasMaxLength(300)
                         .HasColumnType("varchar(300)");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("date");
 
                     b.HasKey("Id");
 
@@ -368,7 +368,7 @@ namespace RA.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("date");
 
                     b.Property<int?>("Frequency")
                         .HasColumnType("int");
@@ -399,7 +399,7 @@ namespace RA.Database.Migrations
                         .HasColumnType("varchar(300)");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("date");
 
                     b.Property<int>("TemplateId")
                         .HasColumnType("int");
@@ -948,15 +948,18 @@ namespace RA.Database.Migrations
                 {
                     b.HasOne("RA.Database.Models.Abstract.ClockItemBase", "BaseClockItem")
                         .WithMany()
-                        .HasForeignKey("BaseClockItemId");
+                        .HasForeignKey("BaseClockItemId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("RA.Database.Models.Template", "BaseTemplate")
                         .WithMany()
-                        .HasForeignKey("BaseTemplateId");
+                        .HasForeignKey("BaseTemplateId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("RA.Database.Models.PlaylistItem", "ParentPlaylistItem")
                         .WithMany()
-                        .HasForeignKey("ParentPlaylistItemId");
+                        .HasForeignKey("ParentPlaylistItemId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("RA.Database.Models.Playlist", "Playlist")
                         .WithMany("PlaylistItems")

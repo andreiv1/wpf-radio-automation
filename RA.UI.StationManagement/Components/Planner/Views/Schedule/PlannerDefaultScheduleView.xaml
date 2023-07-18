@@ -110,7 +110,9 @@
                 </Grid>
             </Expander>
             <syncfusion:SfTextBoxExt Grid.Row="2" Height="24" Margin="0,10,0,0" VerticalAlignment="Center"
-                                     Watermark="Search schedule by its name..."/>
+                                     Watermark="Search schedule by its name..."
+                                     Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                                     ShowClearButton="True"/>
 
             <syncfusion:SfDataGrid Grid.Row="3" AllowSorting="False"
                                    AutoGenerateColumns="False" SelectionUnit="Row" NavigationMode="Row" SelectionMode="Single"

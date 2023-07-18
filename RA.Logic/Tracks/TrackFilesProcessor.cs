@@ -29,7 +29,7 @@ namespace RA.Logic.Tracks
 
         public async Task<ProcessingTrack> ProcessSingleItemAsync(string path, TrackFilesProcessorOptions options)
         {
-            ITrackMetadataReader metaReader = new TrackMetadataReader(path);
+            
             ProcessingTrack track = new();
             TrackDTO dto = new();
 
@@ -46,10 +46,20 @@ namespace RA.Logic.Tracks
             }
 
             dto.FilePath = path;
-            double duration = (double)(metaReader.GetField(TrackMetadataField.Duration) ?? 0);
-            dto.Duration = duration;
+            ITrackMetadataReader? metaReader = null;
+            try
+            {
+                metaReader = new TrackMetadataReader(path);
+                double duration = (double)(metaReader.GetField(TrackMetadataField.Duration) ?? 0);
+                dto.Duration = duration;
+            }
+            catch(Exception e)
+            {
+                track.Status = ProcessingTrackStatus.FAILED;
+                track.Message = $"Error: {e.Message}";
+            }
 
-            if (options.ReadMetadata)
+            if (metaReader != null && options.ReadMetadata)
             {
                 try
                 {
@@ -79,9 +89,9 @@ namespace RA.Logic.Tracks
             if (string.IsNullOrEmpty(dto.Title) || dto.Artists?.Count == 0)
             {
                 var titleAndArtist = TrackMetadataReader.GetTitleAndArtistFromPath(path);
-                if (titleAndArtist.Artist is not null)
+                if (titleAndArtist.Artist != null)
                 {
-                    var processedArtists = await ProcessArtistsAsync(metaReader.GetField(TrackMetadataField.Artists) as string ?? defaultArtist);
+                    var processedArtists = await ProcessArtistsAsync(metaReader?.GetField(TrackMetadataField.Artists) as string ?? defaultArtist);
                     dto.Artists = processedArtists.ToList();
 
                 }

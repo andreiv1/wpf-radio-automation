@@ -11,8 +11,8 @@ using RA.Database;
 namespace RA.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230701231259_Modified_Playlist_TrackHistory")]
-    partial class Modified_Playlist_TrackHistory
+    [Migration("20230717165745_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -179,12 +179,14 @@ namespace RA.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
 
                     b.Property<string>("PathName")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.ToTable((string)null);
@@ -252,7 +254,7 @@ namespace RA.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("AirDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("date");
 
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime(6)");
@@ -261,6 +263,9 @@ namespace RA.Database.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AirDate")
+                        .IsUnique();
 
                     b.ToTable("Playlists");
                 });
@@ -271,11 +276,21 @@ namespace RA.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int?>("BaseClockItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BaseTemplateId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("ETA")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int?>("EventType")
+                        .HasColumnType("int");
+
                     b.Property<string>("Label")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(400)
+                        .HasColumnType("varchar(400)");
 
                     b.Property<double>("Length")
                         .HasColumnType("double(11,5)");
@@ -290,6 +305,10 @@ namespace RA.Database.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BaseClockItemId");
+
+                    b.HasIndex("BaseTemplateId");
 
                     b.HasIndex("ParentPlaylistItemId");
 
@@ -408,6 +427,7 @@ namespace RA.Database.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
@@ -443,6 +463,7 @@ namespace RA.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
@@ -560,6 +581,7 @@ namespace RA.Database.Migrations
                         .HasColumnType("double(11,5)");
 
                     b.Property<string>("FilePath")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
@@ -600,31 +622,8 @@ namespace RA.Database.Migrations
 
             modelBuilder.Entity("RA.Database.Models.TrackHistory", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Artists")
-                        .HasMaxLength(1000)
-                        .HasColumnType("varchar(1000)");
-
-                    b.Property<string>("CategoryName")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
                     b.Property<DateTime>("DatePlayed")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("ISRC")
-                        .HasMaxLength(55)
-                        .HasColumnType("varchar(55)");
-
-                    b.Property<TimeSpan>("LengthPlayed")
-                        .HasColumnType("time(6)");
-
-                    b.Property<string>("Title")
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
 
                     b.Property<int?>("TrackId")
                         .HasColumnType("int");
@@ -632,7 +631,7 @@ namespace RA.Database.Migrations
                     b.Property<int>("TrackType")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("DatePlayed");
 
                     b.HasIndex("TrackId");
 
@@ -688,10 +687,10 @@ namespace RA.Database.Migrations
                         new
                         {
                             Id = 1,
-                            FullName = "Andrei",
-                            Password = "$2a$11$SWq88W6Q77w7sanz7HrxbexnTN0nLq8XB70lLFrSDQbddPzmnQdIK",
+                            FullName = "Administrator",
+                            Password = "$2a$11$XLzkiZw03i/cqn90F8cgr.EjrnXds.O7quStlYO7RI0H3BFxwg59e",
                             UserGroupId = 1,
-                            Username = "andrei"
+                            Username = "admin"
                         });
                 });
 
@@ -701,7 +700,11 @@ namespace RA.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsBuiltIn")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
@@ -713,7 +716,8 @@ namespace RA.Database.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Administrator"
+                            IsBuiltIn = true,
+                            Name = "Administrators"
                         });
                 });
 
@@ -758,6 +762,12 @@ namespace RA.Database.Migrations
                         {
                             Id = 4,
                             RuleValue = 3,
+                            UserGroupId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            RuleValue = 4,
                             UserGroupId = 1
                         });
                 });
@@ -811,6 +821,7 @@ namespace RA.Database.Migrations
                         .HasColumnType("time(6)");
 
                     b.Property<string>("EventLabel")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int?>("EventType")
@@ -861,8 +872,9 @@ namespace RA.Database.Migrations
                         .IsRequired();
 
                     b.HasOne("RA.Database.Models.ClockItemEvent", "ClockItemEvent")
-                        .WithMany()
-                        .HasForeignKey("ClockItemEventId");
+                        .WithMany("EventSubitems")
+                        .HasForeignKey("ClockItemEventId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Clock");
 
@@ -937,9 +949,20 @@ namespace RA.Database.Migrations
 
             modelBuilder.Entity("RA.Database.Models.PlaylistItem", b =>
                 {
+                    b.HasOne("RA.Database.Models.Abstract.ClockItemBase", "BaseClockItem")
+                        .WithMany()
+                        .HasForeignKey("BaseClockItemId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("RA.Database.Models.Template", "BaseTemplate")
+                        .WithMany()
+                        .HasForeignKey("BaseTemplateId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("RA.Database.Models.PlaylistItem", "ParentPlaylistItem")
                         .WithMany()
-                        .HasForeignKey("ParentPlaylistItemId");
+                        .HasForeignKey("ParentPlaylistItemId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("RA.Database.Models.Playlist", "Playlist")
                         .WithMany("PlaylistItems")
@@ -950,6 +973,10 @@ namespace RA.Database.Migrations
                     b.HasOne("RA.Database.Models.Track", "Track")
                         .WithMany()
                         .HasForeignKey("TrackId");
+
+                    b.Navigation("BaseClockItem");
+
+                    b.Navigation("BaseTemplate");
 
                     b.Navigation("ParentPlaylistItem");
 
@@ -1135,6 +1162,11 @@ namespace RA.Database.Migrations
             modelBuilder.Entity("RA.Database.Models.ClockItemCategory", b =>
                 {
                     b.Navigation("ClockItemCategoryTags");
+                });
+
+            modelBuilder.Entity("RA.Database.Models.ClockItemEvent", b =>
+                {
+                    b.Navigation("EventSubitems");
                 });
 #pragma warning restore 612, 618
         }

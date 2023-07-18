@@ -41,14 +41,16 @@ namespace RA.Database
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new ArtistTrackConfig());
-            modelBuilder.ApplyConfiguration(new TrackConfig());
-            modelBuilder.ApplyConfiguration(new ClockTemplateConfig());
             modelBuilder.ApplyConfiguration(new CategoryConfig());
-            modelBuilder.ApplyConfiguration(new TrackTagConfig());
-            modelBuilder.ApplyConfiguration(new PlaylistConfig());
-            modelBuilder.ApplyConfiguration(new ClockItemConfig());
             modelBuilder.ApplyConfiguration(new ClockItemCategoryTagConfig());
+            modelBuilder.ApplyConfiguration(new ClockItemConfig());
+            modelBuilder.ApplyConfiguration(new ClockTemplateConfig());
+            modelBuilder.ApplyConfiguration(new PlaylistConfig());
+            modelBuilder.ApplyConfiguration(new PlaylistItemConfig());
+            modelBuilder.ApplyConfiguration(new TagCategoryConfig());
+            modelBuilder.ApplyConfiguration(new TrackConfig());
             modelBuilder.ApplyConfiguration(new TrackHistoryConfig());
+            modelBuilder.ApplyConfiguration(new TrackTagConfig());
 
             modelBuilder.Entity<CategoryHierarchy>(entity =>
             {

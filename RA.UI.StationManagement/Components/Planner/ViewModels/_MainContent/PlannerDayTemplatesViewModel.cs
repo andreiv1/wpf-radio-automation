@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DTO;
+using RA.Logic;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
@@ -12,6 +13,7 @@ using Syncfusion.UI.Xaml.Scheduler;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
@@ -34,6 +36,31 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             _ = LoadClocksForSelectedTemplate();
         }
 
+        [ObservableProperty]
+        private string searchQuery = "";
+
+        private const int searchDelayMilliseconds = 500; // Set an appropriate delay time
+
+        private CancellationTokenSource? searchQueryToken;
+        partial void OnSearchQueryChanged(string value)
+        {
+            if (searchQueryToken != null)
+            {
+                searchQueryToken.Cancel();
+            }
+
+            searchQueryToken = new CancellationTokenSource();
+            var cancellationToken = searchQueryToken.Token;
+            Task.Delay(searchDelayMilliseconds, cancellationToken).ContinueWith(task =>
+            {
+                if (task.IsCompletedSuccessfully && !cancellationToken.IsCancellationRequested)
+                {
+                    DebugHelper.WriteLine(this, $"Performing search query: {value}");
+                    _ = LoadTemplates(value);
+                }
+            });
+        }
+
         public PlannerDayTemplatesViewModel(IWindowService windowService,
                                             IMessageBoxService messageBoxService,
                                             ITemplatesService templatesService,
@@ -48,9 +75,10 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         }
 
         #region Data fetching
-        private async Task LoadTemplates()
+        private async Task LoadTemplates(string? query = null)
         {
-            var templates = await templatesService.GetTemplatesAsync();
+            var templates = await templatesService.GetTemplatesAsync(query);
+            if (string.IsNullOrEmpty(query)) SearchQuery = string.Empty;
             Templates.Clear();
             foreach (var template in templates)
             {
@@ -97,7 +125,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
             if (SelectedTemplate == null) return;
             if (IsOverlapping(oldStart, newStart, newEnd, clockId))
             {
-                // You may need to communicate this back to the user in your UI
                 messageBoxService.ShowWarning("The new time overlaps with an existing clock. Please resize it without overlapping existing clock(s).");
                 _ = LoadClocksForSelectedTemplate();
                 return;
@@ -158,19 +185,20 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.MainContent
         [RelayCommand]
         private void DeleteTemplateDialog()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         [RelayCommand]
         private void DuplicateTemplateDialog()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         [RelayCommand]
         private void RefreshTemplates()
         {
             _ = LoadTemplates();
+            SearchQuery = string.Empty;
             SelectedTemplate = null;
             ClocksForSelectedTemplate.Clear();
         }

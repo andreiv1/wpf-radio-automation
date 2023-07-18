@@ -18,6 +18,9 @@ namespace RA.Database.Config
                .WithOne(pi => pi.Playlist)
                .HasForeignKey(pi => pi.PlaylistId)
                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasIndex(p => p.AirDate)
+                .IsUnique(true);
         }
     }
 }

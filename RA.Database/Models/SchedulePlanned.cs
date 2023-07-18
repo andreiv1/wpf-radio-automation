@@ -24,8 +24,10 @@ namespace RA.Database.Models
     }
     public class SchedulePlanned : ScheduleBase
     {
-
+        [Column(TypeName = "date")]
         public DateTime StartDate { get; set; }
+
+        [Column(TypeName = "date")]
         public DateTime? EndDate { get; set; }
         [EnumDataType(typeof(SchedulePlannedType))]
         public SchedulePlannedType Type { get; set; }

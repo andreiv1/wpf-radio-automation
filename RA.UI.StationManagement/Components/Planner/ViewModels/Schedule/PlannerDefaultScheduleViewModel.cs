@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using RA.DAL;
 using RA.DTO;
+using RA.Logic;
 using RA.UI.Core.Services;
 using RA.UI.Core.Services.Interfaces;
 using RA.UI.Core.ViewModels;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
@@ -24,7 +26,7 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         private readonly ISchedulesDefaultService defaultSchedulesService;
         private readonly ITemplatesService templatesService;
 
-       #region Properties
+      
         public ObservableCollection<ScheduleDefaultDTO> DefaultSchedules { get; private set; } = new(); 
         
         [ObservableProperty]
@@ -42,8 +44,6 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         {
             if(newValue >= NewScheduleEndDate)
             {
-                messageBoxService.ShowWarning($"Start date must be less than end date!");
-                NewScheduleStartDate = oldValue;
                 return;
             }
             var overlapTask = Task.Run(async () => {
@@ -86,11 +86,37 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             _ = LoadDefaultScheduleForSelectedInterval();
         }
         public ObservableCollection<TemplateDTO> Templates { get; private set; } = new();
-    
 
-      
-        public PlannerDefaultScheduleViewModel(IDispatcherService dispatcherService, IWindowService windowService, IMessageBoxService messageBoxService,
-            ISchedulesDefaultService defaultSchedulesService, ITemplatesService templatesService)
+        [ObservableProperty]
+        private string searchQuery = "";
+
+        private const int searchDelayMilliseconds = 500; // Set an appropriate delay time
+
+        private CancellationTokenSource? searchQueryToken;
+        partial void OnSearchQueryChanged(string value)
+        {
+            if (searchQueryToken != null)
+            {
+                searchQueryToken.Cancel();
+            }
+
+            searchQueryToken = new CancellationTokenSource();
+            var cancellationToken = searchQueryToken.Token;
+            Task.Delay(searchDelayMilliseconds, cancellationToken).ContinueWith(task =>
+            {
+                if (task.IsCompletedSuccessfully && !cancellationToken.IsCancellationRequested)
+                {
+                    DebugHelper.WriteLine(this, $"Performing search query: {value}");
+                    _ = LoadDefaultSchedules(value);
+                }
+            });
+        }
+
+        public PlannerDefaultScheduleViewModel(IDispatcherService dispatcherService,
+                                               IWindowService windowService,
+                                               IMessageBoxService messageBoxService,
+                                               ISchedulesDefaultService defaultSchedulesService,
+                                               ITemplatesService templatesService)
         {
             this.dispatcherService = dispatcherService;
             this.windowService = windowService;
@@ -101,12 +127,15 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
         }
 
         //Data fetching
-        private async Task LoadDefaultSchedules()
+        private async Task LoadDefaultSchedules(string? query = null)
         {
             DefaultSchedules.Clear();
-            await Task.Run(() =>
+            if (string.IsNullOrEmpty(query)) SearchQuery = string.Empty;
+            await Task.Run(async () =>
             {
-                foreach (var schedule in defaultSchedulesService.GetDefaultSchedules())
+                var defaultSchedules = await defaultSchedulesService.GetDefaultSchedules(query);
+                defaultSchedules = defaultSchedules.ToList();
+                foreach (var schedule in defaultSchedules)
                 {
                     dispatcherService.InvokeOnUIThread(() =>
                     {
@@ -223,6 +252,13 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
                     messageBoxService.ShowWarning($"The default schedule must have a name.");
                     return;
                 }
+
+                if (NewScheduleStartDate >= NewScheduleEndDate)
+                {
+                    messageBoxService.ShowWarning($"Start date must be less than end date!");
+                    return;
+                }
+
                 //Add new schedule
                 SelectedDefaultSchedule.Items = DefaultScheduleItemsForSelected.Select(s => DefaultScheduleItem.ToDto(s, SelectedDefaultSchedule)).ToList();
                 await defaultSchedulesService.AddDefaultSchedule(SelectedDefaultSchedule);
@@ -295,6 +331,12 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
                 return;
             }
 
+            if (NewScheduleStartDate >= NewScheduleEndDate)
+            {
+                messageBoxService.ShowWarning($"Start date must be less than end date!");
+                return;
+            }
+
             DefaultScheduleItemsForSelected.Clear();
             var firstDayOfWeek = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
             int startDayIndex = 0;
@@ -336,7 +378,5 @@ namespace RA.UI.StationManagement.Components.Planner.ViewModels.Schedule
             return IsAnyOverLap;
         }
 
-
-        #endregion
     }
 }
