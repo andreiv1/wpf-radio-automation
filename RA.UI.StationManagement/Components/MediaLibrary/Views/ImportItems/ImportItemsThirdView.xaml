@@ -31,7 +31,17 @@
                                    ColumnSizer="AutoWithLastColumnFill"
                                    SelectionUnit="Row" NavigationMode="Row"
                                    ItemsSource="{Binding Model.ProcessingTracks}"
+                                   SelectedItem="{Binding Model.SelectedProcessingTrack}"
                                    RowHeight="26">
+                <syncfusion:SfDataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Exclude from import" Command="{Binding ExcludeSelectedFromImportCommand}">
+                            <MenuItem.Icon>
+                                <Image Source="{StaticResource RemoveIcon}" Width="16" Height="16"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </syncfusion:SfDataGrid.ContextMenu>
                 <syncfusion:SfDataGrid.Columns>
                     <syncfusion:GridTemplateColumn HeaderText="Status" MinimumWidth="50" MaximumWidth="50"
                                                    MappingName="Status" Width="50">
