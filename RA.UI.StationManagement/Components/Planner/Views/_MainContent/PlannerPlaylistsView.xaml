@@ -174,7 +174,7 @@
                             <syncfusion:SfDataGrid 
                            Margin="0,3,0,0"
                            ItemsSource="{Binding PlaylistsByHour}"
-                           SelectedItem="{Binding SelectedPlaylistByHour}"
+                           SelectedItem="{Binding SelectedPlaylistHour}"
                            SelectionUnit="Row"
                            NavigationMode="Row"
                            AutoGenerateColumns="False"

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RA.DAL
 {
@@ -27,41 +28,7 @@ namespace RA.DAL
             var entity = PlaylistDTO.ToEntity(playlistDTO);
             var nextDay = entity.AirDate.AddDays(1).Date;
 
-            //if (playlistDTO.Items != null)
-            //{
-            //    for (int i = 0; i < playlistDTO.Items?.Count; i++)
-            //    {
-            //        var currentItem = playlistDTO.Items.ElementAt(i);
-            //        var nextItem = playlistDTO.Items.ElementAtOrDefault(i + 1);
-
-            //        //weird logic, but it works
-            //        if (currentItem.ETA > nextDay) break;
-            //        if (currentItem.Label != null && nextItem != null 
-            //            && nextItem.ParentPlaylistItem == currentItem)
-            //        {
-            //            var parent = PlaylistItemDTO.ToEntity(currentItem);
-            //            entity.PlaylistItems.Add(parent);
-
-            //            int index = i + 1;
-            //            int childrenNo = 1;
-            //            while(playlistDTO.Items?.ElementAtOrDefault(index++)?.ParentPlaylistItem == currentItem)
-            //            {
-            //                var child = PlaylistItemDTO.ToEntity(playlistDTO.Items.ElementAt(index));
-            //                if(child.Track != null)
-            //                    child.Track = dbContext.AttachOrGetTrackedEntity(child.Track);
-            //                child.ParentPlaylistItem = parent;
-            //                entity.PlaylistItems.Add(child);
-            //                childrenNo++;
-            //            }
-            //        } else
-            //        {
-            //            var playlistItem = PlaylistItemDTO.ToEntity(currentItem);
-            //            if(playlistItem.Track != null)
-            //                playlistItem.Track = dbContext.AttachOrGetTrackedEntity(playlistItem.Track);
-            //           entity.PlaylistItems.Add(playlistItem);
-            //        }
-            //    }
-            //}
+           
             foreach(var item in entity.PlaylistItems)
             {
                 if(item.Track != null)
@@ -85,6 +52,7 @@ namespace RA.DAL
             return query;
         }
 
+       
         public IEnumerable<PlaylistByHourDTO> GetPlaylistsByHour(DateTime airDate)
         {
             using var dbContext = dbContextFactory.CreateDbContext();
@@ -131,6 +99,34 @@ namespace RA.DAL
                 .ToListAsync();
 
             return query;
+        }
+
+        public async Task<IList<PlaylistItemDTO>?> GetPlaylistsItemsByHour(DateTime airDate, TimeSpan hour)
+        {
+            using var dbContext = dbContextFactory.CreateDbContext();
+
+            var playlist = await dbContext.Playlists.Where(p => p.AirDate == airDate).FirstOrDefaultAsync();
+            if(playlist == null)
+            {
+                return null;
+            }
+
+            var dateMin = airDate.Date;
+            dateMin = dateMin.AddHours(hour.Hours);
+
+            var dateMax = airDate.Date;
+            dateMax = dateMax.AddHours(hour.Hours + 1);
+            var query = dbContext.PlaylistItems
+               .Include(pi => pi.Track)
+               .ThenInclude(pi => pi.TrackArtists)
+               .ThenInclude(ta => ta.Artist)
+               .Where(pi => pi.PlaylistId == playlist.Id)
+               .Where(pi => pi.ETA >= dateMin && pi.ETA < dateMax)
+               .OrderBy(pi => pi.ETA)
+               .Select(pi => PlaylistItemDTO.FromEntity(pi));
+
+            return await query.ToListAsync();
+
         }
 
         public IEnumerable<PlaylistItemDTO> GetPlaylistItemsByDateTime(DateTime dateTimeStart, int maxHours = 1)

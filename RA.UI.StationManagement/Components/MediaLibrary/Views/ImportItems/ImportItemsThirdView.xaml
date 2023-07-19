@@ -73,7 +73,7 @@
                     <syncfusion:GridTextColumn HeaderText="Category" Width="120"
                                                MappingName="Categories"/>
                     <syncfusion:GridTextColumn HeaderText="File Path"  ColumnSizer="Star"
-                                               MappingName="TrackDto.FilePath"/>
+                                               MappingName="OriginalPath"/>
 
                 </syncfusion:SfDataGrid.Columns>
             </syncfusion:SfDataGrid>
