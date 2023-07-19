@@ -91,13 +91,13 @@ namespace RA.UI.StationManagement
             {
                 await dispatcherService.InvokeOnUIThreadAsync(() =>
                 {
-                    if (ConfigurationStore.IsDevEnvironment())
-                    {
-                        windowService.ShowWindow<LauncherViewModel>();
-                    } else
-                    {
+                    //if (ConfigurationStore.IsDevEnvironment())
+                    //{
+                    //    windowService.ShowWindow<LauncherViewModel>();
+                    //} else
+                    //{
                         windowService.ShowWindow<AuthViewModel>();
-                    }
+                    //}
                       
                     splashScreen.Hide();
                 });
